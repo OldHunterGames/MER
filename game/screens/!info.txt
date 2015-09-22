@@ -1,0 +1,5 @@
+Store BASE game RenPy screen language scripts (screens) here.
+Only BASE, not core, not expansion.
+
+Тут хранятся ренпаевские скрины для БАЗОВОЙ игры.
+Только БАЗОВЫЕ скрины, не модулей ядра и тем более не модулей расширений.

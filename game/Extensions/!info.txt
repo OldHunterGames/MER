@@ -1,0 +1,6 @@
+Store EXTENSION modules here.
+If you have an Extension you want in your game - just trow it in Engines or Worlds folder.
+Some Worlds require certain Engines to work properly.
+
+Здесь хранятся модули РАСШИРЕНИЯ игры. Они делятся на Движки и Миры. Если хотите подключить к игре дополнительный модуль, просто закиньте его в подходящую папку. Если хотите удалить - удалите папку с этим модулем.
+Учтите что некоторые Миры требуют наличия определённых Движков для ноормальной работы.

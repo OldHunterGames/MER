@@ -1,0 +1,7 @@
+Store BASE game user inteface images here.
+NOT a main grafical content, just user interface (buttons, screen-bg etc).
+Only BASE, not core, not expansion.
+
+Тут хранятся элементы оформления интерфейса базовой игры.
+Только интерфейс, НЕ основное графическое наполнение.
+Только интерфейс БАЗОВОЙ игры, не модулей ядра и тем более не модулей расширений.

@@ -1,0 +1,7 @@
+Store CORE game modules here.
+Only CORE, not expansion.
+DO NOT modify the contents of this folder, unless you EXACTLY know what are you doing.
+
+Тут хранятся модули ЯДРА игры, необходимые для её работы в обязательном порядке.
+Только модули ЯДРА, НЕ модули расширений.
+Не меняйте ничего в этой папке если толко вы ТОЧНО не уверены в том что вы делаете.

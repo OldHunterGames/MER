@@ -1,0 +1,6 @@
+Store extension engines here. Engine is anythiong that is not a World.
+Your custom gigant mecha battles engine for example.
+
+
+Здесь хранятся дополнительные модули движков. Всё что не Мир - движок.
+Например движок для сражений гигантских боевых роботов.

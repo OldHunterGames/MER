@@ -1,0 +1,5 @@
+Store BASE game grafical content here.
+Only BASE, not core, not expansion.
+
+Тут хранится основное графическое оформление базовой игры.
+Только БАЗОВОЙ игры, не модулей ядра и тем более не модулей расширений.

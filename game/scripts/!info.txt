@@ -1,0 +1,5 @@
+Store BASE game python scripts here.
+Only BASE, not core, not expansion.
+
+Тут хранятся питон-скрипты БАЗОВОЙ игры.
+Только БАЗОВЫЕ скрипты, не модулей ядра и тем более не модулей расширений.
