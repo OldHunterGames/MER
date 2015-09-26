@@ -43,7 +43,7 @@ class EVUnique(Event):
     """
 
     def __init__(self, env):
-        super(EVUnique).__init__(env)
+        super(EVUnique, self).__init__(env)
         self.natures = ["triggered", "turn_end", "faction"]
         self.goto = "evn_unic"
         self.unique = True
@@ -55,7 +55,7 @@ class EVGeneric(Event):
     """
 
     def __init__(self, env):
-        super(EVGeneric).__init__(env)
+        super(EVGeneric, self).__init__(env)
         self.goto = "evn_1"
         self.natures = ["triggered", "turn_end", "faction"]
 
