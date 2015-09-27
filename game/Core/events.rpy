@@ -8,13 +8,16 @@ python:
 label evn_init:
     python:
         # TODO: Тут надо будет сделать так чтобы список возможных эвентов генеировался динамически
-        ev_name_list = [
-        EVUnique(game),
-        EVGeneric(game),        
-        ]
-        for obj in ev_name_list:
-            game.event_list.append(obj)
-    
+        #ev_name_list = [
+        #EVUnique(game),
+        #EVGeneric(game),        
+        #]
+        #for obj in ev_name_list:
+        #    game.event_list.append(obj)
+        ev_name_list = []
+        for subclass in Event.__subclasses__():
+            game.event_list.append(subclass(game))
+
     return
 
 
