@@ -1,3 +1,4 @@
+РўСѓРјР°РЅС‹ Р’РµСЂС‡РЅРѕРіРѕ Р РёРјР°
 Mists of Ethernal Rome
 
-Информация для группы разработки: https://drive.google.com/folderview?id=0B9flsbHMX89Qfmx0NGhSWXJQLWh1Yk4xa3ZYSDFZOWJzX3lvcndNdUlNbkRnMzFLaUZYZGM&usp=sharing
+РРЅС„РѕСЂРјР°С†РёСЏ РґР»СЏ РіСЂСѓРїРїС‹ СЂР°Р·СЂР°Р±РѕС‚РєРё: https://drive.google.com/folderview?id=0B9flsbHMX89Qfmx0NGhSWXJQLWh1Yk4xa3ZYSDFZOWJzX3lvcndNdUlNbkRnMzFLaUZYZGM&usp=sharing
