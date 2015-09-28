@@ -20,15 +20,14 @@ init python:
 # The game starts here.
 label start:
     $ game = MistsOfEternalRome(Person())
-    $ game.protagonist.sparks = 25
+    $ game.protagonist.sparks = 250
     $ meter = Meter(game.protagonist)
     show expression "interface/bg_base.jpg" as bg
     call evn_init
-    "[game.event_list]"
     call new_turn
     return
 
-label end_trun:
+label end_turn:
     call expression game.end_turn_event()
     call expression game.end_turn()
     return
@@ -46,7 +45,7 @@ label choose_acton:
         "Discover new world" if outer_worlds:
             $ loc_to_call = game.discover_world(outer_worlds)
         "Relax":
-            $ loc_to_call = end_turn    
+            $ loc_to_call = "end_turn"    
             
     call expression loc_to_call       
     
