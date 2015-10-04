@@ -12,6 +12,7 @@ init -10 python:
     from mer_metric import *    
     from mer_mood import *    
     from mer_event import *
+    from mer_metaperson import *
     
 init python:
     outer_worlds = []
