@@ -3,9 +3,9 @@ init python:
     from random import *
 
     class HustmanMeta(UniqueMetaPerson):
-        meta_code = "hustman"
+        meta_code = "huntsman"
         def __init__(self):
-            self.name = "Hustman"
+            self.name = "Huntsman"
             self.sparks = 10000
             
             

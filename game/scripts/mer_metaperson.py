@@ -82,8 +82,19 @@ class GenPerson(Person):#all character generators should inherit from this
         else:
             return None
 
+class GenPersonByGender(GenPerson):
+    def __init__(self, gender):
+        self.search_gender = gender
+        super(GenPersonByGender, self).__init__()
+    def get_metapersons(self):
+        files = [f for f in renpy.list_files() if f.startswith("characters/generic") and "avatar" in f and self.search_gender in f.split('/')]
+        return files
+
+
 
 class GenUnique(GenPerson):
+    def __init__(self):
+        super(GenUnique, self).__init__()
     def get_metapersons(self):
         files = [f for f in renpy.list_files() if f.startswith("characters/unique") and "avatar" in f]
         return files
@@ -98,3 +109,10 @@ class GenUnique(GenPerson):
                 return random.choice(sub_list)()
         else:
             return None
+class GenUniqueById(GenUnique):
+    def __init__(self, uniqueid="None"):
+        self.uniqueid = uniqueid
+        super(GenUniqueById, self).__init__()
+    def get_metapersons(self):
+        files = [f for f in renpy.list_files() if f.startswith("characters/unique") and "avatar" in f and self.uniqueid in f]
+        return files
