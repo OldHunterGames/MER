@@ -8,7 +8,7 @@ class Person(object):
 
     def __init__(self):
         self.name = "Stranger"
-        self.avatar = "images/ava/none.jpg"
+        self.avatar = "characters/none.jpg"
         self.age = "adult"          # can be "child", "young", "adult" or "elder"
         self.gender = "male"        # can be "male", "female", "shemale" or "sexless"
         self.species = "human"      # "human", ???
@@ -23,6 +23,7 @@ class Person(object):
         self.inventory = []         # Possessed amd carried, but not worn items
         self.equipment = {}         # Slots for armor, cloth, weapon, jewelry, etc. One slot = one item
         self.ap_spent = 0           # Number of AP spent by player this turn
+        self.color = "unknown"
         self.moodlets = {
             "bad": [],
             "good": [],
