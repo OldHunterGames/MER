@@ -11,27 +11,27 @@ label fse_start:
     $ sex.start()
     show expression "interface/bg_base.jpg" as bg
     show screen fse_main
-    call user_turn
+    call fse_user_turn
     return
 
-label user_turn:    
+label fse_user_turn:    
     $ location_to_call = sex.render_input(ui.interact())
     call expression location_to_call
     return
-    
-label resolution_phase:
+
+label fse_resolution_phase:
     $ location_to_call = sex.resolution()
     call expression location_to_call
     return
 
-label you_win:
+label fse_you_win:
     hide screen fse_main
     menu:
         "You Win!":
             $ fse_result = "win"
             call fse_exid
     return
-label you_lose:
+label fse_you_lose:
     hide screen fse_main
     menu:
         "You Lose!":

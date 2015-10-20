@@ -27,11 +27,11 @@ class FSEngine(object):
         self.opponent.action = self.opponent.potential.pop(0)
 
     def render_input(self, data):
-        location_to_call = "user_turn"
+        location_to_call = "fse_user_turn"
         if "act" in data:
             self.hero.action = data[1]
             self.hero.potential.remove(data[1])
-            location_to_call = "resolution_phase"
+            location_to_call = "fse_resolution_phase"
 
         return location_to_call
 
@@ -63,13 +63,13 @@ class FSEngine(object):
 
         if self.hero.arousal >= self.hero.arousal_threshold:
             if self.opponent.arousal > self.hero.arousal:
-                location_to_call = "you_win"
+                location_to_call = "fse_you_win"
             else:
-                location_to_call = "you_lose"
+                location_to_call = "fse_you_lose"
         elif self.opponent.arousal >= self.opponent.arousal_threshold:
-            location_to_call = "you_win"
+            location_to_call = "fse_you_win"
         else:
-            location_to_call = "user_turn"
+            location_to_call = "fse_user_turn"
 
         self.new_turn()
         return location_to_call
