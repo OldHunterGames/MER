@@ -65,7 +65,7 @@ class FSEngine(object):
             if self.opponent.arousal > self.hero.arousal:
                 location_to_call = "you_win"
             else:
-                location_to_call = "game_over"
+                location_to_call = "you_lose"
         elif self.opponent.arousal >= self.opponent.arousal_threshold:
             location_to_call = "you_win"
         else:

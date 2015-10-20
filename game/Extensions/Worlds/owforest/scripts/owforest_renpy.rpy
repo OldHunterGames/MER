@@ -16,9 +16,11 @@ label owforest_arrive:
     return
     
 label owforest_exid:
-    "The [ow.name] world is scouted. You can return to Eternal Rome to get a reward."
-    
-    menu:
-        "Go back":
-            call get_sparks    
+    if fse_result == "win":
+        "The [ow.name] world is scouted. You can return to Eternal Rome to get a reward."
+        menu:
+            "Go back":
+                call get_sparks
+    elif fse_result == 'lose':
+        call game_over 
     return

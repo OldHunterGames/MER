@@ -28,9 +28,16 @@ label you_win:
     hide screen fse_main
     menu:
         "You Win!":
+            $ fse_result = "win"
             call fse_exid
     return
-    
+label you_lose:
+    hide screen fse_main
+    menu:
+        "You Lose!":
+            $ fse_result = "lose"
+            call fse_exid
+    return
 label fse_exid:
     hide screen fse_main
     jump expression exid_point
