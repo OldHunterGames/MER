@@ -16,6 +16,7 @@ class Event(object):
         self.tags = []              # tags for filtering "gay", "lolicon", "bestiality", "futanari" etc
         self.unique = False         # Unique events shown once in a game instance
         self.seen = 0               # Number of times this event seen
+        self.world = None           # None if event is not world related, else set world
 
     def trigger(self):
         """
@@ -32,6 +33,10 @@ class Event(object):
         check = True
         if self.unique == True and self.seen > 0:
             check = False
+        if self.world:
+            if self.world != env.current_world:
+                check = False
+        
         return check
 
 
@@ -58,6 +63,7 @@ class EVGeneric(Event):
         super(EVGeneric, self).__init__(env)
         self.goto = "evn_1"
         self.natures = ["triggered", "turn_end", "faction"]
+
 
 
 

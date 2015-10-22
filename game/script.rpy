@@ -30,7 +30,8 @@ label start:
     return
 
 label end_turn:
-    call expression game.end_turn_event()
+    $ event = game.end_turn_event()
+    call expression event
     call expression game.end_turn()
     return
     

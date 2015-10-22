@@ -18,6 +18,7 @@ class MistsOfEternalRome(object):
         self.events_seen = []           # Unique events seen by player in this game instance
         self.event_list = []            # List of all possible events in this game instance
         self.menues = []                # For custom RenPy menu screen
+        self.current_world = "MER"
 
     def end_turn_event(self):
         return choice(self.possible_events("turn_end")).trigger()
@@ -55,10 +56,10 @@ class MistsOfEternalRome(object):
         :return: the RenPu location with the choosen event
         """
         list_of_events = []
-        if kind == "turn_end":
-            for event in self.event_list:
-                if "turn_end" in event.natures:
-                    list_of_events.append(event)
+        for event in self.event_list:
+            if event.check():
+                if kind in event.natures:
+                        list_of_events.append(event)
 
         return list_of_events
 
