@@ -9,7 +9,6 @@ import renpy.exports as renpy
 class FFEngine(object):
     """
     This is the main script of Fast Fight Engine for Mists of Eternal Rome.
-
     """
     def __init__(self, allies, enemies):
         self.ally = allies          # List of all combatants participating on a player side
@@ -19,15 +18,31 @@ class FFEngine(object):
         self.action_pool = {"ally": [], "enemy": []}    # Actions made by combatant this turn
 
     def start(self):
-        for enemy in self.enemy:
-            enemy.shuffle_actions()
-            enemy.action = enemy.reserve[0]
+        self.choose_enemy_action()
         for ally in self.ally:
             ally.shuffle_actions()
             ally.draw(ally.potential_size)
 
+    def choose_enemy_action(self):
+        for enemy in self.enemy:
+            if len(enemy.reserve) <= 0:
+                enemy.shuffle_actions()
+            enemy.action = enemy.reserve[0]
+            for key in enemy.action.oncoming:
+                enemy.oncoming[key] += enemy.action.oncoming[key]
+            if enemy.action.ongoing_dmg > self.actor.ongoing_dmg:
+                self.actor.ongoing_dmg = enemy.action.ongoing_dmg
+            if enemy.action.regenerate > enemy.regenerate:
+                enemy.regenerate = enemy.action.regenerate
+
     def actor_move(self, action):
         self.action_pool["ally"].append(action)
+        for key in action.oncoming:
+            self.actor.oncoming[key] += action.oncoming[key]
+        if action.ongoing_dmg > self.target.ongoing_dmg:
+            self.target.ongoing_dmg = action.ongoing_dmg
+        if action.regenerate > self.actor.regenerate:
+            self.actor.regenerate = action.regenerate
         self.actor.discard.append(action)
         self.actor.potential.remove(action)
         if len(self.actor.reserve) <= 0:
@@ -39,9 +54,7 @@ class FFEngine(object):
         for enemy in self.enemy:
             self.action_pool["enemy"].append(enemy.reserve[0])
             enemy.discard.append(enemy.reserve.pop(0))
-            if len(enemy.reserve) <= 0:
-                enemy.shuffle_actions()
-            enemy.action = enemy.reserve[0]
+        self.choose_enemy_action()
         for ally in self.ally:
             if ally.active:
                 ally.state = "ready"
@@ -54,6 +67,16 @@ class FFEngine(object):
         if self.check_fight_status() == "going on":
             self.actions_resolution("slow")
         if self.check_fight_status() == "going on":
+            for enemy in self.enemy:
+                if enemy.ongoing_dmg:
+                    enemy.hp -= enemy.ongoing_dmg
+                if enemy.regenerate:
+                    enemy.hp += enemy.regenerate
+            for ally in self.ally:
+                if ally.ongoing_dmg:
+                    ally.hp -= ally.ongoing_dmg
+                if ally.regenerate:
+                    ally.hp += ally.regenerate
             self.action_pool["ally"] = []
             self.action_pool["enemy"] = []
             return "ffe_new_turn"
@@ -98,17 +121,47 @@ class FFEngine(object):
             defender_sum.defence[def_type] = 0
 
     def resolution(self, summary):
-        # TODO: Add oncoming damage
+        # healing
+        for side in summary:
+            if side == "enemy":
+                self.target.hp += summary[side].recovery
+            else:
+                self.actor.hp += summary[side].recovery
+
+        # backlash
+        for side in summary:
+            if side == "enemy":
+                self.target.hp -= summary[side].backlash
+            else:
+                self.actor.hp -= summary[side].backlash
+
+        # add oncoming damage
+        for side in summary:
+            for key in ("bold", "sly", "subdual"):
+                oncoming = 0
+                if side == "ally":
+                    for ally in self.ally:
+                        oncoming += ally.oncoming[key]
+                else:
+                    for enemy in self.enemy:
+                        oncoming += enemy.oncoming[key]
+                if summary[side].atk[key] > 0:
+                    summary[side].atk[key] += oncoming
+                    summary[side].oncoming[key] = 0
+
+        # damage reduction
         for side in summary:
             if side == "enemy":
                 opposition = "ally"
             else:
                 opposition = "enemy"
-            for key in ("bold", "sly", "total", "subdual"):
-                self.damage_reduction(summary[side], key, summary[opposition], key)      # Specific defences works
-                self.damage_reduction(summary[side], "total", summary[opposition], key)  # Total defence works
-                self.damage_reduction(summary[side], key, summary[opposition], "bold")   # Rest defences reduce bold atk
+            if not summary[opposition].unblockable:
+                for key in ("bold", "sly", "total", "subdual"):
+                    self.damage_reduction(summary[side], key, summary[opposition], key)      # Specific defences works
+                    self.damage_reduction(summary[side], "total", summary[opposition], key)  # Total defence works
+                    self.damage_reduction(summary[side], key, summary[opposition], "subdual")   # Rest defences reduce bold atk
 
+        # damaging
         damage_to = {"ally": 0, "enemy": 0}
         for side in summary:
             if side == "enemy":
@@ -126,7 +179,6 @@ class FFEngine(object):
                 if summary[opposition].atk["subdual"] > 0:
                     damaged_person.state = "subdued"
 
-
 class FFEAction(object):
     """
     This is a class for "action cards" to form a decks and use in FaFiEn.
@@ -141,11 +193,11 @@ class FFEAction(object):
         self.recovery = 0           # Recovers HP
         self.regenerate = 0         # Author recovers X hp / round
         self.backlash = 0           # Author gets damage to himself
-        self.tactical = 0           # if Hero: he gets additional actions up to max. if NPC: hero discards acrions up to 1
-        self.trickery = False       # if Hero: choose next enemy action from two nearest actions in a row, discard other. if NPC: shuffle into Heroes deck "Confusion" action
+        self.tactical = 0           # TODO: if Hero: he gets additional actions up to max. if NPC: hero discards actions up to 1
+        self.trickery = False       # TODO: if Hero: choose next enemy action from two nearest actions in a row, discard other. if NPC: shuffle into Heroes deck "Confusion" action
         self.unblockable = False    # This action attacks cannot be blocked
-        self.on_hit = False         # This action has special effect if and when damage successfully dealt to enemy
-        self.use_up = False         # Uses some item or resource then discards permanently
+        self.on_hit = False         # TODO: This action has special effect if and when damage successfully dealt to enemy
+        self.use_up = False         # TODO: Uses some item or resource then discards permanently
         self.speed_rate = "normal"  # Actions resolved in order. Firstly "fast", then "normal", then "slow"
 
         # ACTIONS LIBRARY
@@ -173,6 +225,18 @@ class FFEAction(object):
         if self.name == "Counterblow":
             self.defence["subdual"] = 1
             self.atk["subdual"] = 1
+        if self.name == "Loooong Swing":
+            self.oncoming["subdual"] = 2
+        if self.name == "Poison":
+            self.ongoing_dmg = 2
+        if self.name == "Heal":
+            self.recovery = 2
+        if self.name == "Regenerate":
+            self.regenerate = 1
+        if self.name == "Piercing":
+            self.atk["subdual"] = 3
+            self.unblockable = True
+
 
     def addup(self, action):
         for key in self.atk:
@@ -245,6 +309,15 @@ combat_style_actions = {
         FFEAction("Bull-rush"),
         FFEAction("Counterblow"),
         ],
+
+    "tester": [
+        FFEAction("Punch"),
+        FFEAction("Punch"),
+        FFEAction("Arm block"),
+        FFEAction("Arm block"),
+        FFEAction("Piercing"),
+        FFEAction("Piercing"),
+        ],
 }
 
 
@@ -284,4 +357,3 @@ class FFCombatant(object):
             num = number
         for n in range(num):
             self.potential.append(self.reserve.pop(n))
-
