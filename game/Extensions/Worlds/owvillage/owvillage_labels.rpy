@@ -35,6 +35,10 @@ label owvillage_main:
 
             "Rape villager":
                 call owvillage_villager_rape
+
+            "Start fight":
+                $ ffe_enemy = GenPerson()
+                call ffe_start
             
             "Back to mists":
                 call choose_acton

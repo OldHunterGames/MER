@@ -24,6 +24,7 @@ class Person(object):
         self.equipment = {}         # Slots for armor, cloth, weapon, jewelry, etc. One slot = one item
         self.ap_spent = 0           # Number of AP spent by player this turn
         self.color = "unknown"
+        self.ff_combat_style = "bully"
         self.moodlets = {
             "bad": [],
             "good": [],
