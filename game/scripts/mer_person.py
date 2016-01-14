@@ -7,17 +7,26 @@ import renpy.exports as renpy
 class Person(object):
 
     def __init__(self):
-        self.name = "Stranger"
+        self.firstname = "Stranger" # One always must have this one.
+        self.surname = ""          # Not obligate.
+        self.nickname = ""          # Can be modified by player. If present - shown as default name
         self.avatar = "characters/none.jpg"
-        self.age = "adult"          # can be "child", "young", "adult" or "elder"
+        self.age = "adolescent"          # can be "junior", "adolescent", "mature" or "elder"
         self.gender = "male"        # can be "male", "female", "shemale" or "sexless"
-        self.species = "human"      # "human", ???
+        self.species = "human"      # "human", "strange"
         self.morphology = "humanoid"    # "humanoid", "centaur", "amorphous", "quadruped", "insectoid"
-        self.lawfulness = 0             # more is Lawful, less is Chaotic, about 0 is Conformal
-        self.goodness = 0            # more is Good, less is Evil, about 0 is Egoist
+        self.members = ["Hands", "Mouth", "Butt"]   # Bodyparts to use as implements and more
+        self.alignment = {
+            "Orderliness": "Conformal",   # "Lawful", "Conformal" or "Chaotic"
+            "Activity": "Reasonable",        # "Ardent", "Reasonable" or "Timid"
+            "Morality": "Selfish",       # "Good", "Selfish" or "Evil"
+        }
         self.features = []          # gets Feature() objects and their child's
-        self.ration = "full"        # can be  "none", "half", "full" or "double"
-        self.chakra = 1             # Number of magic slots in one's soul
+        self.needs = {              # List of persons needs
+            "general":  {"level": 3, "status": "relevant", },        # Need {level(1-5), status (relevant, satisfied, overflow, tension, frustration)}
+        }
+        self.ration = "full"        # ????? can be  "none", "half", "full" or "double"
+        self.chakra = 1             # Number of magic item slots in one's soul
         self.sigil = None           # House sigil on the one's soul. Makes you able to use sparks directly
         self.sparks = 0             # Number of sparks in the soul
         self.inventory = []         # Possessed amd carried, but not worn items
@@ -29,13 +38,30 @@ class Person(object):
             "bad": [],
             "good": [],
         }          # Moodlet() or it's child's. Good or bad
-        self.lifestyle = 0         # Sparks spend each turn on a lifestyle
+        self.allowance = 0         # Sparks spend each turn on a lifestyle
         self.skills = {
-            "manual": 1,
-            "oral": 1,
-            "penetration": 1
+            "training":  [],        # List of skills. Skills get +1 bonus
+            "experience":  [],      # List of skills. Skills get +1 bonus
+            "specialisation": [],   # List of skills. Skills get +1 bonus
+            "talent": [],           # List of skills. Skills get +1 bonus
         }
-        self.members = ["Hands", "Mouth", "Butt"]   # Bodyparts to use as implements and more
+
+
+    def name(self):
+        # TODO: вставить декоратор чтобы функция вызывалась как переменная (без скобочек в конце)
+        """
+        :return: Nickname if present or Firstname + Secondname.
+        """
+        """
+        :return:
+        """
+        if self.nickname:
+            return self.nickname
+        else:
+            return str(self.firstname + " " + self.surname)
+
+    def fullname(self):
+        return str(self.firstname + " " + self.nickname + " " + self.surname)
 
     def gender_features(self):
         femininity = 0
@@ -70,10 +96,10 @@ class Person(object):
         :return: attribute value averege is 3, no less than 1
         """
         value = 3
-        if self.age == "child":
+        if self.age == "junior":
             value -= 1
         if attribute == "physique" or attribute == "phy":
-            if self.age == "adult":
+            if self.age == "mature":
                 value += 1
             if self.gender == "male":
                 value += 1
@@ -81,7 +107,7 @@ class Person(object):
                 value -= 1
 
         if attribute == "sensitivity" or attribute == "sns":
-            if self.age == "child":
+            if self.age == "junior":
                 value += 2
             if self.gender == "male":
                 value -= 1
@@ -89,8 +115,8 @@ class Person(object):
                 value += 1
 
         if attribute == "agility" or attribute == "agi":
-            if self.age == "child":
-                value += 1              # to be equally as high as adult and young
+            if self.age == "junior":
+                value += 1              # to be equally as high as mature and adolescent
             elif self.age == "elder":
                 value -= 1
 
@@ -107,6 +133,17 @@ class Person(object):
         if value < 1:
             value = 1
         return value
+
+    def performance(self, skill):
+        """
+        :return: performance rate for a given skill
+        """
+        result = 0
+        for factor in self.skills:
+            if skill in factor:
+                result += 1
+
+        return result
 
     def hunger(self):
         hunger = self.attribute("physique")
