@@ -75,9 +75,9 @@ class Person(object):
 
 
     def use_resource(self, resource, value=1, difficulty=0):#method for using our inner resources for some actions
-    """
-    :return: True if we are able to do action
-    """
+        """
+        :return: True if we are able to do action
+        """
         res_to_use = self.__getattribute__(resource)
         if res_to_use < difficulty:
             return False
