@@ -7,11 +7,10 @@ import renpy.exports as renpy
 
 class Feature(object):
 
-    def __init__(self, owner, name="generic"):
+    def __init__(self, name="generic", permanence=True, lifetime=0):
         self.name = name
         self.slot = None        # There can be only one feature for every feature slot
-        self.revealed = False   # true if the feature is revealed to player
-        self.owner = owner      # the Person() who owns this feature
+        self.revealed = False   # true if the feature is revealed to player      # the Person() who owns this feature
         self.modifiers = {}     # parameter in key will be modified by value. Example: "agility": -1
 
 
@@ -26,8 +25,8 @@ class Blood(Feature):
     "purebreed"     +1 all attrubutes
     """
 
-    def __init__(self, owner, name):
-        super(Feature).__init__(owner, name)
+    def __init__(self, name):
+        super(Blood, self).__init__(name)
         self.slot = "blood"
         if name == "purebreed":
             self.modifiers["physique"] = 1

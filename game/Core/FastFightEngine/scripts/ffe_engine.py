@@ -23,6 +23,7 @@ class FFEngine(object):
             ally.shuffle_actions()
             ally.draw(ally.potential_size)
 
+
     def choose_enemy_action(self):
         for enemy in self.enemy:
             if len(enemy.reserve) <= 0:
@@ -357,3 +358,6 @@ class FFCombatant(object):
             num = number
         for n in range(num):
             self.potential.append(self.reserve.pop(n))
+
+        
+

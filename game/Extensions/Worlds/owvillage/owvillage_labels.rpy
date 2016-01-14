@@ -12,7 +12,7 @@ label owvillage_gates:
     else:
         $ current_world.visited = True
         $ current_world.steward = GenPersonByGender("male")
-        $ current_world.steward.name = "Steward"
+        $ current_world.steward.firstname = "Steward"
         current_world.steward.name "Wellcome to our village, stranger"
         $ discovered_worlds.append(current_world)
         $ outer_worlds.remove(OWVillage)
@@ -76,7 +76,7 @@ label owvillage_event:
         "While drinking, you noticed suspicious man in opposite side of tavern"
         "After some time he sat in front of you and started to talk"
         $ owvillage_smuggler = GenPersonByGender('male')
-        $ owvillage_smuggler.name = "Smuggler"
+        $ owvillage_smuggler.firstname = "Smuggler"
         owvillage_smuggler.name "I see you are not local here. You got here from Eternal Rome just like me"
         owvillage_smuggler.name "I have one thing in another world, which you may be instereted in"
         owvillage_smuggler.name "I'll bring it to you if you can pay me, let's say, 250 sparks"

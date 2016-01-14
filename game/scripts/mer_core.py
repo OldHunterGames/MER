@@ -26,8 +26,7 @@ class MistsOfEternalRome(object):
     def end_turn(self):
         self.decade += 1
         self.add_score_points()
-        self.protagonist.ap_spent = 0
-        self.protagonist.sparks -= self.protagonist.lifestyle
+        self.protagonist.rest()
         if self.protagonist.sparks < 0:
             return "game_over"
         else:

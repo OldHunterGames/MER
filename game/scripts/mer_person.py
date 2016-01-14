@@ -1,7 +1,8 @@
-# -*- coding: <UTF-8> -*-
+# -*- coding: UTF-8 -*-
 from random import *
 import renpy.store as store
 import renpy.exports as renpy
+import mer_features
 
 
 class Person(object):
@@ -34,19 +35,70 @@ class Person(object):
         self.ap_spent = 0           # Number of AP spent by player this turn
         self.color = "unknown"
         self.ff_combat_style = "bully"
+        #attributes:
+        self.physique = 3
+        self.spirit = 3
+        self.agility = 3
+        self.mind = 3
+        self.sensitivity = 3
+        #inner resources:
+        self.max_stamina = self.attribute('physique')
+        self.stamina = self.max_stamina
+        self.max_accuracy = self.attribute('agility')
+        self.accuracy = self.max_accuracy
+        self.max_concentration = self.attribute('mind')
+        self.concenctation = self.max_concentration
+        self.max_willpower = self.attribute('spirit')
+        self.willpower = self.max_willpower
+        self.max_glamour = self.attribute('sensitivity')
+        self.glamour = self.max_glamour
+
         self.moodlets = {
             "bad": [],
             "good": [],
         }          # Moodlet() or it's child's. Good or bad
         self.allowance = 0         # Sparks spend each turn on a lifestyle
         self.skills = {
-            "training":  [],        # List of skills. Skills get +1 bonus
+            "training":  ['manual', 'oral', 'penetration'],        # List of skills. Skills get +1 bonus
             "experience":  [],      # List of skills. Skills get +1 bonus
             "specialisation": [],   # List of skills. Skills get +1 bonus
             "talent": [],           # List of skills. Skills get +1 bonus
         }
 
+    
+    def add_feature(self, name):#adds features to person, if mutually exclusive removes old feature
+        new_feature = mer_features.Feature(name)
+        for f in self.features:
+            if new_feature.slot == f.slot:
+                self.features.remove(f)
+        self.features.append(new_feature)
 
+
+    def use_resource(self, resource, value=1, difficulty=0):#method for using our inner resources for some actions
+    """
+    :return: True if we are able to do action
+    """
+        res_to_use = self.__getattribute__(resource)
+        if res_to_use < difficulty:
+            return False
+        if not res_to_use - value < 0:
+            self.__dict__[resource] -= value
+            return True
+        return False
+    
+
+
+    def rest(self):
+        self.stamina = self.max_stamina
+        self.accuracy = self.max_accuracy
+        self.concenctation = self.max_concentration
+        self.willpower = self.max_willpower
+        self.glamour = self.max_glamour
+        self.sparks -= self.allowance
+    
+
+
+    @property
     def name(self):
         # TODO: вставить декоратор чтобы функция вызывалась как переменная (без скобочек в конце)
         """
@@ -95,43 +147,15 @@ class Person(object):
         :param attribute: physique, agility, spirit, mind, sensitivity.
         :return: attribute value averege is 3, no less than 1
         """
-        value = 3
-        if self.age == "junior":
-            value -= 1
-        if attribute == "physique" or attribute == "phy":
-            if self.age == "mature":
-                value += 1
-            if self.gender == "male":
-                value += 1
-            elif self.gender == "female":
-                value -= 1
 
-        if attribute == "sensitivity" or attribute == "sns":
-            if self.age == "junior":
-                value += 2
-            if self.gender == "male":
-                value -= 1
-            elif self.gender == "female":
-                value += 1
-
-        if attribute == "agility" or attribute == "agi":
-            if self.age == "junior":
-                value += 1              # to be equally as high as mature and adolescent
-            elif self.age == "elder":
-                value -= 1
-
-        if attribute == "mind" or attribute == "mnd":
-            if self.age == "elder":
-                value += 1
-
+        value = self.__getattribute__(attribute)
         for feature in self.features:
-            if feature.name == "blood":
-                for key in feature.modifiers:
-                    if attribute == key:
-                        value += feature.modifiers[key]
-
+            if attribute in feature.modifiers.keys():
+                value += feature.modifiers[attribute]
         if value < 1:
             value = 1
+        if value > 5:
+            value = 5
         return value
 
     def performance(self, skill):

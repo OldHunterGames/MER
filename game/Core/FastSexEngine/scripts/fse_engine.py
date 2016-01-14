@@ -30,6 +30,7 @@ class FSEngine(object):
         location_to_call = "fse_user_turn"
         if "act" in data:
             self.hero.action = data[1]
+            self.hero.discard.append(data[1])
             self.hero.potential.remove(data[1])
             location_to_call = "fse_resolution_phase"
 
@@ -98,8 +99,9 @@ class FSECombatant(object):
         self.reserve = []
         for implement in self.implements:
             for suit in implement.suits:
-                for level in range(self.skills[implement.skill]+1):
-                    self.reserve.append(FSEAction(implement.get_descriptor(suit, level + 1)))
+                for key in self.skills.keys():
+                    if implement.skill in self.skills[key]:
+                        self.reserve.append(FSEAction(implement.get_descriptor(suit, 1)))
 
     def shuffle_reserve(self):
         self.reserve.extend(self.discard)

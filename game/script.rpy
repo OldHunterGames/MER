@@ -42,7 +42,7 @@ label new_turn:
 label choose_acton:
     $ state = game.protagonist.mood()
     $ ap = game.protagonist.ap()
-    "You have [game.protagonist.sparks] sparks left. You need to pay [game.protagonist.lifestyle] sparks this decade to a major House. Mood: [state]. Actions left: [ap]"    
+    "You have [game.protagonist.sparks] sparks left. You need to pay [game.protagonist.allowance] sparks this decade to a major House. Mood: [state]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
     menu:
