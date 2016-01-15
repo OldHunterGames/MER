@@ -36,21 +36,21 @@ class Person(object):
         self.color = "unknown"
         self.ff_combat_style = "bully"
         #attributes:
-        self.physique = 3
-        self.spirit = 3
-        self.agility = 3
-        self.mind = 3
-        self.sensitivity = 3
+        self._physique = 3
+        self._spirit = 3
+        self._agility = 3
+        self._mind = 3
+        self._sensitivity = 3
         #inner resources:
-        self.max_stamina = self.attribute('physique')
+        self.max_stamina = self.physique
         self.stamina = self.max_stamina
-        self.max_accuracy = self.attribute('agility')
+        self.max_accuracy = self.agility
         self.accuracy = self.max_accuracy
-        self.max_concentration = self.attribute('mind')
+        self.max_concentration = self.mind
         self.concenctation = self.max_concentration
-        self.max_willpower = self.attribute('spirit')
+        self.max_willpower = self.spirit
         self.willpower = self.max_willpower
-        self.max_glamour = self.attribute('sensitivity')
+        self.max_glamour = self.sensitivity
         self.glamour = self.max_glamour
 
         self.moodlets = {
@@ -96,6 +96,8 @@ class Person(object):
         self.glamour = self.max_glamour
         self.sparks -= self.allowance
     
+
+
 
 
     @property
@@ -157,6 +159,26 @@ class Person(object):
         if value > 5:
             value = 5
         return value
+
+    @property
+    def mind(self):
+        return self.attribute('_mind')
+    
+    @property
+    def physique(self):
+        return self.attribute('_physique')
+    
+    @property
+    def agility(self):
+        return self.attribute('_agility')
+    
+    @property
+    def spirit(self):
+        return self.attribute('_spirit')
+    
+    @property
+    def sensitivity(self):
+        return self.attribute('_sensitivity')
 
     def performance(self, skill):
         """
