@@ -75,23 +75,20 @@ class Event(object):
 
 
 
+class EVGeneric(Event):
+    """
+    Generic event for test
+    """
 
+    def __init__(self, env, location):
+        super(EVUnique, self).__init__(env, location)
+        self.goto = "evn_blank"
+        self.natures = ["triggered", "turn_end", "faction"]
 
 
 class EVUnique(Event):
     """
     Unique event for test
-    """
-
-    def __init__(self, env, location):
-        super(EVUnique, self).__init__(env, location)
-        self.natures = ["triggered", "turn_end", "faction"]
-        self.unique = True
-
-
-class EVGeneric(Event):
-    """
-    Generic event for test
     """
 
     def __init__(self, env, location):
