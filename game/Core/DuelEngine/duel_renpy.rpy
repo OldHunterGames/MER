@@ -1,16 +1,16 @@
 init 1 python:
     import sys
-    sys.path.append(renpy.loader.transfn("Core/FastFightEngine/scripts"))
+    sys.path.append(renpy.loader.transfn("Core/DuelEngine/scripts"))
     
 init 2 python:
-    from ffe_engine import *
+    from duel_engine import *
     
 label duel_start:
-    $ fight = FFEngine([FFCombatant(game.actor)], [FFCombatant(ffe_enemy)])
+    $ fight = DuelEngine([DuelCombatant(game.actor)], [DuelCombatant(duel_enemy)])
     $ fight.start()
     show expression "interface/bg_base.jpg" as bg
-    show screen ffe_battle
-    call ffe_user_turn
+    show screen duel_battle
+    call duel_user_turn
     return
 
 label duel_user_turn:    
@@ -25,15 +25,15 @@ label duel_turn_resolution:
 
 label duel_new_turn:
     "New Turn"
-    call ffe_user_turn
+    call duel_user_turn
     return
 
 label duel_defeat:
-    hide screen ffe_battle
+    hide screen duel_battle
     "Defeat"
     return
 
 label duel_victory:
-    hide screen ffe_battle
+    hide screen duel_battle
     "Victory"
     return  

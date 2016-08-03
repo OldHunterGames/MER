@@ -19,18 +19,18 @@ init python:
 # The game starts here.
 label start:
     $ discovered_worlds = []
-    $ game = MistsOfEternalRome()
+    $ core = MistsOfEternalRome()
     $ player = gen_random_person('human')
-    $ game.set_player(player)
-    $ game.protagonist.sparks = 250
-    $ meter = Meter(game.protagonist)
+    $ core.set_player(player)
+    $ core.protagonist.sparks = 250
+    $ meter = Meter(core.protagonist)
     $ ap = player.ap
     call evn_init
     call new_turn
     
 label choose_action:
     show expression "interface/bg_base.jpg" as bg
-    "You have [game.protagonist.sparks] sparks left. You need to pay [game.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
+    "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
     menu:
@@ -44,15 +44,15 @@ label choose_action:
                 else:
                     loc_to_call = world_to_go.point_of_arrival
         "Discover new world" if outer_worlds:
-            $ loc_to_call = game.discover_world(outer_worlds)
+            $ loc_to_call = core.discover_world(outer_worlds)
         "Relax":
             $ loc_to_call = "end_turn"
 
     return
 
 label end_turn:
-    $ game.end_turn_event()
-    $ game.new_turn()
+    $ core.end_turn_event()
+    $ core.new_turn()
     call new_turn
     return
     

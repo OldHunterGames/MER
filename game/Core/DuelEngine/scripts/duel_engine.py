@@ -1,7 +1,7 @@
 # -*- coding: <UTF-8> -*-
 from random import *
-from ffe_data import *
-from ffe_actions import *
+from duel_data import *
+from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
 
@@ -103,7 +103,7 @@ class DuelEngine(object):
         return fight_status
 
     def actions_resolution(self, speed_rate):
-        summary = {"ally": FFEAction("ally actions"), "enemy": FFEAction("enemy actions")}
+        summary = {"ally": DuelAction("ally actions"), "enemy": DuelAction("enemy actions")}
         for side in summary:
             for action in self.action_pool[side]:
                 if action.speed_rate == speed_rate:
@@ -294,30 +294,30 @@ class DuelAction(object):
 
 combat_style_actions = {
     "chick": [
-        FFEAction("Confusion"),
-        FFEAction("Scratch"),
-        FFEAction("Bitch-slap"),
-        FFEAction("Bite"),
-        FFEAction("Cover in fear"),
-        FFEAction("Squawk"),
+        DuelAction("Confusion"),
+        DuelAction("Scratch"),
+        DuelAction("Bitch-slap"),
+        DuelAction("Bite"),
+        DuelAction("Cover in fear"),
+        DuelAction("Squawk"),
     ],
 
     "bully": [
-        FFEAction("Punch"),
-        FFEAction("Punch"),
-        FFEAction("Kick"),
-        FFEAction("Arm block"),
-        FFEAction("Bull-rush"),
-        FFEAction("Counterblow"),
+        DuelAction("Punch"),
+        DuelAction("Punch"),
+        DuelAction("Kick"),
+        DuelAction("Arm block"),
+        DuelAction("Bull-rush"),
+        DuelAction("Counterblow"),
         ],
 
     "tester": [
-        FFEAction("Punch"),
-        FFEAction("Punch"),
-        FFEAction("Arm block"),
-        FFEAction("Arm block"),
-        FFEAction("Piercing"),
-        FFEAction("Piercing"),
+        DuelAction("Punch"),
+        DuelAction("Punch"),
+        DuelAction("Arm block"),
+        DuelAction("Arm block"),
+        DuelAction("Piercing"),
+        DuelAction("Piercing"),
         ],
 }
 
