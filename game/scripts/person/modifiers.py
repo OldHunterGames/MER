@@ -2,9 +2,10 @@ import collections
 
 
 class Modifier(object):
-    def __init__(self, name, stats_dict, source, slot=None):
+    def __init__(self, name, attribute, value, source, slot=None):
         self.name = name
-        self.stats = stats_dict
+        self.attribute = attribute
+        self.value = value
         self.source = source
         self.slot = slot
     def description(self):
@@ -18,7 +19,7 @@ class ModifiersStorage(object):
         values = []
         slotted = collections.defaultdict(list)
         for mod in self._list:
-            if attribute in mod.stats.keys():
+            if attribute == mod.attribute:
                 if mod.slot == None:
                     values.append(mod)
                 else:
@@ -27,14 +28,14 @@ class ModifiersStorage(object):
             max_ = 0
             modifier = None
             for mod in list_:
-                if abs(mod.stats[attribute]) > abs(max_):
+                if abs(mod.value) > abs(max_):
                     modifier = mod
-                    max_ = mod.stats[attribute]
+                    max_ = mod.value
             values.append(mod)
         return values
     
     def count_modifiers_separate(self, attribute):
-        return [mod.stats[attribute] for mod in self.get_modifiers_separate(attribute)]
+        return [mod.value for mod in self.get_modifiers_separate(attribute)]
     
     def count_modifiers(self, attribute):
         list_ = self.count_modifiers_separate(attribute)
@@ -54,7 +55,10 @@ class ModifiersStorage(object):
 
 
     def add_modifier(self, name, stats_dict, source, slot=None):
-        self._list.append(Modifier(name, stats_dict, source, slot))
+        for key in stats_dict:
+            attribute = key
+            value = stats_dict[key]
+            self._list.append((Modifier(name, attribute, value, source, slot)))
 
 
     def get_modifier(self, name):

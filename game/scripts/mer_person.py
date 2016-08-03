@@ -252,23 +252,30 @@ class Person(object):
         return l
     def add_modifier(self, name, stats_dict, source, slot=None):
         self.modifiers.add_modifier(name, stats_dict, source, slot)
+
+    def get_buff_storage(self):
+        return self._buffs
     
 
     def add_buff(self, name, stats_dict, slot, time=1):
         self.remove_buff(name)
-        self._buffs.append(Buff(self, name, stats_dict, slot, time))
+        Buff(self, name, stats_dict, slot, time)
 
 
     def remove_buff(self, name):
         for buff in self._buffs:
             if buff.name == name:
-                self._buffs.remove(buff)
+                buff.remove()
 
     def has_buff(self, name):
         for buff in self._buffs:
             if buff.name == name:
                 return True
         return False
+
+    def tick_buffs_time(self):
+        for buff in self._buffs:
+            buff.tick_time()
 
     def count_modifiers(self, key):
         val = self.__dict__['modifiers'].count_modifiers(key)
