@@ -88,7 +88,7 @@ class FSECombatant(object):
         self.skills = person.skills
         self.arousal = 0
         self.arousal_threshold = 10
-        self.potential_size = person.attribute("spirit")
+        self.potential_size = person.spirit
         self.reserve = []
         self.potential = []
         self.discard = []

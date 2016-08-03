@@ -16,8 +16,7 @@ from stance import Stance
 from genus import init_genus, available_genuses
 from alignment import Alignment
 from modifiers import ModifiersStorage
-from factions import Faction
-from buffs import Buff
+
 
 def get_avatars():
     all_ = renpy.list_files()
@@ -47,6 +46,31 @@ def gen_random_person(genus=None):
     p.random_features()
     p.random_skills()
     return p
+class Fraction(object):
+    def __init__(self, name):
+        self.name = name
+        self.owner = None
+        self.members = []
+        self.event_type = 'fraction'
+    def set_owner(self, owner):
+        self.owner = owner
+        self.add_member(owner)
+
+    def add_member(self, person):
+        if person not in self.members:
+            self.members.append(person)
+
+    def remove_member(self, person):
+        for i in self.members:
+            if person == i:
+                self.members.remove(person)
+            if person == self.owner:
+                self.owner = None
+
+    def is_member(self, person):
+        if person in self.members:
+            return True
+        return False
 
 
 class Person(object):
@@ -78,7 +102,6 @@ class Person(object):
 
 
         self.allowance = 0         # Sparks spend each turn on a lifestyle
-        self.sparks = 0
         self.ration = {
             "amount": 'unlimited',   # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
             "food_type": "cousine",   # 'forage', 'sperm', 'dry', 'canned', 'cousine'
@@ -86,6 +109,7 @@ class Person(object):
             "limit": 0,             # maximum resources spend to feed character each turn
             "overfeed": 0,
         }
+        self.accommodation = 'makeshift'
         self.skills = []
         self.specialized_skill = None
         self.focused_skill = None
@@ -123,7 +147,6 @@ class Person(object):
         self.add_feature(age)
         self.add_feature(gender)
         self.set_avatar()
-        self._buffs = []
         persons_list.append(self)
     
 
@@ -253,22 +276,6 @@ class Person(object):
     def add_modifier(self, name, stats_dict, source, slot=None):
         self.modifiers.add_modifier(name, stats_dict, source, slot)
     
-
-    def add_buff(self, name, stats_dict, slot, time=1):
-        self.remove_buff(name)
-        self._buffs.append(Buff(self, name, stats_dict, slot, time))
-
-
-    def remove_buff(self, name):
-        for buff in self._buffs:
-            if buff.name == name:
-                self._buffs.remove(buff)
-
-    def has_buff(self, name):
-        for buff in self._buffs:
-            if buff.name == name:
-                return True
-        return False
 
     def count_modifiers(self, key):
         val = self.__dict__['modifiers'].count_modifiers(key)
@@ -915,7 +922,7 @@ class Person(object):
     def relations(self, person):
         if person==self:
             raise Exception("relations: target and caller is same person")
-        if isinstance(person, Faction):
+        if isinstance(person, Fraction):
             return self.relations(person.owner)
         if not self.know_person(person):
             relations = self._set_relations(person)
@@ -936,7 +943,7 @@ class Person(object):
     def stance(self, person):
         if person==self:
             raise Exception("stance: target and caller is same person")
-        if isinstance(person, Faction):
+        if isinstance(person, Fraction):
             return self.stance(person.owner)
         elif not self.know_person(person):
             self._set_relations(person)

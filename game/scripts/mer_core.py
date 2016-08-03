@@ -1,86 +1,192 @@
 # -*- coding: <UTF-8> -*-
 __author__ = 'OldHuntsman'
 from random import *
+
 import renpy.store as store
 import renpy.exports as renpy
 
+from mer_resources import Resources
+from factions import Faction
 
 class MistsOfEternalRome(object):
     """
     This is the engine of MER core module
     """
 
-    def __init__(self, protagonist):
-        self.protagonist = protagonist  # Our main hero
-        self.actor = protagonist        # Our active character, hero by default but maybe someone else!
+    def __init__(self):
+        self._player = None  # Our main hero
+        self._actor = None       # Our active character, hero by default but maybe someone else!
         self.decade = 1                 # The number of decades (turns) passed in ERome
         self.score = 0                  # Number of happiness points player scored through the game
         self.events_seen = []           # Unique events seen by player in this game instance
         self.event_list = []            # List of all possible events in this game instance
         self.menues = []                # For custom RenPy menu screen
+        self.evn_skipcheck = True
+        self.resources = Resources()
+        self.fractions = []
         self.current_world = "MER"
 
-    def end_turn_event(self):
-        return choice(self.possible_events("turn_end")).trigger()
+    def add_fraction(self, name, owner):
+        f = Faction(name)
+        f.set_owner(owner)
+        self.fractions.append(f)
+        return f
 
-    def end_turn(self):
-        self.decade += 1
-        self.add_score_points()
-        self.protagonist.rest()
-        if self.protagonist.sparks < 0:
-            return "game_over"
+
+    def get_fraction(self, name):
+        for i in self.fractions:
+            if i.name == name:
+                return i
+        raise Exception("No faction with name: %s"%(name))
+    @property
+    def protagonist(self):
+        return self._player
+    @property
+    def player(self):
+        if not self._player:
+            raise Exception("Player person is not selected")
+        return self._player
+    
+    @property
+    def actor(self):
+        return self._actor
+    
+    def set_player(self, person):
+        self._player = person
+        self._actor = person
+        person.player_controlled = True
+    
+    def set_actor(self, person):
+        self._actor = person
+    
+    
+    
+    def can_skip_turn(self):
+        money = self.resources.consumption('money')
+        for res in self.resources.resources.keys():
+                if not self.resources.can_consume(res) and not self.resource.has_money(self.resources.res_to_money(res)):
+                    return False
+                else:
+                    money += self.resources.res_to_money(res)
+        if self.resources.has_money(money):
+            return True
         else:
-            return "new_turn"
+            return False
+
+
+    
+    def choose_study(self):
+        if self.studies:
+            study = choice(self.studies)
+        else:
+            study = False
+
+        return study
+
+    def new_turn(self, label_to_jump=None):
+        self.resources.consume()
+        self.child.rest()
+        self.mother.rest()
+        self.batya.rest()
+        self.resources.consumption_tick()
+        self.time += 1
+        self.player.ap = 1
+
+
+
+    def end_turn_event(self, skipcheck=True):
+        shuffle(self.events_list)
+        possible = self.events_list
+        char = choice(self.characters)
+        for ev in possible:
+            r = ev.trigger(char, skipcheck)
+            if r:
+                return  
+
+
+
+    def suggestion(self, target, power):
+        if power > target.suggestion_check():
+            return True
+        return False
+
+    
+
+    def token_difficulty(self, target, token, *args):
+        d = {'conquest': 'spirit', 'convention': 'mind', 'contribution': 'sensitivity'}
+
+        check = getattr(target, d[token])
+        if target.vitality < 1:
+            check -= 1
+        if target.mood < 0:
+            check -= 1
+        check += (3-get_max_need(target, *args)[0])
+        check -= target.stance(self.player).value
+        harmony = target.relations(self.player).harmony()[0]
+        if harmony > 0:
+            check -= harmony
+        if check < 0:
+            check = 0
+        return check
+
+    def threshold_skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
+                            morality=0, success_threshold=0, special_motivators=[]):
+        success_threshold += 1
+        result = self.skillcheck(actor, skill, difficulty, tense_needs, satisfy_needs, beneficiar, morality, special_motivators, success_threshold)
+        if success_threshold <= result:
+            threshold_result = True
+        else:
+            threshold_result = False
+        return threshold_result, result
+
+
+    def skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
+                    morality=0, special_motivators=[], threshold=None):
+        skill = actor.skill(skill)
+        motivation = actor.motivation(skill, tense_needs, satisfy_needs, beneficiar)
+        # factors['attraction'] and equipment bonuses not implemented yet
+        factors = {'level': 1+skill.level,
+                    skill.attribute: skill.attribute_value(),
+                    'focus': skill.focus,
+                    'mood': actor.mood,
+                    'motivation': motivation,
+                    'vitality': actor.vitality,
+                    'bonus': actor.count_modifiers(skill.name)}
+        result = 1+skill.level
+        used = []
+        found = False
+        while result != 0:
+            difficulty_check = 1
+            used = []
+            for k, v in factors.items():
+                if difficulty < difficulty_check:
+                    found = True
+                elif k != 'level' and v >= result:
+                    difficulty_check += 1
+                    used.append(k)
+            if difficulty < difficulty_check:
+                found = True
+            if not found:
+                result -= 1
+            else:
+                break
+        if motivation < 1:
+            result = -1
+        renpy.call_in_new_context('lbl_skillcheck_info', result, factors, skill, used, threshold, difficulty)
+        if result >= 0:
+            for need in tense_needs:
+                getattr(actor, need).set_tension()
+            for need in satisfy_needs:
+                getattr(actor, need).satisfaction = result
+            actor.use_skill(skill)
+            if actor == self.player and beneficiar == actor.master:
+                if result > actor.merit:
+                    actor.merit = result
+            actor.moral_action(morality)
+        return result
 
     def discover_world(self, worlds):
         return choice(worlds)().point_of_arrival
-
-    def add_score_points(self):
-        if self.protagonist.mood() == "depressed":
-            self.score += 1
-        elif self.protagonist.mood() == "normal":
-            self.score += 3
-        elif self.protagonist.mood() == "content":
-            self.score += 5
-        elif self.protagonist.mood() == "happy":
-            self.score += 10
-
-    def possible_events(self, kind, who = None):
-        """
-        :param kind:
-        "turn" - end-of-turn event
-        "char" - event with one of player faction main characters
-        "faction" - event for one of active factions beside player faction
-
-        :return: the RenPu location with the choosen event
-        """
-        list_of_events = []
-        for event in self.event_list:
-            if event.check():
-                if kind in event.natures:
-                        list_of_events.append(event)
-
-        return list_of_events
-
-    def get_score(self):
-        total = self.score / self.decade
-        if total > 9:
-            result = "CHEATER!"
-        elif total > 7:
-            result = "S+"
-        elif total > 5:
-            result = "A"
-        elif total > 4:
-            result = "B"
-        elif total > 3:
-            result = "C"
-        elif total > 1:
-            result = "D-"
-        else:
-            result = "miserable"
-
-        return result
-
 
 
 

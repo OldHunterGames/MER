@@ -1,43 +1,79 @@
 # -*- coding: <UTF-8> -*-
-__author__ = 'OldHuntsman'
-import sys
-import inspect
-from random import *
 import renpy.store as store
 import renpy.exports as renpy
+from copy import copy
+
+events_list = []
+
+def register_event(location, *args, **kwargs):
+    event = Event( location, location)
+    for key in kwargs.keys():
+        if key == 'tags':
+            event.tags = kwargs['tags']
+        if key == 'unique':
+            event.unique = kwargs['unique']
+        if key == 'restrictions':
+            event.restrictions = kwargs['restrictions']
+    events_list.append(event)
+
+def get_event(name):
+    for event in events_list:
+        if event.name == name:
+            return event
 
 
+def registration_check():
+    l = renpy.get_all_labels()
+    ll = []
+    for label in l:
+        if label.split('_')[0] == 'evn':
+            ll.append(label)
+    names = [event.name for event in events_list]
+    bad = []
+    for name in ll:
+        if name not in names:
+            bad.append(name)
+    if len(bad) > 0:
+        txt = ""
+        for name in bad:
+            txt += "label for event(%s) is created, but not registered\n"%(name)
+        raise Exception(txt)
 class Event(object):
 
-    def __init__(self, env):
-        self.env = env              # Enviroment. Instance of current game engive instance
-        self.goto = "evn_blank"     # RenPy location to start an event
-        self.natures = []           # "triggered", "turn_end", "faction", "personal", "special"
+    def __init__(self, name, location):
+        self.name = name
+        self.goto = location     # RenPy location to start an event
         self.tags = []              # tags for filtering "gay", "lolicon", "bestiality", "futanari" etc
+        self.restrictions = None
         self.unique = False         # Unique events shown once in a game instance
         self.seen = 0               # Number of times this event seen
-        self.world = None           # None if event is not world related, else set world
+        self.skipcheck = False
+        self.target = None
 
-    def trigger(self):
+    def trigger(self, target=None, skipcheck=False):
         """
         On event activation
         """
-        self.seen += 1
-        return self.goto
+        if self.seen > 0 and self.unique:
+            return False
+        self.skipcheck = skipcheck
+        self.target = target
+        if self.restrictions == 'player':
+            try:
+                if not target.player_controlled:
+                    return False
+            except AttributeError:
+                return False
+        elif self.restrictions != None and self.restrictions != target.event_type:
+            return False
+        result = renpy.call_in_new_context(self.goto, self)
+        if result:
+            self.seen += 1
+        self.skipcheck = False
+        self.target = None
+        return result
 
-    def check(self):
-        """
-        Check out of this event can be triggered in a particular situation
-        :return: if True - event is available, else - is not
-        """
-        check = True
-        if self.unique == True and self.seen > 0:
-            check = False
-        if self.world:
-            if self.world != env.current_world:
-                check = False
-        
-        return check
+
 
 
 
@@ -47,10 +83,9 @@ class EVUnique(Event):
     Unique event for test
     """
 
-    def __init__(self, env):
-        super(EVUnique, self).__init__(env)
+    def __init__(self, env, location):
+        super(EVUnique, self).__init__(env, location)
         self.natures = ["triggered", "turn_end", "faction"]
-        self.goto = "evn_unic"
         self.unique = True
 
 
@@ -59,16 +94,9 @@ class EVGeneric(Event):
     Generic event for test
     """
 
-    def __init__(self, env):
-        super(EVGeneric, self).__init__(env)
-        self.goto = "evn_1"
+    def __init__(self, env, location):
+        super(EVGeneric, self).__init__(env, location)
         self.natures = ["triggered", "turn_end", "faction"]
-
-
-
-
-
-
 
 
 

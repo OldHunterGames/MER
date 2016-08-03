@@ -10,7 +10,7 @@ class Meter(object):
     def __init__(self, owner):
         self.name = ""
         self.owner = owner
-        self.lng = 3 + owner.attribute("spirit")
+        self.lng = 3 + owner.spirit
         self.bar = []
         for i in range(self.lng):
             self.bar.append(0)
