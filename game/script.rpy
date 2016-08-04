@@ -30,8 +30,8 @@ label start:
     $ ap = player.ap
     show expression "interface/bg_base.jpg" as bg
     call evn_init
-    # call lbl_edge_main
-    call new_turn
+    call lbl_edge_main
+    # call new_turn
     
     return
     
