@@ -23,7 +23,7 @@ def get_avatars():
     all_ = renpy.list_files()
     avas = [str_ for str_ in all_ if str_.startswith('images/avatar')]
     return avas
-persons_list = []
+
 
 
 def gen_random_person(genus=None):
@@ -48,7 +48,7 @@ def gen_random_person(genus=None):
     p.random_skills()
     return p
 
-
+persons_list = []
 class Person(object):
 
     def __init__(self, age=None, gender=None, genus='human'):
@@ -125,8 +125,11 @@ class Person(object):
         self.set_avatar()
         self._buffs = []
         persons_list.append(self)
+        self.items = []
     
-
+    def add_item(self, item):
+        self.items.append(item)
+        
     def set_avatar(self):
         path = 'images/avatar/'
         path += self.genus.head_type + '/'

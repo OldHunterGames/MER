@@ -11,6 +11,7 @@ from mer_person import *
 from mer_event import events_list
 from mer_resources import Resources
 from factions import Faction
+from mer_item import *
 
 
 remembered_needs = collections.defaultdict(list)
