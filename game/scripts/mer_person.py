@@ -358,7 +358,7 @@ class Person(object):
         else:
             return job.name
     @property
-    def accomodation(self):
+    def accommodation(self):
         accomodation = self.schedule.find_by_slot('accomodation')
         if accomodation == None:
             raise Exception('Person %s do not have accomodation')
