@@ -25,11 +25,13 @@ label start:
     $ core.protagonist.sparks = 250
     $ meter = Meter(core.protagonist)
     $ ap = player.ap
+    show expression "interface/bg_base.jpg" as bg
     call evn_init
-    call new_turn
+    call lbl_edge_main
+    
+    return
     
 label choose_action:
-    show expression "interface/bg_base.jpg" as bg
     "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
