@@ -7,6 +7,7 @@ class Item(object):
     type_ = 'item'
     def __init__(self, data_dict=None, *args, **kwargs):
         self.data = data_dict
+        self.equiped = False
     @property
     def quality(self):
         return self.data['quality']
@@ -16,6 +17,10 @@ class Item(object):
     @property
     def type(self):
         return self.type_
+    def equip(self):
+        self.equiped = True
+    def unequip(self):
+        self.equiped = False
 
 class Weapon(Item):
     type_ = 'weapon'
