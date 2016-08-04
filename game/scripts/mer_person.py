@@ -135,6 +135,14 @@ class Person(object):
     @property
     def other_hand(self):
         return self._other_hand
+    def has_shild(self):
+        if self.main_hand != None:
+            if self.main_hand.type == 'shield':
+                return True
+        if self.other_hand != None:
+            if self.other_hand.type == 'shild':
+                return True
+        return False
     def equip_weapon(self, weapon, hand='main_hand'):
         other = "_other_hand" if hand=='main_hand' else '_main_hand'
         other_weapon = getattr(self, other)
@@ -349,6 +357,12 @@ class Person(object):
             return 'idle'
         else:
             return job.name
+    @property
+    def accomodation(self):
+        accomodation = self.schedule.find_by_slot('accomodation')
+        if accomodation == None:
+            raise Exception('Person %s do not have accomodation')
+        return accomodation.name
     @property
     def minor(self):
         minor = self.schedule.find_by_slot('minor')
