@@ -72,12 +72,14 @@ class MistsOfEternalRome(object):
         self.decade = 1                 # The number of decades (turns) passed in ERome
         self.score = 0                  # Number of happiness points player scored through the game
         self.events_seen = []           # Unique events seen by player in this game instance
-        self.event_list = []            # List of all possible events in this game instance
+        self.events_list = events_list  # List of all possible events in this game instance
         self.menues = []                # For custom RenPy menu screen
         self.evn_skipcheck = True
         self.resources = Resources()
         self.fractions = []
         self.current_world = "MER"
+        self.characters = persons_list
+        self.time = 0
 
     def add_fraction(self, name, owner):
         f = Faction(name)
@@ -138,9 +140,8 @@ class MistsOfEternalRome(object):
 
     def new_turn(self, label_to_jump=None):
         self.resources.consume()
-        self.child.rest()
-        self.mother.rest()
-        self.batya.rest()
+        for person in self.characters:
+            person.rest()
         self.resources.consumption_tick()
         self.time += 1
         self.player.ap = 1

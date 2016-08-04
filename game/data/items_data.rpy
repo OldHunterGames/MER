@@ -4,4 +4,4 @@ init python:
             'simple_dagger':{'name': __('simple_dagger'), 'size': 'small', 'damage_type': 'piercing', 'quality': 1}
             },
             'armor': 
-            {'bad_plate': {'name': __('bad_plate'), 'armor_type': 'heavy', 'quality': 1}}}
+            {'bad_plate': {'name': __('bad_plate'), 'protection_type': 'heavy', 'quality': 1}}}

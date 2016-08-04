@@ -4,6 +4,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 class Item(object):
+    type_ = 'item'
     def __init__(self, data_dict=None, *args, **kwargs):
         self.data = data_dict
     @property
@@ -12,8 +13,12 @@ class Item(object):
     @property
     def name(self):
         return self.data['name']
+    @property
+    def type(self):
+        return self.type_
 
 class Weapon(Item):
+    type_ = 'weapon'
     @property
     def size(self):
         return self.data['size']
@@ -22,9 +27,10 @@ class Weapon(Item):
         return self.data['damage_type']
 
 class Armor(Item):
+    type_ = 'armor'
     @property
-    def type(self):
-        return self.data['armor_type']
+    def protection_type(self):
+        return self.data['protection_type']
 
 def gen_item(item_type, item_id):
     if item_type == 'weapon':

@@ -126,10 +126,25 @@ class Person(object):
         self._buffs = []
         persons_list.append(self)
         self.items = []
+        self.left_hand = None
+        self.right_hand = None
+        self.armor = None
     
     def add_item(self, item):
         self.items.append(item)
-        
+
+    def equip_item(self, item, slot):
+        current = getattr(self, slot)
+        if current == item:
+            return
+        elif current != None:
+            self.add_item(current)
+        if item == None:
+            setattr(self, slot, item)
+        elif item in self.items:
+            self.items.remove(item)
+            setattr(self, slot, item)
+
     def set_avatar(self):
         path = 'images/avatar/'
         path += self.genus.head_type + '/'
@@ -619,7 +634,8 @@ class Person(object):
         dlen = len(dissapointment)
         happines.sort()
         dissapointment.sort()
-        renpy.call_in_new_context('mood_recalc_result', dissapointments_inf, satisfactions_inf, determination, anxiety, True, self)
+        if renpy.has_label('mood_recalc_result'):
+            renpy.call_in_new_context('mood_recalc_result', dissapointments_inf, satisfactions_inf, determination, anxiety, True, self)
         if hlen > dlen:
             dissapointment = []
             for i in range(dlen):
@@ -761,7 +777,7 @@ class Person(object):
             need.reset()
     def rest(self):
         self.conditions = []
-        self.modifiers.tick_time()
+        self.tick_buffs_time()
         self.tick_features()
         self.schedule.use_actions()
         self.fatness_change()

@@ -21,13 +21,17 @@ label start:
     $ discovered_worlds = []
     $ core = MistsOfEternalRome()
     $ player = gen_random_person('human')
+    $ player.add_item(gen_item('weapon', 'simple_axe'))
+    $ player.add_item(gen_item('armor', 'bad_plate'))
+    $ player.add_item(gen_item('weapon', 'simple_dagger'))
     $ core.set_player(player)
     $ core.protagonist.sparks = 250
     $ meter = Meter(core.protagonist)
     $ ap = player.ap
     show expression "interface/bg_base.jpg" as bg
     call evn_init
-    call lbl_edge_main
+    # call lbl_edge_main
+    call new_turn
     
     return
     
@@ -47,11 +51,36 @@ label choose_action:
                     loc_to_call = world_to_go.point_of_arrival
         "Discover new world" if outer_worlds:
             $ loc_to_call = core.discover_world(outer_worlds)
+        "Equip":
+           call choose_item
         "Relax":
             $ loc_to_call = "end_turn"
-
-    return
-
+        "finish":
+            jump end_turn
+    jump choose_action
+label choose_item:
+    python:
+        if player.left_hand != None:
+            left_hand = player.left_hand.name
+        else:
+            left_hand = 'Nothing'
+        if player.right_hand != None:
+            right_hand = player.right_hand.name
+        else:
+            right_hand = 'Nothing'
+        if player.armor != None:
+            armor = player.armor.name
+        else:
+            armor = 'Nothing'
+    menu:
+        'left hand: [left_hand]':
+            call screen sc_choose_item(player, 'weapon', 'left_hand')
+        'right hand: [right_hand]':
+            call screen sc_choose_item(player, 'weapon', 'right_hand')
+        'armor: [armor]':
+            call screen sc_choose_item(player, 'armor', 'armor')
+        'finish':
+            return
 label end_turn:
     $ core.end_turn_event()
     $ core.new_turn()
@@ -65,3 +94,12 @@ label new_turn:
 label game_over:
     "Game Over!"
     $ renpy.full_restart()
+
+screen sc_choose_item(person, item_type, slot):
+    python:
+        item_list = [item for item in person.items if item.type == item_type]
+    vbox:
+        for i in item_list:
+            textbutton i.name action [Function(person.equip_item, i, slot), Jump('choose_item')]
+        textbutton 'disarm' action [Function(person.equip_item, None, slot), Jump('choose_item')]
+

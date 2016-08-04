@@ -90,7 +90,7 @@ class Resources(object):
             return False
     
 
-    def res_consume(self):
+    def consume(self):
         for res in self.resources.keys():
             if self.can_consume(res):
                 self.resources[res] -= self.consumption(res)
