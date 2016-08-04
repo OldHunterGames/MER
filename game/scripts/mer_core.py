@@ -8,7 +8,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_person import *
-from events import events_list
+from mer_event import events_list
 from mer_resources import Resources
 from factions import Faction
 
