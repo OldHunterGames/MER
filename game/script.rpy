@@ -60,23 +60,23 @@ label choose_action:
     jump choose_action
 label choose_item:
     python:
-        if player.left_hand != None:
-            left_hand = player.left_hand.name
+        if player.main_hand != None:
+            main_hand = player.main_hand.name
         else:
-            left_hand = 'Nothing'
-        if player.right_hand != None:
-            right_hand = player.right_hand.name
+            main_hand = 'Nothing'
+        if player.other_hand != None:
+            other_hand = player.other_hand.name
         else:
-            right_hand = 'Nothing'
+            other_hand = 'Nothing'
         if player.armor != None:
             armor = player.armor.name
         else:
             armor = 'Nothing'
     menu:
-        'left hand: [left_hand]':
-            call screen sc_choose_item(player, 'weapon', 'left_hand')
-        'right hand: [right_hand]':
-            call screen sc_choose_item(player, 'weapon', 'right_hand')
+        'main hand: [main_hand]':
+            call screen sc_choose_item(player, 'weapon', 'main_hand')
+        'other hand: [other_hand]':
+            call screen sc_choose_item(player, 'weapon', 'other_hand')
         'armor: [armor]':
             call screen sc_choose_item(player, 'armor', 'armor')
         'finish':
@@ -97,7 +97,7 @@ label game_over:
 
 screen sc_choose_item(person, item_type, slot):
     python:
-        item_list = [item for item in person.items if item.type == item_type]
+        item_list = [item for item in person.items if item.type == item_type and not item.equiped]
     vbox:
         for i in item_list:
             textbutton i.name action [Function(person.equip_item, i, slot), Jump('choose_item')]

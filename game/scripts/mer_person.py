@@ -126,10 +126,40 @@ class Person(object):
         self._buffs = []
         persons_list.append(self)
         self.items = []
-        self.left_hand = None
-        self.right_hand = None
+        self._main_hand = None
+        self._other_hand = None
         self.armor = None
-    
+    @property
+    def main_hand(self):
+        return self._main_hand
+    @property
+    def other_hand(self):
+        return self._other_hand
+    def equip_weapon(self, weapon, hand='main_hand'):
+        other = "_other_hand" if hand=='main_hand' else '_main_hand'
+        other_weapon = getattr(self, other)
+        if weapon.size == 'twohanded':
+            setattr(self, other, weapon)
+            if other_weapon != None:
+                other_weapon.unequip()
+        else:
+            if other_weapon != None:
+                if other_weapon.size == 'twohanded':
+                    other_weapon.unequip()
+                    setattr(self, other, None)
+        setattr(self, '_%s'%(hand), weapon)
+        weapon.equip()
+    def disarm_weapon(self, hand='main_hand'):
+        other = "_other_hand" if hand=='main_hand' else '_main_hand'
+        other_weapon = getattr(self, other)
+        main = getattr(self, "_%s"%(hand))
+        if other_weapon != None:
+            if other_weapon.size == 'twohanded':
+                other_weapon.unequip()
+                setattr(self, other, None)
+        if main != None:
+            main.unequip()
+        setattr(self, "_%s"%(hand), None)
     def add_item(self, item):
         self.items.append(item)
 
@@ -137,13 +167,19 @@ class Person(object):
         current = getattr(self, slot)
         if current == item:
             return
-        elif current != None:
-            self.add_item(current)
         if item == None:
-            setattr(self, slot, item)
+            if slot == 'main_hand' or slot == 'other_hand':
+                self.disarm_weapon(slot)
+            else:
+                setattr(self, slot, None)
         elif item in self.items:
-            self.items.remove(item)
-            setattr(self, slot, item)
+            if item.type == 'weapon':
+                self.equip_weapon(item, slot)
+            else:
+                item.equip()
+                if current != None:
+                    current.unequip()
+                setattr(self, slot, item)
 
     def set_avatar(self):
         path = 'images/avatar/'
