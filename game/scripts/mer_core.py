@@ -8,6 +8,54 @@ import renpy.exports as renpy
 from mer_resources import Resources
 from factions import Faction
 
+
+remembered_needs = collections.defaultdict(list)
+
+class UsedNeeds(object):
+    def __init__(self, needs, owner):
+        self.needs = copy(needs)
+        self.owner = owner
+
+    def is_used(self, needs, target):
+        if target != self.owner:
+            return True
+        for need in needs:
+            if need not in self.needs:
+                return False
+        return True
+
+def remember_needs(target, token, needs):
+    if not is_needs_used(target, token, needs):
+        remembered_needs[token].append(UsedNeeds(needs, target))
+    
+
+def is_needs_used(target, token, needs):
+    for used in remembered_needs[token]:
+        if used.is_used(needs, target):
+            return True
+    return False
+
+def get_max_need(target, *args):
+    maxn_name = None
+    maxn = 0
+    needs = target.get_needs()
+    for arg in args:
+        if arg in needs.keys():
+            level = needs[arg].level
+            if level > maxn:
+                maxn = level
+                maxn_name = arg
+    return maxn, maxn_name
+
+def encolor_text(text, value):
+    if value < 0:
+        value = 0
+    if value > 6:
+        value = 6
+    colors = ['ff0000', 'ff00ff', '00ffff', '0000FF', '00ff00', 'DAA520', '000000']
+    return '{b}{color=#%s}%s{/color}{/b}'%(colors[value], text)
+
+
 class MistsOfEternalRome(object):
     """
     This is the engine of MER core module
