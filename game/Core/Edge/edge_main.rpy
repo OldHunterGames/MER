@@ -3,9 +3,10 @@
 #
 # Main script for EOM core module
 
-
 label lbl_edge_main:
-    'The Mist gives you a way...'    
+    'The Mist gives you a way...'  
+    $ edge = EdgeEngine()
+    
     call lbl_edge_manage
     return
     
