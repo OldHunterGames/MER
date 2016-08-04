@@ -1,10 +1,14 @@
 # -*- coding: <UTF-8> -*-
 __author__ = 'OldHuntsman'
 from random import *
+import collections
+import copy
 
 import renpy.store as store
 import renpy.exports as renpy
 
+from obj_character import *
+from events import events_list
 from mer_resources import Resources
 from factions import Faction
 
