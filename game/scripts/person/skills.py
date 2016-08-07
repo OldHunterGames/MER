@@ -5,6 +5,7 @@ skills_data = {
     'sport': 'physique',
     'sex': 'sensitivity',
     'conversation': 'spirit',
+    'combat': 'physique'
 }
 
 

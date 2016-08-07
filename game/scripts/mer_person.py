@@ -135,7 +135,7 @@ class Person(object):
     @property
     def other_hand(self):
         return self._other_hand
-    def has_shild(self):
+    def has_shield(self):
         if self.main_hand != None:
             if self.main_hand.type == 'shield':
                 return True
@@ -215,7 +215,7 @@ class Person(object):
                     self.hair_color = hair_color
             self.avatar_path = avatar
         except IndexError:
-            self.avatar_path = 'images/avatar/none.jpg'
+            self.avatar_path = 'characters/none.jpg'
 
     def randomise(self, gender='female', age='adolescent'):
         self.add_feature(gender)
@@ -583,7 +583,7 @@ class Person(object):
         for key, value in self.tokens_difficulty.items():
             s += "{0}({1}), ".format(key, value)
         return s
-
+    @property
     def name(self):
         s = self.firstname + " " + self.surname
         return s

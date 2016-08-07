@@ -30,8 +30,8 @@ label start:
     $ ap = player.ap
     show expression "interface/bg_base.jpg" as bg
     call evn_init
-    call lbl_edge_main
-    # call new_turn
+    # call lbl_edge_main
+    call new_turn
     
     return
     
@@ -39,6 +39,16 @@ label choose_action:
     "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
+    $ com1 = DuelCombatant(player)
+    $ com1.hand.append(clinch)
+    $ com1.hand.append(hit_n_run)
+    $ com1.hand.append(rage)
+    $ testp = Person()
+    $ i = gen_item('armor', 'bad_plate')
+    $ testp.add_item(i)
+    $ testp.equip_item(i, 'armor')
+    $ com2 = DuelCombatant(testp)
+    $ fight = DuelEngine([com1], [com2], 'simple')
     menu:
         "Visit discovered world" if discovered_worlds:
             python:
@@ -55,6 +65,8 @@ label choose_action:
            call choose_item
         "Relax":
             $ loc_to_call = "end_turn"
+        'test_fight':
+            $ fight.start()
         "finish":
             jump end_turn
     jump choose_action
