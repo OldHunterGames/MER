@@ -15,6 +15,7 @@ init -10 python:
 init python:
     outer_worlds = []
     renpy.block_rollback()
+    register_actions()
 
 # The game starts here.
 label start:
