@@ -6,7 +6,7 @@
  
 # !!!!!! REGISTER EACH EVENT HERE !!!!
 label init_events:
-    $ register_event('evn_blank')
+    $ register_event('evn_edge_mistadvance')
     
     return True
     
@@ -33,3 +33,16 @@ label evn_edge_template(event):
         
     #тело эвента
     return True
+    
+############## NO CHARACTER EVENTS ##################
+
+label evn_edge_mistadvance(event):
+    if len(edge.locations) = 0:
+        $ event.skipcheck = False 
+        
+    $ poped = edge.locations.pop()
+    'Mists take over [poped] location'
+    return
+    
+    
+    

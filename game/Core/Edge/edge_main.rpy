@@ -13,6 +13,7 @@ label lbl_edge_main:
     python:
         edge = EdgeEngine()
         edge.locations = []
+        edge.loc_max = 2 + player.agility
         core.set_world('edge')
         house = choice([__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus')])
         player.schedule.add_action('accommodation_makeshift', False)
@@ -27,12 +28,44 @@ label lbl_edge_manage:
             call lbl_edge_noloc
         'Shifting Mist':
             call lbl_edge_noloc
+        'Grim battlefield' if 'grim battlefield' in edge.locations:
+            call lbl_edge_noloc
+        'Crimson pit' if 'crimson pit' in edge.locations:
+            call lbl_edge_noloc
+        'Junk yard' if 'junk yard' in edge.locations:
+            call lbl_edge_noloc
+        'Ruined factory' if 'ruined factory' in edge.locations:
+            call lbl_edge_noloc
+        'Dying grove' if 'dying grove' in edge.locations:
+            call lbl_edge_noloc
+        'Hazy marsh' if 'hazy marsh' in edge.locations:
+            call lbl_edge_noloc
+        'Echoing hills' if 'echong hills' in edge.locations:
+            call lbl_edge_noloc
+        'Outworld ruines' if 'outworld ruines' in edge.locations:
+            call lbl_edge_noloc
+        'Raiders encampment' if 'raiders encampment' in edge.locations:
+            call lbl_edge_noloc
+        'House [house] charity mission' if 'charity mission' in edge.locations:
+            call lbl_edge_noloc
+        'Scout new location' if len(edge.locations) < edge.loc_max:
+            call lbl_edge_scout
         'Information':
             call lbl_edge_info_base
         'Carry on':
             call lbl_edge_turn
     
     jump lbl_edge_manage
+    return
+
+label lbl_edge_scout:
+    python:
+        scouted = choice(edge_locations)
+        if scouted in edge.locations:
+            renpy.jump('lbl_edge_scout')
+        edge.locations.append(scouted)
+    
+    'Found [scouted] location.'
     return
 
 label lbl_edge_info_base:
@@ -50,6 +83,7 @@ label lbl_edge_info_base:
 
 label lbl_edge_turn:
     'New turn'
+    $ core.new_turn()
     call lbl_edge_manage
     return
     
