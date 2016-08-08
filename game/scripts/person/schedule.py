@@ -56,12 +56,18 @@ class ScheduledAction(object):
 
 
 class Schedule(object):
+    _default_world = 'core'
+    _world = 'core'
     def __init__(self, person):
         self.actions = []
         self.owner = person
-    
-    def add_action(self, action, single=True, special_values=None, world='core'):
-        action = world + '_' + action
+    @classmethod
+    def set_world(cls, world):
+        cls._world = world
+    def add_action(self, action, single=True, special_values=None):
+        action = Schedule._world + '_' + action
+        if not renpy.has_label('shd_%s'%(action)):
+            action = Schedule._default_world + '_' + action
         if action in actions.keys():
 
             act = ScheduledAction(self.owner, actions[action][2], actions[action][0], actions[action][1], action, single, special_values)
