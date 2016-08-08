@@ -51,7 +51,7 @@ def init_points(combatant, enemy, situation):
         elif weapon.size == 'standart':
             if situation != 'enclosed' and any([i for i in enemy_weapons if i.size == 'small']) and enemy.combat_style != 'shieldbearer':
                 d['onslaught'].value += weapon.quality*2
-        elif weapon.size == 'twohanded' and not any([i for i in enemy_weapons in i.size == 'twohanded']):
+        elif weapon.size == 'twohanded' and not any([i for i in enemy_weapons if i.size == 'twohanded']):
             d['onslaught'].value += weapon.quality*3
         #damage_type bonuses
         if weapon.damage_type == 'slashing' and enemy.protection_type == 'unarmored' and enemy.creature_type == 'natural':
@@ -131,8 +131,8 @@ class DuelEngine(object):
         side = 'ally' if loosed_side == 'allies' else 'enemy'
         loser_str = 'current_%s'%(side)
         loser = getattr(self, loser_str)
-        self.current_ally.send_event('end_turn')
-        self.current_enemy.send_event('end_turn')
+        self.current_ally.send_event('end_round')
+        self.current_enemy.send_event('end_round')
         if self.type == 'solo':
             attr = '%s_loose_points'%(loosed_side)
             value = getattr(self, attr) + 1
@@ -167,8 +167,8 @@ class DuelEngine(object):
             self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
                             'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
             
-        self.current_ally.send_event('started')
-        self.current_enemy.send_event('started')
+        self.current_ally.send_event('round_started')
+        self.current_enemy.send_event('round_started')
 
     def start(self):
         self.start_new_round()
@@ -275,7 +275,7 @@ class DuelCombatant(object):
         if self.main_weapon != None:
             if self.main_weapon.type == 'weapon':
                 l.append(self.main_weapon)
-        if self.other_weapon != None:
+        if self.other_weapon != None and self.other_weapon != self.main_weapon:
             if self.other_weapon.type == 'weapon':
                 l.append(self.other_weapon)
         return l
@@ -296,7 +296,7 @@ class DuelCombatant(object):
         self.hand.remove(duel_action)
 
     def send_event(self, event):
-        if event == 'new_round':
+        if event == 'end_round':
             if self.combat_style == 'breter':
                 self.draw()
             elif self.combat_style == 'juggernaut':
@@ -308,7 +308,7 @@ class DuelCombatant(object):
         if event == 'loose':
             if self.combat_style == 'beast':
                 self.default_points['excellence'] += self.escalation
-        if event == 'started':
+        if event == 'roud_started':
             self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
 
             

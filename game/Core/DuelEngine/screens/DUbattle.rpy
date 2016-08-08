@@ -43,6 +43,8 @@ screen duel_battle(fight):
                 align (0.05, 0.1)
                 idle im.Scale(fight.current_ally.avatar, 200, 200)
                 hover im.MatrixColor(im.Scale(fight.current_ally.avatar, 200, 200), im.matrix.brightness(0.05))
+                hovered Show('sc_fighter_stats', fight=fight)
+                unhovered Hide('sc_fighter_stats')
                 action Return("show_your_role")
 
     fixed:
@@ -98,3 +100,18 @@ screen duel_battle(fight):
 label lbl_duel_battle_end(fight):
     "loosed side is [fight.loser]"
     return 
+
+
+screen sc_fighter_stats(fight):
+    python:
+        txt = ''
+        weapons = fight.current_ally.get_weapons()
+        for i in range(len(weapons)):
+            txt += encolor_text(weapons[i].name, weapons[i].quality)
+            if i != len(weapons)-1:
+                txt += ', '
+    frame:
+        align (0.01, 0.98)
+        xsize 200
+        ysize 320
+        text '[txt]'
