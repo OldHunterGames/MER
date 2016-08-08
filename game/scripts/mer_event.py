@@ -39,7 +39,7 @@ def registration_check():
             txt += "label for event(%s) is created, but not registered\n"%(name)
         raise Exception(txt)
 class Event(object):
-
+    _game_ref = None
     def __init__(self, name, location):
         self.name = name
         self.goto = location     # RenPy location to start an event
@@ -49,7 +49,9 @@ class Event(object):
         self.seen = 0               # Number of times this event seen
         self.skipcheck = False
         self.target = None
-
+    @classmethod
+    def set_game_ref(cls, game):
+        cls._game_ref = game
     def trigger(self, target=None, skipcheck=False):
         """
         On event activation
