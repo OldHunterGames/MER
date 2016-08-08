@@ -246,7 +246,7 @@ class DuelCombatant(object):
     def set_hand(self):
         if self.deck != None:
             self.deck.fight_started()
-            self.hand = deck.get_hand()
+            self.hand = self.deck.get_hand()
         else:
             raise Exception("set_hand called, but this combatant has no choosen deck yet")
     def shuffle_actions(self):
@@ -256,7 +256,13 @@ class DuelCombatant(object):
 
     def draw(self, number=1):
         # Drawing no more than we have at all
-        self.hand.append(self.deck.get_card(number))
+        while number > 0:
+            number -= 1
+            card = self.deck.get_card()
+            if card != None:
+                self.hand.append(self.deck.get_card())
+            else:
+                return
 
     def draw_from_drop(self, card):
         if card in self.drop:
@@ -314,6 +320,30 @@ class DuelCombatant(object):
 
             
 
+class Deck(object):
+    def __init__(self, cards_list):
+        self.cards_list = [card for card in cards_list]
+        self.current = None
+
+    def fight_started(self):
+        self.current = [card for card in self.cards_list]
+        shuffle(self.current)
+
+    def get_hand(self):
+        hand = []
+        for i in range(10):
+            try:
+                hand.append(self.current.pop())
+            except IndexError:
+                return hand
+        return hand
+
+    def get_card(self):
+        try:
+            card = self.current.pop()
+            return card
+        except IndexError:
+            return 
 
 
 class DuelAction(object):
