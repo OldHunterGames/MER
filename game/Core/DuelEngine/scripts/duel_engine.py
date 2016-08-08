@@ -121,6 +121,7 @@ class DuelEngine(object):
     def _end_fight(self, loosed_side):
         self.loser = loosed_side
         self.ended = True
+        renpy.call_in_new_context('lbl_duel_battle_end', self)
 
     def round_end(self, loosed_side=None):
         if loosed_side == None:
