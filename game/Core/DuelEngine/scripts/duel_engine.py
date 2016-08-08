@@ -350,9 +350,10 @@ class DuelAction(object):
     """
     This is a class for "action cards" to form a decks and use in FaFiEn.
     """
-    def __init__(self, id_, name, rarity, power=0, use_weapon=False, mighty=False, slot=None, special_effect=None, unique=False):
+    def __init__(self, id_, name, rarity, power=0, use_weapon=False, mighty=False, slot=None, special_effect=None, unique=False, style=None):
         self.id = id_
         self.name = name
+        self.style = style
         self.rarity = rarity
         self.power = power
         self.slot = slot

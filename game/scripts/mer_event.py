@@ -52,6 +52,9 @@ class Event(object):
     @classmethod
     def set_game_ref(cls, game):
         cls._game_ref = game
+    @property
+    def core(self):
+        return self._game_ref
     def trigger(self, target=None, skipcheck=False):
         """
         On event activation
