@@ -13,16 +13,16 @@ def register_actions():
         if lb[0] == 'shd':
             l.append(lb)
     for action in l:
-        key = '{slot}_{name}'.format(slot=action[1], name=action[2])
+        key = '{world}_{slot}_{name}'.format(world=action[1], slot=action[2], name=action[3])
         z = '_'
         z = z.join(action)
         try:
-            special = action[3]
+            special = action[4]
         except IndexError:
             special = None
         if action[1].lower() == 'none':
             action[1] = None
-        if not special:
+        if special == None:
             actions[key] = [z, action[1], action[2]]
 
 
@@ -60,8 +60,10 @@ class Schedule(object):
         self.actions = []
         self.owner = person
     
-    def add_action(self, action, single=True, special_values=None):
+    def add_action(self, action, single=True, special_values=None, world='core'):
+        action = world + '_' + action
         if action in actions.keys():
+
             act = ScheduledAction(self.owner, actions[action][2], actions[action][0], actions[action][1], action, single, special_values)
             
             if act.slot != None:
