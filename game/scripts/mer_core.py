@@ -80,7 +80,8 @@ class MistsOfEternalRome(object):
         self.current_world = "MER"
         self.characters = persons_list
         self.time = 0
-
+    def set_world(self, world):
+        Schedule.set_world(world)
     def add_fraction(self, name, owner):
         f = Faction(name)
         f.set_owner(owner)
