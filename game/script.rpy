@@ -22,6 +22,7 @@ label start:
     python:
         discovered_worlds = []
         core = MistsOfEternalRome()
+        set_event_game_ref(core)
         player = gen_random_person('human')
         player.add_item(gen_item('weapon', 'simple_axe'))
         player.add_item(gen_item('armor', 'bad_plate'))
@@ -98,7 +99,6 @@ label choose_item:
         'finish':
             return
 label end_turn:
-    $ core.end_turn_event()
     $ core.new_turn()
     call new_turn
     return

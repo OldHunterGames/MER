@@ -8,14 +8,15 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_person import *
-from mer_event import events_list
+from mer_event import events_list, Event
 from mer_resources import Resources
 from factions import Faction
 from mer_item import *
 
 
 remembered_needs = collections.defaultdict(list)
-
+def set_event_game_ref(game):
+    Event.set_game_ref(game)
 class UsedNeeds(object):
     def __init__(self, needs, owner):
         self.needs = copy(needs)
@@ -143,6 +144,7 @@ class MistsOfEternalRome(object):
         self.resources.consume()
         for person in self.characters:
             person.rest()
+        self.end_turn_event()
         self.resources.consumption_tick()
         self.time += 1
         self.player.ap = 1
