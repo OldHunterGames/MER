@@ -8,7 +8,7 @@ label shd_evn_None_template(character):
     '[d] TOASTED!'
     return
     
-label shd_living_makeshift(character):
+label shd_accomodation_makeshift(character):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()

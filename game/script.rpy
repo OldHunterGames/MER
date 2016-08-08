@@ -30,7 +30,7 @@ label start:
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
         ap = player.ap
-        player.schedule.add_action('living_makeshift', False)
+        player.schedule.add_action('accomodation_makeshift', False)
     
     show expression "interface/bg_base.jpg" as bg
     call evn_init
