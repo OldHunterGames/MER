@@ -359,9 +359,9 @@ class Person(object):
             return job.name
     @property
     def accommodation(self):
-        accomodation = self.schedule.find_by_slot('accomodation')
+        accomodation = self.schedule.find_by_slot('accommodation')
         if accomodation == None:
-            raise Exception('Person %s do not have accomodation')
+            raise Exception('Person %s do not have accommodation'%(self.name))
         return accomodation.name
     @property
     def minor(self):
