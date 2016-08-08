@@ -18,16 +18,19 @@ init python:
 
 # The game starts here.
 label start:
-    $ discovered_worlds = []
-    $ core = MistsOfEternalRome()
-    $ player = gen_random_person('human')
-    $ player.add_item(gen_item('weapon', 'simple_axe'))
-    $ player.add_item(gen_item('armor', 'bad_plate'))
-    $ player.add_item(gen_item('weapon', 'simple_dagger'))
-    $ core.set_player(player)
-    $ core.protagonist.sparks = 250
-    $ meter = Meter(core.protagonist)
-    $ ap = player.ap
+    python:
+        discovered_worlds = []
+        core = MistsOfEternalRome()
+        player = gen_random_person('human')
+        player.add_item(gen_item('weapon', 'simple_axe'))
+        player.add_item(gen_item('armor', 'bad_plate'))
+        player.add_item(gen_item('weapon', 'simple_dagger'))
+        core.set_player(player)
+        core.protagonist.sparks = 250
+        meter = Meter(core.protagonist)
+        ap = player.ap
+        player.schedule.add_action('living_mekshift', False)
+    
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main

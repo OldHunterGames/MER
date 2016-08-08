@@ -4,8 +4,8 @@
 # Main script for EOM core module
 
 init -8 python:
-    #sys.path.append(renpy.loader.transfn("Core/Edge/scrypt"))
-    #from edge_engine import *
+    sys.path.append(renpy.loader.transfn("Core/Edge/scrypt"))
+    from edge_engine import *
     pass
 
 label lbl_edge_main:
