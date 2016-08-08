@@ -319,7 +319,7 @@ class Person(object):
         return self._buffs
     
 
-    def add_buff(self, name, stats_dict, slot, time=1):
+    def add_buff(self, name, stats_dict, time=1, slot=None):
         self.remove_buff(name)
         Buff(self, name, stats_dict, slot, time)
 
