@@ -8,7 +8,7 @@ label shd_edge_None_template(character):
     '[d] TOASTED!'
     return
     
-label shd_edge_accomodation_makeshift(character):
+label shd_edge_accommodation_makeshift(character):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()

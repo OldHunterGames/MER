@@ -12,7 +12,10 @@ label lbl_edge_main:
     'The Mist gives you a way...'  
     python:
         edge = EdgeEngine()
-        house = chose(__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus'),)
+        edge.locations = []
+        core.set_world('edge')
+        house = choice([__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus')])
+        player.schedule.add_action('accommodation_makeshift', False)
     
     call lbl_edge_manage
     return
