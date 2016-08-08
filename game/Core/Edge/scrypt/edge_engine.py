@@ -9,6 +9,6 @@ class EdgeEngine(object):
     This is the main script of Edge of Mists core module for Mists of Eternal Rome.
     """
 
-    def __init__(self, name):
+    def __init__(self):
         self.locations = None
 
