@@ -48,6 +48,7 @@ label choose_action:
     $ testp.add_item(i)
     $ testp.equip_item(i, 'armor')
     $ com2 = DuelCombatant(testp)
+    $ com2.hand.append(test1)
     $ fight = DuelEngine([com1], [com2], 'simple')
     menu:
         "Visit discovered world" if discovered_worlds:

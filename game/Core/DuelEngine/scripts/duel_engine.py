@@ -100,9 +100,12 @@ class DuelEngine(object):
         self.round = 0
         
         self.situation = situation
-        self.type = 'solo' if len(self.allies) == 1 and len(self.allies) == len(self.enemies) else 'mass'
+        self.type = 'solo' if len(self.allies) == 0 and len(self.allies) == len(self.enemies) else 'mass'
         self.allies_loose_points = 0
         self.enemies_loose_points = 0
+        self.pass_ = False
+        self.show_summary = False
+        self.ended = False
 
     def _get_combatant(self, side):
         try:
@@ -117,53 +120,86 @@ class DuelEngine(object):
 
     def _end_fight(self, loosed_side):
         self.loser = loosed_side
-        return 'end'
+        self.ended = True
 
-    def round_end(self, loosed_side):
+    def round_end(self, loosed_side=None):
+        if loosed_side == None:
+            loosed_side = self.compare_points()
         self.current_ally.escalation = 0
         self.current_enemy.escalation = 0
+        self.show_summary = True
         side = 'ally' if loosed_side == 'allies' else 'enemy'
-        loser = 'current_%s'%(side)
+        loser_str = 'current_%s'%(side)
+        loser = getattr(self, loser_str)
         self.current_ally.send_event('end_turn')
         self.current_enemy.send_event('end_turn')
         if self.type == 'solo':
             attr = '%s_loose_points'%(loosed_side)
             value = getattr(self, attr) + 1
+            setattr(self, attr, value)
             loser.send_event('loose')
 
-            setattr(self, attr, value)
             if value > 1:
-                return self._end_fight(loosed_side)
+                self._end_fight(loosed_side)
+               
             else:
                 self.start_new_round()
         elif self.type == 'mass':
             combatant = self._get_combatant(loosed_side)
-            setattr(self, loser, combatant)
+            setattr(self, loser_str, combatant)
             self.start_new_round()
 
     def compare_points(self):
         d = {'allies': self.summary('allies'), 'enemies': self.summary('enemies')}
-        loser = 'allies' if d['allies'] > d['enemies'] else 'enemies'
+        loser = 'enemies' if d['allies'] > d['enemies'] else 'allies'
         return loser
     def summary(self, side):
         value = sum(i.value for i in self.points[side].values())
         return value
     def start_new_round(self):
+        self.show_summary = False
+        self.pass_ = False
         self.round += 1
         if self.round > 1:
-            self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
-                            'enemies': init_points(self.current_enemy, self.current_ally, situation)}
+            self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
+                            'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
             
         self.current_ally.send_event('started')
         self.current_enemy.send_event('started')
 
     def start(self):
-        renpy.call_in_new_context('duel_battle_init', self)
         self.start_new_round()
+        renpy.call_in_new_context('duel_battle_init', self)
+        
         
 
     def view_points(self, side):
         return [(key, i.value) for key, i in self.points[side].items()]
+
+    @property
+    def passed(self):
+        if self.pass_ or self.current_ally.hand_is_empty() or self.ended:
+            return True
+        return False
+    def make_pass(self):
+        self.pass_ = True
+
+    def enemy_run(self):
+        enemy = self.current_enemy
+        try:
+            action = enemy.hand[-1]
+            if self.compare_points() != 'allies':
+                enemy.use_action(action)
+            else:
+                return
+        except IndexError:
+            if self.passed:
+                return 
+        if self.passed:
+            if self.compare_points() != 'allies':
+                return self.enemy_run()
+            else:
+                return 
 
 
 class DuelCombatant(object):
@@ -197,6 +233,10 @@ class DuelCombatant(object):
         self.deck = None
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
+    def hand_is_empty(self):
+        if len(self.hand) < 1:
+            return True
+        return False
     def set_deck(self, deck):
         self.deck = deck
     def set_hand(self):
@@ -337,4 +377,5 @@ hit_n_run = DuelAction('hit_n_run', 'hit-n-run', 'common', 0, special_effect=hit
 rage = DuelAction('rage', 'rage', 'common', 0, special_effect=rage_special)
 outsmart = DuelAction('outsmart', 'outsmart', 'common', 0, special_effect=outsmart_special)
 fallback = DuelAction('fallback', 'fallback', 'common', 0, special_effect=fallback_special)
-actions_lib = [DuelAction('test1', 'test', 'common', 2, slot='onslaught'), clinch, hit_n_run, rage, outsmart, fallback]
+test1 = DuelAction('test1', 'test', 'common', 2, slot='onslaught')
+actions_lib = [test1, clinch, hit_n_run, rage, outsmart, fallback]
