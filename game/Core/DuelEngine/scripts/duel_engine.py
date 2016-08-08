@@ -153,6 +153,9 @@ class DuelEngine(object):
         d = {'allies': self.summary('allies'), 'enemies': self.summary('enemies')}
         loser = 'enemies' if d['allies'] > d['enemies'] else 'allies'
         return loser
+    @property
+    def current_loser(self):
+        return self.compare_points()
     def summary(self, side):
         value = sum(i.value for i in self.points[side].values())
         return value

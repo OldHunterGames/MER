@@ -12,14 +12,15 @@ screen duel_battle(fight):
             textbutton 'Pass':
                 align(0.5, 0.08)
                 action [Function(fight.make_pass), Function(fight.enemy_run)]
-        if not fight.ended:
+        if not fight.ended and fight.passed:
             textbutton 'Star next round':
                 action Function(fight.round_end)
-        else:
+        elif fight.ended:
             textbutton 'Leave' action Return()
-    hbox:
+    vbox:
         align(0.5, 0.0)
         text 'player: [fight.enemies_loose_points] - enemies: [fight.allies_loose_points]'
+        text 'currently [fight.current_loser] are loosig'
     frame:
         align (0.01, 0.98)
         xsize 200
