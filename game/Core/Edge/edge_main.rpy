@@ -10,7 +10,9 @@ init -8 python:
 
 label lbl_edge_main:
     'The Mist gives you a way...'  
-    $ edge = EdgeEngine()
+    python:
+        edge = EdgeEngine()
+        house = chose(__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus'),)
     
     call lbl_edge_manage
     return
@@ -18,11 +20,16 @@ label lbl_edge_main:
 label lbl_edge_manage:
     
     menu:        
+        'House [house] Outpost':
+            call lbl_edge_noloc
+        'Shifting Mist':
+            call lbl_edge_noloc
         'Information':
             call lbl_edge_info_base
         'Carry on':
             call lbl_edge_turn
     
+    jump lbl_edge_manage
     return
 
 label lbl_edge_info_base:
@@ -43,7 +50,10 @@ label lbl_edge_turn:
     call lbl_edge_manage
     return
     
+label lbl_edge_noloc:
+    'Carry on, there is noting to see here...'
     
+    return
     
     
 label lbl_info_new(target):

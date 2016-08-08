@@ -3,12 +3,12 @@
 #
 # Script for EOM shedule events
 
-label shd_evn_None_template(character):
+label shd_edge_None_template(character):
     $ d = character.description()
     '[d] TOASTED!'
     return
     
-label shd_accomodation_makeshift(character):
+label shd_edge_accomodation_makeshift(character):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
