@@ -3,7 +3,6 @@ class Resources(object):
         self.resources = {'drugs': 0, 'provision': 0}
         self.money = 0
         self._resources_consumption = []
-        self.exchange_rates = {}
 
     @property
     def money(self):
@@ -66,12 +65,10 @@ class Resources(object):
             self._resources_consumption.remove(i)
     
 
-    def res_to_money(self, res):
-        rate = self.exchange_rates.get(res)
-        if rate == None:
-            rate = 3
+    def res_to_money(self, res, exchange_rate=1):# exchange rate is amount of money you should pay for 1 unit of resource
+        rate = exchange_rate
         resource = self.resources[res]-self.consumption(res)
-        return -(resource)*3
+        return -(resource)*rate
     
     def consumption_remove_by_name(self, name):
         for res in self._resources_consumption:
@@ -88,7 +85,10 @@ class Resources(object):
             return True
         else:
             return False
-    
+    def is_deficit(self, res):
+        if self.consumption(res) > self.resources[res]:
+            return True
+        return False
 
     def consume(self):
         for res in self.resources.keys():
