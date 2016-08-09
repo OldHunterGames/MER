@@ -11,7 +11,7 @@ class Resources(object):
             raise AttributeError(key)
     def __setattr__(self, key, value):
         try:
-            self.__dict__['resources'][key] = value
+            self.__dict__['resources'][key] = max(0, value)
         except KeyError:
             super(Resources, self).__setattr__(key, value)
     @property
