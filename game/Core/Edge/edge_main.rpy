@@ -17,13 +17,46 @@ label lbl_edge_main:
         core.set_world('edge')
         house = choice([__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus')])
         player.schedule.add_action('accommodation_makeshift', False)
-    
+        
+    call edge_init_events
     call lbl_edge_manage
     return
     
 label lbl_edge_manage:
+    $ target = player
     
     menu:        
+        'Locations':
+            call lbl_edge_locations_menu  
+        'Schedule':
+            call lbl_edge_schedule
+        'Information':
+            call lbl_edge_info_base
+        'Carry on':
+            call lbl_edge_turn
+    
+    jump lbl_edge_manage
+    return
+
+label lbl_edge_schedule:
+    $ schedule_major = dname[target.job]
+    $ schedule_minor = dname[target.overtime]
+    
+    menu:
+        "Occupation: [schedule_major]":
+            call lbl_shedule_major from _call_lbl_shedule_major
+        "Overtime: [schedule_minor]":
+            call lbl_shedule_minor from _call_lbl_shedule_minor
+        "Socialisation: [shedule_socialisation]" if False:
+            call lbl_universal_interaction from _call_lbl_universal_interaction
+            
+        'Назад':
+            jump lbl_target_menu   
+    
+    return
+
+label lbl_edge_locations_menu:
+    menu:
         'House [house] Outpost':
             call lbl_edge_noloc
         'Shifting Mist':
@@ -50,12 +83,10 @@ label lbl_edge_manage:
             call lbl_edge_noloc
         'Scout new location' if len(edge.locations) < edge.loc_max:
             call lbl_edge_scout
-        'Information':
-            call lbl_edge_info_base
-        'Carry on':
-            call lbl_edge_turn
-    
-    jump lbl_edge_manage
+        'Done':
+            call lbl_edge_manage
+            
+    call lbl_edge_locations_menu    
     return
 
 label lbl_edge_scout:

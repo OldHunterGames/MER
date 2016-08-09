@@ -5,7 +5,8 @@
 
  
 # !!!!!! REGISTER EACH EVENT HERE !!!!
-label init_events:
+label edge_init_events:
+    $ register_event('evn_edge_uneventful')
     $ register_event('evn_edge_mistadvance')
     
     return True
@@ -36,13 +37,14 @@ label evn_edge_template(event):
     
 ############## NO CHARACTER EVENTS ##################
 
-label evn_edge_mistadvance(event):
-    if len(edge.locations) = 0:
-        $ event.skipcheck = False 
-        
-    $ poped = edge.locations.pop()
-    'Mists take over [poped] location'
+label evn_edge_uneventful(event):    
+    'Unevetful decade...'    
     return
     
-    
-    
+label evn_edge_mistadvance(event):
+    if len(edge.locations) == 0:
+        $ event.skipcheck = False 
+        
+    $ poped = edge.locations.pop(randint(0,len(edge.locations)-1))
+    'Mists take over [poped] location'
+    return

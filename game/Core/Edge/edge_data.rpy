@@ -12,3 +12,7 @@ init python:
         __('charity mission'),
         ]
     
+    edge_denotation = {
+        'idle': '__(idle)',
+        'rest': '__(rest)',
+        }

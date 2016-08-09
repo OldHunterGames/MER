@@ -54,9 +54,9 @@ class Person(object):
     def __init__(self, age=None, gender=None, genus='human'):
         self.player_controlled = False
         self._event_type = 'person'
-        self.firstname = u"Антон"
-        self.surname = u"Сычов"
-        self.nickname = u"Сычуля"
+        self.firstname = u"Anonimous"
+        self.surname = u"Anonim"
+        self.nickname = u"Anon"
         self.alignment = Alignment()
         self.features = []          # gets Feature() objects and their child's. Add new Feature only with self.add_feature()
         self.tokens = []             # Special resources to activate various events
