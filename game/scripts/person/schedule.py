@@ -67,7 +67,6 @@ class Schedule(object):
     def add_action(self, action, single=True, special_values=None):
         action_ = Schedule._world + '_' + action
         if not renpy.has_label('shd_%s'%(action_)):
-            print 'kek'
             action_ = Schedule._default_world + '_' + action
 
         if action_ in actions.keys():
