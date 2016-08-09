@@ -14,5 +14,5 @@ init python:
     
     edge_denotation = {
         'idle': '__(idle)',
-        'rest': '__(rest)',
+        'nap': '__(rest)',
         }

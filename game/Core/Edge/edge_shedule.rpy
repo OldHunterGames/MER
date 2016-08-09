@@ -17,3 +17,14 @@ label shd_edge_accommodation_makeshift(action):
         name = action.actor.name
     return
     
+label shd_edge_job_idle(action):
+    python:
+        pass
+    'idling...'
+    return
+    
+label shd_edge_overtime_nap(action):
+    python:
+        pass
+    'resting...'
+    return        

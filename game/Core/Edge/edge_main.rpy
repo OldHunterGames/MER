@@ -17,6 +17,8 @@ label lbl_edge_main:
         core.set_world('edge')
         house = choice([__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus')])
         player.schedule.add_action('accommodation_makeshift', False)
+        player.schedule.add_action('overtime_nap', False)  
+        player.schedule.add_action('job_idle', False)  
         
     call edge_init_events
     call lbl_edge_manage
