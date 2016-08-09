@@ -364,12 +364,12 @@ class Person(object):
             raise Exception('Person %s do not have accommodation'%(self.name))
         return accomodation.name
     @property
-    def minor(self):
-        minor = self.schedule.find_by_slot('minor')
-        if minor == None:
+    def overnap(self):
+        overnap = self.schedule.find_by_slot('overnap')
+        if overnap == None:
             return 'idle'
         else:
-            return minor.name
+            return overnap.name
 
 
     def show_job(self):
