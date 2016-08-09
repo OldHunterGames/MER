@@ -23,7 +23,7 @@ def register_actions():
         if action[1].lower() == 'none':
             action[1] = None
         if special == None:
-            actions[key] = [z, action[1], action[2]]
+            actions[key] = [z, action[2], action[3]]
 
 
 class ScheduledAction(object):
@@ -65,12 +65,14 @@ class Schedule(object):
     def set_world(cls, world):
         cls._world = world
     def add_action(self, action, single=True, special_values=None):
-        action = Schedule._world + '_' + action
-        if not renpy.has_label('shd_%s'%(action)):
-            action = Schedule._default_world + '_' + action
-        if action in actions.keys():
+        action_ = Schedule._world + '_' + action
+        if not renpy.has_label('shd_%s'%(action_)):
+            print 'kek'
+            action_ = Schedule._default_world + '_' + action
 
-            act = ScheduledAction(self.owner, actions[action][2], actions[action][0], actions[action][1], action, single, special_values)
+        if action_ in actions.keys():
+
+            act = ScheduledAction(self.owner, actions[action_][2], actions[action_][0], actions[action_][1], action_, single, special_values)
             
             if act.slot != None:
                 for a in self.actions:
@@ -79,7 +81,7 @@ class Schedule(object):
             
             self.actions.append(act)
         else:
-            raise Exception("add_action can't add %s. It isn't registered or maybe you should remove 'shd' at begining"%(action))
+            raise Exception("There is no %s action at current world(%s) or at core"%(action, self._world))
     def use_actions(self):
         to_remove = []
         for action in self.actions:
