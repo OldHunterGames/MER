@@ -16,7 +16,7 @@ class Resources(object):
     
     @property
     def provision_consumption(self):
-        return self.resource_consumption('provision')
+        return self.consumption('provision')
     
     @property
     def drugs(self):
@@ -77,7 +77,7 @@ class Resources(object):
         for res in self._resources_consumption:
             if res[3] == name:
                 self._resources_consumption.remove(res)
-    def res_add_consumption(self, name, res, value, time=1):
+    def add_consumption(self, name, res, value, time=1):
         self.consumption_remove_by_name(name)
         self._resources_consumption.append([res, value, time, name])
     
