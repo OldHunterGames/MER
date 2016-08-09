@@ -19,6 +19,9 @@ label lbl_edge_main:
         player.schedule.add_action('accommodation_makeshift', False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
+        player.ration['amount'] = "unlimited"  
+        player.ration['food_type'] = "forage" 
+        core.resources.add_consumption('player_food', 'provision', player.get_food_consumption, None)
         
     call edge_init_events
     call lbl_edge_manage
@@ -41,20 +44,21 @@ label lbl_edge_manage:
     return
 
 label lbl_edge_schedule:
-    $ schedule_major = dname[target.job]
-    $ schedule_minor = dname[target.overtime]
+    $ schedule_major = edge_denotation[target.job]
+    $ schedule_minor = edge_denotation[target.overtime]
     
     menu:
         "Occupation: [schedule_major]":
-            call lbl_shedule_major from _call_lbl_shedule_major
+            call lbl_edge_shedule_job
         "Overtime: [schedule_minor]":
-            call lbl_shedule_minor from _call_lbl_shedule_minor
+            call lbl_edge_shedule_overtime
         "Socialisation: [shedule_socialisation]" if False:
             call lbl_universal_interaction from _call_lbl_universal_interaction
             
         'Назад':
-            jump lbl_target_menu   
+            jump lbl_edge_manage   
     
+    jump lbl_edge_schedule
     return
 
 label lbl_edge_locations_menu:
@@ -106,10 +110,10 @@ label lbl_edge_info_base:
         target = player
         job = target.show_job()
         txt = "Работа: [job]"
-        txt += "Условия сна: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Провизия: %s, Вещества: %s \n"%(core.resource("provision"), core.resource("drugs"))
+        txt += "Accommodation: %s  |  %s       \n"%(target.accommodation, job)
+        txt += "Provisions: %s, Drugs: %s \n"%(core.resources.provision, core.resources.drugs)
         consumption = target.get_food_consumption(True)
-        txt += 'Жрет: %s(%s)'%(consumption[0], consumption[1])
+        txt += 'Ration: %s(%s)'%(consumption[0], consumption[1])
     "[txt]"        
     call lbl_edge_manage
     return
