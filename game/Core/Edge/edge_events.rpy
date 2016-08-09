@@ -44,7 +44,8 @@ label evn_edge_uneventful(event):
 label evn_edge_mistadvance(event):
     if len(edge.locations) == 0:
         $ event.skipcheck = False 
-        
+    if not event.skipcheck:
+        return False
     $ poped = edge.locations.pop(randint(0,len(edge.locations)-1))
     'Mists take over [poped] location'
     return True
