@@ -39,7 +39,7 @@ label evn_edge_template(event):
 
 label evn_edge_uneventful(event):    
     'Unevetful decade...'    
-    return
+    return True
     
 label evn_edge_mistadvance(event):
     if len(edge.locations) == 0:
@@ -47,4 +47,4 @@ label evn_edge_mistadvance(event):
         
     $ poped = edge.locations.pop(randint(0,len(edge.locations)-1))
     'Mists take over [poped] location'
-    return
+    return True

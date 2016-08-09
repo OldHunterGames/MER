@@ -87,22 +87,34 @@ label lbl_edge_locations_menu:
             call lbl_edge_noloc
         'House [house] charity mission' if 'charity mission' in edge.locations:
             call lbl_edge_noloc
-        'Scout new location' if len(edge.locations) < edge.loc_max:
-            call lbl_edge_scout
         'Done':
             call lbl_edge_manage
             
     call lbl_edge_locations_menu    
     return
 
-label lbl_edge_scout:
-    python:
-        scouted = choice(edge_locations)
-        if scouted in edge.locations:
-            renpy.jump('lbl_edge_scout')
-        edge.locations.append(scouted)
+label lbl_edge_shedule_job:
+    menu:
+        'Idle':
+            $ player.schedule.add_action('job_idle', False)  
+        'Explore viscinity' if len(edge.locations) < edge.loc_max:
+            $ player.schedule.add_action('job_explore', 1)               
+        'Nevermind':
+            $ pass
     
-    'Found [scouted] location.'
+    jump lbl_edge_schedule
+    return
+
+label lbl_edge_shedule_overtime:
+    menu:
+        'Rest':
+            $ player.schedule.add_action('overtime_nap', False)          
+        'Scout new location' if len(edge.locations) < edge.loc_max:
+            $ player.schedule.add_action('overtime_scout', 1)    
+        'Nevermind':
+            $ pass
+    
+    jump lbl_edge_schedule
     return
 
 label lbl_edge_info_base:

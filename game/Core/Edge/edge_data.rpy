@@ -13,6 +13,8 @@ init python:
         ]
     
     edge_denotation = {
-        'idle': '__(idle)',
-        'nap': '__(rest)',
+        'idle': __('idle'),
+        'explore': __('explore'),
+        'nap': __('rest'),
+        'scout': __('scout'),
         }
