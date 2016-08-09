@@ -1,9 +1,19 @@
 class Resources(object):
     def __init__(self):
-        self.resources = {'drugs': 0, 'provision': 0}
+        self.resources = {'drugs': 0, 'provision': 0, 'weapon': 0}
         self.money = 0
         self._resources_consumption = []
-
+    def __getattr__(self, key):
+        try:
+            attr = self.resources[key]
+            return attr
+        except KeyError:
+            raise AttributeError(key)
+    def __setattr__(self, key, value):
+        try:
+            self.__dict__['resources'][key] = value
+        except KeyError:
+            super(Resources, self).__setattr__(key, value)
     @property
     def money(self):
         return self.resources['money']
