@@ -6,6 +6,7 @@ init python:
                 self.determination = determination
                 self.anxiety = anxiety
                 self.target = target
+    recalc_result = []
 label mood_recalc_result(diss_inf=None, satisfy_inf=None, determination=None, anxiety=None, recalc=False, target=None):
     python:
         info = None 
