@@ -37,6 +37,7 @@ label shd_edge_job_scmunition(action):
     python:
         actor = action.actor
         name = actor.name
+        moral = None
         result = core.skillcheck(actor, 'survival', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
         gain = result*result
         child.skill('survival').get_expirience(result)
@@ -47,6 +48,7 @@ label shd_edge_job_dbexctraction(action):
     python:
         actor = action.actor
         name = actor.name
+        moral = None
         result = core.skillcheck(actor, 'athletics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
         gain = result*result
         child.skill('athletics').get_expirience(result)
@@ -57,6 +59,7 @@ label shd_edge_job_scjunc(action):
     python:
         actor = action.actor
         name = actor.name
+        moral = None
         result = core.skillcheck(actor, 'survival', difficulty = 2, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
         gain = result*result
         child.skill('survival').get_expirience(result)
@@ -67,6 +70,7 @@ label shd_edge_job_disassemble(action):
     python:
         actor = action.actor
         name = actor.name
+        moral = None
         result = core.skillcheck(actor, 'mechanics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
         gain = result*result
         child.skill('mechanics').get_expirience(result)

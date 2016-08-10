@@ -17,4 +17,9 @@ init python:
         'explore': __('explore'),
         'nap': __('rest'),
         'scout': __('scout'),
+        'scmunition': __('scavenge munition'),
+        'dbexctraction': __('extract fuel'),
+        'scjunc': __('scavenge junk'),
+        'disassemble': __('disassemble machinery'),
+        
         }
