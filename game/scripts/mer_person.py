@@ -883,7 +883,7 @@ class Person(object):
         return desire
 
     def get_food_consumption(self, show_multi=False):
-        types = {'sperm': 0, 'forage': 0, 'dry': 1, 'canned': 2, 'cousine': 2}
+        types = {'sperm': 0, 'forage': 1, 'dry': 1, 'canned': 2, 'cousine': 2}
         value = self.consume_food()
         multiplier = types[self.ration['food_type']]
         if show_multi:
@@ -921,7 +921,7 @@ class Person(object):
         if consumed < desire:
             self.nutrition.set_tension()
         if self.ration['amount'] != 'starvation':
-            d = {'sperm': -4, 'forage': -1, 'dry': -2, 'canned': 0, 'cousine': 3}
+            d = {'sperm': -4, 'forage': 0, 'dry': -2, 'canned': 0, 'cousine': 3}
             if d[self.ration['food_type']] < 0:
                 self.nutrition.set_tension()
             else:
