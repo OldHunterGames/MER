@@ -33,6 +33,7 @@ label start:
         ap = player.ap
     
     show expression "interface/bg_base.jpg" as bg
+    call screen sc_universal_trade
     call evn_init
     call lbl_edge_main
     # call new_turn
@@ -147,6 +148,9 @@ init python:
             value = int(dict_['trader'][key]) - int(dict_['player'][key])
             value = getattr(core.resources , key) + value
             setattr(core.resources, key, value)
+        value = int(dict_['trader']['money']) - int(dict_['player']['money'])
+        value = getattr(core.resources , 'money') + value
+        setattr(core.resources, 'money', value)
 
 screen sc_universal_trade(player=core.player, trader=None):
     python:
