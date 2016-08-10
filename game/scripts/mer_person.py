@@ -461,12 +461,15 @@ class Person(object):
 
 
     def modifiers_separate(self, modifier, names=False):
-        return self.modifiers.get_modifier_separate(modifier, names)
+        return self.modifiers.get_modifier_separate(modifier)
+    
     def vitality_info(self):
         d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness':self.count_modifiers('fitness'),
             'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
         l = self.modifiers_separate('vitality', True)
+        l = dict([(value.name, value.value) for value in l])
         return d, l
+    
     @property
     def vitality(self):
         l = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,

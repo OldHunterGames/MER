@@ -15,7 +15,7 @@ class ModifiersStorage(object):
     def __init__(self):
         self._list = []
     
-    def get_modifiers_separate(self, attribute):
+    def get_modifier_separate(self, attribute):
         values = []
         slotted = collections.defaultdict(list)
         for mod in self._list:
@@ -34,11 +34,11 @@ class ModifiersStorage(object):
             values.append(mod)
         return values
     
-    def count_modifiers_separate(self, attribute):
-        return [mod.value for mod in self.get_modifiers_separate(attribute)]
+    def count_modifier_separate(self, attribute):
+        return [mod.value for mod in self.get_modifier_separate(attribute)]
     
     def count_modifiers(self, attribute):
-        list_ = self.count_modifiers_separate(attribute)
+        list_ = self.count_modifier_separate(attribute)
         return sum(list_)
     
     def remove_modifier(self, source):
