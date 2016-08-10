@@ -13,6 +13,7 @@ class Resources(object):
         if 'resources' in self.__dict__:
             if key in self.__dict__['resources']:
                 self.__dict__['resources'][key] = max(0, value)
+                return
         super(Resources, self).__setattr__(key, value)
     @property
     def money(self):
