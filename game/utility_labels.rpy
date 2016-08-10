@@ -7,6 +7,7 @@ init python:
                 self.anxiety = anxiety
                 self.target = target
     recalc_result = []
+    info = None
 label mood_recalc_result(diss_inf=None, satisfy_inf=None, determination=None, anxiety=None, recalc=False, target=None):
     python:
         info = None 
@@ -18,7 +19,7 @@ label mood_recalc_result(diss_inf=None, satisfy_inf=None, determination=None, an
             info = InfoStorage(diss_inf, satisfy_inf, determination, anxiety, target)
             recalc_result.append(info)
     return
-label lb_recalc_result_glue():
+label lb_recalc_result_glue:
     call screen sc_mood_recalculation_result(recalc_result_target)
     return
 screen sc_mood_recalculation_result(target=None):
