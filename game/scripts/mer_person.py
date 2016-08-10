@@ -467,7 +467,7 @@ class Person(object):
         d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness':self.count_modifiers('fitness'),
             'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
         l = self.modifiers_separate('vitality', True)
-        l = dict([(value.name, value.value) for value in l])
+        l = [(value.name, value.value) for value in l]
         return d, l
     
     @property
