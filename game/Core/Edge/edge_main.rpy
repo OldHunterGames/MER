@@ -131,7 +131,7 @@ label lbl_edge_info_base:
         job = target.show_job()
         txt = "Работа: [job]"
         txt += "Accommodation: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Provisions: %s, Munition: %s \n"%(core.resources.provision, core.resources.munition)
+        txt += "Fuel: %s, Hardware: %s, Munition: %s \n"%(core.resources.fuel, core.resources.hardware, core.resources.munition)
         consumption = target.get_food_consumption(True)
         txt += 'Ration: %s(%s)'%(consumption[0], consumption[1])
     "[txt]"        

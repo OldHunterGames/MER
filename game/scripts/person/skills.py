@@ -1,11 +1,29 @@
 # -*- coding: UTF-8 -*-
 
 skills_data = {
-    'coding': 'mind',
-    'sport': 'physique',
+    'athletics': 'physique',
+
+    'combat': 'agility',
+    'stealth': 'agility',
+    'craft': 'agility',
+
+    'charisma': 'spirit',
+    'concentration': 'spirit',
+
+    'management': 'mind',
+    'survival': 'mind',
+    'alchemy': 'mind',
+    'streetwise': 'mind',
+    'scholarship': 'mind',
+    'mechanics': 'mind',
+    'electronics': 'mind',
+
     'sex': 'sensitivity',
-    'conversation': 'spirit',
-    'combat': 'physique'
+    'housekeeping': 'sensitivity',
+    'observation': 'sensitivity',
+    'expression': 'sensitivity',
+    'sorcery': 'sensitivity',
+
 }
 
 

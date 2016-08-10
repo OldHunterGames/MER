@@ -43,6 +43,36 @@ label shd_edge_job_scmunition(action):
     '[name] scavenging munition on the gim battlefield. Yelds [gain] munition.'
     return
     
+label shd_edge_job_dbexctraction(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        result = core.skillcheck(actor, 'athletics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
+        gain = result*result
+        child.skill('athletics').get_expirience(result)
+    '[name] extracting demon blood from the crimson pit. Yelds [gain] fuel.'
+    return
+    
+label shd_edge_job_scjunc(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        result = core.skillcheck(actor, 'survival', difficulty = 2, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
+        gain = result*result
+        child.skill('survival').get_expirience(result)
+    '[name] scavenging junk. Yelds [gain] hardware.'
+    return
+    
+label shd_edge_job_disassemble(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        result = core.skillcheck(actor, 'mechanics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
+        gain = result*result
+        child.skill('mechanics').get_expirience(result)
+    '[name] disasembles old machinery on the ruined factory. Yelds [gain] hardware.'
+    return
+    
 label shd_edge_overtime_nap(action):
     python:
         pass
