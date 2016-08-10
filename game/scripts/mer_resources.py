@@ -1,6 +1,6 @@
 class Resources(object):
     def __init__(self):
-        self.resources = {'drugs': 0, 'provision': 0, 'fuel': 0, 'amunition': 0, 'hardware': 0, 'clothes': 0}
+        self.resources = {'drugs': 0, 'provision': 0, 'fuel': 0, 'munition': 0, 'hardware': 0, 'clothes': 0}
         self._money = 0
         self._resources_consumption = []
     def __getattr__(self, key):
