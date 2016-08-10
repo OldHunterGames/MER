@@ -256,7 +256,8 @@ class Person(object):
         return
 
     def random_skills(self, pro_skill=None, talent_skill=None):
-        skilltree = ('coding', 'sport', 'conversation', 'sex', None)
+        skilltree = list(skills_data.keys())
+        skilltree.append(None)
         if talent_skill:
             self.skill(talent_skill).talent = True
         else:
