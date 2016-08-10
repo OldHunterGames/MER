@@ -28,9 +28,15 @@ label lbl_edge_main:
     return
     
 label lbl_edge_manage:
+    $ consumption_provision = core.resources.consumption('provision')
+    $ consumption_fuel = core.resources.consumption('fuel')
+    $ consumption_drugs = core.resources.consumption('drugs')
     $ target = player
     
     menu:        
+        "Banknotes: [core.resources.money]  \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
+     Munition: [core.resources.munition] | 
+     "
         'Locations':
             call lbl_edge_locations_menu  
         'Schedule':
@@ -127,13 +133,22 @@ label lbl_edge_shedule_overtime:
 
 label lbl_edge_info_base:
     python:
-        target = player
-        job = target.show_job()
-        txt = "Работа: [job]"
-        txt += "Accommodation: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Fuel: %s, Hardware: %s, Munition: %s \n"%(core.resources.fuel, core.resources.hardware, core.resources.munition)
+        job  = edge_denotation[target.job]
+        overtime = edge_denotation[target.overtime]        
+        focus = encolor_text(target.show_focus(), target.focus)
         consumption = target.get_food_consumption(True)
-        txt += 'Ration: %s(%s)'%(consumption[0], consumption[1])
+        recalc_result_target=target
+        vitality_info_target = target
+        txt = "Mood: " + encolor_text(target.show_mood(), target.mood) + ' {a=lb_recalc_result_glue}[?]{/a}'
+        txt += " | Vitality: %s "%(target.vitality) + '{a=lbl_vitality_info}[?]{/a}'
+        txt += ' | Ration: %s (%s)'%(consumption[0], consumption[1])
+        txt += "\nOccupation: %s | Overtime: %s"% (job, overtime)
+        txt += " | Accommodation: %s  \n"%target.accommodation
+        txt += "Skill focus: %s\n"%(focus)
+        txt += "Atributes: %s\n"%(target.show_attributes())     
+        txt += "Features: %s\n"%(target.show_features())
+        
+
     "[txt]"        
     call lbl_edge_manage
     return
