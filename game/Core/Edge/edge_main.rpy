@@ -99,6 +99,14 @@ label lbl_edge_shedule_job:
             $ player.schedule.add_action('job_idle', False)  
         'Explore viscinity' if len(edge.locations) < edge.loc_max:
             $ player.schedule.add_action('job_explore', 1)               
+        'Scavenge munition (battlefield)' if 'grim battlefield' in edge.locations:
+            $ player.schedule.add_action('job_scmunition', 1)  
+        'Extract demonblood (pit)' if 'crimson pit' in edge.locations:
+            $ player.schedule.add_action('job_dbexctraction', 1)  
+        'Scavenge tools & scrap (junkyard)' if 'junk yard' in edge.locations:
+            $ player.schedule.add_action('job_scjunc', 1)              
+        'Disassemble machinery (factory)' if 'ruined factory' in edge.locations:
+            $ player.schedule.add_action('job_disassemble', 1)     
         'Nevermind':
             $ pass
     
@@ -123,7 +131,7 @@ label lbl_edge_info_base:
         job = target.show_job()
         txt = "Работа: [job]"
         txt += "Accommodation: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Provisions: %s, Drugs: %s \n"%(core.resources.provision, core.resources.drugs)
+        txt += "Provisions: %s, Munition: %s \n"%(core.resources.provision, core.resources.munition)
         consumption = target.get_food_consumption(True)
         txt += 'Ration: %s(%s)'%(consumption[0], consumption[1])
     "[txt]"        

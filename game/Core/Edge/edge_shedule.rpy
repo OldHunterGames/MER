@@ -32,7 +32,17 @@ label shd_edge_job_explore(action):
         
     'All nearby locations explored'
     return
-
+    
+label shd_edge_job_scmunition(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        result = core.skillcheck(actor, 'survival', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=[], beneficiar=actor, morality=moral, special_motivators=[])        
+        gain = result*result
+        child.skill('survival').get_expirience(result)
+    '[name] scavenging munition on the gim battlefield. Yelds [gain] munition.'
+    return
+    
 label shd_edge_overtime_nap(action):
     python:
         pass
