@@ -200,7 +200,7 @@ class MistsOfEternalRome(object):
     def skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
                     morality=0, special_motivators=[], threshold=None):
         skill = actor.skill(skill)
-        motivation = actor.motivation(skill, tense_needs, satisfy_needs, beneficiar)
+        motivation = actor.motivation(skill.name, tense_needs, satisfy_needs, beneficiar)
         # factors['attraction'] and equipment bonuses not implemented yet
         factors = {'level': 1+skill.level,
                     skill.attribute: skill.attribute_value(),
