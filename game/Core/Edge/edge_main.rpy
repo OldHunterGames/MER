@@ -64,7 +64,7 @@ label lbl_edge_schedule:
 label lbl_edge_locations_menu:
     menu:
         'House [house] Outpost':
-            call lbl_edge_noloc
+            call screen sc_universal_trade
         'Shifting Mist':
             call lbl_edge_noloc
         'Grim battlefield' if 'grim battlefield' in edge.locations:
