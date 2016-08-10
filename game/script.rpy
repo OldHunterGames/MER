@@ -33,7 +33,6 @@ label start:
         ap = player.ap
     
     show expression "interface/bg_base.jpg" as bg
-    call screen sc_universal_trade
     call evn_init
     call lbl_edge_main
     # call new_turn
@@ -122,9 +121,9 @@ screen sc_choose_item(person, item_type, slot):
 init python:
     class TradeInput(InputValue):
         def __init__(self):
-            self.txt = None
+            self.txt = self.get_text()
         def get_text(self):
-            return '0'
+            return '1'
         def set_text(self, s):
             self.txt = s
 
@@ -214,6 +213,9 @@ screen sc_universal_trade(player=core.player, trader=None):
             input value uv_trade_input
             textbutton 'confirm' action[SetVariable('show_input', False),
                                  Function(trade_timer, res_input, universal_trade_values, input_who, uv_trade_input)]
+            if input_who == 'player':
+                textbutton 'all in' action[Function(uv_trade_input.set_text, getattr(core.resources, res_input)),SetVariable('show_input', False),
+                                     Function(trade_timer, res_input, universal_trade_values, input_who, uv_trade_input)]
 
         
     
