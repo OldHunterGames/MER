@@ -924,10 +924,8 @@ class Person(object):
             d = {'sperm': -4, 'forage': 0, 'dry': -2, 'canned': 0, 'cousine': 3}
             if d[self.ration['food_type']] < 0:
                 self.nutrition.set_tension()
-            if d[self.ration['food_type'] > 0:
-                self.nutrition.satisfaction = d[self.ration['food_type']]
             else:
-                self.nutrition.set_tension()
+                self.nutrition.satisfaction = d[self.ration['food_type']]
         self.calorie_storage += calorie_difference
         fatness = self.feature_by_slot('shape')
         if fatness != None:

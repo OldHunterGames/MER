@@ -68,6 +68,11 @@ class Resources(object):
         self.consumption_remove_by_name(name)
         self._resources_consumption.append([res, value, time, name])
     
+    def has_money(self, value):
+        if self.money >= value:
+            return True
+        else:
+            return False
 
 
     def can_consume(self, res):
