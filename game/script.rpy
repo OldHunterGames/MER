@@ -148,7 +148,7 @@ init python:
             value = getattr(core.resources , key) + value
             setattr(core.resources, key, value)
 
-screen sc_universal_trade(player, trader):
+screen sc_universal_trade(player=core.player, trader=None):
     python:
         
         trade_player = universal_trade_values['player']
