@@ -1,39 +1,28 @@
 class Resources(object):
     def __init__(self):
-        self.resources = {'drugs': 0, 'provision': 0}
-        self.money = 0
+        self.resources = {'drugs': 0, 'provision': 0, 'fuel': 0, 'amunition': 0, 'hardware': 0, 'clothes': 0}
+        self._money = 0
         self._resources_consumption = []
-
+    def __getattr__(self, key):
+        try:
+            attr = self.resources[key]
+            return attr
+        except KeyError:
+            raise AttributeError(key)
+    def __setattr__(self, key, value):
+        if 'resources' in self.__dict__:
+            if key in self.__dict__['resources']:
+                self.__dict__['resources'][key] = max(0, value)
+        super(Resources, self).__setattr__(key, value)
     @property
     def money(self):
-        return self.resources['money']
-    
+        return self._money
     @money.setter
     def money(self, value):
-        if not value < 0:
-            self.resources['money'] = value
-    
+        self._money = max(0, value)
     @property
     def provision_consumption(self):
         return self.consumption('provision')
-    
-    @property
-    def drugs(self):
-        return self.resources['drugs']
-    
-    @drugs.setter
-    def drugs(self, value):
-        if not value < 0:
-            self.resources['drugs'] = value
-    
-    @property
-    def provision(self):
-        return self.resources['provision']
-    
-    @provision.setter
-    def provision(self, value):
-        if not value < 0:
-            self.resources['provision'] = value
 
 
     def consumption(self, res):

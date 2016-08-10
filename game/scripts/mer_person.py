@@ -835,6 +835,8 @@ class Person(object):
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
+        self.schedule.add_action('job_idle')
+        self.schedule.add_action('overtime_nap')
 
 
 
