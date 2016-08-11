@@ -16,6 +16,7 @@ init python:
         'idle': __('idle'),
         'explore': __('explore'),
         'nap': __('rest'),
+        'foundcamp': __('found camp'),
         'scout': __('scout'),
         'scmunition': __('scavenge munition'),
         'dbexctraction': __('extract fuel'),

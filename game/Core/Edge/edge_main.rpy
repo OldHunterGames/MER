@@ -6,17 +6,19 @@
 init -8 python:
     sys.path.append(renpy.loader.transfn("Core/Edge/scrypt"))
     from edge_engine import *
+    from edge_camp import *
     pass
 
 label lbl_edge_main:
     'The Mist gives you a way...'  
     python:
         edge = EdgeEngine()
+        camp = EdgeCamp()
         edge.locations = []
         edge.loc_max = 2 + player.agility
         core.set_world('edge')
         house = choice([__('Kamira'), __('Serpis'), __('Corvus'), __('Taurus')])
-        player.schedule.add_action('accommodation_makeshift', False)
+        player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
         player.ration['amount'] = "unlimited"  
@@ -69,10 +71,10 @@ label lbl_edge_schedule:
 
 label lbl_edge_locations_menu:
     menu:
+        'Your base camp' if 'your base camp' in edge.locations:
+            call lbl_edge_noloc
         'House [house] Outpost':
             call screen sc_universal_trade
-        'Shifting Mist':
-            call lbl_edge_noloc
         'Grim battlefield' if 'grim battlefield' in edge.locations:
             call lbl_edge_noloc
         'Crimson pit' if 'crimson pit' in edge.locations:
@@ -92,6 +94,8 @@ label lbl_edge_locations_menu:
         'Raiders encampment' if 'raiders encampment' in edge.locations:
             call lbl_edge_noloc
         'House [house] charity mission' if 'charity mission' in edge.locations:
+            call lbl_edge_noloc
+        'Shifting Mist':
             call lbl_edge_noloc
         'Done':
             call lbl_edge_manage
@@ -125,6 +129,8 @@ label lbl_edge_shedule_overtime:
             $ player.schedule.add_action('overtime_nap', False)          
         'Scout new location' if len(edge.locations) < edge.loc_max:
             $ player.schedule.add_action('overtime_scout', 1)    
+        'Found a camp (outworld ruines)' if 'outworld ruines' in edge.locations and not camp.founded:
+            $ player.schedule.add_action('overtime_foundcamp', 1)  
         'Nevermind':
             $ pass
     

@@ -100,3 +100,14 @@ label shd_edge_overtime_scout(action):
         
     '[message]'
     return        
+    
+label shd_edge_overtime_foundcamp(action):
+    python:
+        edge.locations.remove('outworld ruines')
+        edge.locations.append('your base camp')
+        camp.found()
+    'Encamped in outworld ruines.'
+    return       
+    
+    
+    
