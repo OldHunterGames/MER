@@ -129,12 +129,22 @@ class Person(object):
         self._main_hand = None
         self._other_hand = None
         self.armor = None
+        self.resources_storage = None
+
+
+    def set_resources_storage(self, storage):
+        self.resources_storage = storage
+    
+    #while inventory isn't implemented we need this methods for some test cases
+    #they will be removed when inventory system is done.
     @property
     def main_hand(self):
         return self._main_hand
+    
     @property
     def other_hand(self):
         return self._other_hand
+    
     def has_shield(self):
         if self.main_hand != None:
             if self.main_hand.type == 'shield':
@@ -143,6 +153,7 @@ class Person(object):
             if self.other_hand.type == 'shild':
                 return True
         return False
+    
     def equip_weapon(self, weapon, hand='main_hand'):
         other = "_other_hand" if hand=='main_hand' else '_main_hand'
         other_weapon = getattr(self, other)
@@ -157,6 +168,7 @@ class Person(object):
                     setattr(self, other, None)
         setattr(self, '_%s'%(hand), weapon)
         weapon.equip()
+    
     def disarm_weapon(self, hand='main_hand'):
         other = "_other_hand" if hand=='main_hand' else '_main_hand'
         other_weapon = getattr(self, other)
@@ -188,7 +200,8 @@ class Person(object):
                 if current != None:
                     current.unequip()
                 setattr(self, slot, item)
-
+    #end of inventory methods
+    
     def set_avatar(self):
         path = 'images/avatar/'
         path += self.genus.head_type + '/'
@@ -308,11 +321,12 @@ class Person(object):
         self.genus = init_genus(self, genus)
     @property
     def known_characters(self):
-        l = []
+        list_ = []
         for r in self._relations:
             persons = [p for p in r.persons if p != self]
-            l += persons
-        return l
+            list_ += persons
+        return list_
+    
     def add_modifier(self, name, stats_dict, source, slot=None):
         self.modifiers.add_modifier(name, stats_dict, source, slot)
 
@@ -358,12 +372,14 @@ class Person(object):
             return 'idle'
         else:
             return job.name
+    
     @property
     def accommodation(self):
         accomodation = self.schedule.find_by_slot('accommodation')
         if accomodation == None:
             raise Exception('Person %s do not have accommodation'%(self.name))
         return accomodation.name
+    
     @property
     def overtime(self):
         overtime = self.schedule.find_by_slot('overtime')
@@ -372,32 +388,7 @@ class Person(object):
         else:
             return overtime.name
 
-
-    def show_job(self):
-        job = self.schedule.find_by_slot('job')
-        if not job:
-            return 'idle'
-        else:
-            values = []
-            s = ''
-            for k, v in job.special_values.items():
-                s += '%s: '%(k)
-                try:
-                    l = [i for i in v]
-                    try:
-                        for i in l:
-                            s += '%s, '%(i.name())
-                    except AttributeError:
-                        for i in l:
-                            s += '%s, '%(i)
-                except TypeError:
-                    try:
-                        s += '%s, '%(v.name())
-                    except AttributeError:
-                        s += '%s, '%(v)
-                if k not in job.special_values.items()[-1]:
-                    s += '\n'
-            return '%s, %s'%(job.name, s)
+    
 
 
     def job_object(self):
@@ -466,16 +457,16 @@ class Person(object):
     def vitality_info(self):
         d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness':self.count_modifiers('fitness'),
             'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
-        l = self.modifiers_separate('vitality', True)
-        l = [(value.name, value.value) for value in l]
-        return d, l
+        list_ = self.modifiers_separate('vitality', True)
+        list_ = [(value.name, value.value) for value in l]
+        return d, list_
     
     @property
     def vitality(self):
-        l = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
+        list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
             self.count_modifiers('therapy')]
-        l += self.modifiers_separate('vitality')
-        l = [i for i in l if i != 0]
+        list_ += self.modifiers_separate('vitality')
+        list_ = [i for i in l if i != 0]
         lgood = []
         lbad = []
         for i in l:
@@ -501,7 +492,7 @@ class Person(object):
             val = 5
         return val
 
-
+    # person gender relies on feature with slot 'gender'
     @property
     def gender(self):
         try:
@@ -509,6 +500,8 @@ class Person(object):
             return gender
         except AttributeError:
             return None
+
+    # person gender relies on feature with slot 'age'
     @property
     def age(self):
         try:
@@ -516,24 +509,31 @@ class Person(object):
             return gender
         except AttributeError:
             return None
+    
+    #maybe we won't need phobias any more
     def phobias(self):
         l = []
         for feature in self.features:
             if isinstance(feature, Phobia):
                 l.append(feature.object_of_fear)
         return l
+    
+    # get needs with level > 0 aka turned on needs
     def get_needs(self):
         d = {}
         for need in self._needs:
             if need.level > 0:
                 d[need.name] = need
         return d
-
+    
+    # get all needs person has
     def get_all_needs(self):
         d = {}
         for need in self._needs:
             d[need.name] = need
         return d
+    
+    # show methods returns strings, to simplify displaying various stats to player
     def show_taboos(self):
         s = ""
         for taboo in self.taboos:
@@ -587,19 +587,38 @@ class Person(object):
         for key, value in self.tokens_difficulty.items():
             s += "{0}({1}), ".format(key, value)
         return s
+    
+    def show_job(self):
+        job = self.schedule.find_by_slot('job')
+        if not job:
+            return 'idle'
+        else:
+            values = []
+            s = ''
+            for k, v in job.special_values.items():
+                s += '%s: '%(k)
+                try:
+                    l = [i for i in v]
+                    try:
+                        for i in l:
+                            s += '%s, '%(i.name())
+                    except AttributeError:
+                        for i in l:
+                            s += '%s, '%(i)
+                except TypeError:
+                    try:
+                        s += '%s, '%(v.name())
+                    except AttributeError:
+                        s += '%s, '%(v)
+                if k not in job.special_values.items()[-1]:
+                    s += '\n'
+            return '%s, %s'%(job.name, s)
+    
     @property
     def name(self):
         s = self.firstname + " " + self.surname
         return s
-
-
-    def taboo(self, name):
-        for t in self.taboos:
-            if t.name == name:
-                return t
-        return "No taboo named %s"%(name)
   
-
     def skill(self, skillname):
         skill = None
         for i in self.skills:
@@ -783,12 +802,12 @@ class Person(object):
 
         return motiv
 
-    
-
     def add_feature(self, name):    # adds features to person, if mutually exclusive removes old feature
         Feature(self, name)
+    
     def add_phobia(self, name):
         Phobia(self, name)
+    
     def feature_by_slot(self, slot):        # finds feature which hold needed slot
         for f in self.features:
             if f.slot == slot:
@@ -811,24 +830,23 @@ class Person(object):
             self.features[i].remove()
             return
 
-
     def remove_feature_by_slot(self, slot):
         for f in self.features:
             if f.slot == slot:
                 f.remove()
         
-
     def description(self):
         txt = self.firstname + ' "' + self.nickname + '" ' + self.surname
         txt += '\n'
         for feature in self.features:
             txt += feature.name
             txt += ','
-
         return txt
+    
     def reset_needs(self):
         for need in self.get_all_needs().values():
             need.reset()
+    
     def rest(self):
         self.conditions = []
         self.tick_buffs_time()
@@ -841,9 +859,6 @@ class Person(object):
         self.reduce_esteem()
         self.schedule.add_action('job_idle')
         self.schedule.add_action('overtime_nap')
-
-
-
 
     def food_demand(self):
         """
@@ -886,9 +901,15 @@ class Person(object):
         types = {'sperm': 0, 'forage': 1, 'dry': 1, 'canned': 2, 'cousine': 2}
         value = self.consume_food()
         multiplier = types[self.ration['food_type']]
+        value *= multiplier
         if show_multi:
-            return value*multiplier, self.ration['food_type']
-        return value * multiplier
+            return value, self.ration['food_type']
+        try:
+            value = min(self.resources_storage.provision, value)
+        except AttributeError:
+            pass
+        return value
+    
     def consume_food(self):
         food_consumed = self.food_desire()
         fatness = self.feature_by_slot('shape')
@@ -1072,8 +1093,8 @@ class Person(object):
                 return rel
         return None
 
-    
     def moral_action(self, *args, **kwargs):
+        #checks moral like person.check_moral, but instantly affect selfesteem
         for arg in args:
             if isinstance(arg, int):
                 self.selfesteem += arg
@@ -1197,7 +1218,7 @@ class Person(object):
             return None
         return token
 
-
+    # methods for conditions, person.conditions list cleared after person.rest call
     def add_condition(self, condition):
         if not self.has_condition(condition):
             self.conditions.append(condition)
