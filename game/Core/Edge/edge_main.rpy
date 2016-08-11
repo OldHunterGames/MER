@@ -24,8 +24,6 @@ label lbl_edge_main:
         player.ration['amount'] = "unlimited"  
         player.ration['food_type'] = "forage" 
         core.resources.add_consumption('player_food', 'provision', player.get_food_consumption, None)
-        for i in range(25):
-            edge.explore_location()
     call edge_init_events
     call lbl_edge_manage
     return
@@ -94,7 +92,7 @@ label lbl_edge_locations_menu:
             $ edge.make_menu('outworld_ruines')
         'Raiders encampment' if edge.has_location('raiders_encampment'):
             $ edge.make_menu('raiders_encampment')
-        'charity mission' if edge.has_location('charity_mission'):
+        'Charity mission' if edge.has_location('charity_mission'):
             $ edge.make_menu('charity_mission')
         'Shifting Mist':
             call lbl_edge_shifting_mist
@@ -110,13 +108,13 @@ label lbl_edge_shedule_job:
             $ player.schedule.add_action('job_idle', False)  
         'Explore viscinity' if len(edge.locations) < edge.loc_max:
             $ player.schedule.add_action('job_explore', 1)               
-        'Scavenge munition (battlefield)' if 'grim battlefield' in edge.locations:
+        'Scavenge munition (battlefield)' if edge.has_location('grim_battlefield'):
             $ player.schedule.add_action('job_scmunition', 1)  
-        'Extract demonblood (pit)' if 'crimson pit' in edge.locations:
+        'Extract demonblood (pit)' if edge.has_location('crimson_pit'):
             $ player.schedule.add_action('job_dbexctraction', 1)  
-        'Scavenge tools & scrap (junkyard)' if 'junk yard' in edge.locations:
+        'Scavenge tools & scrap (junkyard)' if edge.has_location('junk_yard'):
             $ player.schedule.add_action('job_scjunc', 1)              
-        'Disassemble machinery (factory)' if 'ruined factory' in edge.locations:
+        'Disassemble machinery (factory)' if edge.has_location('ruined_factory'):
             $ player.schedule.add_action('job_disassemble', 1)     
         'Nevermind':
             $ pass

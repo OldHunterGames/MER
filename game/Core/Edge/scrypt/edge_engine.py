@@ -60,6 +60,7 @@ class EdgeLocation(object):
         self.name = displayed
         self.lbl_to_go = 'lbl_edge_' + self.id
         self.owner = None
+        self.job = None
 
     def gen_owner(self):
         self.owner = choice(renpy.store.house_names.keys())
@@ -69,4 +70,7 @@ class EdgeLocation(object):
 
     def go_to(self):
         renpy.call(self.lbl_to_go, self)
+
+    def job_available(self):
+        pass
 

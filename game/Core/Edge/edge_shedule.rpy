@@ -26,9 +26,7 @@ label shd_edge_job_idle(action):
 label shd_edge_job_explore(action):
     python:
         while len(edge.locations) < edge.loc_max:
-            scouted = choice(edge_locations)
-            if scouted not in edge.locations:
-                edge.locations.append(scouted)
+            edge.explore_location()
         
     'All nearby locations explored'
     return

@@ -14,7 +14,7 @@ init python:
     
     edge_denotation = {
         'idle': __('idle'),
-        'explore': [__('explore'), edge.explore],
+        'explore': __('explore'),
         'nap': __('rest'),
         'foundcamp': __('found camp'),
         'scout': __('scout'),
@@ -31,13 +31,9 @@ init python:
                  'taurus':  __('Taurus')}
 
 
-label lbl_edge_shifting_mist(location):
-    $ explore = edge_denotation['explore']
-    $ menu_list = [(explore[0], explore[1])]
-    $ choice = renpy.display_menu(menu_list)
-    $ choice()
+label lbl_edge_shifting_mist(location=None):
     return
 
 label lbl_edge_grim_battlefield(location):
-    
+
     return
