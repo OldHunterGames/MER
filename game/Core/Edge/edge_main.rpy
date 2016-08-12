@@ -42,6 +42,8 @@ label lbl_edge_manage:
             call lbl_edge_locations_menu  
         'Schedule':
             call lbl_edge_schedule
+        'Craft':
+            call lbl_edge_craft
         'Information':
             call lbl_edge_info_base
         'Carry on':
@@ -134,6 +136,32 @@ label lbl_edge_shedule_overtime:
             $ pass
     
     jump lbl_edge_schedule
+    return
+
+label lbl_edge_craft:
+    menu:
+        'Camp improvements' if camp.founded:    
+            call lbl_edge_craft_camp
+        'Basic stuff':
+            call lbl_edge_craft_basic
+        'Advanced stuff' if 'workbench' not in camp.improvements:
+            call lbl_edge_craft_workbench
+        'Done':
+            jump lbl_edge_manage
+            
+    jump lbl_edge_craft
+    return
+
+label lbl_edge_craft_camp:
+    menu:
+        'Stove (3 hardware)' if core.resources.hardware >= 3 and 'stove' not in camp.improvements:
+            $ core.resources.hardware -= 3
+            $ camp.improvements.append('stove')
+            'You get a stove. Camp will consume 1 fuel/decade to increase comfort. Corpses can be processed to provision now, for a fuel cost.'
+        'Done':
+            jump lbl_edge_craft        
+    
+    jump lbl_edge_craft_camp
     return
 
 label lbl_edge_info_base:
