@@ -92,8 +92,7 @@ class DuelEngine(object):
         for i in self.enemies:
             i.set_fight(self)
             i.set_side('enemies')
-        self.current_ally = self.allies.pop()
-        self.current_enemy = self.enemies.pop()
+        self.current_enemy = self._get_combatant('enemies')
 
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
                         'enemies': init_points(self.current_enemy, self.current_ally, situation)}
@@ -114,6 +113,7 @@ class DuelEngine(object):
                 combatant.set_side('ally')
             else:
                 combatant.set_side('enemy')
+            combatant.set_hand()
             return combatant
         except IndexError:
             return self._end_fight(side)

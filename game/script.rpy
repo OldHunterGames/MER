@@ -33,6 +33,7 @@ label start:
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
         ap = player.ap
+
     
     show expression "interface/bg_base.jpg" as bg
     call evn_init
@@ -45,6 +46,17 @@ label choose_action:
     "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
+    $ com1 = DuelCombatant(player)
+    $ deck1 = Deck([clinch, hit_n_run, rage, test1])
+    $ deck2 = Deck([test1, test1, test1])
+    $ com1.set_deck(deck1)
+    $ testp = Person()
+    $ i = gen_item('armor', 'bad_plate')
+    $ testp.add_item(i)
+    $ testp.equip_item(i, 'armor')
+    $ com2 = DuelCombatant(testp)
+    $ com2.set_deck(deck2)
+    $ fight = DuelEngine([com1], [com2], 'simple')
     menu:
         "Visit discovered world" if discovered_worlds:
             python:
