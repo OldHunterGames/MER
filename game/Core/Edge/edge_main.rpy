@@ -68,8 +68,7 @@ label lbl_edge_schedule:
             call lbl_edge_shedule_overtime
         "Socialisation: [shedule_socialisation]" if False:
             call lbl_universal_interaction from _call_lbl_universal_interaction
-            
-        'Назад':
+        'Done':
             jump lbl_edge_manage   
     
     jump lbl_edge_schedule

@@ -31,15 +31,3 @@ init python:
                  'serpis': __('Serpis'), 
                  'corvus': __('Corvus'),
                  'taurus':  __('Taurus')}
-
-
-label lbl_edge_shifting_mist(location=None):
-    return
-
-label lbl_edge_grim_battlefield(location):
-
-    return
-
-label lbl_edge_outpost(location):
-    call screen sc_universal_trade
-    return
