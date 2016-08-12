@@ -402,7 +402,7 @@ class DuelAction(object):
                 return 0
             elif key in DuelAction.must_have_values:
                 raise Exception('DuelAction with id %s do not have value %s'%(self.id, key))
-            elif key == 'style' or key == 'special_effect':
+            elif key == 'style' or key == 'special_effect' or key == 'slot':
                 return None
         raise AttributeError(key)
 
