@@ -111,9 +111,9 @@ class DuelEngine(object):
         try:
             combatant = getattr(self, side).pop()
             if side == 'allies':
-                combatant.set_side('ally')
+                combatant.set_side('allies')
             else:
-                combatant.set_side('enemy')
+                combatant.set_side('enemies')
             combatant.set_hand()
             return combatant
         except IndexError:
@@ -193,12 +193,8 @@ class DuelEngine(object):
         enemy = self.current_enemy
         try:
             action = enemy.hand[-1]
-            if self.compare_points() != 'allies':
-                enemy.use_action(action)
-            else:
-                return
+            enemy.use_action(action)
         except IndexError:
-            if self.passed:
                 return 
         if self.passed:
             if self.compare_points() != 'allies':
@@ -332,9 +328,30 @@ class DuelCombatant(object):
             
 
 class Deck(object):
-    def __init__(self, cards_list):
-        self.cards_list = [card for card in cards_list]
+    def __init__(self, cards_list=None):
+        self.cards_list = [make_card(card) for card in cards_list] if cards_list != None else []
         self.current = None
+        self.style = None
+
+    def set_style(self, style):
+        self.style = style
+    
+    def add_card(self, card_id):
+        self.card_list.append(make_card(card_id))
+    
+    def _count_cards(self, card_id):
+        value = 0
+        for card in self.cards_list:
+            if card.id == card_id:
+                value += 1
+        return value
+    
+    def can_be_added(self, card):
+        if self._count_cards(card.id) > 2 and not card.unique:
+            return False
+        elif self._count_cards(card.id) > 0 and card.unique:
+            return False
+        return True
 
     def fight_started(self):
         self.current = [card for card in self.cards_list]
