@@ -408,7 +408,7 @@ class DuelAction(object):
         if self.mighty:
             power += 5
         if self.use_weapon:
-            for weapon in user.get_weapons:
+            for weapon in user.get_weapons():
                 power += weapon.quality
         if self.special_effect:
             self.special_effect(user)
