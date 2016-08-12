@@ -28,6 +28,12 @@ init python:
             point_to_decrease.value -= user.escalation
         card = renpy.call_screen('draw_From_drop', user)
         user.draw_from_drop(card)
+    
+    # available keys for actions
+    # {id: name, rarity, power=0, use_weapon=False, mighty=False, slot=None, special_effect=None, unique=False, style=None}
+    # slot is one of 'onslaught', 'maneuver', 'fortitude', 'excellence'
+    # special_effect must be function which take 1 arg, excepted arg is DuelCombatant who used card
+    # style is one of 'breter', 'juggernaut', 'shieldbearer', 'restler', 'beast'
     actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special},
                     'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special},
                     'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
