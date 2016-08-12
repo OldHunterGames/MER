@@ -92,6 +92,7 @@ class DuelEngine(object):
         for i in self.enemies:
             i.set_fight(self)
             i.set_side('enemies')
+        self.current_ally = self._get_combatant('allies')
         self.current_enemy = self._get_combatant('enemies')
 
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
@@ -360,17 +361,25 @@ class DuelAction(object):
     """
     This is a class for "action cards" to form a decks and use in FaFiEn.
     """
-    def __init__(self, id_, name, rarity, power=0, use_weapon=False, mighty=False, slot=None, special_effect=None, unique=False, style=None):
+    bool_values = ['use_weapon', 'mighty', 'unique']
+    must_have_values = ['name', 'rarity']
+    def __init__(self, id_):
         self.id = id_
-        self.name = name
-        self.style = style
-        self.rarity = rarity
-        self.power = power
-        self.slot = slot
-        self.use_weapon = use_weapon
-        self.mighty = mighty
-        self.special_effect = special_effect
-        self.unique = unique
+        self.data = store.actions_lib[id_]
+
+    def __getattr__(self, key):
+        try:
+            value = self.__dict__['data'][key]
+            return value
+        except KeyError:
+            if key in DuelAction.bool_values:
+                return False
+            elif key == 'power':
+                return 0
+            elif key in DuelAction.must_have_values:
+                raise Exception('DuelAction with id %s do not have value %s'%(self.id, key))
+            return None
+    
     def use(self, user):
         power = self.power
         if self.mighty:
@@ -381,6 +390,7 @@ class DuelAction(object):
         if self.special_effect:
             self.special_effect(user)
         return power
+    
     def show(self):
         str_ = "%s(%s"%(self.name, self.slot)
         if self.slot != None:
@@ -389,3 +399,11 @@ class DuelAction(object):
             str_ += ')'
 
         return str_
+
+def make_card(card_id):
+    try:
+        card = store.actions_lib[card_id]
+    except KeyError:
+        raise Exception("unknown card %s"%(card_id))
+    card = DuelAction(card_id)
+    return card

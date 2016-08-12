@@ -25,8 +25,7 @@ class Feature(object):
 
     def remove(self):
         if self.modifiers:
-            name = self.slot if self.slot else self.name
-            self.owner.modifiers.del_item(name)
+            self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
 
     def add(self):

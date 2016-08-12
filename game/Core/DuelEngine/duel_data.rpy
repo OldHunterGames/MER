@@ -28,11 +28,10 @@ init python:
             point_to_decrease.value -= user.escalation
         card = renpy.call_screen('draw_From_drop', user)
         user.draw_from_drop(card)
-
-    clinch = DuelAction('clinch', 'clinch', 'common', 0, special_effect=clinch_special)
-    hit_n_run = DuelAction('hit_n_run', 'hit-n-run', 'common', 0, special_effect=hit_n_run_special)
-    rage = DuelAction('rage', 'rage', 'common', 0, special_effect=rage_special)
-    outsmart = DuelAction('outsmart', 'outsmart', 'common', 0, special_effect=outsmart_special)
-    fallback = DuelAction('fallback', 'fallback', 'common', 0, special_effect=fallback_special)
-    test1 = DuelAction('test1', 'test', 'common', 2, slot='onslaught')
-    actions_lib = [test1, clinch, hit_n_run, rage, outsmart, fallback]
+    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special},
+                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special},
+                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
+                    'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
+                    'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special},
+                    'test1': {'name': __('test1'), 'rarity': 'common', 'power': 2, 'slot': 'onslaught'}
+    }

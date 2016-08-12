@@ -29,13 +29,13 @@ screen duel_battle(fight):
         vbox:
             spacing 10
             frame:
-                hbox:
+                vbox:
                     align(0.5, 0.07)
-                    text str("{color=#ff0000}%s{/color}"%fight.points['allies']['onslaught'].value)
-                    text str("{color=#64f742}%s{/color}"%fight.points['allies']['maneuver'].value)
-                    text str("{color=#00007f}%s{/color}"%fight.points['allies']['fortitude'].value)
-                    text str("{color=#000000}%s{/color}"%fight.points['allies']['excellence'].value)
-                    text str(fight.summary('allies'))
+                    text str("{color=#ff0000}onslaught: %s{/color}"%fight.points['allies']['onslaught'].value)
+                    text str("{color=#64f742}maneuver: %s{/color}"%fight.points['allies']['maneuver'].value)
+                    text str("{color=#00007f}fortitude: %s{/color}"%fight.points['allies']['fortitude'].value)
+                    text str("{color=#000000}excellence: %s{/color}"%fight.points['allies']['excellence'].value)
+                    text str("summary: %s"%(fight.summary('allies')))
             frame:
                 align (0.5, 0.05)
                 text fight.current_ally.name
@@ -49,7 +49,7 @@ screen duel_battle(fight):
 
     fixed:
         ypos 0.50
-        xpos 0.2
+        xpos 0.05
         xsize 1000
         ysize 320    
         
@@ -61,8 +61,8 @@ screen duel_battle(fight):
                 for card in fight.current_ally.hand:
                     frame:
                         xalign 0.5
-                        xsize 200
-                        ysize 320
+                        xsize 150
+                        ysize 250
                         vbox:
                             xalign 0.5
                             spacing 10
@@ -88,13 +88,13 @@ screen duel_battle(fight):
                 hover im.MatrixColor(im.Scale(fight.current_enemy.avatar, 200, 200), im.matrix.brightness(0.05))
                 action Return("show_your_role")
             frame:
-                hbox:
+                vbox:
                     align(0.5, 0.07)
-                    text str("{color=#ff0000}%s{/color}"%fight.points['enemies']['onslaught'].value)
-                    text str("{color=#64f742}%s{/color}"%fight.points['enemies']['maneuver'].value)
-                    text str("{color=#00007f}%s{/color}"%fight.points['enemies']['fortitude'].value)
-                    text str("{color=#000000}%s{/color}"%fight.points['enemies']['excellence'].value)
-                    text str(fight.summary('enemies'))
+                    text str("{color=#ff0000}onslaught: %s{/color}"%fight.points['enemies']['onslaught'].value)
+                    text str("{color=#64f742}maneuver: %s{/color}"%fight.points['enemies']['maneuver'].value)
+                    text str("{color=#00007f}fortitude: %s{/color}"%fight.points['enemies']['fortitude'].value)
+                    text str("{color=#000000}excellence: %s{/color}"%fight.points['enemies']['excellence'].value)
+                    text str("summary: %s"%(fight.summary('enemies')))
 
 
 label lbl_duel_battle_end(fight):

@@ -47,8 +47,8 @@ label choose_action:
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
     $ com1 = DuelCombatant(player)
-    $ deck1 = Deck([clinch, hit_n_run, rage, test1])
-    $ deck2 = Deck([test1, test1, test1])
+    $ deck1 = Deck([make_card('clinch'), make_card('hit_n_run'), make_card('rage'), make_card('test1')])
+    $ deck2 = Deck([make_card('test1'), make_card('test1'), make_card('test1'), make_card('test1')])
     $ com1.set_deck(deck1)
     $ testp = Person()
     $ i = gen_item('armor', 'bad_plate')

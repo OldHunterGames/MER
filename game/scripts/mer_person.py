@@ -228,7 +228,7 @@ class Person(object):
                     self.hair_color = hair_color
             self.avatar_path = avatar
         except IndexError:
-            self.avatar_path = 'characters/none.jpg'
+            self.avatar_path = 'images/avatar/none.jpg'
 
     def randomise(self, gender='female', age='adolescent'):
         self.add_feature(gender)
