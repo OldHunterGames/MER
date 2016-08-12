@@ -409,19 +409,23 @@ class Person(object):
         return super(Person, self).__getattribute__(key)
 
     def __getattr__(self, key):
-        if key in self.attributes:
-            value = self.attributes[key]
-            value += self.count_modifiers(key)
-            if value < 1:
-                value = 1
-            if value > 5:
-                value = 5
-            return value
-        n = self.get_all_needs()
-        if key in n.keys():
-            return n[key]
+        if 'attributes' in self.__dict__:
+            if key in self.__dict__['attributes']:
+                value = self.__dict__['attributes'][key]
+                value += self.count_modifiers(key)
+                if value < 1:
+                    value = 1
+                if value > 5:
+                    value = 5
+                return value
+        if 'get_all_needs' in self.__dict__:
+            n = self.__dict__['get_all_needs']()
         else:
-            raise AttributeError(key)
+            n = None
+        if n != None:
+            if key in n.keys():
+                return n[key]
+        raise AttributeError(key)
 
 
     def __setattr__(self, key, value):

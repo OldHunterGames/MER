@@ -388,11 +388,12 @@ class DuelAction(object):
     must_have_values = ['name', 'rarity']
     def __init__(self, id_):
         self.id = id_
-        self.data = store.actions_lib[id_]
+        self.data = store.actions_lib
 
     def __getattr__(self, key):
         try:
-            value = self.__dict__['data'][key]
+            id_ = self.__dict__['id']
+            value = self.__dict__['data'][id_][key]
             return value
         except KeyError:
             if key in DuelAction.bool_values:
@@ -401,7 +402,10 @@ class DuelAction(object):
                 return 0
             elif key in DuelAction.must_have_values:
                 raise Exception('DuelAction with id %s do not have value %s'%(self.id, key))
-            return None
+            elif key == 'style' or key == 'special_effect':
+                return None
+        raise AttributeError(key)
+
     
     def use(self, user):
         power = self.power

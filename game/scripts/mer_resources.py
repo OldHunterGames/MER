@@ -5,7 +5,7 @@ class Resources(object):
         self._resources_consumption = []
     def __getattr__(self, key):
         try:
-            attr = self.resources[key]
+            attr = self.__dict__['resources'][key]
             return attr
         except KeyError:
             raise AttributeError(key)
