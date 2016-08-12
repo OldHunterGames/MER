@@ -87,12 +87,9 @@ label shd_edge_overtime_nap(action):
     
 label shd_edge_overtime_scout(action):
     python:
-        if len(edge.locations) < edge.loc_max:
-            scouted = choice(edge_locations)
-            if scouted in edge.locations:
-                renpy.jump('shd_edge_overtime_scout')
-            edge.locations.append(scouted)
-            message = 'Found %s location.'% scouted
+        if not edge.maximum_scouted():
+            scouted = edge.explore_location()
+            message = 'Found %s location.'% scouted.name
         else:
             message = 'Already exlored'
         
