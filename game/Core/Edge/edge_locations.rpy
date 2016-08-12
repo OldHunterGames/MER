@@ -5,7 +5,7 @@ label lbl_edge_shifting_mist(location=None):
     python:
         ally1 = DuelCombatant(player)
         enemy1 = DuelCombatant(gen_random_person('human'))
-        fight = DuelEngine([ally1],[enemy1])
+        fight = DuelEngine([ally1],[enemy1], None)
         fight.start()
     return
 
