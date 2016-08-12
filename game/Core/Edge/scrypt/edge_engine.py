@@ -9,6 +9,7 @@ def make_menu(location):
     choice = renpy.display_menu(menu_list)
     return edge.go_to(choice)
 ownerable = ['charity_mission']
+unique = ['outpost', 'shifting_mist']
 class EdgeEngine(object):
     """
     This is the main script of Edge of Mists core module for Mists of Eternal Rome.
@@ -16,12 +17,14 @@ class EdgeEngine(object):
 
     def __init__(self):
         self.locations = []
+        self.house = None
 
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())
-        location = EdgeLocation(location[0], location[1])
-        if location.id in ownerable:
-            location.gen_owner()
+        while self.has_location(location[0]) and location[0] in unique:
+            location = choice(renpy.store.edge_locations.items())
+        location = EdgeLocation(location[0])
+        location.gen_owner()
         self.locations.append(location)
     
     def has_location(self, location_id):
@@ -30,8 +33,6 @@ class EdgeEngine(object):
                 return True
         return False
     
-    def explore(self):
-        renpy.notify('test123')
 
     def get_locations(self, location_id):
         list_ = []
@@ -43,30 +44,40 @@ class EdgeEngine(object):
     def go_to(self, location):
         location.go_to()
 
-    def make_menu(self, location):
-        locations = self.get_locations(location)
+    def make_locations_menu(self):
         menu_list = []
-        for location in locations:
+        for location in self.locations:
             displayed = location.name
-            if location.owner != None:
-                displayed += ' ' + location.owner
             menu_list.append((displayed, location))
+        menu_list.append(('Done', 'done'))
         choice = renpy.display_menu(menu_list)
+        if choice == 'done':
+            return renpy.call('lbl_edge_manage')
         return self.go_to(choice)
 
+    def remove_location(self, location):
+        self.locations.remove(location)
+
+
 class EdgeLocation(object):
-    def __init__(self, id_, displayed):
+    def __init__(self, id_, permanent=False):
         self.id = id_
-        self.name = displayed
         self.lbl_to_go = 'lbl_edge_' + self.id
         self.owner = None
         self.job = None
-
+        self.permanent = permanent
+    @property
+    def name(self):
+        return renpy.store.edge_locations[self.id].format(self.show_owner())
     def gen_owner(self):
         self.owner = choice(renpy.store.house_names.keys())
 
     def show_owner(self):
-        return renpy.store.house_names[self.owner]
+        try:
+            value = renpy.store.house_names[self.owner]
+            return value
+        except KeyError:
+            return
 
     def go_to(self):
         renpy.call(self.lbl_to_go, self)

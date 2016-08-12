@@ -46,6 +46,9 @@ label evn_edge_mistadvance(event):
         $ event.skipcheck = False 
     if not event.skipcheck:
         return False
-    $ poped = edge.locations.pop(randint(0,len(edge.locations)-1))
-    'Mists take over [poped] location'
+    python:
+        loc_list = [location for location in edge.locations if not location.permanent]
+        to_remove = choice(loc_list)
+        edge.remove_location(to_remove)
+    'Mists take over [to_remove.name] location'
     return True

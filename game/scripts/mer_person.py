@@ -466,10 +466,10 @@ class Person(object):
         list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
             self.count_modifiers('therapy')]
         list_ += self.modifiers_separate('vitality')
-        list_ = [i for i in l if i != 0]
+        list_ = [i for i in list_ if i != 0]
         lgood = []
         lbad = []
-        for i in l:
+        for i in list_:
             if i > 0:
                 lgood.append(i)
             elif i < 0:

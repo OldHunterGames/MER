@@ -1,5 +1,6 @@
 init python:
     edge_locations = {
+        'outpost': __('House {0} outpost'),
         'grim_battlefield': __('grim battlefield'),
         'crimson_pit': __('crimson pit'),
         'junk_yard': __('junk yard'),
@@ -9,7 +10,8 @@ init python:
         'echoing hills': __('echoing hills'),
         'outworld_ruines': __('outworld ruines'),
         'raider_encampment': __('raiders encampment'),
-        'charity_mission': __('charity mission'),
+        'charity_mission': __('House {0} charity mission'),
+        'shifting_mist': __('Shifting mist')
         }
     
     edge_denotation = {
@@ -36,4 +38,8 @@ label lbl_edge_shifting_mist(location=None):
 
 label lbl_edge_grim_battlefield(location):
 
+    return
+
+label lbl_edge_outpost(location):
+    call screen sc_universal_trade
     return

@@ -15,15 +15,22 @@ label lbl_edge_main:
     python:
         camp = EdgeCamp()
         edge.locations = []
+        trade_loc = EdgeLocation('outpost', True)
+        trade_loc.gen_owner()
+        mist_loc = EdgeLocation('shifting_mist', True)
+        edge.locations.append(trade_loc)
+        edge.locations.append(mist_loc)
         edge.loc_max = 2 + player.agility
         core.set_world('edge')
-        house = choice(house_names.values())
+        edge.house = choice(house_names.values())
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
         player.ration['amount'] = "unlimited"  
         player.ration['food_type'] = "forage" 
         core.resources.add_consumption('player_food', 'provision', player.get_food_consumption, None)
+        for i in range(5):
+            edge.explore_location()
     call edge_init_events
     call lbl_edge_manage
     return
@@ -71,35 +78,7 @@ label lbl_edge_schedule:
     return
 
 label lbl_edge_locations_menu:
-    menu:
-        'Your base camp' if 'your base camp' in edge.locations:
-            call lbl_edge_noloc
-        'House [house] Outpost':
-            call screen sc_universal_trade
-        'Grim battlefield' if edge.has_location('grim_battlefield'):
-            $ edge.make_menu('grim_battlefield')
-        'Crimson pit' if edge.has_location('crimson_pit'):
-            $ edge.make_menu('crimson_pit')
-        'Junk yard' if edge.has_location('junk_yard'):
-            $ edge.make_menu('junk_yard')
-        'Ruined factory' if edge.has_location('ruined_factory'):
-            $ edge.make_menu('ruined_factory')
-        'Dying grove' if edge.has_location('dying_grove'):
-            $ edge.make_menu('dying_grove')
-        'Hazy marsh' if edge.has_location('hazy_marsh'):
-            $ edge.make_menu('hazy_marsh')
-        'Echoing hills' if edge.has_location('echoing_hills'):
-            $ edge.make_menu('echoing_hillds')
-        'Outworld ruines' if edge.has_location('outworld_ruines'):
-            $ edge.make_menu('outworld_ruines')
-        'Raiders encampment' if edge.has_location('raiders_encampment'):
-            $ edge.make_menu('raiders_encampment')
-        'Charity mission' if edge.has_location('charity_mission'):
-            $ edge.make_menu('charity_mission')
-        'Shifting Mist':
-            call lbl_edge_shifting_mist
-        'Done':
-            call lbl_edge_manage
+    $ edge.make_locations_menu()
             
     call lbl_edge_locations_menu    
     return
