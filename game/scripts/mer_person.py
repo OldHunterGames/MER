@@ -150,7 +150,7 @@ class Person(object):
             if self.main_hand.type == 'shield':
                 return True
         if self.other_hand != None:
-            if self.other_hand.type == 'shild':
+            if self.other_hand.type == 'shield':
                 return True
         return False
     

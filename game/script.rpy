@@ -24,6 +24,8 @@ label start:
         core = MistsOfEternalRome()
         set_event_game_ref(core)
         player = gen_random_person('human')
+        testperson = Person()
+        testperson.add_item(gen_item('weapon', 'simple_axe'))
         player.add_item(gen_item('weapon', 'simple_axe'))
         player.add_item(gen_item('armor', 'bad_plate'))
         player.add_item(gen_item('weapon', 'simple_dagger'))
@@ -43,17 +45,6 @@ label choose_action:
     "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
-    $ com1 = DuelCombatant(player)
-    $ com1.hand.append(clinch)
-    $ com1.hand.append(hit_n_run)
-    $ com1.hand.append(rage)
-    $ testp = Person()
-    $ i = gen_item('armor', 'bad_plate')
-    $ testp.add_item(i)
-    $ testp.equip_item(i, 'armor')
-    $ com2 = DuelCombatant(testp)
-    $ com2.hand.append(test1)
-    $ fight = DuelEngine([com1], [com2], 'simple')
     menu:
         "Visit discovered world" if discovered_worlds:
             python:
@@ -98,6 +89,7 @@ label choose_item:
             call screen sc_choose_item(player, 'armor', 'armor')
         'finish':
             return
+    return
 label end_turn:
     $ core.new_turn()
     call new_turn
@@ -116,8 +108,8 @@ screen sc_choose_item(person, item_type, slot):
         item_list = [item for item in person.items if item.type == item_type and not item.equiped]
     vbox:
         for i in item_list:
-            textbutton i.name action [Function(person.equip_item, i, slot), Jump('choose_item')]
-        textbutton 'disarm' action [Function(person.equip_item, None, slot), Jump('choose_item')]
+            textbutton i.name action [Function(person.equip_item, i, slot), Return()]
+        textbutton 'disarm' action [Function(person.equip_item, None, slot), Return()]
 init python:
     class TradeInput(InputValue):
         def __init__(self):
