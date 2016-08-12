@@ -373,6 +373,12 @@ class Deck(object):
         except IndexError:
             return 
 
+    def remove_card(self, card_id):
+        for card in self.cards_list:
+            if card.id == card_id:
+                self.cards_list.remove(card)
+                return
+
 
 class DuelAction(object):
     """
