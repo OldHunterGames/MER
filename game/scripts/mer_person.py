@@ -418,13 +418,12 @@ class Person(object):
                 if value > 5:
                     value = 5
                 return value
-        if 'get_all_needs' in self.__dict__:
-            n = self.__dict__['get_all_needs']()
-        else:
-            n = None
-        if n != None:
-            if key in n.keys():
-                return n[key]
+        n = {}
+        if '_needs' in self.__dict__:
+            for need in self.__dict__['_needs']:
+                n[need.name] = need
+        if key in n.keys():
+            return n[key]
         raise AttributeError(key)
 
 
