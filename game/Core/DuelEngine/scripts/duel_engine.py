@@ -83,7 +83,7 @@ def init_points(combatant, enemy, situation):
 
 class DuelEngine(object):
 
-    def __init__(self, allies_list, enemies_list, situation):
+    def __init__(self, allies_list, enemies_list, situation=None):
         self.allies = allies_list
         self.enemies = enemies_list
         for i in self.allies:
@@ -92,8 +92,7 @@ class DuelEngine(object):
         for i in self.enemies:
             i.set_fight(self)
             i.set_side('enemies')
-        self.current_ally = self.allies.pop()
-        self.current_enemy = self.enemies.pop()
+        self.current_enemy = self._get_combatant('enemies')
 
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
                         'enemies': init_points(self.current_enemy, self.current_ally, situation)}
@@ -114,6 +113,7 @@ class DuelEngine(object):
                 combatant.set_side('ally')
             else:
                 combatant.set_side('enemy')
+            combatant.set_hand()
             return combatant
         except IndexError:
             return self._end_fight(side)
@@ -215,9 +215,6 @@ class DuelCombatant(object):
         self.name = person.name
         self.side = None
         self.fight = None
-        self.main_weapon = person.main_hand
-        self.other_weapon = person.other_hand
-        self.armor = person.armor
         self.deck = None
         self.hand = []
         self.drop = []
@@ -237,6 +234,19 @@ class DuelCombatant(object):
         self.deck = None
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
+    
+    @property
+    def main_weapon(self):
+        return self.person.main_hand
+    
+    @property
+    def other_weapon(self):
+        return self.person.other_hand
+    
+    @property
+    def armor(self):
+        return self.person.armor
+    
     def hand_is_empty(self):
         if len(self.hand) < 1:
             return True
@@ -379,38 +389,3 @@ class DuelAction(object):
             str_ += ')'
 
         return str_
-def make_inactive(battlepoints_list):
-    for point in battlepoints_list:
-        point.active = False
-def clinch_special(user):
-    battle_points = [value['maneuver'] for value in user.fight.points.values()]
-    make_inactive(battle_points)
-def hit_n_run_special(user):
-    battle_points = [value['onslaught'] for value in user.fight.points.values()]
-    make_inactive(battle_points)
-def rage_special(user):
-    battle_points = [value['fortitude'] for value in user.fight.points.values()]
-    make_inactive(battle_points)
-def outsmart_special(user):
-    for value in user.fight.points.values():
-        for i in value.values():
-            i.active = True
-def fallback_special(user):
-    value = 0
-    point_to_decrease = None
-    for point in user.fight.points[user.side].values():
-        if point.value > value:
-            value = point.value
-            point_to_decrease = point
-    if point_to_decrease != None:
-        point_to_decrease.value -= user.escalation
-    card = renpy.call_screen('draw_From_drop', user)
-    user.draw_from_drop(card)
-
-clinch = DuelAction('clinch', 'clinch', 'common', 0, special_effect=clinch_special)
-hit_n_run = DuelAction('hit_n_run', 'hit-n-run', 'common', 0, special_effect=hit_n_run_special)
-rage = DuelAction('rage', 'rage', 'common', 0, special_effect=rage_special)
-outsmart = DuelAction('outsmart', 'outsmart', 'common', 0, special_effect=outsmart_special)
-fallback = DuelAction('fallback', 'fallback', 'common', 0, special_effect=fallback_special)
-test1 = DuelAction('test1', 'test', 'common', 2, slot='onslaught')
-actions_lib = [test1, clinch, hit_n_run, rage, outsmart, fallback]
