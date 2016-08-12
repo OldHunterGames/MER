@@ -29,8 +29,6 @@ label lbl_edge_main:
         player.ration['amount'] = "unlimited"  
         player.ration['food_type'] = "forage" 
         core.resources.add_consumption('player_food', 'provision', player.get_food_consumption, None)
-        for i in range(5):
-            edge.explore_location()
     call edge_init_events
     call lbl_edge_manage
     return
