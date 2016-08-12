@@ -39,5 +39,12 @@ init python:
                     'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
                     'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
                     'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special},
-                    'test1': {'name': __('test1'), 'rarity': 'common', 'power': 2, 'slot': 'onslaught'}
-    }
+                    'puny_strike': {'name': __('puny strike'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'special_effect': hit_n_run_special},
+                    'draggle': {'name': __('draggle'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot': 'maneuver', 'special_effect': hit_n_run_special},
+                    'desperation': {'name': __('desperation'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'fortitude', 'special_effect': hit_n_run_special},
+                    
+                    'name': {'name': __('name'), 'rarity': 'common', 'power': 0, 'use_weapon': False, 'mighty': False, 'slot': 'onslaught', 'special_effect': None},
+                    
+
+                    
+}
