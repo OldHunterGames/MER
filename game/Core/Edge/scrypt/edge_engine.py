@@ -18,6 +18,7 @@ class EdgeEngine(object):
     def __init__(self):
         self.locations = []
         self.house = None
+        self.max_loc = 0
 
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())
@@ -26,6 +27,7 @@ class EdgeEngine(object):
         location = EdgeLocation(location[0])
         location.gen_owner()
         self.locations.append(location)
+        return location
     
     def has_location(self, location_id):
         for location in self.locations:
@@ -57,6 +59,12 @@ class EdgeEngine(object):
 
     def remove_location(self, location):
         self.locations.remove(location)
+
+    def is_maximum_scouted(self):
+        if len(self.locations) < self.max_loc:
+            return False
+        return True
+
 
 
 class EdgeLocation(object):
