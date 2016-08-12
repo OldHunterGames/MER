@@ -17,6 +17,25 @@ screen duel_battle(fight):
                 action Function(fight.round_end)
         elif fight.ended:
             textbutton 'Leave' action Return()
+    if fight.passed:
+        hbox:
+            align(0.5, 0.5)
+            vbox:
+                $ stack = fight.use_stack['allies']
+                text 'allies'
+                for i in range(len(stack)):
+                    $ card = stack[i]
+                    $ number = i+1
+                    text '[number]: [card.name]'
+            vbox:
+                text ' '
+            vbox:
+                $ stack = fight.use_stack['enemies']
+                text 'enemies'
+                for i in range(len(stack)):
+                    $ card = stack[i]
+                    $ number = i+1
+                    text '[number]: [card.name]'
     vbox:
         align(0.5, 0.0)
         text 'player: [fight.enemies_loose_points] - enemies: [fight.allies_loose_points]'

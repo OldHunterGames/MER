@@ -10,6 +10,7 @@ class BattlePoint(object):
         self._value = 0
         self.active = True
         self.doubled = False
+    
     @property
     def value(self):
         if self.doubled:
@@ -17,6 +18,11 @@ class BattlePoint(object):
         if not self.active:
             return 0
         return self._value
+    
+    @property
+    def true_value(self):
+        return self._value
+    
     @value.setter
     def value(self, value):
         self._value = value
@@ -94,6 +100,7 @@ class DuelEngine(object):
             i.set_side('enemies')
         self.current_ally = self._get_combatant('allies')
         self.current_enemy = self._get_combatant('enemies')
+        self.use_stack = {'allies': [], 'enemies': []}
 
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
                         'enemies': init_points(self.current_enemy, self.current_ally, situation)}
@@ -168,6 +175,7 @@ class DuelEngine(object):
         if self.round > 1:
             self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
                             'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
+            self.use_stack = {'allies': [], 'enemies': []}
             
         self.current_ally.send_event('round_started')
         self.current_enemy.send_event('round_started')
@@ -201,6 +209,9 @@ class DuelEngine(object):
                 return self.enemy_run()
             else:
                 return 
+
+    def update_stack(self, side, card):
+        self.use_stack[side].append(card)
 
 
 class DuelCombatant(object):
@@ -306,6 +317,7 @@ class DuelCombatant(object):
         points = duel_action.use(self)
         if duel_action.slot != None:
             self.fight.points[self.side][duel_action.slot].value += points
+        self.fight.update_stack(self.side, duel_action)
         self.drop.append(duel_action)
         self.hand.remove(duel_action)
 
