@@ -38,9 +38,9 @@ class Resources(object):
     
 
     def consumption_remove(self, name):
-        for i in self._resources_consumption:
-            if i[3] == name:
-                self.resources.remove(i)
+        for res in self._resources_consumption:
+            if res[3] == name:
+                self._resources_consumption.remove(res)
 
     def consumption_tick(self):
         to_remove = []
