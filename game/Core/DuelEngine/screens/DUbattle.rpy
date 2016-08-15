@@ -2,6 +2,12 @@
 # Duel Battle Screen
 #
 # Screen that's used to display battle in duel mode.
+style hoverable_text_text:
+    take text
+    hover_color '#000'
+style hoverable_text:
+    take hyperlink_text
+
 label duel_battle_init(fight):
     call screen duel_battle(fight)
     return 
@@ -17,25 +23,31 @@ screen duel_battle(fight):
                 action Function(fight.round_end)
         elif fight.ended:
             textbutton 'Leave' action Return()
-    if fight.passed:
-        hbox:
+        textbutton 'show fight summary':
+            action Function(fight.set_show_summary, True)
+    if fight.show_summary:
+        vbox:
             align(0.5, 0.5)
-            vbox:
-                $ stack = fight.use_stack['allies']
-                text 'allies'
-                for i in range(len(stack)):
-                    $ card = stack[i]
-                    $ number = i+1
-                    text '[number]: [card.name]'
-            vbox:
-                text ' '
-            vbox:
-                $ stack = fight.use_stack['enemies']
-                text 'enemies'
-                for i in range(len(stack)):
-                    $ card = stack[i]
-                    $ number = i+1
-                    text '[number]: [card.name]'
+            hbox:
+                vbox:
+                    $ stack = fight.use_stack['allies']
+                    text 'allies'
+                    for i in range(len(stack)):
+                        $ card = stack[i]
+                        $ number = i+1
+                        text '[number]: [card.name]'
+                vbox:
+                    text ' '
+                vbox:
+                    $ stack = fight.use_stack['enemies']
+                    text 'enemies'
+                    for i in range(len(stack)):
+                        $ card = stack[i]
+                        $ number = i+1
+                        text '[number]: [card.name]'
+            textbutton 'Hide':
+                xalign 0.5
+                action Function(fight.set_show_summary, False)
     vbox:
         align(0.5, 0.0)
         text 'player: [fight.enemies_loose_points] - enemies: [fight.allies_loose_points]'
@@ -98,6 +110,13 @@ screen duel_battle(fight):
                     text str("{color=#00007f}fortitude: %s{/color}"%fight.points['enemies']['fortitude'].value)
                     text str("{color=#000000}excellence: %s{/color}"%fight.points['enemies']['excellence'].value)
                     text str("summary: %s"%(fight.summary('enemies')))
+                    text 'last played card:'
+                    if not fight.passed and fight.current_enemy.last_played_card != None:
+                        textbutton fight.current_enemy.last_played_card.name:
+                            style style.hoverable_text
+                            hovered Show('sc_card_info', card=fight.current_enemy.last_played_card)
+                            unhovered Hide('sc_card_info')
+                            action NullAction()
 
 
 label lbl_duel_battle_end(fight):

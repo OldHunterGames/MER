@@ -136,7 +136,6 @@ class DuelEngine(object):
             loosed_side = self.compare_points()
         self.current_ally.escalation = 0
         self.current_enemy.escalation = 0
-        self.show_summary = True
         side = 'ally' if loosed_side == 'allies' else 'enemy'
         loser_str = 'current_%s'%(side)
         loser = getattr(self, loser_str)
@@ -169,7 +168,6 @@ class DuelEngine(object):
         value = sum(i.value for i in self.points[side].values())
         return value
     def start_new_round(self):
-        self.show_summary = False
         self.pass_ = False
         self.round += 1
         if self.round > 1:
@@ -179,6 +177,7 @@ class DuelEngine(object):
             
         self.current_ally.send_event('round_started')
         self.current_enemy.send_event('round_started')
+        self.enemy_run()
 
     def start(self):
         self.start_new_round()
@@ -213,6 +212,8 @@ class DuelEngine(object):
     def update_stack(self, side, card):
         self.use_stack[side].append(card)
 
+    def set_show_summary(self, bool_):
+        self.show_summary = bool_
 
 class DuelCombatant(object):
     """
@@ -242,6 +243,14 @@ class DuelCombatant(object):
         self.deck = None
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
+
+    @property
+    def last_played_card(self):
+        try:
+            last = self.drop[-1]
+            return last
+        except IndexError:
+            return 
     
     @property
     def main_weapon(self):
@@ -431,7 +440,10 @@ class DuelAction(object):
         return power
     
     def show(self):
-        str_ = "%s(%s"%(self.name, self.slot)
+        try:
+            str_ = self.description
+        except AttributeError:
+            str_ = "%s(%s"%(self.name, self.slot)
         if self.slot != None:
             str_ += ': %s)'%(self.power)
         else:
