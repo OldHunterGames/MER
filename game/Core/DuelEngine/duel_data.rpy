@@ -1,5 +1,7 @@
 init python:
     sys.path.append(renpy.loader.transfn("Core/DuelEngine/scripts"))
+    import random as rand
+
     from duel_engine import DuelAction
     def make_inactive(battlepoints_list):
         for point in battlepoints_list:
@@ -15,9 +17,11 @@ init python:
         make_inactive(battle_points)
     def outsmart_special(user):
         for value in user.fight.points.values():
-            for i in value.values():
-                i.active = True
+            for i in value:
+                value[i].active = True
     def fallback_special(user):
+        if len(user.drop) < 2:
+            return
         value = 0
         point_to_decrease = None
         for point in user.fight.points[user.side].values():
@@ -26,7 +30,10 @@ init python:
                 point_to_decrease = point
         if point_to_decrease != None:
             point_to_decrease.value -= user.escalation
-        card = renpy.call_screen('draw_From_drop', user)
+        if user.side == 'allies':
+            card = renpy.show_screen('draw_from_drop', user)
+        else:
+            card = rand.choice(user.drop)
         user.draw_from_drop(card)
     
     # available keys for actions
@@ -37,7 +44,7 @@ init python:
     actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special},
                     'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special},
                     'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
-                    'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special},
+                    'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': outsmart_special},
                     'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special},
                     'puny_strike': {'name': __('puny strike'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'special_effect': None},
                     'draggle': {'name': __('draggle'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot': 'maneuver', 'special_effect': None},
@@ -73,3 +80,12 @@ init python:
 
                     
 }
+
+screen draw_from_drop(user):
+    vbox:
+        align(0.6, 0.7)
+        text 'draw_card:'
+        for c in user.drop:
+            if c != user.drop[-1]:
+                textbutton c.name:
+                    action Function(user.draw_from_drop, card), Hide('draw_from_drop')

@@ -4,6 +4,45 @@ from duel_data import *
 from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
+def predict_result(npc, player, simulated_fight):
+    test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
+    test_fight.points = {'allies': {}, 'enemies': {}}
+    for key in simulated_fight.points:
+        for k, v in simulated_fight.points[key].items():
+            points = BattlePoint()
+            points.copy_points(v)
+            test_fight.points[key][k] = points
+
+    current_value = simulated_fight.summary('allies') - simulated_fight.summary('enemies')
+    npc.fight = test_fight
+    return_to_hand = []
+    saved_drop = [action for action in npc.drop]
+    returned = None
+    for card in npc.hand:
+        npc.use_action(card)
+        new_value = test_fight.summary('allies') - test_fight.summary('enemies')
+        if new_value > current_value:
+            return_to_hand.append(npc.drop.pop())
+            returned = None
+        elif new_value == current_value:
+            if simulated_fight.enemies_loose_points > 0:
+                returned = card
+            else:
+                return_to_hand.append(npc.drop.pop())
+                returned = None
+        else:
+            returned = card
+        if returned != None:
+            npc.hand.append(returned)
+            break
+    for card in return_to_hand:
+        npc.hand.append(card)
+    npc.drop = saved_drop
+    npc.fight = simulated_fight
+    player.fight = simulated_fight
+        
+    return returned
+
 
 class BattlePoint(object):
     def __init__(self):
@@ -26,6 +65,11 @@ class BattlePoint(object):
     @value.setter
     def value(self, value):
         self._value = value
+
+    def copy_points(self, points):
+        self._value = points._value
+        self.active = points.active
+        self.doubled = points.doubled
 def init_points(combatant, enemy, situation):
     d = {'onslaught':BattlePoint(), 'maneuver': BattlePoint(), 'fortitude': BattlePoint(), 'excellence': BattlePoint()}
     for key, value in combatant.default_points.items():
@@ -89,9 +133,10 @@ def init_points(combatant, enemy, situation):
 
 class DuelEngine(object):
 
-    def __init__(self, allies_list, enemies_list, situation=None):
+    def __init__(self, allies_list, enemies_list, situation=None, simulation=False):
         self.allies = allies_list
         self.enemies = enemies_list
+        self.simulation = simulation
         for i in self.allies:
             i.set_fight(self)
             i.set_side('allies')
@@ -113,6 +158,8 @@ class DuelEngine(object):
         self.pass_ = False
         self.show_summary = False
         self.ended = False
+        self.enemy_passed = True
+        
 
     def _get_combatant(self, side):
         try:
@@ -121,7 +168,9 @@ class DuelEngine(object):
                 combatant.set_side('allies')
             else:
                 combatant.set_side('enemies')
-            combatant.set_hand()
+            if not self.simulation:
+                combatant.set_hand()
+            self.use_stack = {'allies': [], 'enemies': []}
             return combatant
         except IndexError:
             return self._end_fight(side)
@@ -170,10 +219,11 @@ class DuelEngine(object):
     def start_new_round(self):
         self.pass_ = False
         self.round += 1
+        self.enemy_passed = False
         if self.round > 1:
             self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
                             'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
-            self.use_stack = {'allies': [], 'enemies': []}
+            
             
         self.current_ally.send_event('round_started')
         self.current_enemy.send_event('round_started')
@@ -198,9 +248,19 @@ class DuelEngine(object):
 
     def enemy_run(self):
         enemy = self.current_enemy
+        if self.passed and self.current_loser == 'allies':
+            return
+        if self.enemy_passed:
+            return
         try:
-            action = enemy.hand[-1]
-            enemy.use_action(action)
+            action = predict_result(enemy, self.current_ally, self)
+            if action != None:
+                enemy.use_action(action)
+            else:
+                if self.enemies_loose_points > 0 or self.type == 'mass':
+                    enemy.use_action(choice(enemy.hand))
+                else:
+                    self.enemy_passed = True
         except IndexError:
                 return 
         if self.passed:

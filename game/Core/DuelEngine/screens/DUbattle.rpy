@@ -77,15 +77,16 @@ screen duel_battle(fight):
                 hovered Show('sc_fighter_stats', fight=fight)
                 unhovered Hide('sc_fighter_stats')
                 action Return("show_your_role")
-    vbox:
-        xalign 0.3
-        yalign 0.1
-        for card in fight.current_ally.hand:
-            textbutton card.name:
-                hovered Show('sc_card_info', card=card)
-                unhovered Hide('sc_card_info')
-                action [Function(fight.current_ally.use_action, card), Function(fight.enemy_run)]                  
-                     
+    if not fight.ended:
+        vbox:
+            xalign 0.3
+            yalign 0.1
+            for card in fight.current_ally.hand:
+                textbutton card.name:
+                    hovered Show('sc_card_info', card=card)
+                    unhovered Hide('sc_card_info')
+                    action [Function(fight.current_ally.use_action, card), Function(fight.enemy_run), Hide('sc_card_info')]                  
+                         
                          
     frame:
         align (0.98, 0.01)
