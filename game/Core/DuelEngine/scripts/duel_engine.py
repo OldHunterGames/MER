@@ -503,7 +503,8 @@ class DuelAction(object):
         try:
             str_ = self.description
         except AttributeError:
-            str_ = "%s(%s"%(self.name, self.slot)
+            pass
+        str_ += "\n %s(%s"%(self.name, self.slot)
         if self.slot != None:
             str_ += ': %s)'%(self.power)
         else:
