@@ -22,6 +22,7 @@ init python:
     def fallback_special(user):
         if len(user.drop) < 2:
             return
+        user.send_event('draw_card')
         value = 0
         point_to_decrease = None
         for point in user.fight.points[user.side].values():

@@ -9,7 +9,7 @@ def predict_result(npc, player, simulated_fight):
     test_fight.points = {'allies': {}, 'enemies': {}}
     for key in simulated_fight.points:
         for k, v in simulated_fight.points[key].items():
-            points = BattlePoint()
+            points = BattlePoint(k)
             points.copy_points(v)
             test_fight.points[key][k] = points
 
@@ -26,6 +26,8 @@ def predict_result(npc, player, simulated_fight):
             returned = None
         elif new_value == current_value:
             if simulated_fight.enemies_loose_points > 0:
+                returned = card
+            elif npc.last_event == 'draw_card' and len(saved_drop) > 1:
                 returned = card
             else:
                 return_to_hand.append(npc.drop.pop())
@@ -45,10 +47,12 @@ def predict_result(npc, player, simulated_fight):
 
 
 class BattlePoint(object):
-    def __init__(self):
+    def __init__(self, name=None):
         self._value = 0
         self.active = True
         self.doubled = False
+        self._color = '#fff'
+        self.name = name
     
     @property
     def value(self):
@@ -70,8 +74,25 @@ class BattlePoint(object):
         self._value = points._value
         self.active = points.active
         self.doubled = points.doubled
+    @property
+    def color(self):
+        if self.active:
+            return self._color
+        return "#000"
+
+    def set_color(self, color):
+        self._color = color
+    @property
+    def description(self):
+        str_ = "{color=%s}%s: %s{/color}"%(self.color, self.name, self.value)
+        return str_
 def init_points(combatant, enemy, situation):
-    d = {'onslaught':BattlePoint(), 'maneuver': BattlePoint(), 'fortitude': BattlePoint(), 'excellence': BattlePoint()}
+    d = {'onslaught':BattlePoint('onslaught'), 'maneuver': BattlePoint('maneuver'),
+         'fortitude': BattlePoint('fortitude'), 'excellence': BattlePoint('excellence')}
+    d['onslaught'].set_color('#ff0000')
+    d['maneuver'].set_color('#64f742')
+    d['fortitude'].set_color('#00007f')
+    d['excellence'].set_color('#ffff00')
     for key, value in combatant.default_points.items():
         d[key].value += value
     weapons = combatant.get_weapons()
@@ -303,6 +324,7 @@ class DuelCombatant(object):
         self.deck = None
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
+        self.last_event = None
 
     @property
     def last_played_card(self):
@@ -387,7 +409,8 @@ class DuelCombatant(object):
         if duel_action.slot != None:
             self.fight.points[self.side][duel_action.slot].value += points
         self.fight.update_stack(self.side, duel_action)
-        self.drop.append(duel_action)
+        if duel_action.power > 0:
+            self.drop.append(duel_action)
         self.hand.remove(duel_action)
 
     def send_event(self, event):
@@ -405,7 +428,7 @@ class DuelCombatant(object):
                 self.default_points['excellence'] += self.escalation
         if event == 'roud_started':
             self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
-
+        self.last_event = event
             
 
 class Deck(object):

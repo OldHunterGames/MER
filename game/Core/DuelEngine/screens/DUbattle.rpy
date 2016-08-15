@@ -62,10 +62,10 @@ screen duel_battle(fight):
             frame:
                 vbox:
                     align(0.5, 0.07)
-                    text str("{color=#ff0000}onslaught: %s{/color}"%fight.points['allies']['onslaught'].value)
-                    text str("{color=#64f742}maneuver: %s{/color}"%fight.points['allies']['maneuver'].value)
-                    text str("{color=#00007f}fortitude: %s{/color}"%fight.points['allies']['fortitude'].value)
-                    text str("{color=#000000}excellence: %s{/color}"%fight.points['allies']['excellence'].value)
+                    text str(fight.points['allies']['onslaught'].description)
+                    text str(fight.points['allies']['maneuver'].description)
+                    text str(fight.points['allies']['fortitude'].description)
+                    text str(fight.points['allies']['excellence'].description)
                     text str("summary: %s"%(fight.summary('allies')))
             frame:
                 align (0.5, 0.05)
@@ -106,10 +106,10 @@ screen duel_battle(fight):
             frame:
                 vbox:
                     align(0.5, 0.07)
-                    text str("{color=#ff0000}onslaught: %s{/color}"%fight.points['enemies']['onslaught'].value)
-                    text str("{color=#64f742}maneuver: %s{/color}"%fight.points['enemies']['maneuver'].value)
-                    text str("{color=#00007f}fortitude: %s{/color}"%fight.points['enemies']['fortitude'].value)
-                    text str("{color=#000000}excellence: %s{/color}"%fight.points['enemies']['excellence'].value)
+                    text str(fight.points['enemies']['onslaught'].description)
+                    text str(fight.points['enemies']['maneuver'].description)
+                    text str(fight.points['enemies']['fortitude'].description)
+                    text str(fight.points['enemies']['excellence'].description)
                     text str("summary: %s"%(fight.summary('enemies')))
                     text 'last played card:'
                     if not fight.passed and fight.current_enemy.last_played_card != None:
