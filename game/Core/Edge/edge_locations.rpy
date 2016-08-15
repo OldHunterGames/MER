@@ -5,7 +5,7 @@ label lbl_edge_shifting_mist(location=None):
     python:
         ally1 = DuelCombatant(player)
         enemy1 = DuelCombatant(gen_random_person('human'))
-        basic_deck = Deck(['clinch', 'hit_n_run', 'rage', 'light_strike', 'light_strike', 'light_strike', 'move', 'move', 'move', 'rebound', 'rebound', 'rebound'])
+        basic_deck = Deck(['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite', 'headbutt', 'recoil', 'dodge', 'deep_breath', 'caution', 'bite', 'bite', 'light_strike', 'strike', 'powerful_strike', 'move', 'dash', 'fast_dash', 'rebound', 'block', 'hard_block'])
         ally1.set_deck(basic_deck)
         enemy1.set_deck(basic_deck)
         
