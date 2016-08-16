@@ -3,17 +3,18 @@ __author__ = 'OldHuntsman'
 from random import *
 import renpy.store as store
 import renpy.exports as renpy
-from features_data import person_features
 
 class Feature(object):
 
-    def __init__(self, owner=None, name="generic", *args, **kwargs):
-        stats = None
-        if not stats:
-            stats = person_features[name] if name in person_features else None
-        if not stats:
-            return 
-        self.name = name
+    def __init__(self, owner=None, id_="generic", data_dict='person_features', *args, **kwargs):
+        try:
+            data_dict = getattr(store, data_dict)
+            stats = data_dict[id_]
+        except KeyError, AttributeError:
+            return
+            raise Exception("no feature named %s in %s"%(id_, data_dict))
+        self.id = id_
+        self.name = stats['name']
         self.slot = stats['slot'] if 'slot' in stats else None        # There can be only one feature for every feature slot
         self.revealed = False   # true if the feature is revealed to player      
         self.owner = owner    # the Person() who owns this feature
@@ -34,16 +35,16 @@ class Feature(object):
         if self.slot == None:
             self.owner.features.append(self)
             if self.modifiers:
-                slot = self.slot if self.slot else self.name
-                self.owner.modifiers.add_modifier(self.name, self.modifiers, self, slot)
+                slot = self.slot if self.slot else self.id
+                self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
             return
         else:
             for feature in self.owner.features:
                 if feature.slot == self.slot:
                     feature.remove()
             if self.modifiers:
-                slot = self.slot if self.slot else self.name
-                self.owner.modifiers.add_modifier(self.name, self.modifiers, self, slot)
+                slot = self.slot if self.slot else self.id
+                self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
             self.owner.features.append(self)
 
 
@@ -56,9 +57,9 @@ class Feature(object):
             pass
             
 class Phobia(Feature):
-    def __init__(self, owner, name, fear_obj, *args, **kwargs):
-        stats = person_phobias[name] if name in person_phobias else None
-        super(Phobia, self).__init__(owner, name)
+    def __init__(self, owner, id_, fear_obj, *args, **kwargs):
+        stats = person_phobias[id_] if id_ in person_phobias else None
+        super(Phobia, self).__init__(owner, id_)
         self.object_of_fear = fear_obj
 
 

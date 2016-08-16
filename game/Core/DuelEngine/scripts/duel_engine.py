@@ -4,6 +4,7 @@ from duel_data import *
 from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
+
 def predict_result(npc, player, simulated_fight):
     test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
     test_fight.points = {'allies': {}, 'enemies': {}}
@@ -18,6 +19,7 @@ def predict_result(npc, player, simulated_fight):
     return_to_hand = []
     saved_drop = [action for action in npc.drop]
     returned = None
+    
     for card in npc.hand:
         npc.use_action(card)
         new_value = test_fight.summary('allies') - test_fight.summary('enemies')
@@ -37,14 +39,13 @@ def predict_result(npc, player, simulated_fight):
         if returned != None:
             npc.hand.append(returned)
             break
+    
     for card in return_to_hand:
         npc.hand.append(card)
     npc.drop = saved_drop
     npc.fight = simulated_fight
     player.fight = simulated_fight
-        
     return returned
-
 
 class BattlePoint(object):
     def __init__(self, name=None):
@@ -278,10 +279,7 @@ class DuelEngine(object):
             if action != None:
                 enemy.use_action(action)
             else:
-                if self.enemies_loose_points > 0 or self.type == 'mass':
-                    enemy.use_action(choice(enemy.hand))
-                else:
-                    self.enemy_passed = True
+                self.enemy_passed = True
         except IndexError:
                 return 
         if self.passed:
@@ -370,6 +368,7 @@ class DuelCombatant(object):
             card = self.deck.get_card()
             if card != None:
                 self.hand.append(self.deck.get_card())
+                self.send_event('draw_card')
             else:
                 return
 
@@ -377,6 +376,7 @@ class DuelCombatant(object):
         if card in self.drop:
             self.hand.append(card)
             self.drop.remove(card)
+            self.send_event('draw_card')
     def get_combat_style(self):
         if self.person.has_shield():
             return 'shieldbearer'
@@ -512,6 +512,7 @@ class DuelAction(object):
 
     
     def use(self, user):
+        user.send_event('card_used')
         power = self.power
         if self.mighty:
             power += 5

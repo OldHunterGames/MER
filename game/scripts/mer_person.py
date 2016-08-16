@@ -5,7 +5,7 @@ import collections
 import renpy.store as store
 import renpy.exports as renpy
 
-from features import Feature, Phobia, person_features
+from features import Feature, Phobia
 from skills import Skill, skills_data
 from needs import init_needs
 from copy import copy
@@ -805,11 +805,11 @@ class Person(object):
 
         return motiv
 
-    def add_feature(self, name):    # adds features to person, if mutually exclusive removes old feature
-        Feature(self, name)
+    def add_feature(self, id_):    # adds features to person, if mutually exclusive removes old feature
+        Feature(self, id_)
     
-    def add_phobia(self, name):
-        Phobia(self, name)
+    def add_phobia(self, id_):
+        Phobia(self, id_)
     
     def feature_by_slot(self, slot):        # finds feature which hold needed slot
         for f in self.features:
@@ -817,9 +817,9 @@ class Person(object):
                 return f
         return None
 
-    def feature(self, name):                # finds feature with needed name if exist
+    def feature(self, id_):                # finds feature with needed name if exist
         for f in self.features:
-            if f.name == name:
+            if f.id == id_:
                 return f
         return None
 
@@ -829,9 +829,12 @@ class Person(object):
                 if f.name == feature:
                     f.remove()
         else:
-            i = self.features.index(feature)
-            self.features[i].remove()
-            return
+            try:
+                while True:
+                    i = self.features.index(feature)
+                    self.features[i].remove()
+            except ValueError:
+                return
 
     def remove_feature_by_slot(self, slot):
         for f in self.features:

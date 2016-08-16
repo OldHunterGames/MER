@@ -22,7 +22,6 @@ init python:
     def fallback_special(user):
         if len(user.drop) < 2:
             return
-        user.send_event('draw_card')
         value = 0
         point_to_decrease = None
         for point in user.fight.points[user.side].values():
@@ -32,10 +31,15 @@ init python:
         if point_to_decrease != None:
             point_to_decrease.value -= user.escalation
         if user.side == 'allies':
-            card = renpy.show_screen('draw_from_drop', user)
+            card_to_get = renpy.show_screen('draw_from_drop', user)
         else:
-            card = rand.choice(user.drop)
-        user.draw_from_drop(card)
+            max_ = 0
+            card_to_get = None
+            for card in used.drop:
+                if card.value > max_:
+                    card_to_get = card
+                    max_ = card.value
+        user.draw_from_drop(card_to_get)
     
     # available keys for actions
     # {id: name, rarity, power=0, use_weapon=False, mighty=False, slot=None, special_effect=None, unique=False, style=None}

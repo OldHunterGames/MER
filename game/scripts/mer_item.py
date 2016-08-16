@@ -2,15 +2,44 @@
 from random import *
 import renpy.store as store
 import renpy.exports as renpy
-
+from features import Feature
+from modifiers import ModifiersStorage
 class Item(object):
     type_ = 'item'
-    def __init__(self, data_dict=None, *args, **kwargs):
+    def __init__(self, data_dict, *args, **kwargs):
         self.data = data_dict
+        self.features_data_dict = '%s_features'%(self.type)
         self.equiped = False
+        self.features = []
+        self.modifiers = ModifiersStorage
+
+    def add_feature(self, id_):
+        Feature(self, id_, self.features_data_dict)
+
+    def remove_feature(self, feature):
+        if isinstance(feature, str):
+            for feature in self.features:
+                if feature.id == feature:
+                    feature.remove()
+        else:
+            try:
+                while True:
+                    i = self.features.index(feature)
+                    self.features[i].remove()
+            except ValueError:
+                return
+
+    def feature_by_slot(self, slot):
+        for feature in self.features:
+            if feature.slot == slot:
+                return feature
+
+    def count_modifiers(self, attribute):
+        return self.modifiers.count_modifiers(attribute)
+
     @property
     def quality(self):
-        return self.data['quality']
+        return self.data['quality']+self.count_modifiers('quality')
     @property
     def name(self):
         return self.data['name']
@@ -38,11 +67,8 @@ class Armor(Item):
         return self.data['protection_type']
 
 def gen_item(item_type, item_id):
-    if item_type == 'weapon':
-        stats = store.items_data['weapon'][item_id]
-        weapon = Weapon(data_dict=stats)
-        return weapon
-    elif item_type == 'armor':
-        stats = store.items_data['armor'][item_id]
-        armor = Armor(data_dict=stats)
-        return armor
+    stats = getattr(store, item_type+'_data')[item_id]
+    item_type = item_type.title()
+    cls = globals()[item_type]
+    item = cls(data_dict=stats)
+    return item
