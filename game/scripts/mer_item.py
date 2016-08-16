@@ -11,8 +11,11 @@ class Item(object):
         self.features_data_dict = '%s_features'%(self.type)
         self.equiped = False
         self.features = []
-        self.modifiers = ModifiersStorage
-
+        self.modifiers = ModifiersStorage()
+        try:
+            self._init_features()
+        except AttributeError:
+            pass
     def add_feature(self, id_):
         Feature(self, id_, self.features_data_dict)
 
@@ -53,6 +56,9 @@ class Item(object):
 
 class Weapon(Item):
     type_ = 'weapon'
+    def _init_features(self):
+        self.add_feature(self.size)
+        self.add_feature(self.damage_type)
     @property
     def size(self):
         return self.data['size']
@@ -62,6 +68,8 @@ class Weapon(Item):
 
 class Armor(Item):
     type_ = 'armor'
+    def _init_features(self):
+        self.add_feature(self.protection_type)
     @property
     def protection_type(self):
         return self.data['protection_type']
