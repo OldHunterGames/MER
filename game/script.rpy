@@ -33,6 +33,7 @@ label start:
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
         ap = player.ap
+        player.set_resources_storage(core.resources)
 
     
     show expression "interface/bg_base.jpg" as bg
@@ -78,6 +79,7 @@ label choose_action:
         "finish":
             jump end_turn
     jump choose_action
+    
 label choose_item:
     python:
         if player.main_hand != None:
@@ -102,7 +104,12 @@ label choose_item:
         'finish':
             return
     return
+    
 label end_turn:
+    if 'dead' in player.features:
+        'you dead = GAME OVER'
+        $ renpy.full_restart
+        
     $ core.new_turn()
     call new_turn
     return

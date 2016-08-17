@@ -37,7 +37,7 @@ label shd_edge_job_scmunition(action):
         name = actor.name
         moral = None
         result = core.skillcheck(actor, 'survival', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = result*result
+        gain = edge_yeld[result]
         core.resources.munition += gain
         actor.skill('survival').get_expirience(result)
     '[name] scavenging munition on the gim battlefield. Yelds [gain] munition.'
@@ -49,7 +49,7 @@ label shd_edge_job_dbexctraction(action):
         name = actor.name
         moral = None
         result = core.skillcheck(actor, 'athletics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = result*result
+        gain = edge_yeld[result]
         core.resources.fuel += gain
         actor.skill('athletics').get_expirience(result)
     '[name] extracting demon blood from the crimson pit. Yelds [gain] fuel.'
@@ -61,7 +61,7 @@ label shd_edge_job_scjunc(action):
         name = actor.name
         moral = None
         result = core.skillcheck(actor, 'survival', difficulty = 2, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = result*result
+        gain = edge_yeld[result]
         core.resources.hardware += gain
         actor.skill('survival').get_expirience(result)
     '[name] scavenging junk. Yelds [gain] hardware.'
@@ -73,7 +73,7 @@ label shd_edge_job_disassemble(action):
         name = actor.name
         moral = None
         result = core.skillcheck(actor, 'mechanics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = result*result
+        gain = edge_yeld[result]
         core.resources.hardware += gain
         actor.skill('mechanics').get_expirience(result)
     '[name] disasembles old machinery on the ruined factory. Yelds [gain] hardware.'
