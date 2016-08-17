@@ -830,9 +830,8 @@ class Person(object):
                     f.remove()
         else:
             try:
-                while True:
-                    i = self.features.index(feature)
-                    self.features[i].remove()
+                i = self.features.index(feature)
+                self.features[i].remove()
             except ValueError:
                 return
 
