@@ -8,10 +8,11 @@ class Item(object):
     type_ = 'item'
     def __init__(self, data_dict, *args, **kwargs):
         self.data = data_dict
-        self.features_data_dict = '%s_features'%(self.type)
+        self.features_data_dict = 'item_features'
         self.equiped = False
         self.features = []
         self.modifiers = ModifiersStorage()
+        self.add_feature(self.quality)
         try:
             self._init_features()
         except AttributeError:
@@ -26,9 +27,8 @@ class Item(object):
                     feature.remove()
         else:
             try:
-                while True:
-                    i = self.features.index(feature)
-                    self.features[i].remove()
+                i = self.features.index(feature)
+                self.features[i].remove()
             except ValueError:
                 return
 
