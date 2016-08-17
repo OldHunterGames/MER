@@ -76,6 +76,7 @@ init python:
         'offhand': {'name': __('offhand'), 'slot': 'wpn_size', 'visible': True},
         'versatile': {'name': __('versatile'), 'slot': 'wpn_size', 'visible': True},
         'twohand': {'name': __('twohand'), 'slot': 'wpn_size', 'visible': True},     
+        'shield': {'name': __('versatile'), 'slot': 'wpn_size', 'visible': True},        
         
         'subdual': {'name': __('subdual'), 'slot': 'wpn_dmg', 'visible': True},        
         'slashing': {'name': __('slashing'), 'slot': 'wpn_dmg', 'visible': True},  
@@ -86,6 +87,5 @@ init python:
 
         'light_armor': {'name': __('light armor'), 'slot': 'armor_rate', 'visible': True},
         'heavy_armor': {'name': __('heavy armor'), 'slot': 'armor_rate', 'visible': True},  
-        
-        'shield': {'name': __('shield'), 'slot': None, 'visible': True},  
+
         }
