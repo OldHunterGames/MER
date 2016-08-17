@@ -12,6 +12,7 @@ from mer_event import events_list, Event
 from mer_resources import Resources
 from factions import Faction
 from mer_item import *
+from mer_utilities import encolor_text
 
 
 remembered_needs = collections.defaultdict(list)
@@ -52,15 +53,6 @@ def get_max_need(target, *args):
                 maxn = level
                 maxn_name = arg
     return maxn, maxn_name
-
-def encolor_text(text, value):
-    if value < 0:
-        value = 0
-    if value > 6:
-        value = 6
-    colors = ['ff0000', 'ff00ff', '00ffff', '0000FF', '00ff00', 'DAA520', '000000']
-    return '{b}{color=#%s}%s{/color}{/b}'%(colors[value], text)
-
 
 class MistsOfEternalRome(object):
     """

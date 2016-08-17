@@ -2,6 +2,7 @@
 from random import *
 import renpy.store as store
 import renpy.exports as renpy
+from mer_utilities import encolor_text
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -18,8 +19,8 @@ class EdgeEngine(object):
     def __init__(self):
         self.locations = []
         self.house = None
-        self.max_loc = 0
-
+        self.loc_max = 0
+    
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())
         while self.has_location(location[0]) and location[0] in unique:
@@ -51,21 +52,35 @@ class EdgeEngine(object):
         for location in self.locations:
             displayed = location.name
             menu_list.append((displayed, location))
-        menu_list.append(('Done', 'done'))
+        diff = self.loc_max - len(self.locations)
+        for i in range(diff):
+            menu_list.append(('???', 'pass'))
+        menu_list.append(('Do not go anywhere', 'done'))
         choice = renpy.display_menu(menu_list)
         if choice == 'done':
             return renpy.call('lbl_edge_manage')
+        if choice == 'pass':
+            return self.make_locations_menu()
         return self.go_to(choice)
 
     def remove_location(self, location):
         self.locations.remove(location)
 
     def is_maximum_scouted(self):
-        if len(self.locations) < self.max_loc:
+        if len(self.locations) < self.loc_max:
             return False
         return True
 
+    def locations_tick(self):
+        for location in self.locations:
+            location.increase_cache()
 
+    def player_has_cache(self):
+        for location in self.locations:
+            if location.player_cache:
+                return True
+
+cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
 
 class EdgeLocation(object):
     def __init__(self, id_, permanent=False):
@@ -74,9 +89,16 @@ class EdgeLocation(object):
         self.owner = None
         self.job = None
         self.permanent = permanent
+        self.cache = 0 if self.id in cache_locations else None
+        self.player_cache = False
     @property
     def name(self):
-        return renpy.store.edge_locations[self.id].format(self.show_owner())
+        name = renpy.store.edge_locations[self.id].format(self.show_owner())
+        if self.cache == None:
+            return name
+        else:
+            return encolor_text(name, self.cache)
+
     def gen_owner(self):
         self.owner = choice(renpy.store.house_names.keys())
 
@@ -92,4 +114,16 @@ class EdgeLocation(object):
 
     def job_available(self):
         pass
+
+    def increase_cache(self):
+        try:
+            self.cache += 1
+        except TypeError:
+            return
+
+    def explore_cache(self):
+        self.cache = 0
+
+    def make_cache(self):
+        self.player_cache = True
 
