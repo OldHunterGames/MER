@@ -1,9 +1,13 @@
 # -*- coding: <UTF-8> -*-
 from random import *
+
 import renpy.store as store
 import renpy.exports as renpy
+
 from features import Feature
 from modifiers import ModifiersStorage
+from mer_utilities import encolor_text
+
 class Item(object):
     type_ = 'item'
     def __init__(self, data_dict, *args, **kwargs):
@@ -65,6 +69,10 @@ class Weapon(Item):
     @property
     def damage_type(self):
         return self.data['damage_type']
+    @property
+    def description(self):
+        text = '{self.damage_type} {self.size} {self.name}'.format(self=self)
+        return encolor_text(text, self.quality)
 
 class Armor(Item):
     type_ = 'armor'

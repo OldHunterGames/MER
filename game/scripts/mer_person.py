@@ -19,6 +19,79 @@ from modifiers import ModifiersStorage
 from factions import Faction
 from buffs import Buff
 
+class Inventory(object):
+    def __init__(self):
+        self.carried_weapons = {'harness': None, 'belt1': None, 'belt2': None, 'armband': None, 'ankleband': None}
+        self.underwear = None
+        self.garments = None
+        self.owergarments = None
+        self._main_hand = None
+        self._other_hand = None
+        self.storage = []
+    
+    @property
+    def main_hand(self):
+        return self._main_hand
+    
+    @main_hand.setter
+    def main_hand(self, weapon):
+        if self._main_hand != None:
+            self._main_hand.unequip()
+            if self._main_hand not in self.storage:
+                self.storage.append(self._main_hand)
+        self._main_hand = weapon
+    
+    @property
+    def other_hand(self):
+        return self._other_hand
+    
+    @other_hand.setter
+    def other_hand(self, weapon):
+        if self._other_hand != None:
+            self._other_hand.unequip()
+            if self._other_hand not in self.storage:
+                self.storage.append(self._other_hand)
+        self._other_hand = weapon
+    
+    def available_for_slot(self, slot, storage=None):
+        if storage == None:
+            storage = self.storage
+        slots = {
+        'belt1': ['offhand', 'versatile'],
+        'belt2': ['offhand', 'versatile'],
+        'harness': ['offhand', 'versatile', 'shield', 'twohanded'],
+        'armband': ['offhand'],
+        'ankleband': ['offhand']
+        }
+        return [item for item in storage if item.size in slots[slot]]
+
+    def equip_on_slot(self, slot, item):
+        self.carried_weapons[slot] = item
+
+    def equip_weapon(self, weapon, hand='main_hand'):
+        if weapon in self.storage:
+            self.storage.remove(weapon)
+        if weapon.size == 'twohanded':
+            self.main_hand = weapon
+            self.other_hand = weapon
+        else:
+            other = 'other_hand' if hand=='main_hand' else 'main_hand'
+            if getattr(self, other).size == 'twohanded':
+                setattr(self, other, None)
+            setattr(self, hand, weapon)
+
+    def disarm_weapon(self, hand):
+        setattr(self, hand, None)
+
+    def equip_armor(self, armor, slot):
+        if armor in self.storage:
+            self.storage.remove(armor)
+        if getattr(self, slot) != None:
+            self.storage.append(getattr(self, slot))
+        setattr(self, slot, armor)
+
+
+
 def get_avatars():
     all_ = renpy.list_files()
     avas = [str_ for str_ in all_ if str_.startswith('images/avatar')]
@@ -125,11 +198,11 @@ class Person(object):
         self.set_avatar()
         self._buffs = []
         persons_list.append(self)
-        self.items = []
         self._main_hand = None
         self._other_hand = None
         self.armor = None
         self.resources_storage = None
+        self.inventory = Inventory()
 
 
     def set_resources_storage(self, storage):
@@ -138,68 +211,45 @@ class Person(object):
     #while inventory isn't implemented we need this methods for some test cases
     #they will be removed when inventory system is done.
     @property
+    def items(self):
+        return self.inventory.storage
+    
+    @property
     def main_hand(self):
-        return self._main_hand
+        return self.inventory.main_hand
+    
     
     @property
     def other_hand(self):
-        return self._other_hand
+        return self.inventory.other_hand
     
     def has_shield(self):
-        if self.main_hand != None:
-            if self.main_hand.size == 'shield':
+        try:
+            main = self.inventory.main_hand
+            other = self.inventory.other_hand
+            if main.size == 'shield' or other.size == 'shield':
                 return True
-        if self.other_hand != None:
-            if self.other_hand.size == 'shield':
-                return True
+        except AttributeError:
+            pass
         return False
     
     def equip_weapon(self, weapon, hand='main_hand'):
-        other = "_other_hand" if hand=='main_hand' else '_main_hand'
-        other_weapon = getattr(self, other)
-        if weapon.size == 'twohanded':
-            setattr(self, other, weapon)
-            if other_weapon != None:
-                other_weapon.unequip()
-        else:
-            if other_weapon != None:
-                if other_weapon.size == 'twohanded':
-                    other_weapon.unequip()
-                    setattr(self, other, None)
-        setattr(self, '_%s'%(hand), weapon)
-        weapon.equip()
+        self.inventory.equip_weapon(weapon, hand)
     
     def disarm_weapon(self, hand='main_hand'):
-        other = "_other_hand" if hand=='main_hand' else '_main_hand'
-        other_weapon = getattr(self, other)
-        main = getattr(self, "_%s"%(hand))
-        if other_weapon != None:
-            if other_weapon.size == 'twohanded':
-                other_weapon.unequip()
-                setattr(self, other, None)
-        if main != None:
-            main.unequip()
-        setattr(self, "_%s"%(hand), None)
+        self.inventory.disarm_weapon(hand)
+    
     def add_item(self, item):
-        self.items.append(item)
+        self.inventory.storage.append(item)
+
+    def equip_armor(self, item, slot):
+        self.inventory.equip_armor(item, slot)
 
     def equip_item(self, item, slot):
-        current = getattr(self, slot)
-        if current == item:
-            return
-        if item == None:
-            if slot == 'main_hand' or slot == 'other_hand':
-                self.disarm_weapon(slot)
-            else:
-                setattr(self, slot, None)
-        elif item in self.items:
-            if item.type == 'weapon':
-                self.equip_weapon(item, slot)
-            else:
-                item.equip()
-                if current != None:
-                    current.unequip()
-                setattr(self, slot, item)
+        if item.type == 'armor':
+            self.equip_armor(item, slot)
+        elif item.type == 'weapon':
+            self.equip_weapon(item, slot)
     #end of inventory methods
     
     def set_avatar(self):
@@ -940,7 +990,7 @@ class Person(object):
         return food_consumed
 
     def fatness_change(self):
-        consumed = self.consume_food()
+        consumed = self.get_food_consumption()
         demand = self.food_demand()
         desire = self.food_desire()
         calorie_difference = consumed-demand

@@ -38,7 +38,7 @@ label start:
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
-    # call new_turn
+    #call new_turn
     
     return
     
@@ -46,17 +46,6 @@ label choose_action:
     "You have [core.protagonist.sparks] sparks left. You need to pay [core.protagonist.allowance] sparks this decade to a major House. Mood: [player.mood]. Actions left: [ap]"    
     $ loc_to_call = "choose_acton"
     $ world_to_go = None
-    $ com1 = DuelCombatant(player)
-    $ deck1 = Deck(['clinch','hit_n_run', 'rage'])
-    $ deck2 = Deck(['clinch'])
-    $ com1.set_deck(deck1)
-    $ testp = Person()
-    $ i = gen_item('armor', 'bad_plate')
-    $ testp.add_item(i)
-    $ testp.equip_item(i, 'armor')
-    $ com2 = DuelCombatant(testp)
-    $ com2.set_deck(deck2)
-    $ fight = DuelEngine([com1], [com2], 'simple')
     menu:
         "Visit discovered world" if discovered_worlds:
             python:
@@ -73,8 +62,6 @@ label choose_action:
            call choose_item
         "Relax":
             $ loc_to_call = "end_turn"
-        'test_fight':
-            $ fight.start()
         "finish":
             jump end_turn
     jump choose_action
@@ -115,7 +102,7 @@ label game_over:
     "Game Over!"
     $ renpy.full_restart()
 
-screen sc_choose_item(person, item_type, slot):
+screen sc_choose_item(person, item_type, slot, storage=None):
     python:
         item_list = [item for item in person.items if item.type == item_type and not item.equiped]
     vbox:
