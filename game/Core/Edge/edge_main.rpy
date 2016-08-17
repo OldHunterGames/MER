@@ -20,7 +20,7 @@ label lbl_edge_main:
         mist_loc = EdgeLocation('shifting_mist', True)
         edge.locations.append(trade_loc)
         edge.locations.append(mist_loc)
-        edge.loc_max = 2 + player.agility
+        edge.loc_max = 7
         core.set_world('edge')
         edge.house = choice(house_names.values())
         player.schedule.add_action(camp.accommodation, False)
@@ -164,6 +164,7 @@ label lbl_edge_info_base:
 
 label lbl_edge_turn:
     'New turn'
+    $ edge.locations_tick()
     $ core.new_turn()
     call lbl_edge_manage
     return

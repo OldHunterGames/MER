@@ -7,7 +7,7 @@ init python:
         'ruined_factory': __('ruined factory'),
         'dying_grove': __('dying grove'),
         'hazy_marsh': __('hazy marsh'),
-        'echoing hills': __('echoing hills'),
+        'echoing_hills': __('echoing hills'),
         'outworld_ruines': __('outworld ruines'),
         'raider_encampment': __('raiders encampment'),
         'charity_mission': __('House {0} charity mission'),
