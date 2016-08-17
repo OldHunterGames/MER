@@ -147,10 +147,10 @@ class Person(object):
     
     def has_shield(self):
         if self.main_hand != None:
-            if self.main_hand.type == 'shield':
+            if self.main_hand.size == 'shield':
                 return True
         if self.other_hand != None:
-            if self.other_hand.type == 'shield':
+            if self.other_hand.size == 'shield':
                 return True
         return False
     
