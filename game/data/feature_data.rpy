@@ -73,10 +73,10 @@ init python:
     }
 
     item_features = {
-        'offhand': {'name': __('offhand'), 'slot': 'wpn_size', 'visible': True},
-        'versatile': {'name': __('versatile'), 'slot': 'wpn_size', 'visible': True},
-        'twohand': {'name': __('twohand'), 'slot': 'wpn_size', 'visible': True},     
-        'shield': {'name': __('versatile'), 'slot': 'wpn_size', 'visible': True},        
+        'offhand': {'name': __('offhand weapon'), 'slot': 'wpn_size', 'visible': True},
+        'versatile': {'name': __('weapon'), 'slot': 'wpn_size', 'visible': True},
+        'twohand': {'name': __('twohanded weapon'), 'slot': 'wpn_size', 'visible': True},     
+        'shield': {'name': __('shield'), 'slot': 'wpn_size', 'visible': True},        
         
         'subdual': {'name': __('subdual'), 'slot': 'wpn_dmg', 'visible': True},        
         'slashing': {'name': __('slashing'), 'slot': 'wpn_dmg', 'visible': True},  
