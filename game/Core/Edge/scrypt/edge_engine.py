@@ -75,7 +75,13 @@ class EdgeEngine(object):
         for location in self.locations:
             location.increase_cache()
 
+    def player_has_cache(self):
+        for location in self.locations:
+            if location.player_cache:
+                return True
+
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
+
 class EdgeLocation(object):
     def __init__(self, id_, permanent=False):
         self.id = id_
@@ -84,6 +90,7 @@ class EdgeLocation(object):
         self.job = None
         self.permanent = permanent
         self.cache = 0 if self.id in cache_locations else None
+        self.player_cache = False
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
@@ -116,4 +123,7 @@ class EdgeLocation(object):
 
     def explore_cache(self):
         self.cache = 0
+
+    def make_cache(self):
+        self.player_cache = True
 
