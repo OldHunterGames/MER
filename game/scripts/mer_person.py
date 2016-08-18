@@ -23,7 +23,7 @@ class Inventory(object):
     def __init__(self):
         self.carried_weapons = collections.OrderedDict([('harness', None), ('belt1', None),
             ('belt2', None), ('armband', None), ('ankleband', None)])
-        self.carried_armor = collections.OrderedDict([('underwear', None), ('garments', None), ('owergarments', None)])
+        self.carried_armor = collections.OrderedDict([('underwear', None), ('garments', None), ('overgarments', None)])
         self._main_hand = None
         self._other_hand = None
         self.storage = []
@@ -224,7 +224,6 @@ class Person(object):
         persons_list.append(self)
         self._main_hand = None
         self._other_hand = None
-        self.armor = None
         self.resources_storage = None
         self.inventory = Inventory()
 
@@ -246,6 +245,10 @@ class Person(object):
     @property
     def other_hand(self):
         return self.inventory.other_hand
+
+    @property
+    def armor(self):
+        return self.inventory.carried_armor['overgarments']
     
     def has_shield(self):
         try:

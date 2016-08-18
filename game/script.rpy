@@ -39,7 +39,6 @@ label start:
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
-    # call screen sc_person_equipment(player)
     
     return
     
@@ -104,6 +103,32 @@ screen sc_equip_item(person, slot):
         textbutton 'leave':
             action Hide('sc_equip_item')
 
+screen sc_prefight_equip(person):
+    vbox:
+        python:
+            if person.main_hand == None:
+                prefight_text1 = "main hand"
+            else:
+                prefight_text1 = "main hand: %s"%person.main_hand.description
+            if person.other_hand == None:
+                prefight_text2 = 'other hand'
+            else:
+                prefight_text2 = 'other hand: %s'%person.other_hand.description
+        textbutton prefight_text1:
+            action [Show('sc_equip_weapon', person=person, hand='main_hand'),
+                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None]) or person.main_hand != None)]
+        textbutton prefight_text2:
+            action [Show('sc_equip_weapon', person=person, hand='other_hand'),
+                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None]) or person.other_hand != None)]
+        textbutton 'Done' action Return()
+screen sc_equip_weapon(person, hand):
+    vbox:
+        align(0.3, 0.3)
+        for weapon in person.inventory.carried_weapons.values():
+            if weapon != None:
+                textbutton weapon.description:
+                    action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
+        textbutton 'unequip' action Function(person.disarm_weapon, hand), Hide('sc_equip_weapon')
     
 label end_turn:
     if 'dead' in player.features:

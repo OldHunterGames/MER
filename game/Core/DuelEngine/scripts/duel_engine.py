@@ -165,12 +165,11 @@ class DuelEngine(object):
         for i in self.enemies:
             i.set_fight(self)
             i.set_side('enemies')
-        self.current_ally = self._get_combatant('allies')
-        self.current_enemy = self._get_combatant('enemies')
+        self.current_ally = None
+        self.current_enemy = None
         self.use_stack = {'allies': [], 'enemies': []}
 
-        self.points = {'allies': init_points(self.current_ally, self.current_enemy, situation),
-                        'enemies': init_points(self.current_enemy, self.current_ally, situation)}
+        self.points = {}
         self.round = 0
         
         self.situation = situation
@@ -188,6 +187,7 @@ class DuelEngine(object):
             combatant = getattr(self, side).pop()
             if side == 'allies':
                 combatant.set_side('allies')
+                renpy.call_screen('sc_prefight_equip', combatant.person)
             else:
                 combatant.set_side('enemies')
             if not self.simulation:
@@ -252,6 +252,10 @@ class DuelEngine(object):
         self.enemy_run()
 
     def start(self):
+        self.current_ally = self._get_combatant('allies')
+        self.current_enemy = self._get_combatant('enemies')
+        self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
+                        'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
         self.start_new_round()
         renpy.call_in_new_context('duel_battle_init', self)
         
