@@ -59,14 +59,12 @@ label choose_action:
                     loc_to_call = world_to_go.point_of_arrival
         "Discover new world" if outer_worlds:
             $ loc_to_call = core.discover_world(outer_worlds)
-        "Equip":
-           call choose_item
         "Relax":
             $ loc_to_call = "end_turn"
         "finish":
             jump end_turn
     jump choose_action
-<<<<<<< HEAD
+
 screen sc_person_equipment(person):
     vbox:
         text 'Weapon:'
@@ -105,33 +103,7 @@ screen sc_equip_item(person, slot):
             action Function(person.inventory.equip_on_slot, slot, None)
         textbutton 'leave':
             action Hide('sc_equip_item')
-=======
-    
->>>>>>> origin/master
-label choose_item:
-    python:
-        if player.main_hand != None:
-            main_hand = player.main_hand.name
-        else:
-            main_hand = 'Nothing'
-        if player.other_hand != None:
-            other_hand = player.other_hand.name
-        else:
-            other_hand = 'Nothing'
-        if player.armor != None:
-            armor = player.armor.name
-        else:
-            armor = 'Nothing'
-    menu:
-        'main hand: [main_hand]':
-            call screen sc_choose_item(player, 'weapon', 'main_hand')
-        'other hand: [other_hand]':
-            call screen sc_choose_item(player, 'weapon', 'other_hand')
-        'armor: [armor]':
-            call screen sc_choose_item(player, 'armor', 'armor')
-        'finish':
-            return
-    return
+
     
 label end_turn:
     if 'dead' in player.features:
