@@ -21,14 +21,16 @@ from buffs import Buff
 
 class Inventory(object):
     def __init__(self):
-        self.carried_weapons = {'harness': None, 'belt1': None, 'belt2': None, 'armband': None, 'ankleband': None}
-        self.underwear = None
-        self.garments = None
-        self.owergarments = None
+        self.carried_weapons = collections.OrderedDict([('harness', None), ('belt1', None),
+            ('belt2', None), ('armband', None), ('ankleband', None)])
+        self.carried_armor = collections.OrderedDict([('underwear', None), ('garments', None), ('owergarments', None)])
         self._main_hand = None
         self._other_hand = None
         self.storage = []
-    
+    def weapon_slots(self):
+        return self.carried_weapons.keys()
+    def armor_slots(self):
+        return self.carried_armor.keys()
     @property
     def main_hand(self):
         return self._main_hand
@@ -63,10 +65,27 @@ class Inventory(object):
         'armband': ['offhand'],
         'ankleband': ['offhand']
         }
-        return [item for item in storage if item.size in slots[slot]]
+        list_ = []
+        if slot in self.armor_slots():
+            for item in storage:
+                if item.type == 'armor':
+                    list_.append(item)
+        else:
+            for item in storage:
+                if item.type != 'armor':
+                    if item.size in slots[slot]:
+                        list_.append(item)
+        return list_
 
     def equip_on_slot(self, slot, item):
-        self.carried_weapons[slot] = item
+        slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
+        dict_ = getattr(self, slots)
+        current_item = dict_[slot]
+        if current_item != None:
+            self.storage.append(current_item)
+        if item in self.storage:
+            self.storage.remove(item)
+        dict_[slot] = item
 
     def equip_weapon(self, weapon, hand='main_hand'):
         if weapon in self.storage:
@@ -89,6 +108,11 @@ class Inventory(object):
         if getattr(self, slot) != None:
             self.storage.append(getattr(self, slot))
         setattr(self, slot, armor)
+
+    def is_slot_active(self, slot):
+        slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
+        slots = getattr(self, slots)
+        return any(self.available_for_slot(slot)) or slots[slot] != None
 
 
 

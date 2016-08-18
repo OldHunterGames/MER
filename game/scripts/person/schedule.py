@@ -34,7 +34,7 @@ class ScheduledAction(object):
         self.store_name = store_name
         self.lbl = lbl
         self.single = single
-        self.special_values = collections.defaultdict(list)
+        self.special_values = dict()
         if special_values:
             for key in special_values:
                 self.special_values[key] = special_values[key]
@@ -48,10 +48,6 @@ class ScheduledAction(object):
         if renpy.has_label(removal_label):
             renpy.call_in_new_context(removal_label, self)
 
-
-    def add_special_list_value(self, key, value):
-        if value not in self.special_values[key]:
-            self.special_values[key].append(value)
 
 
 

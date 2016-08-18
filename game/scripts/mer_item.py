@@ -81,6 +81,10 @@ class Armor(Item):
     @property
     def protection_type(self):
         return self.data['protection_type']
+    @property
+    def description(self):
+        text = '{self.name}'.format(self=self)
+        return encolor_text(text, self.quality)
 
 def gen_item(item_type, item_id):
     stats = getattr(store, item_type+'_data')[item_id]

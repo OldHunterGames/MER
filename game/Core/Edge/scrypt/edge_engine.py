@@ -91,6 +91,7 @@ class EdgeLocation(object):
         self.permanent = permanent
         self.cache = 0 if self.id in cache_locations else None
         self.player_cache = False
+        self.just_created = True
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
@@ -112,10 +113,10 @@ class EdgeLocation(object):
     def go_to(self):
         renpy.call(self.lbl_to_go, self)
 
-    def job_available(self):
-        pass
-
     def increase_cache(self):
+        if self.just_created:
+            self.just_created = False
+            return
         try:
             self.cache += 1
         except TypeError:
