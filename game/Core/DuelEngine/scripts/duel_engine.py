@@ -445,7 +445,13 @@ class Deck(object):
         self.style = style
     
     def add_card(self, card_id):
-        self.card_list.append(make_card(card_id))
+        if isinstance(card_id, DuelAction):
+            self.cards_list.append(card_id)
+        else:
+            self.cards_list.append(make_card(card_id))
+
+    def remove_card(self, card):
+        self.cards_list.remove(card)
     
     def _count_cards(self, card_id):
         value = 0
@@ -480,12 +486,6 @@ class Deck(object):
             return card
         except IndexError:
             return 
-
-    def remove_card(self, card_id):
-        for card in self.cards_list:
-            if card.id == card_id:
-                self.cards_list.remove(card)
-                return
 
 
 class DuelAction(object):

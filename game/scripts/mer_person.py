@@ -226,7 +226,11 @@ class Person(object):
         self._other_hand = None
         self.resources_storage = None
         self.inventory = Inventory()
+        self.deck = None
+        self.cards_list = []
 
+    def set_deck(self, deck):
+        self.deck = deck
 
     def set_resources_storage(self, storage):
         self.resources_storage = storage
