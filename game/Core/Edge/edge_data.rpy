@@ -1,4 +1,6 @@
 init python:
+    edge_yeld = [0, 1, 3, 6, 10, 15]
+    
     edge_locations = {
         'outpost': __('House {0} outpost'),
         'grim_battlefield': __('grim battlefield'),
@@ -24,6 +26,7 @@ init python:
         'dbexctraction': __('extract fuel'),
         'scjunc': __('scavenge junk'),
         'disassemble': __('disassemble machinery'),
+        'lookforstash': __('look for hidden stash'),
         
         }
 
