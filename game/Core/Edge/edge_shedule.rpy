@@ -79,6 +79,21 @@ label shd_edge_job_disassemble(action):
     '[name] disasembles old machinery on the ruined factory. Yelds [gain] hardware.'
     return
     
+label shd_edge_job_lookforstash(action):
+    python:
+        actor = action.actor
+        place = action.special_values['place']
+        difficulty = 5 - int(action.special_values['quality'])
+        name = actor.name
+        moral = ['chaotic', 'evil']
+        result = core.threshold_skillcheck(actor, 'observation', difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, threshold = 3, special_motivators=[])        
+        if result[1] < 1:
+            'Fail'
+        else:
+            'Win'
+
+    return
+    
 label shd_edge_overtime_nap(action):
     python:
         pass

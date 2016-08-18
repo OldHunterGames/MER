@@ -83,17 +83,19 @@ label lbl_edge_locations_menu:
 label lbl_edge_shedule_job:
     menu:
         'Idle':
-            $ player.schedule.add_action('job_idle', False)  
+            $ target.schedule.add_action('job_idle', False)  
         'Explore viscinity' if len(edge.locations) < edge.loc_max:
-            $ player.schedule.add_action('job_explore', 1)               
-        'Scavenge munition (battlefield)' if edge.has_location('grim_battlefield'):
-            $ player.schedule.add_action('job_scmunition', 1)  
-        'Extract demonblood (pit)' if edge.has_location('crimson_pit'):
-            $ player.schedule.add_action('job_dbexctraction', 1)  
-        'Scavenge tools & scrap (junkyard)' if edge.has_location('junk_yard'):
-            $ player.schedule.add_action('job_scjunc', 1)              
-        'Disassemble machinery (factory)' if edge.has_location('ruined_factory'):
-            $ player.schedule.add_action('job_disassemble', 1)     
+            $ target.schedule.add_action('job_explore', 1)               
+        'Look for hidden stashes' if edge.has_location('hazy_marsh') or edge.has_location('echoing_hills') or edge.has_location('dying_grove'):
+            jump lbl_edge_locations_menu
+        'Scavenge munition' if edge.has_location('grim_battlefield'):
+            $ target.schedule.add_action('job_scmunition', 1)  
+        'Extract demonblood' if edge.has_location('crimson_pit'):
+            $ target.schedule.add_action('job_dbexctraction', 1)  
+        'Scavenge tools & scrap' if edge.has_location('junk_yard'):
+            $ target.schedule.add_action('job_scjunc', 1)              
+        'Disassemble machinery' if edge.has_location('ruined_factory'):
+            $ target.schedule.add_action('job_disassemble', 1)     
         'Nevermind':
             $ pass
     
@@ -103,11 +105,11 @@ label lbl_edge_shedule_job:
 label lbl_edge_shedule_overtime:
     menu:
         'Rest':
-            $ player.schedule.add_action('overtime_nap', False)          
+            $ target.schedule.add_action('overtime_nap', False)          
         'Scout new location' if len(edge.locations) < edge.loc_max:
-            $ player.schedule.add_action('overtime_scout', 1)    
+            $ target.schedule.add_action('overtime_scout', 1)    
         'Found a camp (outworld ruines)' if 'outworld ruines' in edge.locations and not camp.founded:
-            $ player.schedule.add_action('overtime_foundcamp', 1)  
+            $ target.schedule.add_action('overtime_foundcamp', 1)  
         'Nevermind':
             $ pass
     

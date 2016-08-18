@@ -26,6 +26,7 @@ init python:
         'dbexctraction': __('extract fuel'),
         'scjunc': __('scavenge junk'),
         'disassemble': __('disassemble machinery'),
+        'lookforstash': __('look for hidden stash'),
         
         }
 
