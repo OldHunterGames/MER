@@ -226,9 +226,14 @@ class Person(object):
         self._other_hand = None
         self.resources_storage = None
         self.inventory = Inventory()
-        self.deck = None
         self.cards_list = []
+        self.default_cards = False
+        self.deck = None
 
+    def add_default_cards(self, list_):
+        if not self.default_cards:
+            self.cards_list += list_
+        return
     def set_deck(self, deck):
         self.deck = deck
 
@@ -1052,7 +1057,7 @@ class Person(object):
                 if ind < 0:
                     ind = 0
                     if self.feature('starving'):
-                        self.add_feature('dead')
+                        self.die()
                     else:
                         self.add_feature('starving')
                 f = flist[ind]
@@ -1321,3 +1326,13 @@ class Person(object):
             self.conditions.remove(condition)
         except ValueError:
             pass
+
+    def die(self):
+        if self.player_controlled:
+            renpy.call('lbl_gameover')
+        self.add_feature('dead')
+
+    def is_dead(self):
+        if self.feature('dead') != None:
+            return True
+        return False

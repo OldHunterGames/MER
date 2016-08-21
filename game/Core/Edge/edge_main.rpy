@@ -16,7 +16,7 @@ label lbl_edge_main:
         camp = EdgeCamp()
         edge.locations = []
         trade_loc = EdgeLocation('outpost', True)
-        trade_loc.gen_owner()
+        trade_loc.gen_owner(choice(great_houses))
         mist_loc = EdgeLocation('shifting_mist', True)
         edge.locations.append(trade_loc)
         edge.locations.append(mist_loc)

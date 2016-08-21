@@ -75,18 +75,21 @@ class MistsOfEternalRome(object):
         self.time = 0
     def set_world(self, world):
         Schedule.set_world(world)
+    
     def add_fraction(self, name, owner):
-        f = Faction(name)
+        f = Faction(name, owner)
         f.set_owner(owner)
         self.fractions.append(f)
         return f
 
 
-    def get_fraction(self, name):
+    
+    def get_fraction(self, id_):
         for i in self.fractions:
-            if i.name == name:
+            if i.id == id_:
                 return i
         raise Exception("No faction with name: %s"%(name))
+    
     @property
     def protagonist(self):
         return self._player

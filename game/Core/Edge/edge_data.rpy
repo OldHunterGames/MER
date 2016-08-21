@@ -3,15 +3,14 @@ init python:
     
     edge_locations = {
         'outpost': __('House {0} outpost'),
-        'grim_battlefield': __('grim battlefield'),
-        'crimson_pit': __('crimson pit'),
-        'junk_yard': __('junk yard'),
-        'ruined_factory': __('ruined factory'),
-        'dying_grove': __('dying grove'),
-        'hazy_marsh': __('hazy marsh'),
+        'grim_battlefield': __('grim battlefield({0})'),
+        'crimson_pit': __('crimson pit({0})'),
+        'junk_yard': __('junk yard({0})'),
+        'ruined_factory': __('ruined factory({0})'),
+        'dying_grove': __('dying grove({0})'),
+        'hazy_marsh': __('hazy marsh({0})'),
         'echoing_hills': __('echoing hills'),
         'outworld_ruines': __('outworld ruines'),
-        'raider_encampment': __('raiders encampment'),
         'charity_mission': __('House {0} charity mission'),
         'shifting_mist': __('Shifting mist')
         }
@@ -34,3 +33,7 @@ init python:
                  'serpis': __('Serpis'), 
                  'corvus': __('Corvus'),
                  'taurus':  __('Taurus')}
+
+    gang_prefix_names = [__('Angry')]
+
+    gang_suffix_names = [__('Wolves')]
