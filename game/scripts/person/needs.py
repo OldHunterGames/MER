@@ -51,6 +51,12 @@ class Need(object):
 
     @property
     def level(self):
+        if self.name == 'relief':
+            return 1
+        elif self.name == 'general':
+            return 2
+        elif self.name == 'purpose':
+            return 3
         n = self.owner.alignment.special_needs()
         if self.name in n[2]:
             return 1
