@@ -20,6 +20,10 @@ init python:
 # The game starts here.
 label start:
     python:
+        great_houses = [Faction(gen_random_person(), __('Kamira'),'kamira'),
+            Faction(gen_random_person(), __('Serpis'), 'serpis'),
+            Faction(gen_random_person(), __('Corvus'), 'corvus'),
+            Faction(gen_random_person(), __('Taurus'), 'taurus')]
         discovered_worlds = []
         core = MistsOfEternalRome()
         set_event_game_ref(core)

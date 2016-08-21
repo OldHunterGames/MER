@@ -3,6 +3,8 @@ from random import *
 import renpy.store as store
 import renpy.exports as renpy
 from mer_utilities import encolor_text
+from factions import Faction
+from mer_person import gen_random_person
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -11,6 +13,7 @@ def make_menu(location):
     return edge.go_to(choice)
 ownerable = ['charity_mission']
 unique = ['outpost', 'shifting_mist']
+
 class EdgeEngine(object):
     """
     This is the main script of Edge of Mists core module for Mists of Eternal Rome.
@@ -23,7 +26,7 @@ class EdgeEngine(object):
     
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())
-        while self.has_location(location[0]) and location[0] in unique:
+        while self.has_location(location[0]) or location[0] in unique:
             location = choice(renpy.store.edge_locations.items())
         location = EdgeLocation(location[0])
         location.gen_owner()
@@ -92,6 +95,7 @@ class EdgeLocation(object):
         self.cache = 0 if self.id in cache_locations else None
         self.player_cache = False
         self.just_created = True
+    
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
@@ -100,14 +104,20 @@ class EdgeLocation(object):
         else:
             return encolor_text(name, self.cache)
 
-    def gen_owner(self):
-        self.owner = choice(renpy.store.house_names.keys())
+    def gen_owner(self, owner=None):
+        if owner == None:
+            person = gen_random_person('human')
+            name = choice(store.gang_prefix_names) + ' ' + choice(store.gang_suffix_names)
+            faction = Gang(person, name, self)
+            self.owner = faction
+        else:
+            self.owner = owner
 
     def show_owner(self):
         try:
-            value = renpy.store.house_names[self.owner]
+            value = self.owner.name
             return value
-        except KeyError:
+        except AttributeError:
             return
 
     def go_to(self):
@@ -128,3 +138,20 @@ class EdgeLocation(object):
     def make_cache(self):
         self.player_cache = True
 
+
+class Gang(Faction):
+    def __init__(self, owner, name, location):
+        super(Gang, self).__init__(owner, name)
+        self.warlord = None
+        self.medic = None
+        self.chief = None
+        self.madame = None
+        self.locations_controlled = [location]
+
+
+    def set_member_to_role(self, person, role):
+        setattr(self, role, person)
+        self.add_member(person)
+
+    def conquer_location(self, location):
+        self.locations_controlled.append(location)
