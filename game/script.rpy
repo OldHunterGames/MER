@@ -24,13 +24,6 @@ label start:
         core = MistsOfEternalRome()
         set_event_game_ref(core)
         player = gen_random_person('human')
-        testperson = Person()
-        testperson.add_item(gen_item('weapon', 'simple_axe'))
-        player.add_item(gen_item('weapon', 'simple_axe'))
-        player.add_item(gen_item('armor', 'bad_plate'))
-        player.add_item(gen_item('weapon', 'simple_dagger'))
-        player.cards_list = [make_card('clinch'), make_card('rage')]
-        player.deck = Deck()
         core.set_player(player)
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)

@@ -5,6 +5,9 @@ from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
 
+def default_cards():
+    return []
+
 def predict_result(npc, player, simulated_fight):
     test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
     test_fight.points = {'allies': {}, 'enemies': {}}
@@ -173,7 +176,7 @@ class DuelEngine(object):
         self.round = 0
         
         self.situation = situation
-        self.type = 'solo' if len(self.allies) == 0 and len(self.allies) == len(self.enemies) else 'mass'
+        self.type = 'solo' if len(self.allies) == 1 and len(self.allies) == len(self.enemies) else 'mass'
         self.allies_loose_points = 0
         self.enemies_loose_points = 0
         self.pass_ = False
@@ -304,10 +307,21 @@ class DuelCombatant(object):
     """
     def __init__(self, person):
         self.person = person
+        cards_list = default_cards()
+        if not person.default_cards:
+            person.add_default_cards(cards_list)
+        if not isinstance(person.deck, Deck):
+            person.deck = Deck()
+            for card in cards_list:
+                person.deck.add_card(card)
+        elif not person.deck.completed():
+            person.deck = Deck()
+            for card in cards_list:
+                person.deck.add_card(card)
         self.name = person.name
         self.side = None
         self.fight = None
-        self.deck = None
+        self.deck = person.deck
         self.hand = []
         self.drop = []
         if self.armor != None:
@@ -323,7 +337,6 @@ class DuelCombatant(object):
         self.avatar = person.avatar_path
         self.escalation = 0
         self.combat_style = self.get_combat_style()
-        self.deck = None
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
         self.last_event = None
@@ -440,6 +453,11 @@ class Deck(object):
         self.cards_list = [make_card(card) for card in cards_list] if cards_list != None else []
         self.current = None
         self.style = None
+
+    def completed(self):
+        if len(self.cards_list) == 22:
+            return True
+        return False
 
     def set_style(self, style):
         self.style = style
