@@ -65,14 +65,8 @@ label choose_action:
         "finish":
             jump end_turn
     jump choose_action
-
-
-    
+   
 label end_turn:
-    if 'dead' in player.features:
-        'you dead = GAME OVER'
-        $ renpy.full_restart
-        
     $ core.new_turn()
     call new_turn
     return

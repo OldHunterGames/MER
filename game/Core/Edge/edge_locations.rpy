@@ -30,15 +30,27 @@ label lbl_edge_dying_grove(location):
     return
 
 label lbl_edge_hazy_marsh(location):
-    $ a = location.cache
-    '[a]'
-    
+    $ special_values = {'place': 'marsh', 'quality': location.cache}
+    menu:
+        'Look for hidden stash (job)':
+            $ target.schedule.add_action('job_lookforstash', 1)  
+            jump lbl_edge_schedule
+        'Go back':
+            $ pass            
+        
+    jump lbl_edge_manage        
     return
     
 label lbl_edge_echoing_hills(location):
-    $ a = location.cache
-    '[a]'
-    
+    $ special_values = {'place': 'hills', 'quality': location.cache}
+    menu:
+        'Look for hidden stash (job)':
+            $ target.schedule.add_action('job_lookforstash', 1)  
+            jump lbl_edge_schedule
+        'Go back':
+            $ pass            
+        
+    jump lbl_edge_manage        
     return
     
 label lbl_edge_outpost(location):

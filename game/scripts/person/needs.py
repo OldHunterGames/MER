@@ -2,8 +2,9 @@
 from copy import deepcopy
 
 
-needs_names = ["general", 'purpose', "nutrition", "wellness", "comfort", "activity", "communication", "amusement",
-             "prosperity", "authority", "ambition", "eros", "order", "independence", "approval", "thrill", "altruism", "power"]
+needs_names = ["relief", "general", 'purpose', ## basic needs that all character have. "relief" fixed at 1, "general" intensity fixed at 2, "purporse" intensity fixed at 3
+               "nutrition", "wellness", "comfort", "activity", "communication", "amusement", "prosperity", "authority", "ambition", "eros",
+               "order", "independence", "approval", "thrill", "altruism", "power"]
 
 _default_need = {"level": 2}
 
