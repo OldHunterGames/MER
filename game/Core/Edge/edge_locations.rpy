@@ -16,6 +16,12 @@ label lbl_edge_shifting_mist(location=None):
 label lbl_edge_grim_battlefield(location):
     menu:
         'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they lookin for usible munitions.'
+        'Work for food':
+            $ pass
+        'Pay a tool for scavenge':
+            $ pass
+        'Ask to join the band':
+            $ pass
         'Get out':
             jump lbl_edge_locations_menu   
 
