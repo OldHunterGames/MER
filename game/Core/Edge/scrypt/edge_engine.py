@@ -12,7 +12,7 @@ def make_menu(location):
     choice = renpy.display_menu(menu_list)
     return edge.go_to(choice)
 ownerable = ['charity_mission', 'grim_battlefield', 'crimson_pit', 'junk_yard',
-    'ruined_factory', 'outworld_ruines']
+    'ruined_factory', 'squatted_slums']
 unique = ['outpost', 'shifting_mist']
 
 class EdgeEngine(object):
