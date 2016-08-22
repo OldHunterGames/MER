@@ -10,7 +10,7 @@ import renpy.exports as renpy
 from mer_person import *
 from mer_event import events_list, Event
 from mer_resources import Resources
-from factions import Faction
+from factions import Faction, factions_list
 from mer_item import *
 from mer_utilities import encolor_text
 
@@ -69,27 +69,30 @@ class MistsOfEternalRome(object):
         self.menues = []                # For custom RenPy menu screen
         self.evn_skipcheck = True
         self.resources = Resources()
-        self.fractions = []
+        self._factions = factions_list
         self.current_world = "MER"
         self.characters = persons_list
         self.time = 0
+    
+    @property
+    def factions(self):
+        return [faction for faction in self._factions]
+    
     def set_world(self, world):
         Schedule.set_world(world)
     
-    def add_fraction(self, name, owner):
-        f = Faction(name, owner)
-        f.set_owner(owner)
-        self.fractions.append(f)
-        return f
-
-
-    
-    def get_fraction(self, id_):
-        for i in self.fractions:
+    def get_faction(self, id_):
+        for i in self.factions:
             if i.id == id_:
                 return i
         raise Exception("No faction with name: %s"%(name))
     
+    def is_member_of_faction(self, person, faction):
+        return faction.has_member(person)
+
+    def has_any_faction(self, person):
+        return any([faction.has_member(person) for faction in self.factions])
+
     @property
     def protagonist(self):
         return self._player

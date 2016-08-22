@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+factions_list = []
 class Faction(object):
     def __init__(self, owner, name, id_=None):
         self.name = name
@@ -7,6 +7,7 @@ class Faction(object):
         self.members = []
         self.event_type = 'fraction'
         self.set_owner(owner)
+        factions_list.append(self)
     
     
     def set_owner(self, owner):
@@ -15,7 +16,7 @@ class Faction(object):
 
     
     def add_member(self, person):
-        if person not in self.members:
+        if not self.has_member(person):
             self.members.append(person)
 
     def remove_member(self, person):
@@ -25,7 +26,7 @@ class Faction(object):
             if person == self.owner:
                 self.owner = None
 
-    def is_member(self, person):
+    def has_member(self, person):
         if person in self.members:
             return True
         return False
