@@ -3,14 +3,14 @@ init python:
     
     edge_locations = {
         'outpost': __('House {0} outpost'),
-        'grim_battlefield': __('grim battlefield({0})'),
-        'crimson_pit': __('crimson pit({0})'),
-        'junk_yard': __('junk yard({0})'),
-        'ruined_factory': __('ruined factory({0})'),
+        'grim_battlefield': __('grim battlefield ({0})'),
+        'crimson_pit': __('crimson pit ({0})'),
+        'junk_yard': __('junk yard ({0})'),
+        'ruined_factory': __('ruined factory ({0})'),
         'dying_grove': __('dying grove'),
         'hazy_marsh': __('hazy marsh'),
         'echoing_hills': __('echoing hills'),
-        'outworld_ruines': __('outworld ruines({0})'),
+        'squatted_slums': __('squatted slums ({0})'),
         #'charity_mission': __('House {0} charity mission'),
         'shifting_mist': __('Shifting mist')
         }
