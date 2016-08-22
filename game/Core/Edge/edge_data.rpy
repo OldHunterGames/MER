@@ -7,11 +7,11 @@ init python:
         'crimson_pit': __('crimson pit({0})'),
         'junk_yard': __('junk yard({0})'),
         'ruined_factory': __('ruined factory({0})'),
-        'dying_grove': __('dying grove({0})'),
-        'hazy_marsh': __('hazy marsh({0})'),
+        'dying_grove': __('dying grove'),
+        'hazy_marsh': __('hazy marsh'),
         'echoing_hills': __('echoing hills'),
-        'outworld_ruines': __('outworld ruines'),
-        'charity_mission': __('House {0} charity mission'),
+        'outworld_ruines': __('outworld ruines({0})'),
+        #'charity_mission': __('House {0} charity mission'),
         'shifting_mist': __('Shifting mist')
         }
     
