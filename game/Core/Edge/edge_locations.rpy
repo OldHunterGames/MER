@@ -15,16 +15,29 @@ label lbl_edge_shifting_mist(location=None):
 
 label lbl_edge_grim_battlefield(location):
     menu:
-        'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they lookin for usible munitions.'
+        'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they looking for usible munitions.'
+        'Find out about [location.owner.name]':
+            'Information'
         'Work for food':
-            $ pass
+            menu:
+                'The [location.owner.name] offer to give you some food (3 provisions units) if you scavenge armaments for them for a decade.'
+                'Agree':
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
         'Pay a tool for scavenge':
-            $ pass
-        'Ask to join the band':
-            $ pass
+            menu:
+                'You must pay 400 banknotes to [location.owner.name] in order to scavenge their territory for usible munitions for a decade. All you can find and carry out is yours.'
+                'Agree (400 banknotes)':
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
+            'Not yet implemented'
         'Get out':
             jump lbl_edge_locations_menu   
 
+    call lbl_edge_grim_battlefield 
     return
 
 label lbl_edge_dying_grove(location):
