@@ -11,7 +11,8 @@ def make_menu(location):
     menu_list = [(location.name + ' ' + location.owner, location) for location in locations]
     choice = renpy.display_menu(menu_list)
     return edge.go_to(choice)
-ownerable = ['charity_mission']
+ownerable = ['charity_mission', 'grim_battlefield', 'crimson_pit', 'junk_yard',
+    'ruined_factory', 'outworld_ruines']
 unique = ['outpost', 'shifting_mist']
 
 class EdgeEngine(object):
@@ -29,7 +30,8 @@ class EdgeEngine(object):
         while self.has_location(location[0]) or location[0] in unique:
             location = choice(renpy.store.edge_locations.items())
         location = EdgeLocation(location[0])
-        location.gen_owner()
+        if location.id in ownerable:
+            location.gen_owner()
         self.locations.append(location)
         return location
     
