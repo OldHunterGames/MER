@@ -229,7 +229,15 @@ class Person(object):
         self.cards_list = []
         self.default_cards = False
         self.deck = None
+        self._calculatable = False
+    @property
+    def calculatable(self):
+        return self._calculatable or self.player_controlled
 
+    @calculatable.setter
+    def calculatable(self, value):
+        self._calculatable = value
+    
     def add_default_cards(self, list_):
         if not self.default_cards:
             self.cards_list += list_
@@ -939,6 +947,8 @@ class Person(object):
             need.reset()
     
     def rest(self):
+        if not self.calculatable:
+            return
         self.conditions = []
         self.tick_buffs_time()
         self.tick_features()
@@ -1032,7 +1042,7 @@ class Person(object):
         calorie_difference = consumed-demand
         if consumed < desire:
             self.nutrition.set_tension()
-        if self.ration['amount'] != 'starvation':
+        if consumed > 0:
             d = {'sperm': -4, 'forage': 0, 'dry': -2, 'canned': 0, 'cousine': 3}
             if d[self.ration['food_type']] < 0:
                 self.nutrition.set_tension()
