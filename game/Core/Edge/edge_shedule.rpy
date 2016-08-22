@@ -31,6 +31,17 @@ label shd_edge_job_explore(action):
     'All nearby locations explored'
     return
     
+label shd_edge_job_foodwork(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        beneficiar = action.special_values['beneficiar']
+        core.resources.provision += 3
+        child.skills_used.append(action.special_values['skill'])
+        player.moral_action('lawful', 'timid', target = beneficiar)  
+    '[name] scavenging munition on the gim battlefield for the sake of [beneficiar.name] gang. Recived food (3)'
+    return
+    
 label shd_edge_job_scmunition(action):
     python:
         actor = action.actor
