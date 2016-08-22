@@ -37,9 +37,25 @@ label shd_edge_job_foodwork(action):
         name = actor.name
         beneficiar = action.special_values['beneficiar']
         core.resources.provision += 3
-        child.skills_used.append(action.special_values['skill'])
+        player.skills_used.append(action.special_values['skill'])
         player.moral_action('lawful', 'timid', target = beneficiar)  
     '[name] scavenging munition on the gim battlefield for the sake of [beneficiar.name] gang. Recived food (3)'
+    return
+    
+label shd_edge_job_simplework(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        moral = action.special_values['moral']
+        skill = action.special_values['skill']
+        beneficiar = action.special_values['beneficiar']
+        tense = beneficiar = action.special_values['tense']
+        statisfy = action.special_values['statisfy'] 
+        result = core.skillcheck(actor, 'survival', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
+        gain = edge_yeld[result]
+        core.resources.munition += gain
+        actor.skill('survival').get_expirience(result)
+    '[name] scavenging munition on the gim battlefield. Yelds [gain] munition.'
     return
     
 label shd_edge_job_scmunition(action):
