@@ -152,7 +152,7 @@ class MistsOfEternalRome(object):
     def end_turn_event(self, skipcheck=False):
         shuffle(self.events_list)
         possible = self.events_list
-        char = choice(self.characters)
+        char = choice([char for char in self.characters if char.calculatable])
         for ev in possible:
             r = ev.trigger(char, skipcheck)
             if r:
