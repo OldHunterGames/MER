@@ -65,7 +65,7 @@ class EdgeEngine(object):
         if choice == 'done':
             return renpy.call('lbl_edge_manage')
         if choice == 'pass':
-            return self.make_locations_menu()
+            return renpy.call('lbl_edge_missed_location')
         return self.go_to(choice)
 
     def remove_location(self, location):
