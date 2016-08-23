@@ -31,13 +31,55 @@ label shd_edge_job_explore(action):
     'All nearby locations explored'
     return
     
+label shd_edge_job_bukake(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        beneficiar = action.special_values['beneficiar']
+        sperm = action.special_values['slut_rate']
+        core.resources.provision += sperm
+        player.nutrition.set_tension()
+        player.authority.set_tension()
+        player.power.set_tension()
+        if sperm > 1:
+            player.relief.set_tension()
+        if sperm > 2:
+            player.ambition.set_tension()
+        if sperm > 3:
+            player.comfort.set_tension()
+            player.amusement.set_tension()
+        if sperm > 4:
+            player.wellness.set_tension() 
+            player.independence.set_tension()            
+        player.skills_used.append(action.special_values['skill'])
+    '[name] sucks dicks for a decade and recive ration resources ([sperm] buckets of jizz). Yakh...'
+    return
+        
+label shd_edge_job_moneywork(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        moral = action.special_values['moral']
+        skill = action.special_values['skill']
+        beneficiar = action.special_values['beneficiar']
+        tense = action.special_values['tense']
+        statisfy = action.special_values['statisfy'] 
+        descr = action.special_values['description'] 
+        resname = action.special_values['resource_name'] 
+        difficulty = action.special_values['difficulty'] 
+        result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
+        gain = edge_yeld[result] * 50
+        core.resources.increase(resname, gain)
+        actor.skill(skill).get_expirience(result)
+    '[name] [descr] [gain] [resname].'
+    return
+    
 label shd_edge_job_foodwork(action):
     python:
         actor = action.actor
         name = actor.name
         beneficiar = action.special_values['beneficiar']
         core.resources.provision += 3
-        core.resources.money += 800
         player.skills_used.append(action.special_values['skill'])
         player.moral_action('lawful', 'timid', target = beneficiar)  
     '[name] scavenging munition on the gim battlefield for the sake of [beneficiar.name] gang. Recived food (3)'
@@ -52,14 +94,14 @@ label shd_edge_job_simplework(action):
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
-        txt = action.special_values['description'] 
+        descr = action.special_values['description'] 
         resname = action.special_values['resource_name'] 
         difficulty = action.special_values['difficulty'] 
         result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
         gain = edge_yeld[result]
-        action.special_values['resource'] += gain
+        core.resources.increase(resname, gain)
         actor.skill(skill).get_expirience(result)
-    '[name] [txt] [gain] [resname].'
+    '[name] [descr] [gain] [resname].'
     return
     
 label shd_edge_job_scmunition(action):

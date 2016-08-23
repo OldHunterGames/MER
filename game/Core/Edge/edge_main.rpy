@@ -45,8 +45,6 @@ label lbl_edge_manage:
      "
         'Locations':
             call lbl_edge_locations_menu  
-        'Schedule':
-            call lbl_edge_schedule
         'Craft':
             call lbl_edge_craft
         'Information':
