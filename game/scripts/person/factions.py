@@ -3,9 +3,9 @@ factions_list = []
 class Faction(object):
     def __init__(self, owner, name, id_=None):
         self.name = name
-        self.id = None
+        self.id = id_
         self.members = []
-        self.event_type = 'fraction'
+        self.event_type = 'faction'
         self.set_owner(owner)
         factions_list.append(self)
     

@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
-
+import renpy.store as store
+import renpy.exports as renpy
 
 class Stance(object):
     _types = {'master': ['cruel', 'opressive', 'rightful', 'benevolent'],
@@ -70,7 +71,11 @@ class Stance(object):
             return self._special_value
         return Stance._types[self._type][self.value+1]
 
+    def show_stance(self):
+        return store.stance_translation[self._type][self.value+1]
 
+    def show_type(self):
+        return store.stance_types_translation[self.type]
     def change_stance(self, stance):
         if stance not in Stance._types.keys():
             raise Exception("Wrong stance: %s"%(t))

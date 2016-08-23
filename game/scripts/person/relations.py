@@ -43,7 +43,7 @@ class Relations(object):
             fervor = 1
         return fervor
     def show_fervor(self):
-        return Relations._fervor[self.fervor]
+        return store.relations_translation['fervor'][self.fervor]
     
 
     @property
@@ -57,7 +57,7 @@ class Relations(object):
             distance = 1
         return distance
     def show_distance(self):
-        return Relations._distance[self.distance]
+        return store.relations_translation['distance'][self.distance]
     
 
     @property
@@ -71,7 +71,7 @@ class Relations(object):
             congruence = 1
         return congruence
     def show_congruence(self):
-        return Relations._congruence[self.congruence]
+        return store.relations_translation['congruence'][self.congruence]
 
     
     def set_axis(self, axis, value):

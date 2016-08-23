@@ -85,7 +85,7 @@ class MistsOfEternalRome(object):
         for i in self.factions:
             if i.id == id_:
                 return i
-        raise Exception("No faction with name: %s"%(name))
+        raise Exception("No faction with id: %s"%(id_))
     
     def is_member_of_faction(self, person, faction):
         return faction.has_member(person)

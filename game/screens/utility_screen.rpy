@@ -192,3 +192,23 @@ screen sc_make_deck(person):
 screen sc_card_description(card):
     text card.show():
         align(0.5, 0.5)
+
+
+screen sc_faction_info(faction):
+    frame:
+        hbox:
+            vbox:
+                text 'Faction: ' + faction.name
+                text ' '
+                text 'Leaded:'
+                text faction.owner.name
+                text ' '
+                text 'Relations: '
+                text str(player.relations(faction).description())
+                text ' '
+                text 'Stance:'
+                text 'type: ' + str(player.stance(faction).show_type())
+                text 'level: ' + str(player.stance(faction).show_stance())
+                text ' '
+                textbutton 'leave':
+                    action Return()
