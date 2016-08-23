@@ -108,5 +108,5 @@ class Resources(object):
 
     def to_zero(self):
         for res in self.resources.keys():
-            self.resoruces[res] = 0
+            self.resources[res] = 0
             
