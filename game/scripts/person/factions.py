@@ -18,6 +18,7 @@ class Faction(object):
     def add_member(self, person):
         if not self.has_member(person):
             self.members.append(person)
+            person.add_faction(self)
 
     def remove_member(self, person):
         for i in self.members:
@@ -25,6 +26,7 @@ class Faction(object):
                 self.members.remove(person)
             if person == self.owner:
                 self.owner = None
+        person.remove_faction(self)
 
     def has_member(self, person):
         if person in self.members:
