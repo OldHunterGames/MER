@@ -84,6 +84,9 @@ class Relations(object):
     def show_congruence(self):
         return store.relations_translation['congruence'][self.congruence]
 
+    def description(self):
+        return (self.show_fervor(), self.show_distance(), self.show_congruence())
+
     
     def set_axis(self, axis, value):
         ax = '_%s'%(axis)
@@ -110,6 +113,7 @@ class Relations(object):
     def harmony(self):
         value = 0
         axis = []
+        bad_axis = []
         if not self.is_player_relations():
             return value
         tendence = self.npc.attitude_tendency()
@@ -135,29 +139,48 @@ class Relations(object):
         difference = self.fervor + activity
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_fervor())
+            axis.append(self.fervor_str())
         elif difference == 0:
             if self.fervor != 0:
                 value -= 1
+                bad_axis.append(self.fervor_str())
         
         difference = self.distance + orderliness
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_distance())
+            axis.append(self.distance_str())
         elif difference == 0:
             if self.distance != 0:
                 value -= 1
+                bad_axis.append(self.distance_str())
         
         difference = self.congruence + morality
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_congruence())
+            axis.append(self.congruence_str())
         elif difference == 0:
             if self.congruence != 0:
                 value -= 1
+                bad_axis.append(self.congruence_str())
         if value < 0:
             value = 0
-        return value, axis
+        return value, axis, bad_axis
 
-
-
+    def show_harmony_axis(self):
+        bad_list = []
+        list_ = []
+        for value in self.harmony()[1]:
+            if value in Relations._fervor.values():
+                list_.append(self.show_fervor())
+            elif value in Relations._congruence.values():
+                list_.append(self.show_congruence())
+            elif value in Relations._distance.values():
+                list_.append(self.show_distance())
+        for value in self.harmony()[2]:
+            if value in Relations._fervor.values():
+                bad_list.append(self.show_fervor())
+            elif value in Relations._congruence.values():
+                bad_list.append(self.show_congruence())
+            elif value in Relations._distance.values():
+                bad_list.append(self.show_distance())
+        return tuple(list_), tuple(bad_list)

@@ -202,6 +202,11 @@ screen sc_faction_info(faction):
                 text ' '
                 text 'Leaded:'
                 text faction.owner.name
+                text ' ' 
+                text 'faction alignment:'
+                text 'morality: ' + faction.owner.alignment.show_morality()
+                text 'activity: ' + faction.owner.alignment.show_activity()
+                text 'orderliness: ' + faction.owner.alignment.show_orderliness()
                 text ' '
                 text 'Relations: '
                 text 'fervor: ' + player.relations(faction).show_fervor()
@@ -211,6 +216,13 @@ screen sc_faction_info(faction):
                 text 'Stance:'
                 text 'type: ' + str(player.stance(faction).show_type())
                 text 'level: ' + str(player.stance(faction).show_stance())
+                text ' '
+                text 'Harmony: ' + str(player.relations(faction).harmony()[0])
+                $ axis = player.relations(faction).show_harmony_axis()
+                if len(axis[0]) > 0:
+                    text 'harmonized_axis: ' + str(axis[0])
+                if len(axis[1]) > 0:
+                    text 'bad harmony: ' + str(axis[1])
                 text ' '
                 textbutton 'leave':
                     action Return()

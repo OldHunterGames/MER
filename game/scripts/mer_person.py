@@ -1288,8 +1288,8 @@ class Person(object):
         d = {'lawful': ('formal', 'loyality'), 'chaotic': ('intimate', 'scum-slave'),
             'timid': ('delicate', 'worship'), 'ardent': ('intense', 'disciple'),
             'good': ('supporter', 'dedication'), 'evil': ('contradictor', 'henchman')}
-
-        return [d.get(x) for x in self.alignment.description()]
+        list_ = [self.alignment.morality_str(), self.alignment.orderliness_str(), self.alignment.activity_str()]
+        return [d.get(x) for x in list_]
 
     def willing_available(self):
         if not self.master:
