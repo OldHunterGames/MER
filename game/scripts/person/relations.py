@@ -42,9 +42,12 @@ class Relations(object):
         elif fervor > 1:
             fervor = 1
         return fervor
+    
     def show_fervor(self):
         return store.relations_translation['fervor'][self.fervor]
     
+    def fervor_str(self):
+        return Relations._fervor[self.fervor]
 
     @property
     def distance(self):
@@ -56,6 +59,10 @@ class Relations(object):
         elif distance > 1:
             distance = 1
         return distance
+    
+    def distance_str(self):
+        return Relations._distance[self.distance]
+    
     def show_distance(self):
         return store.relations_translation['distance'][self.distance]
     
@@ -70,6 +77,10 @@ class Relations(object):
         elif congruence > 1:
             congruence = 1
         return congruence
+    
+    def congruence_str(self):
+        return Relations._congruence[self.congruence]
+    
     def show_congruence(self):
         return store.relations_translation['congruence'][self.congruence]
 
@@ -78,9 +89,6 @@ class Relations(object):
         ax = '_%s'%(axis)
         if hasattr(self, ax) and value in range(-1, 2):
             self.__dict__[ax] = value
-
-    def description(self):
-        return (self.show_fervor(), self.show_distance(), self.show_congruence())
         
     def change(self, axis, direction):
         if not self.is_player_relations():

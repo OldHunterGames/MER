@@ -76,6 +76,7 @@ class Stance(object):
 
     def show_type(self):
         return store.stance_types_translation[self.type]
+    
     def change_stance(self, stance):
         if stance not in Stance._types.keys():
             raise Exception("Wrong stance: %s"%(t))

@@ -1298,7 +1298,8 @@ class Person(object):
         rel = self.desirable_relations()
         types = [x[1] for x in rel if isinstance(x, tuple)]
         check = [x[0] for x in rel if isinstance(x, tuple)]
-        for rel in self.relations(self.master).description():
+        relations = self.relations(self.master)
+        for rel in [relations.fervor_str(), relations.distance_str(), relations.congruence_str()]:
             if rel in check:
                 rel_check = True
                 break

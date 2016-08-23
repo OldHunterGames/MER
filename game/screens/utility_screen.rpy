@@ -204,7 +204,9 @@ screen sc_faction_info(faction):
                 text faction.owner.name
                 text ' '
                 text 'Relations: '
-                text str(player.relations(faction).description())
+                text 'fervor: ' + player.relations(faction).show_fervor()
+                text 'distance: ' + player.relations(faction).show_distance()
+                text 'congruence: ' + player.relations(faction).show_congruence()
                 text ' '
                 text 'Stance:'
                 text 'type: ' + str(player.stance(faction).show_type())
