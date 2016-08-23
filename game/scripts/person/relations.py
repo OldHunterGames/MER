@@ -84,6 +84,9 @@ class Relations(object):
     def show_congruence(self):
         return store.relations_translation['congruence'][self.congruence]
 
+    def description(self):
+        return (self.show_fervor(), self.show_distance(), self.show_congruence())
+
     
     def set_axis(self, axis, value):
         ax = '_%s'%(axis)

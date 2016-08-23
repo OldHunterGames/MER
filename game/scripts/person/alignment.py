@@ -1,3 +1,7 @@
+import renpy.store as store
+import renpy.exports as renpy
+
+
 class Alignment(object):
     _needs = {'orderliness': {-1: 'independence', 1:'stability'},
             'activity': {-1: 'approval', 1: 'trill'},
@@ -68,14 +72,25 @@ class Alignment(object):
 
 
     def show_orderliness(self):
-        return Alignment._orderliness[self.orderliness]
+        return store.alignments_translation['orderliness'][self.orderliness]
+    
     def show_activity(self):
-        return Alignment._activity[self.activity]
+        return store.alignments_translation['activity'][self.activity]
+    
     def show_morality(self):
-        return Alignment._morality[self.morality]
-
+        return store.alignments_translation['morality'][self.morality]
+    
     def description(self):
         return self.show_orderliness(), self.show_activity(), self.show_morality()
+    
+    def orderliness_str(self):
+        return Alignment._orderliness[self.orderliness]
+    
+    def morality_str(self):
+        return Alignment._morality[self.morality]
+    
+    def activity_str(self):
+        return Alignment._activity[self.activity]
 
 
     def special_needs(self):

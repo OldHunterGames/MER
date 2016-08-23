@@ -9,3 +9,6 @@ init python:
     stance_types_translation = {'master': __('master'),
         'slave': __('slave'),
         'neutral': __('neutral')}
+    alignments_translation = {'orderliness': {-1: __("chaotic"), 0: __("conformal"), 1: __("lawful")},
+        'activity': {-1: __("timid"), 0: __("reasonable"), 1: __("ardent")},
+        'morality': {-1: __("evil"), 0: __("selfish"), 1: __("good")}}
