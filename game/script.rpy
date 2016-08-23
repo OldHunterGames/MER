@@ -33,8 +33,7 @@ label start:
         meter = Meter(core.protagonist)
         ap = player.ap
         player.set_resources_storage(core.resources)
-    $ fct = core.get_faction('taurus')
-    call screen sc_faction_info(fct)
+
     
     show expression "interface/bg_base.jpg" as bg
     call evn_init

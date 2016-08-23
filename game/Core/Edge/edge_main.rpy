@@ -166,7 +166,7 @@ label lbl_edge_turn:
     'New turn. Extra resources lost, try to find a safe stash to hold your resources!'
     $ edge.locations_tick()
     $ core.new_turn()
-    $ resources.to_zero()
+    $ core.resources.to_zero()
     call lbl_edge_manage
     return
     

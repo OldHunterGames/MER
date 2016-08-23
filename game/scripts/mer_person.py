@@ -230,6 +230,16 @@ class Person(object):
         self.default_cards = False
         self.deck = None
         self._calculatable = False
+        self.factions = []
+
+    def add_faction(self, faction):
+        if not faction in self.factions:
+            self.factions.append(faction)
+    def remove_faction(self, faction):
+        try:
+            self.factions.remove(faction)
+        except IndexError:
+            pass
     @property
     def calculatable(self):
         return self._calculatable or self.player_controlled

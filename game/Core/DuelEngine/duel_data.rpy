@@ -35,7 +35,7 @@ init python:
         else:
             max_ = 0
             card_to_get = None
-            for card in used.drop:
+            for card in user.drop:
                 if card.value > max_:
                     card_to_get = card
                     max_ = card.value
