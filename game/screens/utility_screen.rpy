@@ -218,6 +218,9 @@ screen sc_faction_info(faction):
                 text 'level: ' + str(player.stance(faction).show_stance())
                 text ' '
                 text 'Harmony: ' + str(player.relations(faction).harmony()[0])
+                $ axis = player.relations(faction).show_harmony_axis()
+                if len(axis) > 0:
+                    text str(axis)
                 text ' '
                 textbutton 'leave':
                     action Return()

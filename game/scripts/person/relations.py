@@ -138,7 +138,7 @@ class Relations(object):
         difference = self.fervor + activity
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_fervor())
+            axis.append(self.fervor_str())
         elif difference == 0:
             if self.fervor != 0:
                 value -= 1
@@ -146,7 +146,7 @@ class Relations(object):
         difference = self.distance + orderliness
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_distance())
+            axis.append(self.distance_str())
         elif difference == 0:
             if self.distance != 0:
                 value -= 1
@@ -154,7 +154,7 @@ class Relations(object):
         difference = self.congruence + morality
         if abs(difference) > 1:
             value += 1
-            axis.append(self.show_congruence())
+            axis.append(self.congruence_str())
         elif difference == 0:
             if self.congruence != 0:
                 value -= 1
@@ -162,5 +162,13 @@ class Relations(object):
             value = 0
         return value, axis
 
-
-
+    def show_harmony_axis(self):
+        list_ = []
+        for value in self.harmony()[1]:
+            if value in Relations._fervor.values():
+                list_.append(self.show_fervor())
+            elif value in Relations._congruence.values():
+                list_.append(self.show_congruence())
+            elif value in Relations._distance.values():
+                list_.append(self.show_distance())
+        return list_
