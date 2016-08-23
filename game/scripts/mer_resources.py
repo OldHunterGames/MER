@@ -105,3 +105,8 @@ class Resources(object):
             elif self.has_money(self.res_to_money(res)):
                 self.resources[res] = 0
                 self.use_money(self.res_to_money(res))
+
+    def to_zero(self):
+        for res in self.resources.keys():
+            self.resoruces[res] = 0
+            

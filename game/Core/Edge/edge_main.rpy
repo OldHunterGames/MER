@@ -166,6 +166,7 @@ label lbl_edge_turn:
     'New turn'
     $ edge.locations_tick()
     $ core.new_turn()
+    $ core.resources.to_zero()
     call lbl_edge_manage
     return
     
