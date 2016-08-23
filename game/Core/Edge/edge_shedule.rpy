@@ -50,7 +50,7 @@ label shd_edge_job_simplework(action):
         moral = action.special_values['moral']
         skill = action.special_values['skill']
         beneficiar = action.special_values['beneficiar']
-        tense = beneficiar = action.special_values['tense']
+        tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
         txt = action.special_values['description'] 
         resname = action.special_values['resource_name'] 
