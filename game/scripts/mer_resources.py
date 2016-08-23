@@ -3,24 +3,37 @@ class Resources(object):
         self.resources = {'drugs': 0, 'provision': 0, 'fuel': 0, 'munition': 0, 'hardware': 0, 'clothes': 0}
         self._money = 0
         self._resources_consumption = []
+   
     def __getattr__(self, key):
         try:
             attr = self.__dict__['resources'][key]
             return attr
         except KeyError:
             raise AttributeError(key)
+    
     def __setattr__(self, key, value):
         if 'resources' in self.__dict__:
             if key in self.__dict__['resources']:
                 self.__dict__['resources'][key] = max(0, value)
                 return
         super(Resources, self).__setattr__(key, value)
+
+    def increase(self, resource, value):
+        new_value = value + getattr(self, resource)
+        setattr(self, resource, new_value)
+
+    def spend(self, resource, value):
+        new_value = -value + getattr(self, resource)
+        setattr(self, resource, new_value)
+   
     @property
     def money(self):
         return self._money
+    
     @money.setter
     def money(self, value):
         self._money = max(0, value)
+    
     @property
     def provision_consumption(self):
         return self.consumption('provision')
