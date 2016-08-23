@@ -1122,7 +1122,7 @@ class Person(object):
         if isinstance(person, Faction):
             return self.relations(person.owner)
         elif not isinstance(person, Person):
-            raise Exception("relations called with not valid arg")
+            raise Exception("relations called with not valid arg: %s"%person)
         if not self.know_person(person):
             relations = self._set_relations(person)
             self._set_stance(person)
@@ -1145,7 +1145,7 @@ class Person(object):
         if isinstance(person, Faction):
             return self.stance(person.owner)
         elif not isinstance(person, Person):
-            raise Exception("relations called with not valid arg")
+            raise Exception("relations called with not valid arg: %s"%person)
         elif not self.know_person(person):
             self._set_relations(person)
             stance = self._set_stance(person)
