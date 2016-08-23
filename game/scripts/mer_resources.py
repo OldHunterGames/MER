@@ -22,7 +22,7 @@ class Resources(object):
         new_value = value + getattr(self, resource)
         setattr(self, resource, new_value)
 
-    def spend(self, resource, value):
+    def decrease(self, resource, value):
         new_value = -value + getattr(self, resource)
         setattr(self, resource, new_value)
    
