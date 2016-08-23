@@ -219,8 +219,10 @@ screen sc_faction_info(faction):
                 text ' '
                 text 'Harmony: ' + str(player.relations(faction).harmony()[0])
                 $ axis = player.relations(faction).show_harmony_axis()
-                if len(axis) > 0:
-                    text str(axis)
+                if len(axis[0]) > 0:
+                    text 'harmonized_axis: ' + str(axis[0])
+                if len(axis[1]) > 0:
+                    text 'bad harmony: ' + str(axis[1])
                 text ' '
                 textbutton 'leave':
                     action Return()
