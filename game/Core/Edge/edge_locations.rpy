@@ -79,7 +79,7 @@ label lbl_edge_grim_battlefield(location):
                 'Decline':
                     $ pass
         'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
-            location.owner.add_member(player)
+            $ location.owner.add_member(player)
         'Get out':
             return 
 

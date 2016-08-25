@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 class Resources(object):
     def __init__(self):
         self.resources = {'drugs': 0, 'provision': 0, 'fuel': 0, 'munition': 0, 'hardware': 0, 'clothes': 0}

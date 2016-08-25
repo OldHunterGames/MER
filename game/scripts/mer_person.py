@@ -18,6 +18,7 @@ from alignment import Alignment
 from modifiers import ModifiersStorage
 from factions import Faction
 from buffs import Buff
+from background import Background
 
 class Inventory(object):
     def __init__(self):
