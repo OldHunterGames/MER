@@ -164,14 +164,14 @@ label lbl_edge_info_base:
 
 label lbl_edge_turn:
     'New turn. Extra resources lost, try to find a safe stash to hold your resources!'
-    python:
-        edge.locations_tick()
-        core.new_turn()
-        core.resources.to_zero()
-    if core.has_any_faction(player):
-        call lbl_edge_faction_livein
-    else:
-        call lbl_edge_manage        
+    $ edge.locations_tick()
+    $ core.new_turn()
+<<<<<<< HEAD
+    $ resources.to_zero()
+=======
+    $ core.resources.to_zero()
+>>>>>>> 6c71a5b5be79594c3c05accfd5b3376d085b11a7
+    call lbl_edge_manage
     return
     
 label lbl_edge_noloc:
