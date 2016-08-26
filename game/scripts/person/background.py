@@ -25,13 +25,23 @@ class BackgroundBase(object):
             self.prestige_level = self.data_dict[id_]['prestige_level']
         except KeyError:
             self.prestige_level = 0
+        try:
+            self.features = self.data_dict[id_]['features']
+        except KeyError:
+            self.features = []
 
     def is_available(self, background):
         return (background.technical_level in self.available_technical_levels
             and background.prestige_level in self.available_prestige_levels)
 
     def apply(self, owner):
+        for feature in self.features:
+            owner.add_feature(feature)
+        self.apply_other(owner)
+
+    def apply_other(self, owner):
         return
+
 
 class Homeworld(BackgroundBase):
     def __init__(self, id_, data_dict='homeworlds_dict'):
@@ -51,7 +61,7 @@ class Occupation(BackgroundBase):
         super(Occupation, self).__init__(id_, data_dict)
         self.skills = self.data_dict[id_]['skills']
 
-    def apply(self, owner):
+    def apply_other(self, owner):
         for key in self.skills:
             skill = owner.skill(key)
             for value in self.skills[key]:
@@ -161,6 +171,5 @@ class Background(object):
             list_ = ['world', 'culture', 'family', 'education', 'occupation']
             for i in list_:
                 getattr(self, i).apply(owner)
-                owner.add_feature(getattr(self, i).id)
             self._applied = True
 
