@@ -161,5 +161,6 @@ class Background(object):
             list_ = ['world', 'culture', 'family', 'education', 'occupation']
             for i in list_:
                 getattr(self, i).apply(owner)
-        self._applied = True
+                owner.add_feature(getattr(self, i).id)
+            self._applied = True
 
