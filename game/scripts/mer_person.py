@@ -232,6 +232,11 @@ class Person(object):
         self.deck = None
         self._calculatable = False
         self.factions = []
+        self.background = None
+
+    def apply_background(self, background):
+        self.background = background
+        background.apply(self)
 
     def add_faction(self, faction):
         if not faction in self.factions:

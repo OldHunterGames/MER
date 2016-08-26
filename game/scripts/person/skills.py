@@ -54,15 +54,19 @@ class Skill(object):
         if self.inability:
             level -= 1
         return level
+    
     @property
     def focus(self):
         return min(5, self._focus)
+    
     @focus.setter
     def focus(self, value):
         self._focus = value
+    
     def set_focus(self):
         self.owner.focused_skill = self
         self.focus = 1
+    
     def get_expirience(self, power):
         available_slots = [n for n in range(power, 0, -1)]
         for skill in self.owner.skills:
@@ -84,6 +88,7 @@ class Skill(object):
         self.expirience = True
         self.specialization = True
         self.expirience_slot = power
+    
     def expert(self):
         slots = []
         self.training = True

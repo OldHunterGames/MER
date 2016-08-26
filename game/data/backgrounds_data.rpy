@@ -33,7 +33,9 @@ init python:
             'name': __('athlete'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': ['athletics']
+            'skills':{
+                'athletics': ['training', ('expirience', 2)]
+            } 
         }
     }
 
