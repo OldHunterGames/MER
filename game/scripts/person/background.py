@@ -30,6 +30,9 @@ class BackgroundBase(object):
         return (background.technical_level in self.available_technical_levels
             and background.prestige_level in self.available_prestige_levels)
 
+    def apply(self, owner):
+        return
+
 class Homeworld(BackgroundBase):
     def __init__(self, id_, data_dict='homeworlds_dict'):
         super(Homeworld, self).__init__(id_, data_dict)
@@ -48,23 +51,46 @@ class Occupation(BackgroundBase):
         super(Occupation, self).__init__(id_, data_dict)
         self.skills = self.data_dict[id_]['skills']
 
+    def apply(self, owner):
+        for key in self.skills:
+            skill = owner.skill(key)
+            for value in self.skills[key]:
+                if isinstance(value, tuple):
+                    if value[0] == 'expirience':
+                        skill.get_expirience(value[1])
+                elif value == 'profession' or value == 'expert':
+                    getattr(skill, value)()
+                else:
+                    setattr(skill, value, True)
+
 class Culture(BackgroundBase):
     def __init__(self, id_, data_dict='cultures_dict'):
         super(Culture, self).__init__(id_, data_dict)
         self.available_skin_colors = self.data_dict[id_]['available_skin_colors']
+
 class Background(object):
     def __init__(self, world=None, culture=None, family=None, education=None, 
             occupation=None):
         self.world = None
-        self._set_world(world)
         self.culture = None
-        self._set_culture(culture)
         self.family = None
-        self._set_family(family)
         self.education = None
-        self._set_education(education)
         self.occupation = None
-        self._set_occupation(occupation)
+        self.make(world, culture, family, education, occupation)
+        self._applied = False
+    
+    def make(self, world, culture, family, education, occupation):
+        default_order = ['world', 'family', 'education', 'occupation']
+        if occupation != None:
+            default_order.reverse()
+        elif education != None:
+            default_order = default_order[::-2]+default_order[-1]
+        elif family != None:
+            default_order = default_order[::-3] + default_order[-1] + default_order[-2]
+        self._set_culture(culture)
+        for i in default_order:
+            getattr(self, '_set_'+i)(locals()[i])
+
 
     def _set_world(self, world=None):
         if world == None:
@@ -80,9 +106,14 @@ class Background(object):
         if family == None:
             families = [Family(family) for family in store.families_dict.keys()]
             available_families = []
-            for family in families:
-                if self.world.is_available(family):
-                    available_families.append(family)
+            try:
+                for family in families:
+                    if self.world.is_available(family):
+                        available_families.append(family)
+            except AttributeError:
+                for family in families:
+                    if family.is_available(self.education):
+                        available_families.append(family)
             try:
                 self.family = random.choice(available_families)
             except IndexError:
@@ -94,9 +125,14 @@ class Background(object):
         if education == None:
             educations = [Education(education) for education in store.educations_dict.keys()]
             available_educations = []
-            for education in educations:
-                if self.family.is_available(education):
-                    available_educations.append(education)
+            try:
+                for education in educations:
+                    if self.family.is_available(education):
+                        available_educations.append(education)
+            except AttributeError:
+                for education in educations:
+                    if education.is_available(self.occupation):
+                        available_educations.append(education)
             try:
                 self.education = random.choice(available_educations)
             except IndexError:
@@ -119,4 +155,11 @@ class Background(object):
                 self.occupation = occupation
         else:
             self.occupation = Occupation(occupation)
+
+    def apply(self, owner):
+        if not self._applied:
+            list_ = ['world', 'culture', 'family', 'education', 'occupation']
+            for i in list_:
+                getattr(self, i).apply(owner)
+        self._applied = True
 
