@@ -149,14 +149,20 @@ init python:
             'available_technical_levels': [0],
             'available_prestige_levels': [0],
             'technical_level': 0,
-            'prestige_level': 0
+            'prestige_level': 0,
         },
         'urchin':{
             'name': __('urchin'),
             'available_technical_levels': [1, 2, 3],
             'available_prestige_levels': [2],
             'technical_level': 1,
-            'prestige_level': 1
+            'prestige_level': 1,
+            'skills': {
+            'sex': [('expirience', 1)],
+            'athletics': [('expirience', 2)],
+            'stealth': [('expirience', 3)],
+            'streetwise': ['training', ('expirience', 4)],
+            },
         },
         'natural':{
             'name': __('natural'),
@@ -164,6 +170,11 @@ init python:
             'available_prestige_levels': [1],
             'technical_level': 1,
             'prestige_level': 1
+            'skills': {
+            'athletics': [('expirience', 1)],
+            'stealth': ['training', ('expirience', 2)],
+            'survival': ['training', ('expirience', 3)],
+            },            
         },
         'forced_labor':{
             'name': __('forced labor'),
@@ -171,6 +182,9 @@ init python:
             'available_prestige_levels': [1],
             'technical_level': 2,
             'prestige_level': 1
+            'skills': {
+            'athletics': ['training', ('expirience', 1)],
+            },            
         },
         'apprentice':{
             'name': __('apprentice'),
@@ -178,6 +192,9 @@ init python:
             'available_prestige_levels': [2, 3],
             'technical_level': 2,
             'prestige_level': 2
+            'skills': {
+            'craft': ['training', ('expirience', 1)],
+            },            
         },
         'domestic':{
             'name': __('domestic'),
@@ -185,6 +202,9 @@ init python:
             'available_prestige_levels': [1, 2, 3, 4],
             'technical_level': 2,
             'prestige_level': 2
+            'skills': {
+            'housekeeping': ['training', ('expirience', 1)],
+            },            
         },
         'educated':{
             'name': __('educated'),
@@ -192,6 +212,13 @@ init python:
             'available_prestige_levels': [3, 4],
             'technical_level': 3,
             'prestige_level': 3
+            'skills': {
+            'scholarship': ['training',],
+            'alchemy': ['training'],
+            'concentration': ['training',],
+            'expression': ['training'],
+            'management': ['training'],            
+            },            
         },
         'martial':{
             'name': __('martial'),
@@ -199,6 +226,11 @@ init python:
             'available_prestige_levels': [2, 3, 4, 5],
             'technical_level': 2,
             'prestige_level': 2
+            'skills': {
+            'athletics': ['training',],
+            'combat': ['training',],
+            'observation': ['training',],
+            },            
         },
          'aristocratic':{
             'name': __('aristocratic'),
@@ -206,6 +238,12 @@ init python:
             'available_prestige_levels': [4, 5],
             'technical_level': 2,
             'prestige_level': 5
+            'skills': {
+            'charisma': ['training', ('expirience', 2)],
+            'management': ['training'],
+            'expression': ['training', ('expirience', 1)],         
+            'scholarship': ['training'],
+            },            
         },
            'artistic':{
             'name': __('artistic'),
@@ -213,6 +251,11 @@ init python:
             'available_prestige_levels': [2, 3, 4],
             'technical_level': 2,
             'prestige_level': 2
+            'skills': {
+            'sex': ['training',],
+            'charisma': ['training', ('expirience', 1)],            
+            'expression': ['training', ('expirience', 2)],
+            },            
         },     
     }
     
