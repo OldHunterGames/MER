@@ -55,13 +55,36 @@ class Family(BackgroundBase):
 class Education(BackgroundBase):
     def __init__(self, id_, data_dict='educations_dict'):
         super(Education, self).__init__(id_, data_dict)
+        try:
+            self.skills = self.data_dict[id_]['skills']
+        except KeyError:
+            self.skills = None
+
+    def apply_other(self, owner):
+        if self.skills == None:
+            return
+        for key in self.skills:
+            skill = owner.skill(key)
+            for value in self.skills[key]:
+                if isinstance(value, tuple):
+                    if value[0] == 'expirience':
+                        skill.get_expirience(value[1])
+                elif value == 'profession' or value == 'expert':
+                    getattr(skill, value)()
+                else:
+                    setattr(skill, value, True)
 
 class Occupation(BackgroundBase):
     def __init__(self, id_, data_dict='occupations_dict'):
         super(Occupation, self).__init__(id_, data_dict)
-        self.skills = self.data_dict[id_]['skills']
+        try:
+            self.skills = self.data_dict[id_]['skills']
+        except KeyError:
+            self.skills = None
 
     def apply_other(self, owner):
+        if self.skills == None:
+            return
         for key in self.skills:
             skill = owner.skill(key)
             for value in self.skills[key]:
