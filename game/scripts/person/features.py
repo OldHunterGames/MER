@@ -14,20 +14,46 @@ class Feature(object):
             return
             raise Exception("no feature named %s in %s"%(id_, data_dict))
         self.id = id_
-        self.name = stats['name']
-        self.slot = stats['slot'] if 'slot' in stats else None        # There can be only one feature for every feature slot
-        self.revealed = False   # true if the feature is revealed to player      
+        self.stats = stats
+        self._revealed = False   # true if the feature is revealed to player      
         self.owner = owner    # the Person() who owns this feature
-        self.value = stats['value'] if 'value' in stats else 0    # value for feature-based actions
-        self.modifiers = stats['modifiers'] if 'modifiers' in stats else None     # parameter in key will be modified by value. Example: "agility": -1
-        self.visible = stats['visible'] if 'visible' in stats else False
-        self.time = kwargs['time'] if 'time' in kwargs else None
         self.add()
+    
+    @property
+    def name(self):
+        return self.stats['name']
+    
+    @property
+    def slot(self):
+        return self.stats['slot']
+    
+    @property
+    def modifiers(self):
+        return self.stats['modifiers']
+    
+    @property
+    def visible(self):
+        return self.stats['visible']
+    
+    @property
+    def time(self):
+        return self.stats['time']
 
+    @property
+    def value(self):
+        return self.stats['value']
+    
+    @property
+    def revealed(self):
+        return self._revealed and self.visible
+    
     def remove(self):
         if self.modifiers:
             self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
+
+    def reveal(self):
+        self._revealed = True
 
     def add(self):
         if self in self.owner.features:

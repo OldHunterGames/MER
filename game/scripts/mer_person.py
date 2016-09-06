@@ -27,7 +27,7 @@ def get_avatars():
     avas = [str_ for str_ in all_ if str_.startswith('images/avatar')]
     return avas
 
-def gen_random_person(genus=None):
+def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None):
     if genus != None:
         for g in available_genuses():
             if g.get_name() == genus:
@@ -35,15 +35,19 @@ def gen_random_person(genus=None):
                 break
     else:
         genus = choice(available_genuses())
-    try:
-        gender = choice(genus.genders())
-    except IndexError:
-        gender = None
-    try:
-        age = choice(genus.ages())
-    except IndexError:
-        age = None
+    if gender == None:
+        try:
+            gender = choice(genus.genders())
+        except IndexError:
+            gender = 'male'
+    if age == None:
+        try:
+            age = choice(genus.ages())
+        except IndexError:
+            age = 'adolescent'
     p = Person(age, gender, genus.get_name())
+    background = Background(world, culture, family, education, occupation)
+    p.apply_background(background)
     p.random_alignment()
     p.random_features()
     p.random_skills()
@@ -231,17 +235,19 @@ class Person(object):
         this_avas = [ava for ava in get_avatars() if ava.startswith(path)]
         try:
             avatar = choice(this_avas)
-            avatar_split = avatar.split('/')
-            for str_ in avatar_split:
-                if 'skin' in str_:
-                    skin_color = str_.split('_')[0]
-                    self.add_feature(skin_color)
-                if 'hair' in str_:
-                    hair_color = str_.split('_')[0]
-                    self.hair_color = hair_color
-            self.avatar_path = avatar
         except IndexError:
             self.avatar_path = 'images/avatar/none.jpg'
+            return
+        avatar_split = avatar.split('/')
+        for str_ in avatar_split:
+            if 'skin' in str_:
+                skin_color = str_.split('_')[0]
+                self.add_feature(skin_color)
+            if 'hair' in str_:
+                hair_color = str_.split('_')[0]
+                self.hair_color = hair_color
+        self.avatar_path = avatar
+        
 
     def randomise(self, gender='female', age='adolescent'):
         self.add_feature(gender)
@@ -493,11 +499,11 @@ class Person(object):
         val = 0
         bad = len(lbad)
         lgood.sort()
-        for i in range(bad):
-            try:
+        try:
+            for i in range(bad):
                 lgood.pop(0)
-            except IndexError:
-                return 0
+        except IndexError:
+            return 0
         while len(lgood) > 0:
             num = min(lgood)
             if num > val:

@@ -2,7 +2,7 @@
 from random import choice
 import renpy.store as store
 import renpy.exports as renpy
-
+_available_ages_ = ['junior', 'adolescent', 'mature', 'elder']
 def init_genus(caller, genus):
     for sub in Genus.__subclasses__():
         if sub.get_name() == genus:
@@ -20,7 +20,7 @@ def available_genuses():
     return [genus for genus in Genus.__subclasses__()]
 
 class Genus(object):
-    _available_ages_ = ['junior', 'adolescent', 'mature', 'elder']
+    _available_ages_ = ['adolescent', 'mature']
     _available_genders_ = ['male', 'female', 'sexless', 'shemale']
     _features_ = []
     head_type = None

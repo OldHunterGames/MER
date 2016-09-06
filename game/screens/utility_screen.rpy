@@ -1,4 +1,12 @@
 init python:
+    exchange_rates = {
+    'drugs': 100,
+    'provision': 100,
+    'fuel': 100,
+    'munition': 100,
+    'hardware': 100,
+    'clothes': 100
+    }
     class TradeInput(InputValue):
         def __init__(self):
             self.txt = self.get_text()
@@ -52,8 +60,8 @@ screen sc_universal_trade(player=core.player, trader=None):
         $ player_money = trade_player['money']
         $ trader_money = trade_trader['money']
         text '[player_money]  money  [trader_money]'
-        $ total_player = sum([int(value) for key, value in trade_player.items() if key != 'money'])*100+trade_player['money']
-        $ total_trader = sum([int(value) for key, value in trade_trader.items() if key != 'money'])*100+trade_trader['money']
+        $ total_player = sum([int(value*exchange_rates[key]) for key, value in trade_player.items() if key != 'money'])+trade_player['money']
+        $ total_trader = sum([int(value*exchange_rates[key]) for key, value in trade_trader.items() if key != 'money'])+trade_trader['money']
         $ total_difference = total_trader - total_player
         python:
             if total_player > total_trader:
