@@ -48,6 +48,11 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p = Person(age, gender, genus.get_name())
     background = Background(world, culture, family, education, occupation)
     p.apply_background(background)
+    try:
+        names = store.firstname[background.culture.id]
+    except KeyError:
+        names = store.firstname['default']
+    p.firstname = choice(names)
     p.random_alignment()
     p.random_features()
     p.random_skills()

@@ -1,11 +1,27 @@
 init python:
-    exchange_rates = {
-    'drugs': 100,
-    'provision': 100,
-    'fuel': 100,
-    'munition': 100,
-    'hardware': 100,
-    'clothes': 100
+    default_rates = {
+    'drugs': 50,
+    'provision': 50,
+    'fuel': 50,
+    'munition': 50,
+    'hardware': 50,
+    'clothes': 50
+    }
+    default_buy_rates = {
+    'drugs': 0.1,
+    'provision': 0.1,
+    'fuel': 0.1,
+    'munition': 0.1,
+    'hardware': 0.1,
+    'clothes': 0.1
+    }
+    default_sell_rates = {
+    'drugs': 2,
+    'provision': 2,
+    'fuel': 2,
+    'munition': 2,
+    'hardware': 2,
+    'clothes': 2
     }
     class TradeInput(InputValue):
         def __init__(self):
@@ -37,11 +53,22 @@ init python:
         value = getattr(core.resources , 'money') + value
         setattr(core.resources, 'money', value)
 
-screen sc_universal_trade(player=core.player, trader=None):
+screen sc_universal_trade(trader=None, trader_sell_rates=None, trader_buy_rates=None, player=core.player):
     python:
         
         trade_player = universal_trade_values['player']
         trade_trader = universal_trade_values['trader']
+        sell_rates = {}
+        for key in default_sell_rates:
+            if key not in trader_sell_rates:
+                sell_rates[key] = default_sell_rates[key]
+            else:
+                sell_rates[key] = trader_sell_rates[key]
+        for key in default_buy_rates:
+            if key not in trader_buy_rates:
+                buy_rates[key] = default_buy_rates[key]
+            else:
+                buy_rates[key] = trader_buy_rates[key]
     vbox:
         align(0.0, 0.0)
         for k, v in core.resources.resources.items():
@@ -60,8 +87,8 @@ screen sc_universal_trade(player=core.player, trader=None):
         $ player_money = trade_player['money']
         $ trader_money = trade_trader['money']
         text '[player_money]  money  [trader_money]'
-        $ total_player = sum([int(value*exchange_rates[key]) for key, value in trade_player.items() if key != 'money'])+trade_player['money']
-        $ total_trader = sum([int(value*exchange_rates[key]) for key, value in trade_trader.items() if key != 'money'])+trade_trader['money']
+        $ total_player = sum([int(value*buy_rates[key]) for key, value in trade_player.items() if key != 'money'])+trade_player['money']
+        $ total_trader = sum([int(value*sell_rates[key]) for key, value in trade_trader.items() if key != 'money'])+trade_trader['money']
         $ total_difference = total_trader - total_player
         python:
             if total_player > total_trader:
