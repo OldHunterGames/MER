@@ -48,10 +48,14 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p = Person(age, gender, genus.get_name())
     background = Background(world, culture, family, education, occupation)
     p.apply_background(background)
+    if gender == 'sexless':
+        gender = 'male'
+    elif gender == 'shemale':
+        gender = 'female'
     try:
-        names = store.firstname[background.culture.id]
+        names = store.firstname[background.culture.id][gender]
     except KeyError:
-        names = store.firstname['default']
+        names = store.firstname['default'][gender]
     p.firstname = choice(names)
     p.random_alignment()
     p.random_features()
