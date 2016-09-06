@@ -227,6 +227,66 @@ class Person(object):
         elif item.type == 'weapon':
             self.equip_weapon(item, slot)
     #end of inventory methods
+
+    def formidability(self):
+        value = 0
+        weapons = self.inventory.equiped_weapons()
+        armor = self.inventory.carried_armor['overgarments']
+        shape = self.feature_by_slot('shape')
+        if self.gender == 'male':
+            value += 1
+        elif self.gender == 'female':
+            value -= 1
+        if armor != None:
+            if armor.protection_type == 'heavy':
+                value += 1
+        else:
+            value -= 1
+        if not self.inventory.visible_weapon():
+            value -= 1
+        for weapon in weapons:
+            if weapon.size == 'versatile':
+                value += 1
+                break
+        for weapon in weapons:
+            if weapon.size == 'twohanded':
+                value += 1
+                break
+        if self.age == 'junior' or self.age == 'elder':
+            value -= 1
+        elif self.age == 'mature':
+            value += 1
+        value += self.physique - 3
+        if shape != None:
+            if shape.id == 'slim' or shape.id == 'emaciated':
+                value -= 1
+            elif shape.id == 'obese':
+                value += 1
+        if self.skill('combat').level > 2:
+            value += 1
+        return max(0, min(5, value))
+
+    def alure(self):
+        value = 0
+        shape = self.feature_by_slot('shape')
+        if self.gender == 'male':
+            value -= 1
+        elif self.gender == 'female':
+            value += 1
+        value += self.sensitivity - 3
+        if shape != None:
+            if shape.id == 'slim' or shape.id == 'obese':
+                value += 1
+            elif shape.id == 'emaciated':
+                value -= 1
+        if self.age == 'adolescent':
+            value += 1
+        elif self.age == 'elder':
+            value -= 1
+        if self.skill('expression').level > 2:
+            value += 1
+        return max(0, min(5, value))
+
     
     def set_avatar(self):
         path = 'images/avatar/'

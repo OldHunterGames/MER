@@ -22,7 +22,7 @@ class Inventory(object):
     def main_hand(self, weapon):
         if self._main_hand != None:
             self._main_hand.unequip()
-            if self._main_hand not in self.storage:
+            if self._main_hand not in self.storage and self._main_hand not in self.equiped_weapons().values():
                 self.storage.append(self._main_hand)
         self._main_hand = weapon
     
@@ -34,7 +34,7 @@ class Inventory(object):
     def other_hand(self, weapon):
         if self._other_hand != None:
             self._other_hand.unequip()
-            if self._other_hand not in self.storage:
+            if self._other_hand not in self.storage and self._other_hand not in self.equiped_weapons().values():
                 self.storage.append(self._other_hand)
         self._other_hand = weapon
     
@@ -78,8 +78,11 @@ class Inventory(object):
             self.other_hand = weapon
         else:
             other = 'other_hand' if hand=='main_hand' else 'main_hand'
-            if getattr(self, other).size == 'twohanded':
-                setattr(self, other, None)
+            try:
+                if getattr(self, other).size == 'twohanded':
+                    setattr(self, other, None)
+            except AttributeError:
+                pass
             setattr(self, hand, weapon)
 
     def disarm_weapon(self, hand):
@@ -96,3 +99,17 @@ class Inventory(object):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         slots = getattr(self, slots)
         return any(self.available_for_slot(slot)) or slots[slot] != None
+
+    def visible_weapon(self):
+        weapons = self.carried_weapons
+        if weapons['harness'] != None or weapons['belt1'] != None or weapons['belt2'] != None:
+            return True
+        return False
+
+    def equiped_weapons(self):
+        return dict([(slot, weapon) for slot, weapon in self.carried_weapons.items() if weapon != None])
+
+    def in_hands(self, item):
+        if self.main_hand == item or self.other_hand == item:
+            return True
+        return False

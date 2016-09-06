@@ -29,7 +29,10 @@ class Feature(object):
     
     @property
     def modifiers(self):
-        return self.stats['modifiers']
+        try:
+            return self.stats['modifiers']
+        except KeyError:
+            return None
     
     @property
     def visible(self):
@@ -48,7 +51,7 @@ class Feature(object):
         return self._revealed and self.visible
     
     def remove(self):
-        if self.modifiers:
+        if self.modifiers != None:
             self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
 
@@ -60,7 +63,7 @@ class Feature(object):
             return
         if self.slot == None:
             self.owner.features.append(self)
-            if self.modifiers:
+            if self.modifiers != None:
                 slot = self.slot if self.slot else self.id
                 self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
             return
@@ -68,7 +71,7 @@ class Feature(object):
             for feature in self.owner.features:
                 if feature.slot == self.slot:
                     feature.remove()
-            if self.modifiers:
+            if self.modifiers != None:
                 slot = self.slot if self.slot else self.id
                 self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
             self.owner.features.append(self)
