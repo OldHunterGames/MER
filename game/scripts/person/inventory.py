@@ -88,9 +88,9 @@ class Inventory(object):
     def equip_armor(self, armor, slot):
         if armor in self.storage:
             self.storage.remove(armor)
-        if getattr(self, slot) != None:
-            self.storage.append(getattr(self, slot))
-        setattr(self, slot, armor)
+        if self.carried_armor[slot] != None:
+            self.storage.append(self.carried_armor[slot])
+        self.carried_armor[slot] = armor
 
     def is_slot_active(self, slot):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
