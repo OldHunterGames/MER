@@ -105,4 +105,3 @@ class Skill(object):
     def attribute_value(self):
         return getattr(self.owner, self.attribute)
 
-

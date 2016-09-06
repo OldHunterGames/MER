@@ -169,7 +169,7 @@ init python:
             'available_technical_levels': [1],
             'available_prestige_levels': [1],
             'technical_level': 1,
-            'prestige_level': 1
+            'prestige_level': 1,
             'skills': {
             'athletics': [('expirience', 1)],
             'stealth': ['training', ('expirience', 2)],
@@ -181,7 +181,7 @@ init python:
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [1],
             'technical_level': 2,
-            'prestige_level': 1
+            'prestige_level': 1,
             'skills': {
             'athletics': ['training', ('expirience', 1)],
             },            
@@ -191,7 +191,7 @@ init python:
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [2, 3],
             'technical_level': 2,
-            'prestige_level': 2
+            'prestige_level': 2,
             'skills': {
             'craft': ['training', ('expirience', 1)],
             },            
@@ -201,7 +201,7 @@ init python:
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [1, 2, 3, 4],
             'technical_level': 2,
-            'prestige_level': 2
+            'prestige_level': 2,
             'skills': {
             'housekeeping': ['training', ('expirience', 1)],
             },            
@@ -211,7 +211,7 @@ init python:
             'available_technical_levels': [3, 4, 5],
             'available_prestige_levels': [3, 4],
             'technical_level': 3,
-            'prestige_level': 3
+            'prestige_level': 3,
             'skills': {
             'scholarship': ['training',],
             'alchemy': ['training'],
@@ -225,7 +225,7 @@ init python:
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4, 5],
             'technical_level': 2,
-            'prestige_level': 2
+            'prestige_level': 2,
             'skills': {
             'athletics': ['training',],
             'combat': ['training',],
@@ -237,7 +237,7 @@ init python:
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [4, 5],
             'technical_level': 2,
-            'prestige_level': 5
+            'prestige_level': 5,
             'skills': {
             'charisma': ['training', ('expirience', 2)],
             'management': ['training'],
@@ -250,7 +250,7 @@ init python:
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4],
             'technical_level': 2,
-            'prestige_level': 2
+            'prestige_level': 2,
             'skills': {
             'sex': ['training',],
             'charisma': ['training', ('expirience', 1)],            
@@ -271,6 +271,7 @@ init python:
             'athletics': ['profession'],
             'sex': ['training', ('expirience', 1)]
             },
+        },
         'daytaler':{
             'name': __('daytaler'),
             'technical_level': 1,
