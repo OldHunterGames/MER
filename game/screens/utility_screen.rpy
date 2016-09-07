@@ -261,3 +261,69 @@ screen sc_faction_info(faction):
                 text ' '
                 textbutton 'leave':
                     action Return()
+
+screen sc_item_creator(creator_item_properties):
+    python:
+        munition_needed = 0
+        def is_ready(item_properties):
+            return all([value for value in item_properties.values()])
+        def change_item_type(dict_, type_):
+            if dict_['type'] != type_:
+                for key in dict_.keys():
+                    del dict_[key]
+            dict_['type'] = type_
+            if type_ == 'Armor':
+                dict_['armor_rate'] = None
+            elif type_ == 'Weapon':
+                dict_['size'] = None
+                dict_['damage_type'] = None
+    vbox:
+        xalign 0.0
+        text 'choose type:'
+        textbutton 'weapon' action [Function(change_item_type, creator_item_properties, 'Weapon'),
+            Show('sc_weapon_properties', item_properties=creator_item_properties),
+            Hide('sc_armor_properties')]
+        textbutton 'armor' action [Function(change_item_type, creator_item_properties, 'Armor'),
+            Show('sc_armor_properties', item_properties=creator_item_properties),
+            Hide('sc_weapon_properties')]
+        text ''
+        textbutton 'Done' action [SensitiveIf(is_ready(creator_item_properties) and munition_needed <= core.resources.munition),
+            Hide('sc_weapon_properties'),
+            Hide('sc_armor_properties'),
+            Return('make')]
+    #vbox:
+        #xalign 0.15
+        #text 'quality:'
+        #for i in range(1, 6):
+            #textbutton str(i) action SetDict(creator_item_properties, 'quality', i)
+    vbox:
+        xalign 0.3
+        text 'We have [core.resources.munition] munition'
+        text 'We need [munition_needed] munition'
+
+screen sc_weapon_properties(item_properties):
+    hbox:
+        yalign 0.5
+        vbox:
+            text 'size:'
+            for key, value in item_features.items():
+                if value['slot'] == 'wpn_size':
+                    if key == 'shield':
+                        textbutton value['name'] action SetDict(item_properties, 'size', key), SetDict(item_properties, 'damage_type', key)
+                    else:
+                        textbutton value['name'] action SetDict(item_properties, 'size', key), SetDict(item_properties, 'damage_type', None)
+        vbox:
+            text 'damage_type:'
+            for key, value in item_features.items():
+                if value['slot'] == 'wpn_dmg':
+                    textbutton value['name'] action [SetDict(item_properties, 'damage_type', key),
+                        SensitiveIf(item_properties.get('size') != 'shield')]
+
+screen sc_armor_properties(item_properties):
+    hbox:
+        yalign 0.5
+        vbox:
+            text 'armor rate:'
+            for key, value in item_features.items():
+                if value['slot'] == 'armor_rate':
+                    textbutton value['name'] action SetDict(item_properties, 'armor_rate', key)
