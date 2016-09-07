@@ -33,7 +33,11 @@ label start:
         meter = Meter(core.protagonist)
         ap = player.ap
         player.set_resources_storage(core.resources)
-
+        
+        # TEST CODE
+        person.equip_armor(test_armor, 'overgarments') 
+        player.add_item(item)
+        
     
     show expression "interface/bg_base.jpg" as bg
     call evn_init
