@@ -6,7 +6,7 @@ import renpy.exports as renpy
 
 class Feature(object):
 
-    def __init__(self, owner=None, id_="generic", data_dict='person_features', *args, **kwargs):
+    def __init__(self, owner=None, id_="generic", data_dict='person_features', time=None, *args, **kwargs):
         try:
             data_dict = getattr(store, data_dict)
             stats = data_dict[id_]
@@ -15,6 +15,7 @@ class Feature(object):
             raise Exception("no feature named %s in %s"%(id_, data_dict))
         self.id = id_
         self.stats = stats
+        self._time = time
         self._revealed = False   # true if the feature is revealed to player      
         self.owner = owner    # the Person() who owns this feature
         self.add()
@@ -40,7 +41,7 @@ class Feature(object):
     
     @property
     def time(self):
-        return self.stats['time']
+        return self._time
 
     @property
     def value(self):
@@ -79,8 +80,8 @@ class Feature(object):
 
     def tick_time(self):
         try:
-            self.time -= 1
-            if self.time < 1:
+            self._time -= 1
+            if self._time < 1:
                 self.remove()
         except TypeError:
             pass
