@@ -36,9 +36,9 @@ init python:
             max_ = 0
             card_to_get = None
             for card in user.drop:
-                if card.value > max_:
+                if card.power > max_:
                     card_to_get = card
-                    max_ = card.value
+                    max_ = card.power
         user.draw_from_drop(card_to_get)
     
     # available keys for actions

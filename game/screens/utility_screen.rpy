@@ -1,11 +1,27 @@
 init python:
-    exchange_rates = {
-    'drugs': 100,
-    'provision': 100,
-    'fuel': 100,
-    'munition': 100,
-    'hardware': 100,
-    'clothes': 100
+    default_rates = {
+    'drugs': 50,
+    'provision': 50,
+    'fuel': 50,
+    'munition': 50,
+    'hardware': 50,
+    'clothes': 50
+    }
+    default_buy_rates = {
+    'drugs': 0.1,
+    'provision': 0.1,
+    'fuel': 0.1,
+    'munition': 0.1,
+    'hardware': 0.1,
+    'clothes': 0.1
+    }
+    default_sell_rates = {
+    'drugs': 2,
+    'provision': 2,
+    'fuel': 2,
+    'munition': 2,
+    'hardware': 2,
+    'clothes': 2
     }
     class TradeInput(InputValue):
         def __init__(self):
@@ -37,11 +53,22 @@ init python:
         value = getattr(core.resources , 'money') + value
         setattr(core.resources, 'money', value)
 
-screen sc_universal_trade(player=core.player, trader=None):
+screen sc_universal_trade(trader=None, trader_sell_rates=None, trader_buy_rates=None, player=core.player):
     python:
         
         trade_player = universal_trade_values['player']
         trade_trader = universal_trade_values['trader']
+        sell_rates = {}
+        for key in default_sell_rates:
+            if key not in trader_sell_rates:
+                sell_rates[key] = default_sell_rates[key]
+            else:
+                sell_rates[key] = trader_sell_rates[key]
+        for key in default_buy_rates:
+            if key not in trader_buy_rates:
+                buy_rates[key] = default_buy_rates[key]
+            else:
+                buy_rates[key] = trader_buy_rates[key]
     vbox:
         align(0.0, 0.0)
         for k, v in core.resources.resources.items():
@@ -60,8 +87,8 @@ screen sc_universal_trade(player=core.player, trader=None):
         $ player_money = trade_player['money']
         $ trader_money = trade_trader['money']
         text '[player_money]  money  [trader_money]'
-        $ total_player = sum([int(value*exchange_rates[key]) for key, value in trade_player.items() if key != 'money'])+trade_player['money']
-        $ total_trader = sum([int(value*exchange_rates[key]) for key, value in trade_trader.items() if key != 'money'])+trade_trader['money']
+        $ total_player = sum([int(value*buy_rates[key]) for key, value in trade_player.items() if key != 'money'])+trade_player['money']
+        $ total_trader = sum([int(value*sell_rates[key]) for key, value in trade_trader.items() if key != 'money'])+trade_trader['money']
         $ total_difference = total_trader - total_player
         python:
             if total_player > total_trader:
@@ -158,17 +185,17 @@ screen sc_prefight_equip(person):
                 prefight_text2 = 'other hand: %s'%person.other_hand.description
         textbutton prefight_text1:
             action [Show('sc_equip_weapon', person=person, hand='main_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None]) or person.main_hand != None)]
+                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None or not person.inventory.in_hands(weapon)]) or person.main_hand != None)]
         textbutton prefight_text2:
             action [Show('sc_equip_weapon', person=person, hand='other_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None]) or person.other_hand != None)]
+                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None or not person.inventory.in_hands(weapon)]) or person.other_hand != None)]
         textbutton 'Done' action Return()
 
 screen sc_equip_weapon(person, hand):
     vbox:
         align(0.3, 0.3)
-        for weapon in person.inventory.carried_weapons.values():
-            if weapon != None:
+        for weapon in person.inventory.equiped_weapons().values():
+            if weapon != None and not person.inventory.in_hands(weapon):
                 textbutton weapon.description:
                     action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
         textbutton 'unequip' action Function(person.disarm_weapon, hand), Hide('sc_equip_weapon')
@@ -234,3 +261,69 @@ screen sc_faction_info(faction):
                 text ' '
                 textbutton 'leave':
                     action Return()
+
+screen sc_item_creator(creator_item_properties):
+    python:
+        munition_needed = 0
+        def is_ready(item_properties):
+            return all([value for value in item_properties.values()])
+        def change_item_type(dict_, type_):
+            if dict_['type'] != type_:
+                for key in dict_.keys():
+                    del dict_[key]
+            dict_['type'] = type_
+            if type_ == 'Armor':
+                dict_['armor_rate'] = None
+            elif type_ == 'Weapon':
+                dict_['size'] = None
+                dict_['damage_type'] = None
+    vbox:
+        xalign 0.0
+        text 'choose type:'
+        textbutton 'weapon' action [Function(change_item_type, creator_item_properties, 'Weapon'),
+            Show('sc_weapon_properties', item_properties=creator_item_properties),
+            Hide('sc_armor_properties')]
+        textbutton 'armor' action [Function(change_item_type, creator_item_properties, 'Armor'),
+            Show('sc_armor_properties', item_properties=creator_item_properties),
+            Hide('sc_weapon_properties')]
+        text ''
+        textbutton 'Done' action [SensitiveIf(is_ready(creator_item_properties) and munition_needed <= core.resources.munition),
+            Hide('sc_weapon_properties'),
+            Hide('sc_armor_properties'),
+            Return('make')]
+    #vbox:
+        #xalign 0.15
+        #text 'quality:'
+        #for i in range(1, 6):
+            #textbutton str(i) action SetDict(creator_item_properties, 'quality', i)
+    vbox:
+        xalign 0.3
+        text 'We have [core.resources.munition] munition'
+        text 'We need [munition_needed] munition'
+
+screen sc_weapon_properties(item_properties):
+    hbox:
+        yalign 0.5
+        vbox:
+            text 'size:'
+            for key, value in item_features.items():
+                if value['slot'] == 'wpn_size':
+                    if key == 'shield':
+                        textbutton value['name'] action SetDict(item_properties, 'size', key), SetDict(item_properties, 'damage_type', key)
+                    else:
+                        textbutton value['name'] action SetDict(item_properties, 'size', key), SetDict(item_properties, 'damage_type', None)
+        vbox:
+            text 'damage_type:'
+            for key, value in item_features.items():
+                if value['slot'] == 'wpn_dmg':
+                    textbutton value['name'] action [SetDict(item_properties, 'damage_type', key),
+                        SensitiveIf(item_properties.get('size') != 'shield')]
+
+screen sc_armor_properties(item_properties):
+    hbox:
+        yalign 0.5
+        vbox:
+            text 'armor rate:'
+            for key, value in item_features.items():
+                if value['slot'] == 'armor_rate':
+                    textbutton value['name'] action SetDict(item_properties, 'armor_rate', key)

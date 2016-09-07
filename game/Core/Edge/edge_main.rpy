@@ -122,6 +122,8 @@ label lbl_edge_craft:
             call lbl_edge_craft_basic
         'Advanced stuff' if 'workbench' not in camp.improvements:
             call lbl_edge_craft_workbench
+        'Weapon and armor':
+            call lbl_weapon_armor
         'Done':
             jump lbl_edge_manage
             
@@ -226,4 +228,11 @@ label lbl_info_new(target):
         txt += 'Жрет: %s(%s)'%(consumption[0], consumption[1])
     "[txt]"
 
+    return
+
+
+label lbl_weapon_armor:
+    'crafting'
+    $ item = create_item()
+    $ player.add_item(item)
     return
