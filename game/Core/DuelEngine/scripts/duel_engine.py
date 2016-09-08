@@ -129,26 +129,26 @@ def init_points(combatant, enemy, situation):
         elif weapon.size == 'twohanded' and not any([i for i in enemy_weapons if i.size == 'twohanded']):
             d['onslaught'].value += weapon.quality*3
         #damage_type bonuses
-        if weapon.damage_type == 'slashing' and enemy.protection_type == 'unarmored' and enemy.creature_type == 'natural':
+        if weapon.damage_type == 'slashing' and enemy.armor_rate == 'unarmored' and enemy.creature_type == 'natural':
             d['excellence'].value += weapon.quality*2
         elif weapon.damage_type == 'piercing':
             d['excellence'].value += weapon.quality
-        elif weapon.damage_type == 'elemental' and enemy.protection_type == 'heavy':
+        elif weapon.damage_type == 'elemental' and enemy.armor_rate == 'heavy':
             d['onslaught'].value += weapon.quality*2
         elif weapon.damage_type == 'silvered' and enemy.creature_type == 'supernatural':
             d['excellence'].value += weapon.quality*2
     #armor bonuses
-    if combatant.protection_type == 'light' and not any([i for i in armor_ignoring if i =='light' or i == 'all']):
+    if combatant.armor_rate == 'light' and not any([i for i in armor_ignoring if i =='light' or i == 'all']):
         bonus = person.physique + person.agility + combatant.protection_quality + skill.level
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['fortitude'].value += bonus
-    elif combatant.protection_type == 'unarmored' and not any([i for i in armor_ignoring if i == 'unarmored' or i == 'all']):
+    elif combatant.armor_rate == 'unarmored' and not any([i for i in armor_ignoring if i == 'unarmored' or i == 'all']):
         bonus = person.agility + skill.level
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['maneuver'].value += bonus
-    elif combatant.protection_type == 'heavy' and not any([i for i in armor_ignoring if i =='heavy' or i == 'all']):
+    elif combatant.armor_rate == 'heavy' and not any([i for i in armor_ignoring if i =='heavy' or i == 'all']):
         bonus = (person.physique + combatant.protection_quality + skill.level)*2
         if 'all-half' in armor_ignoring:
             bonus /= 2
@@ -188,17 +188,18 @@ class DuelEngine(object):
     def _get_combatant(self, side):
         try:
             combatant = getattr(self, side).pop()
-            if side == 'allies':
-                combatant.set_side('allies')
-                renpy.call_screen('sc_prefight_equip', combatant.person)
-            else:
-                combatant.set_side('enemies')
-            if not self.simulation:
-                combatant.set_hand()
-            self.use_stack = {'allies': [], 'enemies': []}
-            return combatant
         except IndexError:
             return self._end_fight(side)
+        if side == 'allies':
+            combatant.set_side('allies')
+            renpy.call_screen('sc_prefight_equip', combatant.person)
+        else:
+            combatant.set_side('enemies')
+        if not self.simulation:
+            combatant.set_hand()
+        self.use_stack = {'allies': [], 'enemies': []}
+        return combatant
+        
 
     def _end_fight(self, loosed_side):
         self.loser = loosed_side
@@ -325,9 +326,9 @@ class DuelCombatant(object):
         self.hand = []
         self.drop = []
         if self.armor != None:
-            self.protection_type = self.armor.protection_type
+            self.armor_rate = self.armor.armor_rate
         else:
-            self.protection_type = 'unarmored'
+            self.armor_rate = 'unarmored'
         if self.armor != None:
             self.protection_quality = self.armor.quality
         else:
@@ -369,7 +370,6 @@ class DuelCombatant(object):
         self.deck = deck
     def set_hand(self):
         if self.deck != None:
-            self.deck.fight_started()
             self.hand = self.deck.get_hand()
         else:
             raise Exception("set_hand called, but this combatant has no choosen deck yet")
@@ -382,9 +382,8 @@ class DuelCombatant(object):
         # Drawing no more than we have at all
         while number > 0:
             number -= 1
-            card = self.deck.get_card()
-            if card != None:
-                self.hand.append(self.deck.get_card())
+            if self.hand.can_draw():
+                self.hand.add_card()
                 self.send_event('draw_card')
             else:
                 return
@@ -454,7 +453,7 @@ class Deck(object):
         self.current = None
         self.style = None
 
-    def completed(self):
+    def is_completed(self):
         if len(self.cards_list) == 22:
             return True
         return False
@@ -471,7 +470,7 @@ class Deck(object):
     def remove_card(self, card):
         self.cards_list.remove(card)
     
-    def _count_cards(self, card_id):
+    def count_cards(self, card_id):
         value = 0
         for card in self.cards_list:
             if card.id == card_id:
@@ -479,31 +478,56 @@ class Deck(object):
         return value
     
     def can_be_added(self, card):
-        if self._count_cards(card.id) > 2 and not card.unique:
+        if self.count_cards(card.id) > 2 and not card.unique:
             return False
-        elif self._count_cards(card.id) > 0 and card.unique:
+        elif self.count_cards(card.id) > 0 and card.unique:
             return False
         return True
 
-    def fight_started(self):
-        self.current = [card for card in self.cards_list]
-        shuffle(self.current)
-
     def get_hand(self):
+        shuffled = [card for card in self.cards_list]
+        shuffle(shuffled)
         hand = []
         for i in range(10):
             try:
-                hand.append(self.current.pop())
+                hand.append(shuffled.pop())
             except IndexError:
-                return hand
-        return hand
+                break
+        return Hand(self, hand, shuffled)
 
-    def get_card(self):
+
+class Hand(object):
+    def __init__(self, deck, cards_list, cards_left):
+        self.deck = deck
+        self._cards_left = cards_left
+        self.cards_list = cards_list
+
+    def add_card(self, card=None):
+        if card != None:
+            self.cards_list.append(card)
+            return
+        self.get_from_deck()
+
+    def append(self, item):
+        self.cards_list.append(item)
+
+    def __iter__(self):
+        return self.cards_list.__iter__()
+
+    def remove(self, item):
+        self.cards_list.remove(item)
+
+    def __len__(self):
+        return len(self.cards_list)
+
+    def get_from_deck(self):
         try:
-            card = self.current.pop()
-            return card
+            self.cards_list.append(self._cards_left.pop())
         except IndexError:
-            return 
+            return
+
+    def can_draw(self):
+        return len(self._cards_left) > 0
 
 
 class DuelAction(object):
