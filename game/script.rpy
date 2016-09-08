@@ -35,8 +35,15 @@ label start:
         player.set_resources_storage(core.resources)
         
         # TEST CODE
-        person.equip_armor(test_armor, 'overgarments') 
-        player.add_item(item)
+        test_armor = Armor()
+        test_armor.set_armor_rate = 1
+        test_armor.set_protection_type = 'light'
+        knife = Weapon()
+        dict = {'quality': 1, 'size': 'offhand', 'damage_type': 'slashing'}
+        knife.make_from_dict(dict)
+        
+        player.equip_armor(test_armor, 'overgarments') 
+        player.add_item(knife)
         
     
     show expression "interface/bg_base.jpg" as bg
