@@ -315,7 +315,7 @@ class DuelCombatant(object):
             person.deck = Deck()
             for card in cards_list:
                 person.deck.add_card(card)
-        elif not person.deck.completed():
+        elif not person.deck.is_completed():
             person.deck = Deck()
             for card in cards_list:
                 person.deck.add_card(card)
