@@ -85,6 +85,16 @@ class EdgeEngine(object):
             if location.player_cache:
                 return True
 
+    def go_to_mist(self):
+        self.locations = []
+        self.house = choice(store.house_names.values())
+        trade_loc = EdgeLocation('outpost', True)
+        trade_loc.gen_owner(choice(store.great_houses))
+        mist_loc = EdgeLocation('shifting_mist', True)
+        self.locations.append(trade_loc)
+        self.locations.append(mist_loc)
+        
+
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
 
 class EdgeLocation(object):

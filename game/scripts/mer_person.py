@@ -69,7 +69,7 @@ class Person(object):
         self.player_controlled = False
         self._event_type = 'person'
         self.firstname = u"Anonimous"
-        self.surname = u"Anonim"
+        self.surname = u""
         self.nickname = u"Anon"
         self.alignment = Alignment()
         self.features = []          # gets Feature() objects and their child's. Add new Feature only with self.add_feature()

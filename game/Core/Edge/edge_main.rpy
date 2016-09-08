@@ -14,15 +14,9 @@ label lbl_edge_main:
     'The Mist gives you a way...'  
     python:
         camp = EdgeCamp()
-        edge.locations = []
-        trade_loc = EdgeLocation('outpost', True)
-        trade_loc.gen_owner(choice(great_houses))
-        mist_loc = EdgeLocation('shifting_mist', True)
-        edge.locations.append(trade_loc)
-        edge.locations.append(mist_loc)
         edge.loc_max = 7
         core.set_world('edge')
-        edge.house = choice(house_names.values())
+        edge.go_to_mist()
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
