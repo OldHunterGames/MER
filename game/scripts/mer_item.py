@@ -77,6 +77,11 @@ class Item(object):
 
 class Weapon(Item):
     type_ = 'weapon'
+    def __init__(self, size, damage_type):
+        super(Weapon, self).__init__()
+        self.set_size(size)
+        self.set_damage_type(damage_type)
+
     def _init_features(self):
         self.add_feature(self.size)
         self.add_feature(self.damage_type)
@@ -106,6 +111,9 @@ class Weapon(Item):
 
 class Armor(Item):
     type_ = 'armor'
+    def __init__(self, armor_rate):
+        super(Armor, self).__init()
+        self.set_armor_rate(armor_rate)
     def _init_features(self):
         self.add_feature(self.armor_rate)
     @property
@@ -124,8 +132,11 @@ class Armor(Item):
 def create_item():
     creator_item_properties = {'type': None}
     renpy.call_screen('sc_item_creator', creator_item_properties)
-    item = globals()[creator_item_properties['type']]()
-    del creator_item_properties['type']
-    creator_item_properties['quality'] = 1
-    item.make_from_dict(creator_item_properties)
+    item_type = creator_item_properties['type']
+    if item_type == 'armor':
+        item = Armor(creator_item_properties['armor_rate'])
+    elif item_type == 'weapon':
+        item = Weapon(creator_item_properties['size'], creator_item_properties['damage_type'])
+    item.set_quality(1)
     return item
+

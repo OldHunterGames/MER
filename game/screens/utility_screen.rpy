@@ -272,18 +272,18 @@ screen sc_item_creator(creator_item_properties):
                 for key in dict_.keys():
                     del dict_[key]
             dict_['type'] = type_
-            if type_ == 'Armor':
+            if type_ == 'armor':
                 dict_['armor_rate'] = None
-            elif type_ == 'Weapon':
+            elif type_ == 'weapon':
                 dict_['size'] = None
                 dict_['damage_type'] = None
     vbox:
         xalign 0.0
         text 'choose type:'
-        textbutton 'weapon' action [Function(change_item_type, creator_item_properties, 'Weapon'),
+        textbutton 'weapon' action [Function(change_item_type, creator_item_properties, 'weapon'),
             Show('sc_weapon_properties', item_properties=creator_item_properties),
             Hide('sc_armor_properties')]
-        textbutton 'armor' action [Function(change_item_type, creator_item_properties, 'Armor'),
+        textbutton 'armor' action [Function(change_item_type, creator_item_properties, 'armor'),
             Show('sc_armor_properties', item_properties=creator_item_properties),
             Hide('sc_weapon_properties')]
         text ''
