@@ -20,6 +20,8 @@ class Inventory(object):
     
     @main_hand.setter
     def main_hand(self, weapon):
+        if weapon in self.storage:
+            self.storage.remove(weapon)
         if self._main_hand != None:
             self._main_hand.unequip()
             if self._main_hand not in self.storage and self._main_hand not in self.equiped_weapons().values():
@@ -32,6 +34,8 @@ class Inventory(object):
     
     @other_hand.setter
     def other_hand(self, weapon):
+        if weapon in self.storage:
+            self.storage.remove(weapon)
         if self._other_hand != None:
             self._other_hand.unequip()
             if self._other_hand not in self.storage and self._other_hand not in self.equiped_weapons().values():

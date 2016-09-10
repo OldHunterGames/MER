@@ -185,10 +185,10 @@ screen sc_prefight_equip(person):
                 prefight_text2 = 'other hand: %s'%person.other_hand.description
         textbutton prefight_text1:
             action [Show('sc_equip_weapon', person=person, hand='main_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None or not person.inventory.in_hands(weapon)]) or person.main_hand != None)]
+                SensitiveIf(any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)]) or person.main_hand != None)]
         textbutton prefight_text2:
             action [Show('sc_equip_weapon', person=person, hand='other_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.carried_weapons.values() if weapon != None or not person.inventory.in_hands(weapon)]) or person.other_hand != None)]
+                SensitiveIf(any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)]) or person.other_hand != None)]
         textbutton 'Done' action Return()
 
 screen sc_equip_weapon(person, hand):

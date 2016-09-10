@@ -35,12 +35,8 @@ label start:
         player.set_resources_storage(core.resources)
         
         # TEST CODE
-        test_armor = Armor()
-        test_armor.set_armor_rate = 1
-        test_armor.set_protection_type = 'light'
-        knife = Weapon()
-        dict = {'quality': 1, 'size': 'offhand', 'damage_type': 'slashing'}
-        knife.make_from_dict(dict)
+        test_armor = Armor('light_armor')
+        knife = Weapon('offhand', 'slashing')
         
         player.equip_armor(test_armor, 'overgarments') 
         player.add_item(knife)

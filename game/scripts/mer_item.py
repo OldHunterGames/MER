@@ -12,7 +12,10 @@ class Item(object):
     type_ = 'item'
     def __init__(self, *args, **kwargs):
         self._name = ""
-        self._quality = 0
+        if 'quality' in kwargs.keys():
+            self._quality = kwargs['quality']
+        else:
+            self._quality = 1
         self.equiped = False
         self.features = []
         self.modifiers = ModifiersStorage()
@@ -77,8 +80,8 @@ class Item(object):
 
 class Weapon(Item):
     type_ = 'weapon'
-    def __init__(self, size, damage_type):
-        super(Weapon, self).__init__()
+    def __init__(self, size, damage_type, *args, **kwargs):
+        super(Weapon, self).__init__(*args, **kwargs)
         self.set_size(size)
         self.set_damage_type(damage_type)
 
@@ -111,8 +114,8 @@ class Weapon(Item):
 
 class Armor(Item):
     type_ = 'armor'
-    def __init__(self, armor_rate):
-        super(Armor, self).__init()
+    def __init__(self, armor_rate, *args, **kwargs):
+        super(Armor, self).__init__(*args, **kwargs)
         self.set_armor_rate(armor_rate)
     def _init_features(self):
         self.add_feature(self.armor_rate)

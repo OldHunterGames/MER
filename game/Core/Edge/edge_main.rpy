@@ -43,6 +43,8 @@ label lbl_edge_manage:
             call lbl_edge_craft
         'Information':
             call lbl_edge_info_base
+        'Equipment':
+            call screen sc_person_equipment(player)
         'Carry on':
             call lbl_edge_turn
     

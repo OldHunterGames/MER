@@ -190,10 +190,18 @@ class Person(object):
     def main_hand(self):
         return self.inventory.main_hand
     
+    @main_hand.setter
+    def main_hand(self, weapon):
+        self.inventory.main_hand = weapon
+    
     
     @property
     def other_hand(self):
         return self.inventory.other_hand
+
+    @other_hand.setter
+    def other_hand(self, weapon):
+        self.inventory.other_hand = weapon
 
     @property
     def armor(self):
