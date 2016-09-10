@@ -44,8 +44,8 @@ label lbl_edge_shifting_mist(location=None):
     'Battle'
     python:
         ally1 = DuelCombatant(player)
-        enemy_weapon = Weapon('twohand', 'subdual', quality=choice(range(1, 5)))
-        enemy_armor = Armor('heavy_armor', quality=choice(range(1, 5)))
+        enemy_weapon = Weapon('twohand', 'subdual', quality=1)
+        enemy_armor = Armor('heavy_armor', quality=1)
         enemy = gen_random_person('human')
         enemy.main_hand = enemy_weapon
         enemy.armor = enemy_armor
