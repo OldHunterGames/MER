@@ -108,7 +108,7 @@ def init_points(combatant, enemy, situation):
         if weapon.damage_type == 'piercing':
             armor_ignoring.append('light')
         elif weapon.damage_type == 'impact':
-            if weapon.size == 'twohanded':
+            if weapon.size == 'twohand':
                 armor_ignoring.appned('all')
             else:
                 armor_ignoring.append('all-half')
@@ -118,15 +118,15 @@ def init_points(combatant, enemy, situation):
 
     for weapon in weapons:
         #size bonuses
-        if weapon.size == 'small':
+        if weapon.size == 'offhand':
             if situation == 'enclosed':
                 d['maneuver'].value += weapon.quality*2
             else:
                 d['maneuver'].value += weapon.quality
-        elif weapon.size == 'standart':
+        elif weapon.size == 'versatile':
             if situation != 'enclosed' and any([i for i in enemy_weapons if i.size == 'small']) and enemy.combat_style != 'shieldbearer':
                 d['onslaught'].value += weapon.quality*2
-        elif weapon.size == 'twohanded' and not any([i for i in enemy_weapons if i.size == 'twohanded']):
+        elif weapon.size == 'twohand' and not any([i for i in enemy_weapons if i.size == 'twohand']):
             d['onslaught'].value += weapon.quality*3
         #damage_type bonuses
         if weapon.damage_type == 'slashing' and enemy.armor_rate == 'unarmored' and enemy.creature_type == 'natural':
@@ -138,7 +138,7 @@ def init_points(combatant, enemy, situation):
         elif weapon.damage_type == 'silvered' and enemy.creature_type == 'supernatural':
             d['excellence'].value += weapon.quality*2
     #armor bonuses
-    if combatant.armor_rate == 'light' and not any([i for i in armor_ignoring if i =='light' or i == 'all']):
+    if combatant.armor_rate == 'light_armor' and not any([i for i in armor_ignoring if i =='light' or i == 'all']):
         bonus = person.physique + person.agility + combatant.protection_quality + skill.level
         if 'all-half' in armor_ignoring:
             bonus /= 2
@@ -148,7 +148,7 @@ def init_points(combatant, enemy, situation):
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['maneuver'].value += bonus
-    elif combatant.armor_rate == 'heavy' and not any([i for i in armor_ignoring if i =='heavy' or i == 'all']):
+    elif combatant.armor_rate == 'heavy_armor' and not any([i for i in armor_ignoring if i =='heavy' or i == 'all']):
         bonus = (person.physique + combatant.protection_quality + skill.level)*2
         if 'all-half' in armor_ignoring:
             bonus /= 2

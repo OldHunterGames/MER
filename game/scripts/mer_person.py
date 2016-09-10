@@ -206,6 +206,10 @@ class Person(object):
     @property
     def armor(self):
         return self.inventory.carried_armor['overgarments']
+
+    @armor.setter
+    def armor(self, armor):
+        self.inventory.equip_armor(armor, 'overgarments')
     
     def has_shield(self):
         try:
