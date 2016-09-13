@@ -42,16 +42,19 @@ class Inventory(object):
                 self.storage.append(self._other_hand)
         self._other_hand = weapon
     
-    def available_for_slot(self, slot, storage=None):
-        if storage == None:
-            storage = self.storage
-        slots = {
+    def slots(self):
+        return {
         'belt1': ['offhand', 'versatile'],
         'belt2': ['offhand', 'versatile'],
         'harness': ['offhand', 'versatile', 'shield', 'twohanded'],
         'armband': ['offhand'],
         'ankleband': ['offhand']
         }
+        
+    def available_for_slot(self, slot, storage=None):
+        if storage == None:
+            storage = self.storage
+        slots = self.slots()
         list_ = []
         if slot in self.armor_slots():
             for item in storage:
