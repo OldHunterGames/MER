@@ -238,6 +238,9 @@ class Person(object):
             self.equip_armor(item, slot)
         elif item.type == 'weapon':
             self.equip_weapon(item, slot)
+
+    def equip_on_slot(self, slot, item):
+        self.inventory.equip_on_slot(slot, item)
     #end of inventory methods
 
     def formidability(self):
