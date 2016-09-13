@@ -11,6 +11,8 @@ init -8 python:
     pass
 
 label lbl_edge_main:
+    $ txt = player.inventory.slots()
+    '[txt]'
     'The Mist gives you a way...'  
     python:
         camp = EdgeCamp()

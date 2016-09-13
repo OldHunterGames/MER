@@ -37,9 +37,10 @@ label start:
         # TEST CODE
         test_armor = Armor('light_armor')
         knife = Weapon('offhand', 'slashing')
+
         
         player.equip_armor(test_armor, 'overgarments') 
-        player.add_item(knife)
+        person.equip_on_slot('belt1', knife)
         
     
     show expression "interface/bg_base.jpg" as bg
