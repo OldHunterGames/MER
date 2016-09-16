@@ -3,24 +3,45 @@ init python:
     import random as rand
 
     from duel_engine import DuelAction
+    
+
     def make_inactive(battlepoints_list):
         for point in battlepoints_list:
             point.active = False
+    
+    def make_active(battlepoints_list):
+        for point in battlepoints_list:
+            point.active = True
+    
     def clinch_special(user):
         battle_points = [value['maneuver'] for value in user.fight.points.values()]
         make_inactive(battle_points)
+    
+    def clinch_remove(user):
+        battle_points = [value['maneuver'] for value in user.fight.points.values()]
+        make_active(battle_points)
+    
     def hit_n_run_special(user):
         battle_points = [value['onslaught'] for value in user.fight.points.values()]
         make_inactive(battle_points)
+    
+    def hit_n_run_remove(user):
+        battle_points = [value['onslaught'] for value in user.fight.points.values()]
+        make_active(battle_points)
+    
     def rage_special(user):
         battle_points = [value['fortitude'] for value in user.fight.points.values()]
         make_inactive(battle_points)
+    
+    def rage_remove(user):
+        battle_points = [value['fortitude'] for value in user.fight.points.values()]
+        make_active(battle_points)
     def outsmart_special(user):
-        for value in user.fight.points.values():
-            for i in value:
-                value[i].active = True
+        for action in user.fight.persistent_actions:
+            action.remove()
+        user.fight.persistent_actions = []
     def fallback_special(user):
-        if len(user.drop) < 2:
+        if len(user.drop) < 1:
             return
         value = 0
         point_to_decrease = None
@@ -92,6 +113,5 @@ screen draw_from_drop(user):
         align(0.6, 0.7)
         text 'draw_card:'
         for c in user.drop:
-            if c != user.drop[-1]:
-                textbutton c.name:
-                    action Function(user.draw_from_drop, c), Hide('draw_from_drop')
+            textbutton c.name:
+                action Function(user.draw_from_drop, c), Hide('draw_from_drop')
