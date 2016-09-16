@@ -68,9 +68,9 @@ init python:
     # special_effect must be function which take 1 arg, excepted arg is DuelCombatant who used card
     # style is one of 'breter', 'juggernaut', 'shieldbearer', 'restler', 'beast'
 
-    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'description': 'описалово', },
-                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'description': 'описалово', },
-                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'description': 'описалово', },
+    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'on_remove': clinch_remove, 'description': 'описалово', },
+                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'on_remove': hit_n_run_remove,'description': 'описалово', },
+                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'on_remove': rage_remove, 'description': 'описалово', },
                     'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': outsmart_special, 'description': 'описалово', },
                     'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special, 'description': 'описалово', },
                     'puny_strike': {'name': __('puny strike'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'description': 'описалово', 'special_effect': None},

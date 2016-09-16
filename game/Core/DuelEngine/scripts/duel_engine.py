@@ -249,7 +249,6 @@ class DuelEngine(object):
         value = sum(i.value for i in self.points[side].values())
         return value
     def start_new_round(self):
-        print 'new_round'
         self.pass_ = False
         self.round += 1
         self.enemy_passed = False
@@ -263,7 +262,6 @@ class DuelEngine(object):
         self.enemy_run()
 
     def start(self):
-        print 'started'
         self.current_ally = self._get_combatant('allies')
         self.current_enemy = self._get_combatant('enemies')
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
@@ -285,7 +283,6 @@ class DuelEngine(object):
         self.pass_ = True
 
     def enemy_run(self):
-        print 'enemy_run'
         enemy = self.current_enemy
         if self.passed and self.current_loser == 'allies':
             return
