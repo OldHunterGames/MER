@@ -27,7 +27,7 @@ screen duel_battle(fight):
             action Function(fight.set_show_summary, True)
     if fight.show_summary:
         vbox:
-            align(0.5, 0.5)
+            align(0.7, 0.5)
             hbox:
                 vbox:
                     $ stack = fight.use_stack['allies']
@@ -52,6 +52,8 @@ screen duel_battle(fight):
         align(0.5, 0.0)
         text 'player: [fight.enemies_loose_points] - enemies: [fight.allies_loose_points]'
         text 'currently [fight.current_loser] are loosig'
+        if fight.enemy_passed:
+            text 'enemy passed'
     frame:
         align (0.01, 0.98)
         xsize 200
@@ -62,6 +64,7 @@ screen duel_battle(fight):
             frame:
                 vbox:
                     align(0.5, 0.07)
+                    text str("escalation: %s"%fight.current_ally.escalation)
                     text str(fight.points['allies']['onslaught'].description)
                     text str(fight.points['allies']['maneuver'].description)
                     text str(fight.points['allies']['fortitude'].description)
@@ -85,7 +88,16 @@ screen duel_battle(fight):
                 textbutton card.name:
                     hovered Show('sc_card_info', card=card)
                     unhovered Hide('sc_card_info')
-                    action [Function(fight.current_ally.use_action, card), Function(fight.enemy_run), Hide('sc_card_info')]                  
+                    action [Function(fight.current_ally.use_action, card), Function(fight.enemy_run), Hide('sc_card_info')] 
+        frame:
+            yalign 0.9
+            xalign 0.25
+            xsize 200
+            ysize 300
+            vbox:
+                text 'persistent_effects:'
+                for action in fight.persistent_actions:
+                    text action.name                 
                          
                          
     frame:
@@ -106,6 +118,7 @@ screen duel_battle(fight):
             frame:
                 vbox:
                     align(0.5, 0.07)
+                    text str("escalation: %s"%fight.current_enemy.escalation)
                     text str(fight.points['enemies']['onslaught'].description)
                     text str(fight.points['enemies']['maneuver'].description)
                     text str(fight.points['enemies']['fortitude'].description)
@@ -118,6 +131,7 @@ screen duel_battle(fight):
                             hovered Show('sc_card_info', card=fight.current_enemy.last_played_card)
                             unhovered Hide('sc_card_info')
                             action NullAction()
+
 
 
 label lbl_duel_battle_end(fight):
@@ -142,6 +156,7 @@ screen sc_fighter_stats(fight):
 
 screen sc_card_info(card):
     vbox:
-        xalign 0.5
+        xalign 0.6
         yalign 0.5
-        text card.show()
+        text card.show():
+            xsize 350

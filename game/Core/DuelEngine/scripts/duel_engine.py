@@ -24,33 +24,36 @@ def predict_result(npc, player, simulated_fight):
     npc.fight = test_fight
     return_to_hand = []
     saved_drop = [action for action in npc.drop]
+    saved_all = [action for action in npc.all_drop]
     returned = None
-    
-    for card in npc.hand:
-        npc.use_action(card)
-        new_value = test_fight.summary('allies') - test_fight.summary('enemies')
-        if new_value > current_value:
-            return_to_hand.append(npc.drop.pop())
-            returned = None
-        elif new_value == current_value:
-            if simulated_fight.enemies_loose_points > 0:
-                returned = card
-            elif npc.last_event == 'draw_card' and len(saved_drop) > 1:
-                returned = card
-            else:
+    try:
+        for card in npc.hand:
+            npc.use_action(card)
+            new_value = test_fight.summary('allies') - test_fight.summary('enemies')
+            if new_value > current_value:
                 return_to_hand.append(npc.drop.pop())
                 returned = None
-        else:
-            returned = card
-        if returned != None:
-            npc.hand.append(returned)
-            break
-    
+            elif new_value == current_value:
+                if simulated_fight.enemies_loose_points > 0:
+                    returned = card
+                elif npc.last_event == 'draw_card' and len(saved_drop) > 1:
+                    returned = card
+                else:
+                    return_to_hand.append(npc.drop.pop())
+                    returned = None
+            else:
+                returned = card
+            if returned != None:
+                npc.hand.append(returned)
+                break
+    except IndexError:
+        pass
     for card in return_to_hand:
         npc.hand.append(card)
     npc.drop = saved_drop
-    npc.fight = simulated_fight
-    player.fight = simulated_fight
+    npc.all_drop = saved_all
+    npc.set_fight(simulated_fight)
+    player.set_fight(simulated_fight)
     return returned
 
 class BattlePoint(object):
@@ -174,7 +177,7 @@ class DuelEngine(object):
         self.current_ally = None
         self.current_enemy = None
         self.use_stack = {'allies': [], 'enemies': []}
-
+        self.persistent_actions = []
         self.points = {}
         self.round = 0
         
@@ -246,6 +249,7 @@ class DuelEngine(object):
         value = sum(i.value for i in self.points[side].values())
         return value
     def start_new_round(self):
+        print 'new_round'
         self.pass_ = False
         self.round += 1
         self.enemy_passed = False
@@ -259,6 +263,7 @@ class DuelEngine(object):
         self.enemy_run()
 
     def start(self):
+        print 'started'
         self.current_ally = self._get_combatant('allies')
         self.current_enemy = self._get_combatant('enemies')
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
@@ -280,24 +285,24 @@ class DuelEngine(object):
         self.pass_ = True
 
     def enemy_run(self):
+        print 'enemy_run'
         enemy = self.current_enemy
         if self.passed and self.current_loser == 'allies':
             return
         if self.enemy_passed:
             return
-        try:
-            action = predict_result(enemy, self.current_ally, self)
-            if action != None:
-                enemy.use_action(action)
-            else:
-                self.enemy_passed = True
-        except IndexError:
-                return 
+        action = predict_result(enemy, self.current_ally, self)
+        if action != None:
+            enemy.use_action(action)
+        else:
+            self.enemy_passed = True
+            return
         if self.passed:
             if self.compare_points() != 'allies':
                 return self.enemy_run()
             else:
-                return 
+                return
+        return 
 
     def update_stack(self, side, card):
         self.use_stack[side].append(card)
@@ -326,8 +331,10 @@ class DuelCombatant(object):
         self.side = None
         self.fight = None
         self.deck = person.deck
+        self.deck.set_fighter(self)
         self.hand = []
         self.drop = []
+        self.all_drop = []
         if self.armor != None:
             self.armor_rate = self.armor.armor_rate
         else:
@@ -348,7 +355,7 @@ class DuelCombatant(object):
     @property
     def last_played_card(self):
         try:
-            last = self.drop[-1]
+            last = self.all_drop[-1]
             return last
         except IndexError:
             return 
@@ -424,12 +431,15 @@ class DuelCombatant(object):
     def use_action(self, duel_action):
         if self.escalation < duel_action.power:
             self.escalation = duel_action.power
-        points = duel_action.use(self)
+        points = duel_action.use()
         if duel_action.slot != None:
             self.fight.points[self.side][duel_action.slot].value += points
         self.fight.update_stack(self.side, duel_action)
+        if duel_action.persistent:
+            self.fight.persistent_actions.append(duel_action)
         if duel_action.power > 0:
             self.drop.append(duel_action)
+        self.all_drop.append(duel_action)
         self.hand.remove(duel_action)
 
     def send_event(self, event):
@@ -455,11 +465,15 @@ class Deck(object):
         self.cards_list = [make_card(card) for card in cards_list] if cards_list != None else []
         self.current = None
         self.style = None
+        self.fighter = None
 
     def is_completed(self):
         if len(self.cards_list) == 22:
             return True
         return False
+
+    def set_fighter(self, fighter):
+        self.fighter = fighter
 
     def set_style(self, style):
         self.style = style
@@ -490,6 +504,8 @@ class Deck(object):
     def get_hand(self):
         shuffled = [card for card in self.cards_list]
         shuffle(shuffled)
+        for i in shuffled:
+            i.set_fighter(self.fighter)
         hand = []
         for i in range(10):
             try:
@@ -542,7 +558,9 @@ class DuelAction(object):
     def __init__(self, id_):
         self.id = id_
         self.data = store.actions_lib
-
+        self.current_fighter = None
+    def set_fighter(self, fighter):
+        self.current_fighter = fighter
     def __getattr__(self, key):
         try:
             id_ = self.__dict__['id']
@@ -558,18 +576,34 @@ class DuelAction(object):
             elif key == 'style' or key == 'special_effect' or key == 'slot':
                 return None
         raise AttributeError(key)
-
-    
-    def use(self, user):
-        user.send_event('card_used')
-        power = self.power
+    @property
+    def power(self):
+        try:
+            power = self.data[self.id]['power']
+        except KeyError:
+            power = 0
+        if self.use_weapon:
+            for weapon in self.current_fighter.get_weapons():
+                power += weapon.quality
         if self.mighty:
             power += 5
-        if self.use_weapon:
-            for weapon in user.get_weapons():
-                power += weapon.quality
+        return power
+
+    @property
+    def persistent(self):
+        return hasattr(self, 'on_remove')
+
+    def remove(self):
+        if self.persistent:
+            self.on_remove(self.current_fighter)
+
+
+    
+    def use(self):
+        self.current_fighter.send_event('card_used')
+        power = self.power
         if self.special_effect != None:
-            self.special_effect(user)
+            self.special_effect(self.current_fighter)
         return power
     
     def show(self):
@@ -577,14 +611,12 @@ class DuelAction(object):
             str_ = self.description
         except AttributeError:
             pass
-        str_ += "\n %s(%s"%(self.name, self.slot)
+        str_ += '\n %s'%(self.name)
         if self.slot != None:
-            str_ += ': %s)'%(self.power)
-        else:
-            str_ += ')'
+            str_ += '\n'
+            str_ += '(%s: %s)'%(self.slot, self.power)
 
         return str_
-
 def make_card(card_id):
     try:
         card = store.actions_lib[card_id]
