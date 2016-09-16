@@ -3,45 +3,24 @@ init python:
     import random as rand
 
     from duel_engine import DuelAction
-    
-
     def make_inactive(battlepoints_list):
         for point in battlepoints_list:
             point.active = False
-    
-    def make_active(battlepoints_list):
-        for point in battlepoints_list:
-            point.active = True
-    
     def clinch_special(user):
         battle_points = [value['maneuver'] for value in user.fight.points.values()]
         make_inactive(battle_points)
-    
-    def clinch_remove(user):
-        battle_points = [value['maneuver'] for value in user.fight.points.values()]
-        make_active(battle_points)
-    
     def hit_n_run_special(user):
         battle_points = [value['onslaught'] for value in user.fight.points.values()]
         make_inactive(battle_points)
-    
-    def hit_n_run_remove(user):
-        battle_points = [value['onslaught'] for value in user.fight.points.values()]
-        make_active(battle_points)
-    
     def rage_special(user):
         battle_points = [value['fortitude'] for value in user.fight.points.values()]
         make_inactive(battle_points)
-    
-    def rage_remove(user):
-        battle_points = [value['fortitude'] for value in user.fight.points.values()]
-        make_active(battle_points)
     def outsmart_special(user):
-        for action in user.fight.persistent_actions:
-            action.remove()
-        user.fight.persistent_actions = []
+        for value in user.fight.points.values():
+            for i in value:
+                value[i].active = True
     def fallback_special(user):
-        if len(user.drop) < 1:
+        if len(user.drop) < 2:
             return
         value = 0
         point_to_decrease = None
@@ -68,11 +47,11 @@ init python:
     # special_effect must be function which take 1 arg, excepted arg is DuelCombatant who used card
     # style is one of 'breter', 'juggernaut', 'shieldbearer', 'restler', 'beast'
 
-    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'on_remove': clinch_remove, 'description': 'описалово', },
-                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'on_remove': hit_n_run_remove, 'description': 'описалово', },
-                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'on_remove': rage_remove, 'description': 'описалово', },
+    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'description': 'описалово', },
+                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'description': 'описалово', },
+                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'description': 'описалово', },
                     'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': outsmart_special, 'description': 'описалово', },
-                    'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special, 'persistent': True, 'description': 'описалово', },
+                    'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special, 'description': 'описалово', },
                     'puny_strike': {'name': __('puny strike'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'description': 'описалово', 'special_effect': None},
                     'draggle': {'name': __('draggle'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot': 'maneuver', 'description': 'описалово',  'special_effect': None},
                     'desperation': {'name': __('desperation'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'fortitude', 'description': 'описалово',  'special_effect': None},
@@ -113,5 +92,6 @@ screen draw_from_drop(user):
         align(0.6, 0.7)
         text 'draw_card:'
         for c in user.drop:
-            textbutton c.name:
-                action Function(user.draw_from_drop, c), Hide('draw_from_drop')
+            if c != user.drop[-1]:
+                textbutton c.name:
+                    action Function(user.draw_from_drop, c), Hide('draw_from_drop')
