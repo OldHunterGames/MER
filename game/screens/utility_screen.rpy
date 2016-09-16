@@ -175,6 +175,12 @@ screen sc_equip_item(person, slot):
 screen sc_prefight_equip(person):
     vbox:
         python:
+            def is_main_hand_active(person):
+                return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)])
+                    or person.main_hand != None)
+            def is_other_hand_active(person):
+                return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not (person.inventory.in_hands(weapon)
+                    or weapon.size == 'versatile')]) or person.other_hand != None)
             if person.main_hand == None:
                 prefight_text1 = "main hand"
             else:
@@ -185,10 +191,10 @@ screen sc_prefight_equip(person):
                 prefight_text2 = 'other hand: %s'%person.other_hand.description
         textbutton prefight_text1:
             action [Show('sc_equip_weapon', person=person, hand='main_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)]) or person.main_hand != None)]
+                SensitiveIf(is_main_hand_active(person))]
         textbutton prefight_text2:
             action [Show('sc_equip_weapon', person=person, hand='other_hand'),
-                SensitiveIf(any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)]) or person.other_hand != None)]
+                SensitiveIf(is_other_hand_active(person))]
         textbutton 'Done' action Return()
 
 screen sc_equip_weapon(person, hand):
@@ -196,8 +202,13 @@ screen sc_equip_weapon(person, hand):
         align(0.3, 0.3)
         for weapon in person.inventory.equiped_weapons().values():
             if weapon != None and not person.inventory.in_hands(weapon):
-                textbutton weapon.description:
-                    action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
+                if hand == 'other_hand':
+                    if weapon.size != 'versatile':
+                        textbutton weapon.description:
+                            action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
+                else:
+                    textbutton weapon.description:
+                        action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
         textbutton 'unequip' action Function(person.disarm_weapon, hand), Hide('sc_equip_weapon')
 
 screen sc_make_deck(person):

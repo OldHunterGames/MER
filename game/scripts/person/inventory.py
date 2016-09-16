@@ -46,7 +46,7 @@ class Inventory(object):
         return {
         'belt1': ['offhand', 'versatile'],
         'belt2': ['offhand', 'versatile'],
-        'harness': ['offhand', 'versatile', 'shield', 'twohanded'],
+        'harness': ['offhand', 'versatile', 'shield', 'twohand'],
         'armband': ['offhand'],
         'ankleband': ['offhand']
         }
@@ -80,19 +80,25 @@ class Inventory(object):
     def equip_weapon(self, weapon, hand='main_hand'):
         if weapon in self.storage:
             self.storage.remove(weapon)
-        if weapon.size == 'twohanded':
+        if weapon.size == 'twohand':
             self.main_hand = weapon
             self.other_hand = weapon
         else:
             other = 'other_hand' if hand=='main_hand' else 'main_hand'
             try:
-                if getattr(self, other).size == 'twohanded':
+                if getattr(self, other).size == 'twohand':
                     setattr(self, other, None)
             except AttributeError:
                 pass
             setattr(self, hand, weapon)
 
     def disarm_weapon(self, hand):
+        try:
+            if getattr(self, hand).size == 'twohand':
+                setattr(self, 'main_hand', None)
+                setattr(self, 'other_hand', None)
+        except AttributeError:
+            pass
         setattr(self, hand, None)
 
     def equip_armor(self, armor, slot):
@@ -120,3 +126,4 @@ class Inventory(object):
         if self.main_hand == item or self.other_hand == item:
             return True
         return False
+    

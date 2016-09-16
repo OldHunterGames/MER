@@ -127,7 +127,7 @@ def init_points(combatant, enemy, situation):
             else:
                 d['maneuver'].value += weapon.quality
         elif weapon.size == 'versatile':
-            if situation != 'enclosed' and any([i for i in enemy_weapons if i.size == 'small']) and enemy.combat_style != 'shieldbearer':
+            if situation != 'enclosed' and any([i for i in enemy_weapons if i.size == 'offhand']) and enemy.combat_style != 'shieldbearer':
                 d['onslaught'].value += weapon.quality*2
         elif weapon.size == 'twohand' and not any([i for i in enemy_weapons if i.size == 'twohand']):
             d['onslaught'].value += weapon.quality*3
