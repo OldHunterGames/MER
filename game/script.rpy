@@ -37,11 +37,19 @@ label start:
         # TEST CODE
         test_armor = Armor('light_armor')
         knife = Weapon('offhand', 'slashing')
+        stiletto = Weapon('offhand', 'piercing')
+        mace = Weapon('versatile', 'impact')
+        sword = Weapon('versatile', 'slashing')
+        halberd = Weapon('twohand', 'slashing')        
 
         
         player.equip_armor(test_armor, 'overgarments') 
-        person.equip_on_slot('belt1', knife)
-        
+        player.equip_on_slot('belt1', knife)
+        player.equip_on_slot('belt2', stiletto)
+        player.equip_on_slot('armband', mace)       
+        player.equip_on_slot('ankleband', sword) 
+        player.equip_on_slot('harness', halberd) 
+
     
     show expression "interface/bg_base.jpg" as bg
     call evn_init
