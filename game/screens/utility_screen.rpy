@@ -39,7 +39,7 @@ init python:
     def universal_trade_values_refresh():
         return {'player': collections.defaultdict(int), 'trader': collections.defaultdict(int)}
     def trade_timer(res, dict_, who, value):
-        if res != None and who != None and value != None:
+        if res is not None and who is not None and value is not None:
             if who == 'player':
                 dict_[who][res] = str(min(int(value.txt), getattr(core.resources, res)))
             else:
@@ -177,15 +177,15 @@ screen sc_prefight_equip(person):
         python:
             def is_main_hand_active(person):
                 return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)])
-                    or person.main_hand != None)
+                    or person.main_hand is not None)
             def is_other_hand_active(person):
                 return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not (person.inventory.in_hands(weapon)
-                    or weapon.size == 'versatile')]) or person.other_hand != None)
-            if person.main_hand == None:
+                    or weapon.size == 'versatile')]) or person.other_hand is not None)
+            if person.main_hand is None:
                 prefight_text1 = "main hand"
             else:
                 prefight_text1 = "main hand: %s"%person.main_hand.description
-            if person.other_hand == None:
+            if person.other_hand is None:
                 prefight_text2 = 'other hand'
             else:
                 prefight_text2 = 'other hand: %s'%person.other_hand.description
@@ -201,7 +201,7 @@ screen sc_equip_weapon(person, hand):
     vbox:
         align(0.3, 0.3)
         for weapon in person.inventory.equiped_weapons().values():
-            if weapon != None and not person.inventory.in_hands(weapon):
+            if weapon is not None and not person.inventory.in_hands(weapon):
                 if hand == 'other_hand':
                     if weapon.size != 'versatile':
                         textbutton weapon.description:

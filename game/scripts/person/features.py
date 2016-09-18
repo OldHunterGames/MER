@@ -4,41 +4,43 @@ from random import *
 import renpy.store as store
 import renpy.exports as renpy
 
+
 class Feature(object):
 
-    def __init__(self, owner=None, id_="generic", data_dict='person_features', time=None, *args, **kwargs):
+    def __init__(self, owner=None, id_="generic",
+                 data_dict='person_features', time=None, *args, **kwargs):
         try:
             data_dict = getattr(store, data_dict)
             stats = data_dict[id_]
-        except KeyError, AttributeError:
+        except KeyError as AttributeError:
             return
-            raise Exception("no feature named %s in %s"%(id_, data_dict))
+            raise Exception("no feature named %s in %s" % (id_, data_dict))
         self.id = id_
         self.stats = stats
         self._time = time
-        self._revealed = False   # true if the feature is revealed to player      
+        self._revealed = False   # true if the feature is revealed to player
         self.owner = owner    # the Person() who owns this feature
         self.add()
-    
+
     @property
     def name(self):
         return self.stats['name']
-    
+
     @property
     def slot(self):
         return self.stats['slot']
-    
+
     @property
     def modifiers(self):
         try:
             return self.stats['modifiers']
         except KeyError:
             return None
-    
+
     @property
     def visible(self):
         return self.stats['visible']
-    
+
     @property
     def time(self):
         return self._time
@@ -46,13 +48,13 @@ class Feature(object):
     @property
     def value(self):
         return self.stats['value']
-    
+
     @property
     def revealed(self):
         return self._revealed and self.visible
-    
+
     def remove(self):
-        if self.modifiers != None:
+        if self.modifiers is not None:
             self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
 
@@ -62,21 +64,22 @@ class Feature(object):
     def add(self):
         if self in self.owner.features:
             return
-        if self.slot == None:
+        if self.slot is None:
             self.owner.features.append(self)
-            if self.modifiers != None:
+            if self.modifiers is not None:
                 slot = self.slot if self.slot else self.id
-                self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
+                self.owner.modifiers.add_modifier(
+                    self.id, self.modifiers, self, slot)
             return
         else:
             for feature in self.owner.features:
                 if feature.slot == self.slot:
                     feature.remove()
-            if self.modifiers != None:
+            if self.modifiers is not None:
                 slot = self.slot if self.slot else self.id
-                self.owner.modifiers.add_modifier(self.id, self.modifiers, self, slot)
+                self.owner.modifiers.add_modifier(
+                    self.id, self.modifiers, self, slot)
             self.owner.features.append(self)
-
 
     def tick_time(self):
         try:
@@ -85,8 +88,10 @@ class Feature(object):
                 self.remove()
         except TypeError:
             pass
-            
+
+
 class Phobia(Feature):
+
     def __init__(self, owner, id_, fear_obj, *args, **kwargs):
         stats = person_phobias[id_] if id_ in person_phobias else None
         super(Phobia, self).__init__(owner, id_)
@@ -132,12 +137,3 @@ class Blood(Feature):
             self.modifiers["sensitivity"] = -1
         else:
             self.name = "normal"
-
-
-
-
-
-
-
-
-

@@ -5,8 +5,9 @@ from copy import copy
 
 events_list = []
 
+
 def register_event(location, *args, **kwargs):
-    event = Event( location, location)
+    event = Event(location, location)
     for key in kwargs.keys():
         if key == 'tags':
             event.tags = kwargs['tags']
@@ -15,6 +16,7 @@ def register_event(location, *args, **kwargs):
         if key == 'restrictions':
             event.restrictions = kwargs['restrictions']
     events_list.append(event)
+
 
 def get_event(name):
     for event in events_list:
@@ -36,25 +38,32 @@ def registration_check():
     if len(bad) > 0:
         txt = ""
         for name in bad:
-            txt += "label for event(%s) is created, but not registered\n"%(name)
+            txt += "label for event(%s) is created, but not registered\n" % (name)
         raise Exception(txt)
+
+
 class Event(object):
     _game_ref = None
+
     def __init__(self, name, location):
         self.name = name
         self.goto = location     # RenPy location to start an event
-        self.tags = []              # tags for filtering "gay", "lolicon", "bestiality", "futanari" etc
+        # tags for filtering "gay", "lolicon", "bestiality", "futanari" etc
+        self.tags = []
         self.restrictions = None
         self.unique = False         # Unique events shown once in a game instance
         self.seen = 0               # Number of times this event seen
         self.skipcheck = False
         self.target = None
+
     @classmethod
     def set_game_ref(cls, game):
         cls._game_ref = game
+
     @property
     def core(self):
         return self._game_ref
+
     def trigger(self, target=None, skipcheck=False):
         """
         On event activation
@@ -69,7 +78,7 @@ class Event(object):
                     return False
             except AttributeError:
                 return False
-        elif self.restrictions != None and self.restrictions != target.event_type:
+        elif self.restrictions is not None and self.restrictions != target.event_type:
             return False
         result = renpy.call_in_new_context(self.goto, self)
         if result:
@@ -77,7 +86,6 @@ class Event(object):
         self.skipcheck = False
         self.target = None
         return result
-
 
 
 class EVGeneric(Event):
@@ -99,8 +107,3 @@ class EVUnique(Event):
     def __init__(self, env, location):
         super(EVGeneric, self).__init__(env, location)
         self.natures = ["triggered", "turn_end", "faction"]
-
-
-
-
-

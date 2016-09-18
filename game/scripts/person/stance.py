@@ -2,10 +2,12 @@
 import renpy.store as store
 import renpy.exports as renpy
 
+
 class Stance(object):
     _types = {'master': ['cruel', 'opressive', 'rightful', 'benevolent'],
-            'slave': ['rebellious', 'forced', 'accustomed', 'willing'],
-            'neutral': ['hostile', 'distrustful', 'favorable', 'friendly']} 
+              'slave': ['rebellious', 'forced', 'accustomed', 'willing'],
+              'neutral': ['hostile', 'distrustful', 'favorable', 'friendly']}
+
     def __init__(self, person1, person2):
         self.persons = [person1, person2]
         self._type = 'neutral'
@@ -15,8 +17,10 @@ class Stance(object):
         self.contribution = 0
         self._special_value = None
         self.is_player_stance()
+
     def is_player_stance(self):
-        if self.persons[0].player_controlled or self.persons[1].player_controlled:
+        if self.persons[0].player_controlled or self.persons[
+                1].player_controlled:
             if not hasattr(self, 'player') and not hasattr(self, 'npc'):
                 for p in self.persons:
                     if p.player_controlled:
@@ -25,6 +29,7 @@ class Stance(object):
                         self.npc = p
             return True
         return False
+
     def nature(self):
         if self.conquest == self.convention and self.convention == self.contribution:
             return 0
@@ -45,7 +50,7 @@ class Stance(object):
     @property
     def value(self):
         return self._value
-    
+
     @value.setter
     def value(self, value):
         self._value = value
@@ -60,7 +65,6 @@ class Stance(object):
         if self.is_player_stance():
             self._special_value = value
 
-
     @property
     def type(self):
         return self._type
@@ -69,18 +73,16 @@ class Stance(object):
     def level(self):
         if self.value == 2 and self.is_player_stance():
             return self._special_value
-        return Stance._types[self._type][self.value+1]
+        return Stance._types[self._type][self.value + 1]
 
     def show_stance(self):
-        return store.stance_translation[self._type][self.value+1]
+        return store.stance_translation[self._type][self.value + 1]
 
     def show_type(self):
         return store.stance_types_translation[self.type]
-    
+
     def change_stance(self, stance):
         if stance not in Stance._types.keys():
-            raise Exception("Wrong stance: %s"%(t))
+            raise Exception("Wrong stance: %s" % (t))
         else:
             self._type = stance
-
-

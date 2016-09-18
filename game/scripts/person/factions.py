@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 factions_list = []
+
+
 class Faction(object):
+
     def __init__(self, owner, name, id_=None):
         self.name = name
         self.id = id_
@@ -8,13 +11,11 @@ class Faction(object):
         self.event_type = 'faction'
         self.set_owner(owner)
         factions_list.append(self)
-    
-    
+
     def set_owner(self, owner):
         self.add_member(owner)
         self.owner = owner
 
-    
     def add_member(self, person):
         if not self.has_member(person):
             self.members.append(person)
@@ -32,6 +33,3 @@ class Faction(object):
         if person in self.members:
             return True
         return False
-
-
-

@@ -11,7 +11,7 @@ init python:
 label mood_recalc_result(diss_inf=None, satisfy_inf=None, determination=None, anxiety=None, recalc=False, target=None):
     python:
         info = None 
-        if recalc and target != None:
+        if recalc and target is not None:
             for i in recalc_result:
                 if i.target == target:
                     recalc_result.remove(i)
@@ -28,7 +28,7 @@ screen sc_mood_recalculation_result(target=None):
             if i.target==target:
                 info = i
         threshold = 5-target.sensitivity
-    if info == None:
+    if info is None:
         vbox:
             xalign 0.0
             yalign 0.0
@@ -89,7 +89,7 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
                             encolor_text('Impossible', 6)]
         txt = 'Сложность: %s\n'%(difficulty)
         txt += 'Результат: %s\n'%(info_show_quality[result])
-        if threshold != None:
+        if threshold is not None:
             txt += 'Требуется: %s\n'%(info_show_quality[threshold])
         txt += 'Лимитирующий фактор: %s(%s) \n'%(encolor_text(skill.name, skill.level+1), skill.level+1)
         txt += '+++++++ \n'

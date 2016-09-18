@@ -27,6 +27,7 @@ def get_avatars():
     avas = [str_ for str_ in all_ if str_.startswith('images/avatar')]
     return avas
 
+
 def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None):
     if genus != None:
         for g in available_genuses():
@@ -35,12 +36,12 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
                 break
     else:
         genus = choice(available_genuses())
-    if gender == None:
+    if gender is None:
         try:
             gender = choice(genus.genders())
         except IndexError:
             gender = 'male'
-    if age == None:
+    if age is None:
         try:
             age = choice(genus.ages())
         except IndexError:
@@ -63,6 +64,8 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     return p
 
 persons_list = []
+
+
 class Person(object):
 
     def __init__(self, age=None, gender=None, genus='human'):
@@ -72,12 +75,15 @@ class Person(object):
         self.surname = u""
         self.nickname = u"Anon"
         self.alignment = Alignment()
-        self.features = []          # gets Feature() objects and their child's. Add new Feature only with self.add_feature()
+        # gets Feature() objects and their child's. Add new Feature only with
+        # self.add_feature()
+        self.features = []
         self.tokens = []             # Special resources to activate various events
-        self.relations_tendency = {'convention': 0, 'conquest': 0, 'contribution': 0}
-        #obedience, dependecy and respect stats
+        self.relations_tendency = {'convention': 0,
+                                   'conquest': 0, 'contribution': 0}
+        # obedience, dependecy and respect stats
         self._stance = []
-        self.avatar_path = ''  
+        self.avatar_path = ''
 
         self.master = None          # If this person is a slave, the master will be set
         self.supervisor = None
@@ -87,14 +93,14 @@ class Person(object):
         self.schedule = Schedule(self)
         self.modifiers = ModifiersStorage()
         # init starting features
-        
-        self.availabe_actions = [] # used if we are playing slave-part
 
+        self.availabe_actions = []  # used if we are playing slave-part
 
         self.allowance = 0         # Sparks spend each turn on a lifestyle
         self.sparks = 0
         self.ration = {
-            "amount": 'unlimited',   # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
+            # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
+            "amount": 'unlimited',
             "food_type": "cousine",   # 'forage', 'sperm', 'dry', 'canned', 'cousine'
             "target": 0,           # figures range -2:2
             "limit": 0,             # maximum resources spend to feed character each turn
@@ -108,13 +114,12 @@ class Person(object):
         self.restrictions = []
         self._needs = init_needs(self)
 
-
         self.attributes = {
             'physique': 3,
             'mind': 3,
             'spirit': 3,
             'agility': 3,
-            'sensitivity':3
+            'sensitivity': 3
         }
         self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
         self.mood = 0
@@ -127,9 +132,10 @@ class Person(object):
         self._anxiety = 0
         self.rewards = []
         self.used_rewards = []
-        self.merit = 0 # player only var for storing work result
+        self.merit = 0  # player only var for storing work result
 
-        # Other persons known and relations with them, value[1] = [needed points, current points]
+        # Other persons known and relations with them, value[1] = [needed
+        # points, current points]
         self._relations = []
         self.selfesteem = 0
         self.conditions = []
@@ -157,11 +163,13 @@ class Person(object):
     def add_faction(self, faction):
         if not faction in self.factions:
             self.factions.append(faction)
+
     def remove_faction(self, faction):
         try:
             self.factions.remove(faction)
         except IndexError:
             pass
+
     @property
     def calculatable(self):
         return self._calculatable or self.player_controlled
@@ -169,32 +177,32 @@ class Person(object):
     @calculatable.setter
     def calculatable(self, value):
         self._calculatable = value
-    
+
     def add_default_cards(self, list_):
         if not self.default_cards:
             self.cards_list += list_
         return
+
     def set_deck(self, deck):
         self.deck = deck
 
     def set_resources_storage(self, storage):
         self.resources_storage = storage
-    
-    #while inventory isn't implemented we need this methods for some test cases
-    #they will be removed when inventory system is done.
+
+    # while inventory isn't implemented we need this methods for some test cases
+    # they will be removed when inventory system is done.
     @property
     def items(self):
         return self.inventory.storage
-    
+
     @property
     def main_hand(self):
         return self.inventory.main_hand
-    
+
     @main_hand.setter
     def main_hand(self, weapon):
         self.inventory.main_hand = weapon
-    
-    
+
     @property
     def other_hand(self):
         return self.inventory.other_hand
@@ -210,7 +218,7 @@ class Person(object):
     @armor.setter
     def armor(self, armor):
         self.inventory.equip_armor(armor, 'overgarments')
-    
+
     def has_shield(self):
         try:
             main = self.inventory.main_hand
@@ -220,13 +228,13 @@ class Person(object):
         except AttributeError:
             pass
         return False
-    
+
     def equip_weapon(self, weapon, hand='main_hand'):
         self.inventory.equip_weapon(weapon, hand)
-    
+
     def disarm_weapon(self, hand='main_hand'):
         self.inventory.disarm_weapon(hand)
-    
+
     def add_item(self, item):
         self.inventory.storage.append(item)
 
@@ -241,7 +249,7 @@ class Person(object):
 
     def equip_on_slot(self, slot, item):
         self.inventory.equip_on_slot(slot, item)
-    #end of inventory methods
+    # end of inventory methods
 
     def formidability(self):
         value = 0
@@ -252,7 +260,7 @@ class Person(object):
             value += 1
         elif self.gender == 'female':
             value -= 1
-        if armor != None:
+        if armor is not None:
             if armor.protection_type == 'heavy':
                 value += 1
         else:
@@ -272,7 +280,7 @@ class Person(object):
         elif self.age == 'mature':
             value += 1
         value += self.physique - 3
-        if shape != None:
+        if shape is not None:
             if shape.id == 'slim' or shape.id == 'emaciated':
                 value -= 1
             elif shape.id == 'obese':
@@ -289,7 +297,7 @@ class Person(object):
         elif self.gender == 'female':
             value += 1
         value += self.sensitivity - 3
-        if shape != None:
+        if shape is not None:
             if shape.id == 'slim' or shape.id == 'obese':
                 value += 1
             elif shape.id == 'emaciated':
@@ -302,11 +310,10 @@ class Person(object):
             value += 1
         return max(0, min(5, value))
 
-    
     def set_avatar(self):
         path = 'images/avatar/'
         path += self.genus.head_type + '/'
-        if self.gender != None:
+        if self.gender is not None:
             if self.gender == 'sexless':
                 gender = 'male'
             elif self.gender == 'shemale':
@@ -314,7 +321,7 @@ class Person(object):
             else:
                 gender = self.gender
             path += gender + '/'
-        if self.age != None:
+        if self.age is not None:
             path += self.age + '/'
         this_avas = [ava for ava in get_avatars() if ava.startswith(path)]
         try:
@@ -331,7 +338,6 @@ class Person(object):
                 hair_color = str_.split('_')[0]
                 self.hair_color = hair_color
         self.avatar_path = avatar
-        
 
     def randomise(self, gender='female', age='adolescent'):
         self.add_feature(gender)
@@ -391,13 +397,15 @@ class Person(object):
 
     def random_features(self):
         # constitution
-        const = choice(('athletic', 'brawny',  'large', 'small', 'lean', 'crooked', 'clumsy'))
+        const = choice(('athletic', 'brawny',  'large',
+                        'small', 'lean', 'crooked', 'clumsy'))
         roll = randint(1, 100)
         if roll > 40:
             self.add_feature(const)
 
         # soul
-        soul = choice(('brave', 'shy', 'smart', 'dumb', 'sensitive', 'cool', None))
+        soul = choice(('brave', 'shy', 'smart', 'dumb',
+                       'sensitive', 'cool', None))
         if soul:
             self.add_feature(soul)
 
@@ -420,8 +428,10 @@ class Person(object):
                 self.add_feature(needstree[need][1])
 
         return
+
     def change_genus(self, genus):
         self.genus = init_genus(self, genus)
+
     @property
     def known_characters(self):
         list_ = []
@@ -429,18 +439,16 @@ class Person(object):
             persons = [p for p in r.persons if p != self]
             list_ += persons
         return list_
-    
+
     def add_modifier(self, name, stats_dict, source, slot=None):
         self.modifiers.add_modifier(name, stats_dict, source, slot)
 
     def get_buff_storage(self):
         return self._buffs
-    
 
     def add_buff(self, name, stats_dict, time=1, slot=None):
         self.remove_buff(name)
         Buff(self, name, stats_dict, slot, time)
-
 
     def remove_buff(self, name):
         for buff in self._buffs:
@@ -460,39 +468,37 @@ class Person(object):
     def count_modifiers(self, key):
         val = self.__dict__['modifiers'].count_modifiers(key)
         return val
-    
+
     @property
     def focus(self):
         try:
             return self.focused_skill.focus
         except AttributeError:
             return 0
-    
+
     @property
     def job(self):
         job = self.schedule.find_by_slot('job')
-        if job == None:
+        if job is None:
             return 'idle'
         else:
             return job.name
-    
+
     @property
     def accommodation(self):
         accomodation = self.schedule.find_by_slot('accommodation')
-        if accomodation == None:
-            raise Exception('Person %s do not have accommodation'%(self.name))
+        if accomodation is None:
+            raise Exception(
+                'Person %s do not have accommodation' % (self.name))
         return accomodation.name
-    
+
     @property
     def overtime(self):
         overtime = self.schedule.find_by_slot('overtime')
-        if overtime == None:
+        if overtime is None:
             return 'idle'
         else:
             return overtime.name
-
-    
-
 
     def job_object(self):
         job = self.schedule.find_by_slot('job')
@@ -500,6 +506,7 @@ class Person(object):
             return None
         else:
             return job
+
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):
             try:
@@ -529,7 +536,6 @@ class Person(object):
             return n[key]
         raise AttributeError(key)
 
-
     def __setattr__(self, key, value):
         if 'attributes' in self.__dict__:
             if key in self.attributes:
@@ -542,35 +548,37 @@ class Person(object):
     @property
     def determination(self):
         return self._determination
+
     @determination.setter
     def determination(self, value):
         self._determination = value
         if self._determination < 0:
             self._determination = 0
+
     @property
     def anxiety(self):
         return self._anxiety
+
     @anxiety.setter
     def anxiety(self, value):
         self._anxiety = value
         if self._anxiety < 0:
             self_anxiety = 0
 
-
     def modifiers_separate(self, modifier, names=False):
         return self.modifiers.get_modifier_separate(modifier)
-    
+
     def vitality_info(self):
-        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness':self.count_modifiers('fitness'),
-            'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
+        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
+             'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
         list_ = self.modifiers_separate('vitality', True)
         list_ = [(value.name, value.value) for value in list_]
         return d, list_
-    
+
     @property
     def vitality(self):
         list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
-            self.count_modifiers('therapy')]
+                 self.count_modifiers('therapy')]
         list_ += self.modifiers_separate('vitality')
         list_ = [i for i in list_ if i != 0]
         lgood = []
@@ -615,15 +623,7 @@ class Person(object):
             return gender
         except AttributeError:
             return None
-    
-    #maybe we won't need phobias any more
-    def phobias(self):
-        l = []
-        for feature in self.features:
-            if isinstance(feature, Phobia):
-                l.append(feature.object_of_fear)
-        return l
-    
+
     # get needs with level > 0 aka turned on needs
     def get_needs(self):
         d = {}
@@ -631,22 +631,22 @@ class Person(object):
             if need.level > 0:
                 d[need.name] = need
         return d
-    
+
     # get all needs person has
     def get_all_needs(self):
         d = {}
         for need in self._needs:
             d[need.name] = need
         return d
-    
-    # show methods returns strings, to simplify displaying various stats to player
+
+    # show methods returns strings, to simplify displaying various stats to
+    # player
     def show_taboos(self):
         s = ""
         for taboo in self.taboos:
             if taboo.value != 0:
                 s += "{taboo.name}({taboo.value}), ".format(taboo=taboo)
         return s
-
 
     def show_needs(self):
         s = ""
@@ -670,16 +670,17 @@ class Person(object):
     def show_skills(self):
         s = ""
         for skill in self.skills:
-            s += "{name}({skill.level}, {skill.attribute}({value}))".format(name=skill.name, skill=skill, value=skill.attribute_value())
-            if skill != self.skills[len(self.skills)-1]:
+            s += "{name}({skill.level}, {skill.attribute}({value}))".format(
+                name=skill.name, skill=skill, value=skill.attribute_value())
+            if skill != self.skills[len(self.skills) - 1]:
                 s += ', '
         return s
 
     def show_mood(self):
-        m = {-1: '!!!CRUSHED!!!', 0: 'Gloomy', 1: 'Tense', 2:'Content', 3: 'Serene', 4: 'Jouful', 5:'Enthusiastic'}
+        m = {-1: '!!!CRUSHED!!!', 0: 'Gloomy', 1: 'Tense',
+             2: 'Content', 3: 'Serene', 4: 'Jouful', 5: 'Enthusiastic'}
         mood = self.mood
         return "{mood}({val})".format(mood=m[mood], val=mood)
-
 
     def show_attributes(self):
         s = ""
@@ -687,13 +688,12 @@ class Person(object):
             s += "{0}({1})".format(key, getattr(self, key))
         return s
 
-
     def show_tokens_difficulty(self):
         s = ""
         for key, value in self.tokens_difficulty.items():
             s += "{0}({1}), ".format(key, value)
         return s
-    
+
     def show_job(self):
         job = self.schedule.find_by_slot('job')
         if not job:
@@ -702,54 +702,53 @@ class Person(object):
             values = []
             s = ''
             for k, v in job.special_values.items():
-                s += '%s: '%(k)
+                s += '%s: ' % (k)
                 try:
                     l = [i for i in v]
                     try:
                         for i in l:
-                            s += '%s, '%(i.name())
+                            s += '%s, ' % (i.name())
                     except AttributeError:
                         for i in l:
-                            s += '%s, '%(i)
+                            s += '%s, ' % (i)
                 except TypeError:
                     try:
-                        s += '%s, '%(v.name())
+                        s += '%s, ' % (v.name())
                     except AttributeError:
-                        s += '%s, '%(v)
+                        s += '%s, ' % (v)
                 if k not in job.special_values.items()[-1]:
                     s += '\n'
-            return '%s, %s'%(job.name, s)
-    
+            return '%s, %s' % (job.name, s)
+
     @property
     def name(self):
         s = self.firstname + " " + self.surname
         return s
-  
+
     def skill(self, skillname):
         skill = None
         for i in self.skills:
             if i.name == skillname:
                 skill = i
                 return skill
-            
+
         if skillname in skills_data:
             skill = Skill(self, skillname, skills_data[skillname])
             self.skills.append(skill)
             return skill
         else:
-            raise Exception("No skill named %s in skills_data"%(skillname))
-        
-
+            raise Exception("No skill named %s in skills_data" % (skillname))
 
     def tick_features(self):
         for feature in self.features:
             feature.tick_time()
-    
+
     def use_skill(self, name):
         if isinstance(name, Skill):
             self.skills_used.append(name)
         else:
             self.skills_used.append(self.skill(name))
+
     def get_used_skills(self):
         l = []
         for skill in self.skills_used:
@@ -758,6 +757,7 @@ class Person(object):
             else:
                 l.append(self.skill(skill))
         return l
+
     def calc_focus(self):
         if self.focused_skill:
             if self.focused_skill in self.get_used_skills():
@@ -773,7 +773,7 @@ class Person(object):
             from collections import Counter
             counted = Counter()
             for skill in self.get_used_skills():
-                counted[skill.name]+=1
+                counted[skill.name] += 1
             maximum = max(counted.values())
             result = []
             for skill in counted:
@@ -782,7 +782,7 @@ class Person(object):
             self.skill(choice(result)).set_focus()
         else:
             self.focused_skill = None
-        
+
         self.skills_used = []
 
     def recalculate_mood(self):
@@ -814,22 +814,23 @@ class Person(object):
         happines.sort()
         dissapointment.sort()
         if renpy.has_label('mood_recalc_result'):
-            renpy.call_in_new_context('mood_recalc_result', dissapointments_inf, satisfactions_inf, determination, anxiety, True, self)
+            renpy.call_in_new_context('mood_recalc_result', dissapointments_inf,
+                                      satisfactions_inf, determination, anxiety, True, self)
         if hlen > dlen:
             dissapointment = []
             for i in range(dlen):
                 happines.pop(0)
             threshold = happines.count(5)
-            sens = 5-self.sensitivity
+            sens = 5 - self.sensitivity
             if threshold > sens:
                 mood = 5
-            elif threshold+happines.count(4) > sens:
+            elif threshold + happines.count(4) > sens:
                 mood = 4
-            elif threshold+happines.count(4)+happines.count(3) > sens:
+            elif threshold + happines.count(4) + happines.count(3) > sens:
                 mood = 3
-            elif threshold+happines.count(4)+happines.count(3)+happines.count(2) > sens:
+            elif threshold + happines.count(4) + happines.count(3) + happines.count(2) > sens:
                 mood = 2
-            elif threshold+happines.count(4)+happines.count(3)+happines.count(2)+happines.count(1) > sens:
+            elif threshold + happines.count(4) + happines.count(3) + happines.count(2) + happines.count(1) > sens:
                 mood = 1
 
         elif hlen < dlen:
@@ -838,7 +839,7 @@ class Person(object):
             for i in range(hlen):
                 dissapointment.pop(0)
             dissapointment = [i for i in dissapointment if i > 1]
-            despair = 6-self.sensitivity-dissapointment.count(2)
+            despair = 6 - self.sensitivity - dissapointment.count(2)
             despair2 = dissapointment.count(3)
             if despair < 0:
                 if abs(despair) > self.anxiety:
@@ -850,7 +851,6 @@ class Person(object):
                 self.anxiety += despair2
                 mood = -1
 
-        
         else:
             mood = 0
         for key in satisfactions_inf:
@@ -862,9 +862,8 @@ class Person(object):
             need.tension = False
         self.mood = mood
 
-
-
-    def motivation(self, skill=None, tense_needs=[], satisfy_needs=[], beneficiar = None, morality=0, special=[]):# needs should be a list of tuples[(need, shift)]
+    # needs should be a list of tuples[(need, shift)]
+    def motivation(self, skill=None, tense_needs=[], satisfy_needs=[], beneficiar=None, morality=0, special=[]):
         motiv = 0
         motiv += morality
         for i in special:
@@ -908,12 +907,13 @@ class Person(object):
 
         return motiv
 
-    def add_feature(self, id_):    # adds features to person, if mutually exclusive removes old feature
+    # adds features to person, if mutually exclusive removes old feature
+    def add_feature(self, id_):
         Feature(self, id_)
-    
+
     def add_phobia(self, id_):
         Phobia(self, id_)
-    
+
     def feature_by_slot(self, slot):        # finds feature which hold needed slot
         for f in self.features:
             if f.slot == slot:
@@ -942,7 +942,7 @@ class Person(object):
         for f in self.features:
             if f.slot == slot:
                 f.remove()
-        
+
     def description(self):
         txt = self.firstname + ' "' + self.nickname + '" ' + self.surname
         txt += '\n'
@@ -950,11 +950,11 @@ class Person(object):
             txt += feature.name
             txt += ','
         return txt
-    
+
     def reset_needs(self):
         for need in self.get_all_needs().values():
             need.reset()
-    
+
     def rest(self):
         if not self.calculatable:
             return
@@ -1019,13 +1019,13 @@ class Person(object):
         except AttributeError:
             pass
         return value
-    
+
     def consume_food(self):
         food_consumed = self.food_desire()
         fatness = self.feature_by_slot('shape')
         if fatness:
             fatness = fatness.name
-        flist = ['emaciated' ,'slim', None, 'chubby', 'obese']
+        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
         val = flist.index(fatness)
         if self.ration['amount'] == 'starvation':
             food_consumed = 0
@@ -1037,7 +1037,7 @@ class Person(object):
         if self.ration['amount'] == 'regime':
             food_consumed = self.food_demand()
             if self.ration['target'] > val:
-                food_consumed += 1+self.appetite
+                food_consumed += 1 + self.appetite
             if self.ration['target'] < val:
                 food_consumed = self.food_demand() - 1
             if self.ration['target'] == val:
@@ -1048,7 +1048,7 @@ class Person(object):
         consumed = self.get_food_consumption()
         demand = self.food_demand()
         desire = self.food_desire()
-        calorie_difference = consumed-demand
+        calorie_difference = consumed - demand
         if consumed < desire:
             self.nutrition.set_tension()
         if consumed > 0:
@@ -1059,9 +1059,9 @@ class Person(object):
                 self.nutrition.satisfaction = d[self.ration['food_type']]
         self.calorie_storage += calorie_difference
         fatness = self.feature_by_slot('shape')
-        if fatness != None:
+        if fatness is not None:
             fatness = fatness.name
-        flist = ['emaciated' ,'slim', None, 'chubby', 'obese']
+        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
         ind = flist.index(fatness)
         if self.calorie_storage <= 0:
             self.remove_feature('dyspnoea')
@@ -1105,6 +1105,7 @@ class Person(object):
                 if not self.feature('dyspnoea'):
                     self.calorie_storage = 0
                 return 'fatness +'
+
     def nutrition_change(self, food_consumed):
         if food_consumed < self.food_demand():
             self.ration["overfeed"] -= 1
@@ -1118,20 +1119,20 @@ class Person(object):
         if person in self.known_characters:
             return True
         return False
+
     def _set_relations(self, person):
         relations = Relations(self, person)
         person._relations.append(relations)
         self._relations.append(relations)
         return relations
 
-
     def relations(self, person):
-        if person==self:
+        if person == self:
             raise Exception("relations: target and caller is same person")
         if isinstance(person, Faction):
             return self.relations(person.owner)
         elif not isinstance(person, Person):
-            raise Exception("relations called with not valid arg: %s"%person)
+            raise Exception("relations called with not valid arg: %s" % person)
         if not self.know_person(person):
             relations = self._set_relations(person)
             self._set_stance(person)
@@ -1139,7 +1140,6 @@ class Person(object):
         for rel in self._relations:
             if self in rel.persons and person in rel.persons:
                 return rel
-    
 
     def _set_stance(self, person):
         stance = Stance(self, person)
@@ -1147,14 +1147,13 @@ class Person(object):
         person._stance.append(stance)
         return stance
 
-    
     def stance(self, person):
-        if person==self:
+        if person == self:
             raise Exception("stance: target and caller is same person")
         if isinstance(person, Faction):
             return self.stance(person.owner)
         elif not isinstance(person, Person):
-            raise Exception("relations called with not valid arg: %s"%person)
+            raise Exception("relations called with not valid arg: %s" % person)
         elif not self.know_person(person):
             self._set_relations(person)
             stance = self._set_stance(person)
@@ -1171,26 +1170,22 @@ class Person(object):
             stance._type = 'neutral'
         return stance
 
-
     def use_token(self, token):
         if self.has_token(token):
             self.tokens.remove(token)
         else:
-            return "%s has no token named %s"%(self.name(), token)
-
+            return "%s has no token named %s" % (self.name(), token)
 
     def has_token(self, token):
         if token in self.tokens:
             return True
         return False
 
-
     def has_any_token(self):
         if len(self.tokens) > 0:
             return True
         return False
 
-    
     def add_token(self, token, free=False):
         if not self.has_token(token):
             self.tokens.append(token)
@@ -1200,7 +1195,6 @@ class Person(object):
                 self.relations_tendency[token] += 1
             renpy.call_in_new_context('lbl_notify', self, token)
 
-
     def player_relations(self):
         for rel in self._relations:
             if rel.is_player_relations():
@@ -1208,36 +1202,36 @@ class Person(object):
         return None
 
     def moral_action(self, *args, **kwargs):
-        #checks moral like person.check_moral, but instantly affect selfesteem
+        # checks moral like person.check_moral, but instantly affect selfesteem
         for arg in args:
             if isinstance(arg, int):
                 self.selfesteem += arg
-                return 
+                return
         result = self.check_moral(*args, **kwargs)
         self.selfesteem += result
         return result
-        
 
     def check_moral(self, *args, **kwargs):
         result = 0
         act = {'ardent': 1, 'reasonable': 0, 'timid': -1}
         moral = {'good': 1, 'selfish': 0, 'evil': -1}
         order = {'lawful': 1, 'conformal': 0, 'chaotic': -1}
-        action_tones = {'activity': None, 'morality': None, 'orderliness': None}
+        action_tones = {'activity': None,
+                        'morality': None, 'orderliness': None}
         activity = None
         morality = None
         orderliness = None
         target = None
-        
+
         if 'target' in kwargs:
             if isinstance(kwargs['target'], Person):
                 target = kwargs['target']
-        
+
         else:
             for arg in args:
                 if isinstance(arg, Person):
-                    target=arg
-        
+                    target = arg
+
         for arg in args:
             if arg in act.keys():
                 activity = arg
@@ -1265,7 +1259,7 @@ class Person(object):
     def reduce_esteem(self):
         if self.selfesteem == 0:
             return
-        val = 5-self.sensitivity
+        val = 5 - self.sensitivity
         if self.selfesteem > 0:
             self.selfesteem -= val
             if val < 0:
@@ -1274,7 +1268,6 @@ class Person(object):
             self.selfesteem += val
             if val > 0:
                 val = 0
-
 
     def enslave(self, target):
         target.master = self
@@ -1295,9 +1288,10 @@ class Person(object):
 
     def desirable_relations(self):
         d = {'lawful': ('formal', 'loyality'), 'chaotic': ('intimate', 'scum-slave'),
-            'timid': ('delicate', 'worship'), 'ardent': ('intense', 'disciple'),
-            'good': ('supporter', 'dedication'), 'evil': ('contradictor', 'henchman')}
-        list_ = [self.alignment.morality_str(), self.alignment.orderliness_str(), self.alignment.activity_str()]
+             'timid': ('delicate', 'worship'), 'ardent': ('intense', 'disciple'),
+             'good': ('supporter', 'dedication'), 'evil': ('contradictor', 'henchman')}
+        list_ = [self.alignment.morality_str(), self.alignment.orderliness_str(),
+                 self.alignment.activity_str()]
         return [d.get(x) for x in list_]
 
     def willing_available(self):
@@ -1321,7 +1315,6 @@ class Person(object):
         else:
             return []
 
-
     def attitude_tendency(self):
         n = 0
         token = None
@@ -1333,17 +1326,15 @@ class Person(object):
             return None
         return token
 
-    # methods for conditions, person.conditions list cleared after person.rest call
+    # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
         if not self.has_condition(condition):
             self.conditions.append(condition)
-
 
     def has_condition(self, condition):
         if condition in self.conditions:
             return True
         return False
-
 
     def remove_condition(self, condition):
         try:
@@ -1357,6 +1348,6 @@ class Person(object):
         self.add_feature('dead')
 
     def is_dead(self):
-        if self.feature('dead') != None:
+        if self.feature('dead') is not None:
             return True
         return False

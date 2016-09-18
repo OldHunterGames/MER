@@ -8,8 +8,10 @@ from features import Feature
 from modifiers import ModifiersStorage
 from mer_utilities import encolor_text
 
+
 class Item(object):
     type_ = 'item'
+
     def __init__(self, *args, **kwargs):
         self._name = ""
         if 'quality' in kwargs.keys():
@@ -58,7 +60,7 @@ class Item(object):
 
     def make_from_dict(self, properties_dict):
         for key, value in properties_dict.items():
-            setter = 'set_'+key
+            setter = 'set_' + key
             try:
                 getattr(self, setter)(value)
             except AttributeError:
@@ -66,20 +68,26 @@ class Item(object):
 
     @property
     def quality(self):
-        return min(5, self._quality+self.count_modifiers('quality'))
+        return min(5, self._quality + self.count_modifiers('quality'))
+
     @property
     def name(self):
         return self._name
+
     @property
     def type(self):
         return self.type_
+
     def equip(self):
         self.equiped = True
+
     def unequip(self):
         self.equiped = False
 
+
 class Weapon(Item):
     type_ = 'weapon'
+
     def __init__(self, size, damage_type, *args, **kwargs):
         super(Weapon, self).__init__(*args, **kwargs)
         self.set_size(size)
@@ -88,6 +96,7 @@ class Weapon(Item):
     def _init_features(self):
         self.add_feature(self.size)
         self.add_feature(self.damage_type)
+
     @property
     def size(self):
         return self.feature_by_slot('wpn_size').id
@@ -100,25 +109,30 @@ class Weapon(Item):
         return self.feature_by_slot('wpn_dmg').id
 
     def set_damage_type(self, wpn_dmg):
-        self.add_feature(wpn_dmg) 
+        self.add_feature(wpn_dmg)
 
     @property
     def description(self):
         damage_type = self.feature_by_slot('wpn_dmg').name
         size = self.feature_by_slot('wpn_size').name
         if self.size != 'shield':
-            text = '{damage_type} {size}'.format(size=size, damage_type=damage_type)
+            text = '{damage_type} {size}'.format(
+                size=size, damage_type=damage_type)
         else:
             text = 'shield'.format(size=size, damage_type=damage_type)
         return encolor_text(text, self.quality)
 
+
 class Armor(Item):
     type_ = 'armor'
+
     def __init__(self, armor_rate, *args, **kwargs):
         super(Armor, self).__init__(*args, **kwargs)
         self.set_armor_rate(armor_rate)
+
     def _init_features(self):
         self.add_feature(self.armor_rate)
+
     @property
     def armor_rate(self):
         return self.feature_by_slot('armor_rate').id
@@ -139,7 +153,7 @@ def create_item():
     if item_type == 'armor':
         item = Armor(creator_item_properties['armor_rate'])
     elif item_type == 'weapon':
-        item = Weapon(creator_item_properties['size'], creator_item_properties['damage_type'])
+        item = Weapon(creator_item_properties[
+                      'size'], creator_item_properties['damage_type'])
     item.set_quality(1)
     return item
-

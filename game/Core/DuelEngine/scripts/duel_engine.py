@@ -289,7 +289,7 @@ class DuelEngine(object):
         if self.enemy_passed:
             return
         action = predict_result(enemy, self.current_ally, self)
-        if action != None:
+        if action is not None:
             enemy.use_action(action)
         else:
             self.enemy_passed = True
@@ -376,7 +376,7 @@ class DuelCombatant(object):
     def set_deck(self, deck):
         self.deck = deck
     def set_hand(self):
-        if self.deck != None:
+        if self.deck is not None:
             self.hand = self.deck.get_hand()
         else:
             raise Exception("set_hand called, but this combatant has no choosen deck yet")
@@ -403,18 +403,18 @@ class DuelCombatant(object):
     def get_combat_style(self):
         if self.person.has_shield():
             return 'shieldbearer'
-        if self.person.main_hand != None and self.person.other_hand != None:
+        if self.person.main_hand is not None and self.person.other_hand is not None:
             return 'juggernaut'
-        if self.person.main_hand != None or self.person.other_hand != None:
+        if self.person.main_hand is not None or self.person.other_hand is not None:
             return 'breter'
         return 'restler'
 
     def get_weapons(self):
         l = []
-        if self.main_weapon != None:
+        if self.main_weapon is not None:
             if self.main_weapon.type == 'weapon':
                 l.append(self.main_weapon)
-        if self.other_weapon != None and self.other_weapon != self.main_weapon:
+        if self.other_weapon is not None and self.other_weapon != self.main_weapon:
             if self.other_weapon.type == 'weapon':
                 l.append(self.other_weapon)
         return l
@@ -429,7 +429,7 @@ class DuelCombatant(object):
         if self.escalation < duel_action.power:
             self.escalation = duel_action.power
         points = duel_action.use()
-        if duel_action.slot != None:
+        if duel_action.slot is not None:
             self.fight.points[self.side][duel_action.slot].value += points
         self.fight.update_stack(self.side, duel_action)
         if duel_action.persistent:
@@ -459,7 +459,7 @@ class DuelCombatant(object):
 
 class Deck(object):
     def __init__(self, cards_list=None):
-        self.cards_list = [make_card(card) for card in cards_list] if cards_list != None else []
+        self.cards_list = [make_card(card) for card in cards_list] if cards_list is not None else []
         self.current = None
         self.style = None
         self.fighter = None
@@ -519,7 +519,7 @@ class Hand(object):
         self.cards_list = cards_list
 
     def add_card(self, card=None):
-        if card != None:
+        if card is not None:
             self.cards_list.append(card)
             return
         self.get_from_deck()
@@ -599,7 +599,7 @@ class DuelAction(object):
     def use(self):
         self.current_fighter.send_event('card_used')
         power = self.power
-        if self.special_effect != None:
+        if self.special_effect is not None:
             self.special_effect(self.current_fighter)
         return power
     
@@ -609,7 +609,7 @@ class DuelAction(object):
         except AttributeError:
             pass
         str_ += '\n %s'%(self.name)
-        if self.slot != None:
+        if self.slot is not None:
             str_ += '\n'
             str_ += '(%s: %s)'%(self.slot, self.power)
 

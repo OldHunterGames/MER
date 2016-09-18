@@ -22,7 +22,7 @@ def register_actions():
             special = None
         if action[1].lower() == 'none':
             action[1] = None
-        if special == None:
+        if special is None:
             actions[key] = [z, action[2], action[3]]
 
 
@@ -69,7 +69,7 @@ class Schedule(object):
 
             act = ScheduledAction(self.owner, actions[action_][2], actions[action_][0], actions[action_][1], action_, single, special_values)
             
-            if act.slot != None:
+            if act.slot is not None:
                 for a in self.actions:
                     if a.slot == act.slot:
                         self.remove_by_handle(a)

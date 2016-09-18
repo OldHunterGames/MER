@@ -2,11 +2,12 @@
 from copy import deepcopy
 
 
-needs_names = ["relief", "general", 'purpose', ## basic needs that all character have. "relief" intensity fixed at 1, "general" at 2, "purporse" at 3
+needs_names = ["relief", "general", 'purpose',  # basic needs that all character have. "relief" intensity fixed at 1, "general" at 2, "purporse" at 3
                "nutrition", "wellness", "comfort", "activity", "communication", "amusement", "prosperity", "authority", "ambition", "eros",
                "order", "independence", "approval", "thrill", "altruism", "power"]
 
 _default_need = {"level": 2}
+
 
 def init_needs(owner):
     l = []
@@ -14,7 +15,9 @@ def init_needs(owner):
         l.append(Need(owner, name))
     return l
 
+
 class Need(object):
+
     def __init__(self, owner, name):
         self.owner = owner
         self.name = name
@@ -25,7 +28,7 @@ class Need(object):
     @property
     def satisfaction(self):
         return self._satisfaction
-    
+
     @satisfaction.setter
     def satisfaction(self, value):
         levels = [0, self.owner.sensitivity, 5, 5]
@@ -36,6 +39,7 @@ class Need(object):
         if value < self._satisfaction:
             return
         self._satisfaction = value
+
     def set_satisfaction(self, value):
         levels = [0, self.owner.sensitivity, 5, 5]
         if value < 0:
@@ -45,9 +49,9 @@ class Need(object):
         if value < self._satisfaction:
             return
         self._satisfaction = value
+
     def set_tension(self):
         self.tension = True
-
 
     @property
     def level(self):
@@ -66,7 +70,6 @@ class Need(object):
             return 0
         value = self._level + self.owner.count_modifiers(self.name)
         return min(3, max(0, value))
-
 
     def reset(self):
         self._satisfaction = 0

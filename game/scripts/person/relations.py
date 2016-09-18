@@ -7,6 +7,7 @@ class Relations(object):
     _fervor = {-1: "delicate", 0: "plain", 1: "passionate"}
     _distance = {-1: "intimate", 0: "close", 1: "formal"}
     _congruence = {-1: "contradictor", 0: "associate", 1: "supporter"}
+
     def __init__(self, person1, person2):
         self.persons = [person1, person2]
         self._fervor = 0
@@ -14,10 +15,10 @@ class Relations(object):
         self._congruence = 0
         self.stability = 0
         self.is_player_relations()
-            
 
     def is_player_relations(self):
-        if self.persons[0].player_controlled or self.persons[1].player_controlled:
+        if self.persons[0].player_controlled or self.persons[
+                1].player_controlled:
             if not hasattr(self, 'player') and not hasattr(self, 'npc'):
                 for p in self.persons:
                     if p.player_controlled:
@@ -27,25 +28,29 @@ class Relations(object):
             return True
         else:
             return False
+
     def is_max(self, axis, border):
         d = {'-': -1, '+': 1}
         if getattr(self, axis) == d[border]:
             return True
         return False
+
     @property
     def fervor(self):
         if self.is_player_relations():
             return self._fervor
-        fervor = self._fervor + self.persons[0].alignment.activity + self.persons[1].alignment.activity
+        fervor = self._fervor + \
+            self.persons[0].alignment.activity + \
+            self.persons[1].alignment.activity
         if fervor < -1:
             fervor = -1
         elif fervor > 1:
             fervor = 1
         return fervor
-    
+
     def show_fervor(self):
         return store.relations_translation['fervor'][self.fervor]
-    
+
     def fervor_str(self):
         return Relations._fervor[self.fervor]
 
@@ -53,50 +58,53 @@ class Relations(object):
     def distance(self):
         if self.is_player_relations():
             return self._distance
-        distance = self._distance + self.persons[0].alignment.orderliness + self.persons[1].alignment.orderliness
+        distance = self._distance + \
+            self.persons[0].alignment.orderliness + \
+            self.persons[1].alignment.orderliness
         if distance < -1:
             distance = -1
         elif distance > 1:
             distance = 1
         return distance
-    
+
     def distance_str(self):
         return Relations._distance[self.distance]
-    
+
     def show_distance(self):
         return store.relations_translation['distance'][self.distance]
-    
 
     @property
     def congruence(self):
         if self.is_player_relations():
             return self._congruence
-        congruence = self._distance + self.persons[0].alignment.morality + self.persons[1].alignment.morality
+        congruence = self._distance + \
+            self.persons[0].alignment.morality + \
+            self.persons[1].alignment.morality
         if congruence < -1:
             congruence = -1
         elif congruence > 1:
             congruence = 1
         return congruence
-    
+
     def congruence_str(self):
         return Relations._congruence[self.congruence]
-    
+
     def show_congruence(self):
         return store.relations_translation['congruence'][self.congruence]
 
     def description(self):
-        return (self.show_fervor(), self.show_distance(), self.show_congruence())
+        return (self.show_fervor(), self.show_distance(),
+                self.show_congruence())
 
-    
     def set_axis(self, axis, value):
-        ax = '_%s'%(axis)
+        ax = '_%s' % (axis)
         if hasattr(self, ax) and value in range(-1, 2):
             self.__dict__[ax] = value
-        
+
     def change(self, axis, direction):
         if not self.is_player_relations():
             return
-        ax = getattr(self, '_%s'%(axis))
+        ax = getattr(self, '_%s' % (axis))
         if direction == "+":
             ax += 1
             if ax > 1:
@@ -110,7 +118,7 @@ class Relations(object):
     def is_harmony_points(self, *args):
         points = self.harmony()[1]
         return any([point in points for point in args])
-    
+
     def harmony(self):
         value = 0
         axis = []
@@ -145,7 +153,7 @@ class Relations(object):
             if self.fervor != 0:
                 value -= 1
                 bad_axis.append(self.fervor_str())
-        
+
         difference = self.distance + orderliness
         if abs(difference) > 1:
             value += 1
@@ -154,7 +162,7 @@ class Relations(object):
             if self.distance != 0:
                 value -= 1
                 bad_axis.append(self.distance_str())
-        
+
         difference = self.congruence + morality
         if abs(difference) > 1:
             value += 1

@@ -2,6 +2,7 @@
 
 
 class Buff(object):
+
     def __init__(self, owner_person, name, modifiers_dict, slot, time=1):
         self.owner = owner_person
         self.storage = owner_person.get_buff_storage()
