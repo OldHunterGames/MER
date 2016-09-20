@@ -35,18 +35,22 @@ label lbl_edge_manage:
     
     menu:        
         "Banknotes: [core.resources.money]  \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
-     Munition: [core.resources.munition] | 
-     "
+         Munition: [core.resources.munition] | "
+     
         'Locations':
             call lbl_edge_locations_menu  
-        'Craft':
+        'Craft' if not edge.in_any_gang(player):
             call lbl_edge_craft
         'Information':
             call lbl_edge_info_base
         'Equipment':
             call screen sc_person_equipment(player)
-        'Carry on':
+        'Carry on' if core.can_skip_turn() or edge.in_any_gang(player):
             call lbl_edge_turn
+        'Slums' if edge.slums_mode:
+            $ pass
+        'Faction' if edge.faction_mode:
+            $ pass
     
     jump lbl_edge_manage
     return

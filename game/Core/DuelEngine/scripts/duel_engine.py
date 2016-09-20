@@ -1,9 +1,11 @@
 # -*- coding: <UTF-8> -*-
 from random import *
+
 from duel_data import *
 from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
+import mer_utilities as utilities
 
 def default_cards():
     return ['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite',
@@ -317,16 +319,27 @@ class DuelCombatant(object):
         self.person = person
         cards_list = default_cards()
         if not person.default_cards:
-            person.add_default_cards(cards_list)
-        if not isinstance(person.deck, Deck):
+            try:
+                person.add_default_cards(cards_list)
+            except AttributeError:
+                pass
+        try:
+            if not isinstance(person.deck, Deck):
+                person.deck = Deck()
+                for card in cards_list:
+                    person.deck.add_card(card)
+            elif not person.deck.is_completed():
+                person.deck = Deck()
+                for card in cards_list:
+                    person.deck.add_card(card)
+        except AttributeError:
             person.deck = Deck()
             for card in cards_list:
                 person.deck.add_card(card)
-        elif not person.deck.is_completed():
-            person.deck = Deck()
-            for card in cards_list:
-                person.deck.add_card(card)
-        self.name = person.name
+        try:
+            self.name = person.name
+        except AttributeError:
+            self.name = 'Unknown'
         self.side = None
         self.fight = None
         self.deck = person.deck
@@ -343,8 +356,10 @@ class DuelCombatant(object):
         else:
             self.protection_quality = 0
         self.creature_type = None #TODO: get creature type from person.genus
-        self.name = person.name
-        self.avatar = person.avatar_path
+        try:
+            self.avatar = person.avatar_path
+        except AttributeError:
+            self.avatar = utilities.default_avatar_path()
         self.escalation = 0
         self.combat_style = self.get_combat_style()
         self.loosed = False
@@ -403,12 +418,15 @@ class DuelCombatant(object):
             self.drop.remove(card)
             self.send_event('draw_card')
     def get_combat_style(self):
-        if self.person.has_shield():
-            return 'shieldbearer'
-        if self.person.main_hand is not None and self.person.other_hand is not None:
-            return 'juggernaut'
-        if self.person.main_hand is not None or self.person.other_hand is not None:
-            return 'breter'
+        try:
+            if self.person.has_shield():
+                return 'shieldbearer'
+            if self.person.main_hand is not None and self.person.other_hand is not None:
+                return 'juggernaut'
+            if self.person.main_hand is not None or self.person.other_hand is not None:
+                return 'breter'
+        except AttributeError:
+            pass
         return 'restler'
 
     def get_weapons(self):

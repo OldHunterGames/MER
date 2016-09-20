@@ -20,11 +20,16 @@ class EdgeEngine(object):
     This is the main script of Edge of Mists core module for Mists of Eternal Rome.
     """
 
+
+    gang_list = []
+
     def __init__(self):
         self.locations = []
         self.house = None
         self.loc_max = 0
-    
+        self.slums_mode = False
+        self.faction_mode = False
+
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())
         while self.has_location(location[0]) or location[0] in unique:
@@ -93,6 +98,9 @@ class EdgeEngine(object):
         mist_loc = EdgeLocation('shifting_mist', True)
         self.locations.append(trade_loc)
         self.locations.append(mist_loc)
+    
+    def in_any_gang(self, person):
+        return any([gang for gang in self.gang_list if person in gang.members])
         
 
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
@@ -151,6 +159,8 @@ class EdgeLocation(object):
         self.player_cache = True
 
 
+
+
 class Gang(Faction):
     def __init__(self, owner, name, location):
         super(Gang, self).__init__(owner, name)
@@ -159,7 +169,7 @@ class Gang(Faction):
         self.chief = None
         self.madame = None
         self.locations_controlled = [location]
-
+        EdgeEngine.gang_list.append(self)
 
     def set_member_to_role(self, person, role):
         setattr(self, role, person)
