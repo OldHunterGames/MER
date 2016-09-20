@@ -255,7 +255,9 @@ class DuelEngine(object):
         if self.round > 1:
             self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
                             'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
-            
+        for action in self.persistent_actions:
+            action.remove()
+        self.persistent_actions = []
             
         self.current_ally.send_event('round_started')
         self.current_enemy.send_event('round_started')
