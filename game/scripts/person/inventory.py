@@ -27,10 +27,10 @@ class Inventory(object):
     def main_hand(self, weapon):
         if weapon in self.storage:
             self.storage.remove(weapon)
-        if self._main_hand is not None:
-            self._main_hand.unequip()
-            if self._main_hand not in self.storage and self._main_hand not in self.equiped_weapons().values():
-                self.storage.append(self._main_hand)
+        self.disarm_weapon('main_hand')
+        if weapon.size == 'twohand':
+            self.disarm_weapon('other_hand')
+            self._other_hand = weapon
         self._main_hand = weapon
 
     @property
@@ -41,10 +41,10 @@ class Inventory(object):
     def other_hand(self, weapon):
         if weapon in self.storage:
             self.storage.remove(weapon)
-        if self._other_hand is not None:
-            self._other_hand.unequip()
-            if self._other_hand not in self.storage and self._other_hand not in self.equiped_weapons().values():
-                self.storage.append(self._other_hand)
+        self.disarm_weapon('other_hand')
+        if weapon.size == 'twohand':
+            self.disarm_weapon('main_hand')
+            self._main_hand = weapon
         self._other_hand = weapon
 
     def slots(self):
@@ -98,13 +98,18 @@ class Inventory(object):
             setattr(self, hand, weapon)
 
     def disarm_weapon(self, hand):
+        weapon = getattr(self, hand)
+        
+        if weapon not in self.storage and weapon not in self.equiped_weapons().values():
+            self.storage.append(weapon) 
         try:
-            if getattr(self, hand).size == 'twohand':
-                setattr(self, 'main_hand', None)
-                setattr(self, 'other_hand', None)
+            weapon.unequip()
+            if weapon.size == 'twohand':
+                setattr(self, '_main_hand', None)
+                setattr(self, '_other_hand', None)
         except AttributeError:
             pass
-        setattr(self, hand, None)
+        setattr(self, '_'+hand, None)
 
     def equip_armor(self, armor, slot):
         if armor in self.storage:
