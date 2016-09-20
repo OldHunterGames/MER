@@ -41,7 +41,6 @@ label start:
         mace = Weapon('versatile', 'impact')
         sword = Weapon('versatile', 'slashing')
         halberd = Weapon('twohand', 'slashing')        
-
         
         player.equip_armor(test_armor, 'overgarments') 
         player.equip_on_slot('belt1', knife)
