@@ -68,11 +68,11 @@ init python:
     # special_effect must be function which take 1 arg, excepted arg is DuelCombatant who used card
     # style is one of 'breter', 'juggernaut', 'shieldbearer', 'restler', 'beast'
 
-    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'on_remove': clinch_remove, 'description': 'описалово', },
-                    'hit_n_run': {'name': __('hit n run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'on_remove': hit_n_run_remove,'description': 'описалово', },
-                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'on_remove': rage_remove, 'description': 'описалово', },
-                    'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': outsmart_special, 'description': 'описалово', },
-                    'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special, 'description': 'описалово', },
+    actions_lib = {'clinch': {'name': __('clinch'), 'rarity': 'common', 'power': 0, 'special_effect': clinch_special, 'description': 'Persistent effect. The maneuver do not scores for both combatants while clinch is in the game.', },
+                    'hit_n_run': {'name': __('hit-n-run'), 'rarity': 'common', 'power': 0, 'special_effect': hit_n_run_special, 'description': 'Persistent effect. The onslaught do not scores for both combatants while hit-n-run is in the game.', },
+                    'rage': {'name': __('rage'), 'rarity': 'common', 'power': 0, 'special_effect': rage_special, 'description': 'Persistent effect. The fortitude do not scores for both combatants while rage is in the game.', },
+                    'outsmart': {'name': __('outsmart'), 'rarity': 'common', 'power': 0, 'special_effect': outsmart_special, 'description': 'Discards all persistent effects.', },
+                    'fallback': {'name': __('fallback'), 'rarity': 'common', 'power': 0, 'special_effect': fallback_special, 'description': 'Deduct your current escalation from your biggest basic point-pool. Get one new card.', },
                     'puny_strike': {'name': __('puny strike'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'description': 'описалово', 'special_effect': None},
                     'draggle': {'name': __('draggle'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot': 'maneuver', 'description': 'описалово',  'special_effect': None},
                     'desperation': {'name': __('desperation'), 'rarity': 'common', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'fortitude', 'description': 'описалово',  'special_effect': None},
