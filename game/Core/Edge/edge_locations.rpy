@@ -90,6 +90,17 @@ label lbl_edge_grim_battlefield(location):
     call lbl_edge_grim_battlefield(location) 
     return
 
+label lbl_edge_squatted_slums(location):
+    menu:
+        'Slums squatted by [location.owner.name] gang are open to live in... for a price.'
+        'Sign in':
+            call lbl_edge_slums_livein
+        'Get out':
+            return         
+    
+    call lbl_edge_squatted_slums(location)
+    return
+
 label lbl_edge_dying_grove(location):
     $ special_values = {'place': 'grove', 'quality': location.cache}
     menu:
