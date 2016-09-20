@@ -1,9 +1,11 @@
 # -*- coding: <UTF-8> -*-
 from random import *
+
 from duel_data import *
 from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
+import mer_utilities as utilities
 
 def default_cards():
     return ['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite',
@@ -108,8 +110,7 @@ def init_points(combatant, enemy, situation):
     weapons = combatant.get_weapons()
     enemy_weapons = enemy.get_weapons()
     armor_ignoring = []
-    person = combatant.person
-    skill = person.skill('combat')
+    skill_level = combatant.skill_level
     for weapon in enemy_weapons:
         if weapon.damage_type == 'piercing':
             armor_ignoring.append('light')
@@ -145,17 +146,17 @@ def init_points(combatant, enemy, situation):
             d['excellence'].value += weapon.quality*2
     #armor bonuses
     if combatant.armor_rate == 'light_armor' and not any([i for i in armor_ignoring if i =='light' or i == 'all']):
-        bonus = person.physique + person.agility + combatant.protection_quality + skill.level
+        bonus = combatant.physique + combatant.agility + combatant.protection_quality + skill_level
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['fortitude'].value += bonus
     elif combatant.armor_rate == 'unarmored' and not any([i for i in armor_ignoring if i == 'unarmored' or i == 'all']):
-        bonus = person.agility + skill.level
+        bonus = combatant.agility + skill_level
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['maneuver'].value += bonus
     elif combatant.armor_rate == 'heavy_armor' and not any([i for i in armor_ignoring if i =='heavy' or i == 'all']):
-        bonus = (person.physique + combatant.protection_quality + skill.level)*2
+        bonus = (combatant.physique + combatant.protection_quality + skill_level)*2
         if 'all-half' in armor_ignoring:
             bonus /= 2
         d['fortitude'].value += bonus
@@ -316,17 +317,33 @@ class DuelCombatant(object):
     def __init__(self, person):
         self.person = person
         cards_list = default_cards()
-        if not person.default_cards:
-            person.add_default_cards(cards_list)
-        if not isinstance(person.deck, Deck):
+        try:
+            if not person.default_cards:
+                person.add_default_cards(cards_list)
+        except AttributeError:
+            pass
+        try:
+            if not isinstance(person.deck, Deck):
+                person.deck = Deck()
+                for card in cards_list:
+                    person.deck.add_card(card)
+            elif not person.deck.is_completed():
+                person.deck = Deck()
+                for card in cards_list:
+                    person.deck.add_card(card)
+        except AttributeError:
             person.deck = Deck()
             for card in cards_list:
                 person.deck.add_card(card)
-        elif not person.deck.is_completed():
-            person.deck = Deck()
-            for card in cards_list:
-                person.deck.add_card(card)
-        self.name = person.name
+        try:
+            self.name = person.name
+        except AttributeError:
+            self.name = 'Unknown'
+        try:
+            self.skill_level = person.skill('combat').level
+        except AttributeError:
+            self.skill_level = 0
+        self.init_stats()
         self.side = None
         self.fight = None
         self.deck = person.deck
@@ -343,14 +360,22 @@ class DuelCombatant(object):
         else:
             self.protection_quality = 0
         self.creature_type = None #TODO: get creature type from person.genus
-        self.name = person.name
-        self.avatar = person.avatar_path
+        try:
+            self.avatar = person.avatar_path
+        except AttributeError:
+            self.avatar = utilities.default_avatar_path()
         self.escalation = 0
         self.combat_style = self.get_combat_style()
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
         self.last_event = None
 
+    def init_stats(self):
+        for i in ['physique', 'agility']:
+            try:
+                setattr(self, i, getattr(self.person, i))
+            except AttributeError:
+                setattr(self, i, 0)
     @property
     def last_played_card(self):
         try:
@@ -361,15 +386,27 @@ class DuelCombatant(object):
     
     @property
     def main_weapon(self):
-        return self.person.main_hand
+        try:
+            weapon = self.person.main_hand
+        except AttributeError:
+            weapon = None
+        return weapon
     
     @property
     def other_weapon(self):
-        return self.person.other_hand
+        try:
+            weapon = self.person.other_hand
+        except AttributeError:
+            weapon = None
+        return weapon
     
     @property
     def armor(self):
-        return self.person.armor
+        try:
+            armor = self.person.armor
+        except AttributeError:
+            armor = None
+        return armor
     
     def hand_is_empty(self):
         if len(self.hand) < 1:
@@ -403,12 +440,15 @@ class DuelCombatant(object):
             self.drop.remove(card)
             self.send_event('draw_card')
     def get_combat_style(self):
-        if self.person.has_shield():
-            return 'shieldbearer'
-        if self.person.main_hand is not None and self.person.other_hand is not None:
-            return 'juggernaut'
-        if self.person.main_hand is not None or self.person.other_hand is not None:
-            return 'breter'
+        try:
+            if self.person.has_shield():
+                return 'shieldbearer'
+            if self.person.main_hand is not None and self.person.other_hand is not None:
+                return 'juggernaut'
+            if self.person.main_hand is not None or self.person.other_hand is not None:
+                return 'breter'
+        except AttributeError:
+            pass
         return 'restler'
 
     def get_weapons(self):

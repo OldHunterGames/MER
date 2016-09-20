@@ -20,6 +20,7 @@ from factions import Faction
 from buffs import Buff
 from background import Background
 from inventory import Inventory
+import mer_utilities as utilities
 
 
 def get_avatars():
@@ -327,7 +328,7 @@ class Person(object):
         try:
             avatar = choice(this_avas)
         except IndexError:
-            self.avatar_path = 'images/avatar/none.jpg'
+            self.avatar_path = utilities.default_avatar_path()
             return
         avatar_split = avatar.split('/')
         for str_ in avatar_split:
