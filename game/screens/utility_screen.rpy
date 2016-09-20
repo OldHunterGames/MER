@@ -172,7 +172,7 @@ screen sc_equip_item(person, slot):
         textbutton 'leave':
             action Hide('sc_equip_item')
 
-screen sc_prefight_equip(person):
+screen sc_prefight_equip(person, fight):
     vbox:
         python:
             def is_main_hand_active(person):
@@ -195,7 +195,23 @@ screen sc_prefight_equip(person):
         textbutton prefight_text2:
             action [Show('sc_equip_weapon', person=person, hand='other_hand'),
                 SensitiveIf(is_other_hand_active(person))]
-        textbutton 'Done' action Return()
+        textbutton 'Done' action Hide('sc_enemy_stats'), Return()
+    vbox:
+        xalign(0.3)
+        for enemy in fight.enemies:
+            textbutton enemy.name:
+                action Hide('sc_enemy_stats'), Show('sc_enemy_stats', combatant=enemy)
+
+screen sc_enemy_stats(combatant):
+    vbox:
+        xalign 0.6
+        image combatant.avatar
+        for weapon in combatant.get_weapons():
+            text weapon.description
+        if combatant.armor is not None:
+            text combatant.armor.description
+
+
 
 screen sc_equip_weapon(person, hand):
     vbox:
