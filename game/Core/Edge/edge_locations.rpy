@@ -43,17 +43,13 @@ label lbl_edge_outpost(location):
 label lbl_edge_shifting_mist(location=None):
     'Battle'
     python:
-        class Monster(object):
-            def __init__(self):
-                self.physique = 0
-                self.agility = 0
         ally1 = DuelCombatant(player)
         enemy_weapon = Weapon('twohand', 'subdual', quality=1)
         enemy_armor = Armor('heavy_armor', quality=1)
         enemy = gen_random_person('human')
         enemy.main_hand = enemy_weapon
         enemy.armor = enemy_armor
-        enemy1 = DuelCombatant(Monster())
+        enemy1 = DuelCombatant(enemy)
 
         
         fight = DuelEngine([ally1],[enemy1], None)

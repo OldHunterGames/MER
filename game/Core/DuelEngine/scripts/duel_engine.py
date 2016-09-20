@@ -199,7 +199,7 @@ class DuelEngine(object):
             return self._end_fight(side)
         if side == 'allies':
             combatant.set_side('allies')
-            renpy.call_screen('sc_prefight_equip', combatant.person)
+            renpy.call_screen('sc_prefight_equip', combatant.person, self)
         else:
             combatant.set_side('enemies')
         if not self.simulation:
