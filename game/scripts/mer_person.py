@@ -262,7 +262,15 @@ class Attributed(Modifiable):
     def sensitivity(self, value):
         self.attributes['sensitivity'] = value
 
-def make_combatant(id_):
+def get_random_combatant():
+    return choice(store.combatant_data.keys())
+
+def get_random_item_set():
+    return choice(store.equip_sets.keys())
+
+def make_combatant(id_=None):
+    if id_ is None:
+        id_ = get_random_combatant()
     data = store.combatant_data[id_]
     name = data['name']
     combatant = Combatant(name)
@@ -271,7 +279,9 @@ def make_combatant(id_):
         setattr(combatant, key, value)
     return combatant
 
-def equip_combatant(combatant, equip_set_id):
+def equip_combatant(combatant, equip_set_id=None):
+    if equip_set_id is None:
+        equip_set_id = get_random_item_set()
     data = store.equip_sets[equip_set_id]
     for key, value in data.items():
         if key == 'main_hand' or key == 'other_hand':
@@ -1318,14 +1328,25 @@ class Person(Skilled, InventoryWielder, Attributed):
             for arg in args:
                 if isinstance(arg, Person):
                     target = arg
-
+        toned = False
         for arg in args:
-            if arg in act.keys():
-                activity = arg
-            if arg in moral.keys():
-                morality = arg
-            if arg in order.keys():
-                orderliness = arg
+            if isinstance(arg, list):
+                toned = True
+                for i in arg:
+                    if i in act.keys():
+                        activity = i
+                    if i in moral.keys():
+                        morality = i
+                    if i in order.keys():
+                        orderliness = i
+        if not toned:
+            for arg in args:
+                if arg in act.keys():
+                    activity = arg
+                if arg in moral.keys():
+                    morality = arg
+                if arg in order.keys():
+                    orderliness = arg
         for k, v in action_tones.items():
             if v:
                 valself = getattr(self.alignment, k)
