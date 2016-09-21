@@ -1328,14 +1328,25 @@ class Person(Skilled, InventoryWielder, Attributed):
             for arg in args:
                 if isinstance(arg, Person):
                     target = arg
-
+        toned = False
         for arg in args:
-            if arg in act.keys():
-                activity = arg
-            if arg in moral.keys():
-                morality = arg
-            if arg in order.keys():
-                orderliness = arg
+            if isinstance(arg, list):
+                toned = True
+                for i in arg:
+                    if i in act.keys():
+                        activity = i
+                    if i in moral.keys():
+                        morality = i
+                    if i in order.keys():
+                        orderliness = i
+        if not toned:
+            for arg in args:
+                if arg in act.keys():
+                    activity = arg
+                if arg in moral.keys():
+                    morality = arg
+                if arg in order.keys():
+                    orderliness = arg
         for k, v in action_tones.items():
             if v:
                 valself = getattr(self.alignment, k)
