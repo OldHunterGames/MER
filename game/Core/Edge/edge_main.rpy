@@ -170,8 +170,10 @@ label lbl_edge_turn:
         edge.locations_tick()
         core.new_turn()
         core.resources.to_zero()
-    if core.has_any_faction(player):
+    if edge.faction_mode:
         call lbl_edge_faction_livein
+    if edge.slums_mode:
+        call lbl_edge_slums_livein
     else:
         call lbl_edge_manage        
     return

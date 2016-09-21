@@ -5,27 +5,48 @@
 
     
 label lbl_edge_slums_livein:
+    $ bill = core.resources.consumption('money')
     
     menu:        
         "Banknotes: [core.resources.money] \n
         Decade bill: ?"
-        'Occupation':
-            call lbl  
-        'Clanmates':
-            call lbl
-        'Services':
-            call lbl
         'Accomodation':
-            call lbl            
-        'Equipement':
-           call lbl   
+            call lbl_edge_slums_accomodation            
         'Ration (food & drugs)':
-            call lbl
-        'Earnings share (money)':
-            call lbl
-        'Carry on':
-            call lbl_edge_turn
+            call lbl_edge_slums_ration
+        'Services':
+            call lbl_edge_slums_services
+        'Back':
+            call lbl_edge_manage
    
-    jump lbl_edge_faction_livein
+    jump lbl_edge_slums_livein
     return
     
+label lbl_edge_slums_accomodation:
+    
+    menu:
+        'Tiny mat in common room (10$/turn)':
+            $ target.accommodation = "mat"
+            $ target.schedule.add_action('living_mat') 
+            $ summ = 10
+        'Back':
+            call lbl_edge_slums_livein
+            
+    $ game.res_add_consumption(target, 'accomodation_fee', summ, time=None)        
+    return
+
+    
+label lbl_edge_slums_ration:
+    menu:
+        'Back':
+            call lbl_edge_slums_livein
+
+    return
+    
+    
+label lbl_edge_slums_services:
+    menu:
+        'Back':
+            call lbl_edge_slums_livein
+
+    return

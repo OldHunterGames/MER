@@ -35,14 +35,15 @@ label start:
         player.set_resources_storage(core.resources)
         
         # TEST CODE
-        test_armor = Armor('light_armor')
+        light_armor = Armor('light_armor')
+        heavy_armor = Armor('heavy_armor')
         knife = Weapon('offhand', 'slashing')
         stiletto = Weapon('offhand', 'piercing')
         mace = Weapon('versatile', 'impact')
         sword = Weapon('versatile', 'slashing')
         halberd = Weapon('twohand', 'slashing')        
         
-        player.equip_armor(test_armor, 'overgarments') 
+        player.equip_armor(light_armor, 'overgarments') 
         player.equip_on_slot('belt1', knife)
         player.equip_on_slot('belt2', stiletto)
         player.equip_on_slot('armband', mace)       

@@ -16,7 +16,30 @@ label shd_edge_accommodation_makeshift(action):
         action.actor.add_buff('bad_sleep', {'vitality': -1}, 1)  
         name = action.actor.name
     return
-    
+
+label shd_edge_living_mat(action):
+    python:
+        action.actor.comfort.set_tension()
+        action.actor.prosperity.set_tension()
+        action.actor.wellness.set_tension()    
+        name = action.actor.name()
+    '[name] sleeps on a tiny mat.'          
+    return 
+
+label shd_edge_living_cot(action):
+    $ action.actor.comfort.satisfaction = 1
+    $ name = action.actor.name()
+    '[name] sleeps on a rough cot.'    
+    return 
+
+label shd_edge_living_appartment(action):
+    python:
+        action.actor.comfort.satisfaction = 3
+        action.actor.add_modifier('beauty_sleep', {'vitality': 2}, 1)        
+        name = action.actor.name()
+    '[name] sleeps in apartments.'    
+    return  
+
 label shd_edge_job_idle(action):
     python:
         pass

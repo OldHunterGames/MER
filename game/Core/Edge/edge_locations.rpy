@@ -44,6 +44,7 @@ label lbl_edge_shifting_mist(location=None):
     'Battle'
     python:
         ally1 = DuelCombatant(player)
+        
         enemy_weapon = Weapon('twohand', 'subdual', quality=1)
         enemy_armor = Armor('heavy_armor', quality=1)
         enemy = gen_random_person('human')
@@ -94,6 +95,7 @@ label lbl_edge_squatted_slums(location):
     menu:
         'Slums squatted by [location.owner.name] gang are open to live in... for a price.'
         'Sign in':
+            $ edge.slums_mode = True
             call lbl_edge_slums_livein
         'Get out':
             return         
