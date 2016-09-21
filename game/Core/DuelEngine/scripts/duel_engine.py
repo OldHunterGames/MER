@@ -310,31 +310,34 @@ class DuelEngine(object):
     def set_show_summary(self, bool_):
         self.show_summary = bool_
 
+
 class DuelCombatant(object):
     """
     This class makes a characters participating in Fast Fight.
     """
-    def __init__(self, person):
+
+    def __init__(self, person=None):
         self.person = person
+
         cards_list = default_cards()
+        default_deck = Deck()
+        for card in cards_list:
+            default_deck.add_card(card)
         try:
             if not person.default_cards:
                 person.add_default_cards(cards_list)
         except AttributeError:
             pass
+
         try:
             if not isinstance(person.deck, Deck):
-                person.deck = Deck()
-                for card in cards_list:
-                    person.deck.add_card(card)
+                person.deck = default_deck
             elif not person.deck.is_completed():
-                person.deck = Deck()
-                for card in cards_list:
-                    person.deck.add_card(card)
+                person.deck = default_deck
+            self.deck = person.deck
         except AttributeError:
-            person.deck = Deck()
-            for card in cards_list:
-                person.deck.add_card(card)
+            self.deck = default_deck
+        
         try:
             self.name = person.name
         except AttributeError:
@@ -343,10 +346,10 @@ class DuelCombatant(object):
             self.skill_level = person.skill('combat').level
         except AttributeError:
             self.skill_level = 0
+        
         self.init_stats()
         self.side = None
         self.fight = None
-        self.deck = person.deck
         self.deck.set_fighter(self)
         self.hand = []
         self.drop = []

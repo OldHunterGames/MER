@@ -49,6 +49,8 @@ label start:
         player.equip_on_slot('armband', mace)       
         player.equip_on_slot('ankleband', sword) 
         player.equip_on_slot('harness', halberd) 
+        test1 = make_combatant('weak_bandit')
+        equip_combatant(test1, 'weak_agile')
 
     
     show expression "interface/bg_base.jpg" as bg

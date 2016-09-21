@@ -51,9 +51,9 @@ class Resources(object):
                     value += i[1]
         return value
 
-    def consumption_remove(self, name):
+    def consumption_remove(self, source, slot):
         for res in self._resources_consumption:
-            if res[3] == name:
+            if res[3] == source and res[4] == slot:
                 self._resources_consumption.remove(res)
 
     def consumption_tick(self):
@@ -74,14 +74,15 @@ class Resources(object):
         resource = self.resources[res] - self.consumption(res)
         return -(resource) * rate
 
-    def consumption_remove_by_name(self, name):
+    def consumption_remove_by_source(self, source):
         for res in self._resources_consumption:
-            if res[3] == name:
+            if res[3] == source:
                 self._resources_consumption.remove(res)
 
-    def add_consumption(self, name, res, value, time=1):
-        self.consumption_remove_by_name(name)
-        self._resources_consumption.append([res, value, time, name])
+    def add_consumption(self, source, res, value, time=1, slot=None):
+        if slot is not None:
+            self.consumption_remove(source, slot)
+        self._resources_consumption.append([res, value, time, source, slot])
 
     def has_money(self, value):
         if self.money >= value:
