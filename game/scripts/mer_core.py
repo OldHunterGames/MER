@@ -128,7 +128,7 @@ class MistsOfEternalRome(object):
     def can_skip_turn(self):
         money = self.resources.consumption('money')
         for res in self.resources.resources.keys():
-            if not self.resources.can_consume(res) and not self.resource.has_money(self.resources.res_to_money(res)):
+            if not self.resources.can_consume(res) and not self.resources.has_money(self.resources.res_to_money(res)):
                 return False
             else:
                 money += self.resources.res_to_money(res)

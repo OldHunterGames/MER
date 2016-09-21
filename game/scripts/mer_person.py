@@ -20,12 +20,13 @@ from factions import Faction
 from buffs import Buff
 from background import Background
 from inventory import Inventory
+from mer_item import create_weapon, create_armor
 import mer_utilities as utilities
 
 
-def get_avatars():
+def get_avatars(path):
     all_ = renpy.list_files()
-    avas = [str_ for str_ in all_ if str_.startswith('images/avatar')]
+    avas = [str_ for str_ in all_ if str_.startswith(path)]
     return avas
 
 
@@ -66,132 +67,90 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
 
 persons_list = []
 
+class Modifiable(object):
 
-class Person(object):
-
-    def __init__(self, age=None, gender=None, genus='human'):
-        self.player_controlled = False
-        self._event_type = 'person'
-        self.firstname = u"Anonimous"
-        self.surname = u""
-        self.nickname = u"Anon"
-        self.alignment = Alignment()
-        # gets Feature() objects and their child's. Add new Feature only with
-        # self.add_feature()
-        self.features = []
-        self.tokens = []             # Special resources to activate various events
-        self.relations_tendency = {'convention': 0,
-                                   'conquest': 0, 'contribution': 0}
-        # obedience, dependecy and respect stats
-        self._stance = []
-        self.avatar_path = ''
-
-        self.master = None          # If this person is a slave, the master will be set
-        self.supervisor = None
-        self.slaves = []
-        self.subordinates = []
-        self.ap = 1
-        self.schedule = Schedule(self)
+    def init_modifiable(self):
         self.modifiers = ModifiersStorage()
-        # init starting features
 
-        self.availabe_actions = []  # used if we are playing slave-part
+    def add_modifier(self, name, stats_dict, source, slot=None):
+        self.modifiers.add_modifier(name, stats_dict, source, slot)
 
-        self.allowance = 0         # Sparks spend each turn on a lifestyle
-        self.sparks = 0
-        self.ration = {
-            # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
-            "amount": 'unlimited',
-            "food_type": "cousine",   # 'forage', 'sperm', 'dry', 'canned', 'cousine'
-            "target": 0,           # figures range -2:2
-            "limit": 0,             # maximum resources spend to feed character each turn
-            "overfeed": 0,
-        }
+    def count_modifiers(self, key):
+        val = self.__dict__['modifiers'].count_modifiers(key)
+        return val
+
+    def modifiers_separate(self, modifier, names=False):
+        return self.modifiers.get_modifier_separate(modifier)
+
+class Skilled(object):
+
+    def init_skilled(self):
         self.skills = []
         self.specialized_skill = None
         self.focused_skill = None
         self.skills_used = []
-        self.factors = []
-        self.restrictions = []
-        self._needs = init_needs(self)
 
-        self.attributes = {
-            'physique': 3,
-            'mind': 3,
-            'spirit': 3,
-            'agility': 3,
-            'sensitivity': 3
-        }
-        self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
-        self.mood = 0
-        self.fatigue = 0
-        self._vitality = 0
-        self.appetite = 0
-        self.calorie_storage = 0
-        self.money = 0
-        self._determination = 0
-        self._anxiety = 0
-        self.rewards = []
-        self.used_rewards = []
-        self.merit = 0  # player only var for storing work result
+    def skill(self, skillname):
+        skill = None
+        for i in self.skills:
+            if i.name == skillname:
+                skill = i
+                return skill
 
-        # Other persons known and relations with them, value[1] = [needed
-        # points, current points]
-        self._relations = []
-        self.selfesteem = 0
-        self.conditions = []
-        self.genus = init_genus(self, genus)
-        self.add_feature(age)
-        self.add_feature(gender)
-        self.set_avatar()
-        self._buffs = []
-        persons_list.append(self)
-        self._main_hand = None
-        self._other_hand = None
-        self.resources_storage = None
-        self.inventory = Inventory()
-        self.cards_list = []
-        self.default_cards = False
-        self.deck = None
-        self._calculatable = False
-        self.factions = []
-        self.background = None
+        if skillname in skills_data:
+            skill = Skill(self, skillname, skills_data[skillname])
+            self.skills.append(skill)
+            return skill
+        else:
+            raise Exception("No skill named %s in skills_data" % (skillname))
 
-    def apply_background(self, background):
-        self.background = background
-        background.apply(self)
+    def use_skill(self, name):
+        if isinstance(name, Skill):
+            self.skills_used.append(name)
+        else:
+            self.skills_used.append(self.skill(name))
 
-    def add_faction(self, faction):
-        if not faction in self.factions:
-            self.factions.append(faction)
+    def get_used_skills(self):
+        l = []
+        for skill in self.skills_used:
+            if isinstance(skill, Skill):
+                l.append(skill)
+            else:
+                l.append(self.skill(skill))
+        return l
 
-    def remove_faction(self, faction):
+    def calc_focus(self):
+        if self.focused_skill:
+            if self.focused_skill in self.get_used_skills():
+                self.focused_skill.focus += 1
+                self.skills_used = []
+                return
         try:
-            self.factions.remove(faction)
-        except IndexError:
+            self.focused_skill.focus = 0
+        except AttributeError:
             pass
 
-    @property
-    def calculatable(self):
-        return self._calculatable or self.player_controlled
+        if len(self.skills_used) > 0:
+            from collections import Counter
+            counted = Counter()
+            for skill in self.get_used_skills():
+                counted[skill.name] += 1
+            maximum = max(counted.values())
+            result = []
+            for skill in counted:
+                if counted[skill] == maximum:
+                    result.append(skill)
+            self.skill(choice(result)).set_focus()
+        else:
+            self.focused_skill = None
 
-    @calculatable.setter
-    def calculatable(self, value):
-        self._calculatable = value
+        self.skills_used = []
 
-    def add_default_cards(self, list_):
-        if not self.default_cards:
-            self.cards_list += list_
-        return
+class InventoryWielder(object):
 
-    def set_deck(self, deck):
-        self.deck = deck
+    def init_inventorywielder(self):
+        self.inventory = Inventory()
 
-    def set_resources_storage(self, storage):
-        self.resources_storage = storage
-
-    # while inventory isn't implemented we need this methods for some test cases
-    # they will be removed when inventory system is done.
     @property
     def items(self):
         return self.inventory.storage
@@ -250,7 +209,210 @@ class Person(object):
 
     def equip_on_slot(self, slot, item):
         self.inventory.equip_on_slot(slot, item)
-    # end of inventory methods
+
+class Attributed(Modifiable):
+
+    def init_attributed(self):
+        self.attributes = {
+            'physique': 3,
+            'mind': 3,
+            'spirit': 3,
+            'agility': 3,
+            'sensitivity': 3
+        }
+        self.init_modifiable()
+
+    def _get_modified_attribute(self, attr):
+        value = self.attributes[attr]
+        value += self.count_modifiers(attr)
+        return max(0, min(5, value))
+
+    @property
+    def physique(self):
+        return self._get_modified_attribute('physique')
+    @physique.setter
+    def physique(self, value):
+        self.attributes['physique'] = value
+    
+    @property
+    def mind(self):
+        return self._get_modified_attribute('mind')
+    @mind.setter
+    def mind(self, value):
+        self.attributes['mind'] = value
+    
+    @property
+    def spirit(self):
+        return self._get_modified_attribute('spirit')
+    @spirit.setter
+    def spirit(self, value):
+        self.attributes['spirit'] = value
+    
+    @property
+    def agility(self):
+        return self._get_modified_attribute('agility')
+    @agility.setter
+    def agility(self, value):
+        self.attributes['agility'] = value
+    
+    @property
+    def sensitivity(self):
+        return self._get_modified_attribute('sensitivity')
+    @sensitivity.setter
+    def sensitivity(self, value):
+        self.attributes['sensitivity'] = value
+
+def make_combatant(id_):
+    data = store.combatant_data[id_]
+    name = data['name']
+    combatant = Combatant(name)
+    combatant.set_avatar(data['avatar_folder'])
+    for key, value in data['attributes'].items():
+        setattr(combatant, key, value)
+    return combatant
+
+def equip_combatant(combatant, equip_set_id):
+    data = store.equip_sets[equip_set_id]
+    for key, value in data.items():
+        if key == 'main_hand' or key == 'other_hand':
+            item = create_weapon(**value)
+        elif key == 'armor':
+            item = create_armor(**value)
+        setattr(combatant, key, item)
+
+class Combatant(Skilled, InventoryWielder, Attributed):
+    def __init__(self, name):
+        super(Combatant, self).__init__()
+        self.init_inventorywielder()
+        self.init_skilled()
+        self.init_attributed()
+    
+    def set_avatar(self, avatar_folder):
+        path = 'images/avatar/combatants'
+        path += avatar_folder
+        avatars = get_avatars(path)
+        try:
+            avatar = choice(avatars)
+        except IndexError:
+            self.avatar_path = utilities.default_avatar_path()
+            return 
+        else:
+            self.avatar_path = avatar
+
+
+class Person(Skilled, InventoryWielder, Attributed):
+
+    def __init__(self, age=None, gender=None, genus='human'):
+        super(Person, self).__init__()
+        self.player_controlled = False
+        self.init_inventorywielder()
+        self.init_skilled()
+        self.init_attributed()
+        self._event_type = 'person'
+        self.firstname = u"Anonimous"
+        self.surname = u""
+        self.nickname = u"Anon"
+        self.alignment = Alignment()
+        # gets Feature() objects and their child's. Add new Feature only with
+        # self.add_feature()
+        self.features = []
+        self.tokens = []             # Special resources to activate various events
+        self.relations_tendency = {'convention': 0,
+                                   'conquest': 0, 'contribution': 0}
+        # obedience, dependecy and respect stats
+        self._stance = []
+        self.avatar_path = ''
+
+        self.master = None          # If this person is a slave, the master will be set
+        self.supervisor = None
+        self.slaves = []
+        self.subordinates = []
+        self.ap = 1
+        self.schedule = Schedule(self)
+        # init starting features
+
+        self.availabe_actions = []  # used if we are playing slave-part
+
+        self.allowance = 0         # Sparks spend each turn on a lifestyle
+        self.sparks = 0
+        self.ration = {
+            # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
+            "amount": 'unlimited',
+            "food_type": "cousine",   # 'forage', 'sperm', 'dry', 'canned', 'cousine'
+            "target": 0,           # figures range -2:2
+            "limit": 0,             # maximum resources spend to feed character each turn
+            "overfeed": 0,
+        }
+        self.factors = []
+        self.restrictions = []
+        self._needs = init_needs(self)
+
+        self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
+        self.mood = 0
+        self.fatigue = 0
+        self._vitality = 0
+        self.appetite = 0
+        self.calorie_storage = 0
+        self.money = 0
+        self._determination = 0
+        self._anxiety = 0
+        self.rewards = []
+        self.used_rewards = []
+        self.merit = 0  # player only var for storing work result
+
+        # Other persons known and relations with them, value[1] = [needed
+        # points, current points]
+        self._relations = []
+        self.selfesteem = 0
+        self.conditions = []
+        self.genus = init_genus(self, genus)
+        self.add_feature(age)
+        self.add_feature(gender)
+        self.set_avatar()
+        self._buffs = []
+        persons_list.append(self)
+        self._main_hand = None
+        self._other_hand = None
+        self.resources_storage = None
+        self.cards_list = []
+        self.default_cards = False
+        self.deck = None
+        self._calculatable = False
+        self.factions = []
+        self.background = None
+
+    def apply_background(self, background):
+        self.background = background
+        background.apply(self)
+
+    def add_faction(self, faction):
+        if not faction in self.factions:
+            self.factions.append(faction)
+
+    def remove_faction(self, faction):
+        try:
+            self.factions.remove(faction)
+        except IndexError:
+            pass
+
+    @property
+    def calculatable(self):
+        return self._calculatable or self.player_controlled
+
+    @calculatable.setter
+    def calculatable(self, value):
+        self._calculatable = value
+
+    def add_default_cards(self, list_):
+        if not self.default_cards:
+            self.cards_list += list_
+        return
+
+    def set_deck(self, deck):
+        self.deck = deck
+
+    def set_resources_storage(self, storage):
+        self.resources_storage = storage
 
     def formidability(self):
         value = 0
@@ -311,7 +473,12 @@ class Person(object):
             value += 1
         return max(0, min(5, value))
 
-    def set_avatar(self):
+    def set_avatar(self, avatar=None):
+        if avatar is not None:
+            if avatar in renpy.list_files():
+                self.avatar_path = avatar
+            else:
+                self.avatar_path = utilities.default_avatar_path()
         path = 'images/avatar/'
         path += self.genus.head_type + '/'
         if self.gender is not None:
@@ -324,7 +491,7 @@ class Person(object):
             path += gender + '/'
         if self.age is not None:
             path += self.age + '/'
-        this_avas = [ava for ava in get_avatars() if ava.startswith(path)]
+        this_avas = get_avatars(path)
         try:
             avatar = choice(this_avas)
         except IndexError:
@@ -441,8 +608,7 @@ class Person(object):
             list_ += persons
         return list_
 
-    def add_modifier(self, name, stats_dict, source, slot=None):
-        self.modifiers.add_modifier(name, stats_dict, source, slot)
+    
 
     def get_buff_storage(self):
         return self._buffs
@@ -466,9 +632,6 @@ class Person(object):
         for buff in self._buffs:
             buff.tick_time()
 
-    def count_modifiers(self, key):
-        val = self.__dict__['modifiers'].count_modifiers(key)
-        return val
 
     @property
     def focus(self):
@@ -520,15 +683,6 @@ class Person(object):
         return super(Person, self).__getattribute__(key)
 
     def __getattr__(self, key):
-        if 'attributes' in self.__dict__:
-            if key in self.__dict__['attributes']:
-                value = self.__dict__['attributes'][key]
-                value += self.count_modifiers(key)
-                if value < 1:
-                    value = 1
-                if value > 5:
-                    value = 5
-                return value
         n = {}
         if '_needs' in self.__dict__:
             for need in self.__dict__['_needs']:
@@ -536,15 +690,6 @@ class Person(object):
         if key in n.keys():
             return n[key]
         raise AttributeError(key)
-
-    def __setattr__(self, key, value):
-        if 'attributes' in self.__dict__:
-            if key in self.attributes:
-                value -= self.count_modifiers(key)
-                self.attributes[key] = value
-                if self.attributes[key] < 0:
-                    self.attributes[key] = 0
-        super(Person, self).__setattr__(key, value)
 
     @property
     def determination(self):
@@ -565,9 +710,6 @@ class Person(object):
         self._anxiety = value
         if self._anxiety < 0:
             self_anxiety = 0
-
-    def modifiers_separate(self, modifier, names=False):
-        return self.modifiers.get_modifier_separate(modifier)
 
     def vitality_info(self):
         d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
@@ -726,65 +868,9 @@ class Person(object):
         s = self.firstname + " " + self.surname
         return s
 
-    def skill(self, skillname):
-        skill = None
-        for i in self.skills:
-            if i.name == skillname:
-                skill = i
-                return skill
-
-        if skillname in skills_data:
-            skill = Skill(self, skillname, skills_data[skillname])
-            self.skills.append(skill)
-            return skill
-        else:
-            raise Exception("No skill named %s in skills_data" % (skillname))
-
     def tick_features(self):
         for feature in self.features:
             feature.tick_time()
-
-    def use_skill(self, name):
-        if isinstance(name, Skill):
-            self.skills_used.append(name)
-        else:
-            self.skills_used.append(self.skill(name))
-
-    def get_used_skills(self):
-        l = []
-        for skill in self.skills_used:
-            if isinstance(skill, Skill):
-                l.append(skill)
-            else:
-                l.append(self.skill(skill))
-        return l
-
-    def calc_focus(self):
-        if self.focused_skill:
-            if self.focused_skill in self.get_used_skills():
-                self.focused_skill.focus += 1
-                self.skills_used = []
-                return
-        try:
-            self.focused_skill.focus = 0
-        except AttributeError:
-            pass
-
-        if len(self.skills_used) > 0:
-            from collections import Counter
-            counted = Counter()
-            for skill in self.get_used_skills():
-                counted[skill.name] += 1
-            maximum = max(counted.values())
-            result = []
-            for skill in counted:
-                if counted[skill] == maximum:
-                    result.append(skill)
-            self.skill(choice(result)).set_focus()
-        else:
-            self.focused_skill = None
-
-        self.skills_used = []
 
     def recalculate_mood(self):
         mood = 0
