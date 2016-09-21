@@ -9,7 +9,7 @@ label lbl_edge_slums_livein:
     
     menu:        
         "Banknotes: [core.resources.money] \n
-        Decade bill: ?"
+        Decade bill: [bill]"
         'Accomodation':
             call lbl_edge_slums_accomodation            
         'Ration (food & drugs)':
@@ -26,13 +26,18 @@ label lbl_edge_slums_accomodation:
     
     menu:
         'Tiny mat in common room (10$/turn)':
-            $ target.accommodation = "mat"
             $ target.schedule.add_action('living_mat') 
             $ summ = 10
+        'Cot & bkanket (50$/turn)':
+            $ target.schedule.add_action('living_cot') 
+            $ summ = 50
+        'Apartments (100$/turn)':
+            $ target.schedule.add_action('living_appartment') 
+            $ summ = 100            
         'Back':
             call lbl_edge_slums_livein
             
-    $ game.res_add_consumption(target, 'accomodation_fee', summ, time=None)        
+    $ core.resources.add_consumption(target, 'money', summ, time=1, slot='accomodation_fee')
     return
 
     

@@ -28,13 +28,14 @@ label lbl_edge_main:
     return
     
 label lbl_edge_manage:
+    $ consumption_money = core.resources.consumption('money')
     $ consumption_provision = core.resources.consumption('provision')
     $ consumption_fuel = core.resources.consumption('fuel')
     $ consumption_drugs = core.resources.consumption('drugs')
     $ target = player
     
     menu:        
-        "Banknotes: [core.resources.money]  \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
+        "Banknotes: [core.resources.money] (-[consumption_money]) \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
          Munition: [core.resources.munition] | "
      
         'Locations':
@@ -48,7 +49,7 @@ label lbl_edge_manage:
         'Carry on' if core.can_skip_turn() or edge.in_any_gang(player):
             call lbl_edge_turn
         'Slums' if edge.slums_mode:
-            $ pass
+            call lbl_edge_slums_livein
         'Faction' if edge.faction_mode:
             $ pass
     

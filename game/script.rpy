@@ -5,6 +5,7 @@ init -10 python:
     sys.path.append(renpy.loader.transfn("scripts/person"))
     sys.path.append(renpy.loader.transfn("Core"))
     from mer_core import *
+    from mer_utilities import *
     from mer_item import *
     from mer_person import *
     from mer_stock import *

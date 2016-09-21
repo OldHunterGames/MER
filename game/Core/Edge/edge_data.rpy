@@ -26,6 +26,7 @@ init python:
         'scjunc': __('scavenge junk'),
         'disassemble': __('disassemble machinery'),
         'lookforstash': __('look for hidden stash'),
+        'foodwork': __('work for food'),
         
         }
 

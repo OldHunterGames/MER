@@ -58,15 +58,18 @@ label lbl_edge_shifting_mist(location=None):
     return
 
 label lbl_edge_grim_battlefield(location):
+    $ dif = encolor_text('straightforward', 1)
+    $ achive = encolor_text('adequate results', 2)
+    
     menu:
         'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they looking for usible munitions.'
         'Find out about [location.owner.name]':
             call screen sc_faction_info(location.owner)
         'Work for food (full time)':
             menu:
-                'The [location.owner.name] offer to give you some food (3 provisions units) if you scavenge armaments for them for a decade.'
+                'The [location.owner.name] offer to give you some food (3 provisions units) if you {b}scavenge{/b} armaments for them for a decade. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
-                    $ special_values = {'skill': 'survival', 'beneficiar': location.owner,}
+                    $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -77,7 +80,7 @@ label lbl_edge_grim_battlefield(location):
                 'Agree (100 banknotes)' if core.resources.money >= 100:
                     $ core.resources.money -= 100
                     $ description = ' scavenging munition on the gim battlefield. Yelds '
-                    $ special_values = {'description': description, 'resource_name': 'munition', 'skill': 'survival', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+                    $ special_values = {'description': description,  'resource_name': 'munition', 'skill': 'survival', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
                     $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':

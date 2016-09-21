@@ -102,10 +102,18 @@ label shd_edge_job_foodwork(action):
         actor = action.actor
         name = actor.name
         beneficiar = action.special_values['beneficiar']
-        core.resources.provision += 3
-        player.skills_used.append(action.special_values['skill'])
-        player.moral_action('lawful', 'timid', target = beneficiar)  
-    '[name] scavenging munition on the gim battlefield for the sake of [beneficiar.name] gang. Recived food (3)'
+        difficulty = action.special_values['difficulty']
+        skill = action.special_values['skill']
+        mrl = action.special_values['moral']
+        moral = target.check_moral(mrl, target = beneficiar)
+        result = core.threshold_skillcheck(actor, skill, difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 2, special_motivators=[])        
+
+    if result[1] < 1:
+        '[name] scavenging munition on the grim battlefield for the sake of [beneficiar.name] gang, but fails to deliver. No food recived.'
+    else:
+        '[name] succesfully scavenging munition on the grim battlefield for the sake of [beneficiar.name] gang. Recived food (3)'
+        $ core.resources.provision += 3
+        
     return
     
 label shd_edge_job_simplework(action):
