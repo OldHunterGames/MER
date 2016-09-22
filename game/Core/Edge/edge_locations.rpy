@@ -70,6 +70,8 @@ label lbl_edge_grim_battlefield(location):
                 'The [location.owner.name] offer to give you some food (3 provisions units) if you {b}scavenge{/b} armaments for them for a decade. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
+                    $ special_values['succes_text'] = _('scavenging munition on the grim battlefield for a local gang, but fails to deliver. No food recived.')                    
+                    $ special_values['fail_text'] = _('succesfully scavenging munition on the grim battlefield for a local gang. Recived food (3)')
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -79,7 +81,7 @@ label lbl_edge_grim_battlefield(location):
                 'You must pay 100 banknotes to [location.owner.name] in order to scavenge their territory for usible munitions for a decade. All you can find and carry out is yours.'
                 'Agree (100 banknotes)' if core.resources.money >= 100:
                     $ core.resources.money -= 100
-                    $ description = ' scavenging munition on the gim battlefield. Yelds '
+                    $ description = _('scavenging munition on the gim battlefield. Yelds ')
                     $ special_values = {'description': description,  'resource_name': 'munition', 'skill': 'survival', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
                     $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
                     jump lbl_edge_manage
@@ -87,6 +89,7 @@ label lbl_edge_grim_battlefield(location):
                     $ pass
         'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
             $ location.owner.add_member(player)
+            $ edge.faction_mode = True
             jump lbl_edge_faction_livein
         'Get out':
             return 
@@ -94,6 +97,126 @@ label lbl_edge_grim_battlefield(location):
     call lbl_edge_grim_battlefield(location) 
     return
 
+label lbl_edge_crimson_pit(location):
+    $ dif = encolor_text('straightforward', 1)
+    $ achive = encolor_text('adequate results', 2)
+    
+    menu:
+        'Dense smoke and the smell of burned tar guides you to a enormous scorched pit. You can see a pool of glossy crimson liquid on its bottom, the infamous "Demon Blood", fuel of Eternal Rome. Place is guarded by [location.owner.name] while tired workers mine the substance.'
+        'Find out about [location.owner.name]':
+            call screen sc_faction_info(location.owner)
+        'Work for food (full time)':
+            menu:
+                'The [location.owner.name] offer to give you some food (3 provisions units) if you will work at the pit for a decade. The {b}athletics{/b} skill could be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
+                'Agree':
+                    $ special_values = {'skill': 'athletics', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
+                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
+                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Buy extraction license (full time)':
+            menu:
+                'You must pay 100 banknotes to [location.owner.name] in order to work here for a decade. All fuel you can extract and carry out is yours.'
+                'Agree (100 banknotes)' if core.resources.money >= 100:
+                    $ core.resources.money -= 100
+                    $ description = _('extracts demon blood and renders it to a fuel bars. Yelds ')
+                    $ special_values = {'description': description,  'resource_name': 'fuel', 'skill': 'athletics', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+                    $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
+            $ location.owner.add_member(player)
+            $ edge.faction_mode = True
+            jump lbl_edge_faction_livein
+        'Get out':
+            return 
+
+    call lbl_edge_crimson_pit(location) 
+    return
+
+label lbl_edge_junk_yard(location):
+    $ dif = encolor_text('straightforward', 1)
+    $ achive = encolor_text('adequate results', 2)
+    
+    menu:
+        'Junk yard. Owned by [location.owner.name].'
+        'Find out about [location.owner.name]':
+            call screen sc_faction_info(location.owner)
+        'Work for food (full time)':
+            menu:
+                'The [location.owner.name] offer to give you some food (3 provisions units) for a decade of a hard labor. The {b}survival{/b} skill will be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
+                'Agree':
+                    $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
+                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
+                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Buy scavenger license (full time)':
+            menu:
+                'You must pay 100 banknotes to [location.owner.name] in order to work here for a decade.'
+                'Agree (100 banknotes)' if core.resources.money >= 100:
+                    $ core.resources.money -= 100
+                    $ description = _('scavenges the hardvare on a junk yard. Yelds ')
+                    $ special_values = {'description': description,  'resource_name': 'hardware', 'skill': 'survival', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+                    $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
+            $ location.owner.add_member(player)
+            $ edge.faction_mode = True
+            jump lbl_edge_faction_livein
+        'Get out':
+            return 
+
+    call lbl_edge_junk_yard(location) 
+    return
+
+label lbl_edge_ruined_factory(location):
+    $ dif = encolor_text('straightforward', 1)
+    $ achive = encolor_text('adequate results', 2)
+    
+    menu:
+        'Ruinded factory. Owned by [location.owner.name].'
+        'Find out about [location.owner.name]':
+            call screen sc_faction_info(location.owner)
+        'Work for food (full time)':
+            menu:
+                'The [location.owner.name] offer to give you some food (3 provisions units) for a decade of a hard labor. The {b}mechanics{/b} skill will be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
+                'Agree':
+                    $ special_values = {'skill': 'mechanics', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
+                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
+                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Buy scavenger license (full time)':
+            menu:
+                'You must pay 100 banknotes to [location.owner.name] in order to work here for a decade.'
+                'Agree (100 banknotes)' if core.resources.money >= 100:
+                    $ core.resources.money -= 100
+                    $ description = _('scavenges the hardvare on a junk yard. Yelds ')
+                    $ special_values = {'description': description,  'resource_name': 'hardware', 'skill': 'mechanics', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+                    $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+                    jump lbl_edge_manage
+                'Decline':
+                    $ pass
+        'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
+            $ location.owner.add_member(player)
+            $ edge.faction_mode = True
+            jump lbl_edge_faction_livein
+        'Get out':
+            return 
+
+    call lbl_edge_junk_yard(location) 
+    return
+    
 label lbl_edge_squatted_slums(location):
     menu:
         'Slums squatted by [location.owner.name] gang are open to live in... for a price.'

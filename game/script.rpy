@@ -28,14 +28,18 @@ label start:
         discovered_worlds = []
         core = MistsOfEternalRome()
         set_event_game_ref(core)
-        player = gen_random_person('human')
+        player = Person('adolescent', 'male', 'human')
+        # player = gen_random_person('human')
         core.set_player(player)
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
         ap = player.ap
         player.set_resources_storage(core.resources)
         
-        # TEST CODE
+        ##TEST CODE##
+        player.firstname = 'Охотник'
+        player.set_avatar('images\avatar\old_huntsman_ava.jpg')
+        
         light_armor = Armor('light_armor')
         heavy_armor = Armor('heavy_armor')
         knife = Weapon('offhand', 'slashing')
