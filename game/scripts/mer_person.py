@@ -489,6 +489,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 self.avatar_path = avatar
             else:
                 self.avatar_path = utilities.default_avatar_path()
+            return
         path = 'images/avatar/'
         path += self.genus.head_type + '/'
         if self.gender is not None:
