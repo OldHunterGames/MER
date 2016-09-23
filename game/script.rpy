@@ -34,7 +34,6 @@ label start:
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
         ap = player.ap
-        player.set_resources_storage(core.resources)
         
         ##TEST CODE##
         player.firstname = 'Охотник'

@@ -5,6 +5,7 @@ import renpy.exports as renpy
 from mer_utilities import encolor_text
 from factions import Faction
 from mer_person import gen_random_person
+from mer_resources import BarterSystem
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -29,6 +30,7 @@ class EdgeEngine(object):
         self.loc_max = 0
         self.slums_mode = False
         self.faction_mode = False
+        self.resources = BarterSystem()
 
     def explore_location(self):
         location = choice(renpy.store.edge_locations.items())

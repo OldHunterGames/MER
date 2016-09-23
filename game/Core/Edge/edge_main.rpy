@@ -22,32 +22,24 @@ label lbl_edge_main:
         player.schedule.add_action('job_idle', False)  
         player.ration['amount'] = "unlimited"  
         player.ration['food_type'] = "forage" 
-        core.resources.add_consumption('player_food', 'provision', player.get_food_consumption, None)
     call edge_init_events
     call lbl_edge_manage
     return
     
 label lbl_edge_manage:
-    $ consumption_money = core.resources.consumption('money')
-    $ consumption_provision = core.resources.consumption('provision')
-    $ consumption_fuel = core.resources.consumption('fuel')
-    $ consumption_drugs = core.resources.consumption('drugs')
     $ target = player
     $ food_info = player.food_info()
+    $ resources = encolor_text(__('resources'), edge.resources.value)
     menu:
-        "Food: [food_info]"        
-        "Banknotes: [core.resources.money] (-[consumption_money]) \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
-         Munition: [core.resources.munition] | "
-     
+        "Food: [food_info] | [resources]"
+
         'Locations':
             call lbl_edge_locations_menu  
-        'Craft' if not edge.in_any_gang(player):
-            call lbl_edge_craft
         'Information':
             call lbl_edge_info_base
         'Equipment':
             call screen sc_person_equipment(player)
-        'Carry on' if core.can_skip_turn() or edge.in_any_gang(player):
+        'Carry on':
             call lbl_edge_turn
         'Slums' if edge.slums_mode:
             call lbl_edge_slums_livein
@@ -124,8 +116,6 @@ label lbl_edge_craft:
             call lbl_edge_craft_basic
         'Advanced stuff' if 'workbench' not in camp.improvements:
             call lbl_edge_craft_workbench
-        'Weapon and armor':
-            call lbl_weapon_armor
         'Done':
             jump lbl_edge_manage
             
@@ -232,11 +222,4 @@ label lbl_info_new(target):
         txt += 'Жрет: %s(%s)'%(consumption[0], consumption[1])
     "[txt]"
 
-    return
-
-
-label lbl_weapon_armor:
-    'crafting'
-    $ item = create_item()
-    $ player.add_item(item)
     return

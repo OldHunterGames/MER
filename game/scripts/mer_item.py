@@ -144,24 +144,28 @@ class Armor(Item):
     def description(self):
         text = '{self.armor_rate}'.format(self=self)
         return encolor_text(text, self.quality)
+
 def get_weapon_sizes():
     list_ = []
     for key, value in store.item_features.items():
         if value['slot'] == 'wpn_size':
             list_.append(key)
     return list_
+
 def get_weapon_damage_types():
     list_ = []
     for key, value in store.item_features.items():
         if value['slot'] == 'wpn_dmg':
             list_.append(key)
     return list_
+
 def get_armor_rates():
     list_ = []
     for key, value in store.item_features.items():
         if value['slot'] == 'armor_rate':
             list_.append(key)
     return list_
+
 def create_weapon(size=None, damage_type=None, quality=1):
     if size is None:
         size = random.choice(get_weapon_sizes())
@@ -169,11 +173,13 @@ def create_weapon(size=None, damage_type=None, quality=1):
         damage_type = random.choice(get_weapon_damage_types())
     weapon = Weapon(size, damage_type, quality=quality)
     return weapon
+
 def create_armor(armor_rate=None, quality=1):
     if armor_rate is None:
         armor_rate = random.choice(get_armor_rates())
     armor = Armor(armor_rate, quality=quality)
     return armor
+
 def create_item():
     creator_item_properties = {'type': None}
     renpy.call_screen('sc_item_creator', creator_item_properties)

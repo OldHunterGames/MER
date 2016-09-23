@@ -9,7 +9,7 @@ import renpy.exports as renpy
 
 from mer_person import *
 from mer_event import events_list, Event
-from mer_resources import Resources
+from mer_resources import Resources, BarterSystem
 from factions import Faction, factions_list
 from mer_item import *
 from mer_utilities import encolor_text
@@ -78,7 +78,7 @@ class MistsOfEternalRome(object):
         self.events_list = events_list  # List of all possible events in this game instance
         self.menues = []                # For custom RenPy menu screen
         self.evn_skipcheck = True
-        self.resources = Resources()
+        self.resources = BarterSystem()
         self._factions = factions_list
         self.current_world = "MER"
         self.characters = persons_list
@@ -125,18 +125,6 @@ class MistsOfEternalRome(object):
     def set_actor(self, person):
         self._actor = person
 
-    def can_skip_turn(self):
-        money = self.resources.consumption('money')
-        for res in self.resources.resources.keys():
-            if not self.resources.can_consume(res) and not self.resources.has_money(self.resources.res_to_money(res)):
-                return False
-            else:
-                money += self.resources.res_to_money(res)
-        if self.resources.has_money(money):
-            return True
-        else:
-            return False
-
     def choose_study(self):
         if self.studies:
             study = choice(self.studies)
@@ -146,11 +134,9 @@ class MistsOfEternalRome(object):
         return study
 
     def new_turn(self, label_to_jump=None):
-        self.resources.consume()
         for person in self.characters:
             person.rest()
         self.end_turn_event()
-        self.resources.consumption_tick()
         self.time += 1
         self.player.ap = 1
 

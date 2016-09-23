@@ -356,11 +356,11 @@ class FoodSystem(object):
                 self.owner.add_feature('dyspnoea')
             else:
                 random_num = randint(1, 10)
-                satiety = min(self.satiety, self.owner.physique)
-                if random_num <= self.satiety:
+                satiety = min(satiety, self.owner.physique)
+                if random_num <= satiety:
                     self.owner.add_feature('diabetes')
 
-    def decrease_shape(self, index):
+    def decrease_shape(self, index, satiety):
         self.owner.remove_feature('dyspnoea')
         try:
             new_shape = flist[index]
@@ -400,6 +400,10 @@ class FoodSystem(object):
             total = 0 
         else:
             total = max(0, min(5, self.quality + self.amount - 2))
+        if total > 0:
+            self.owner.nutrition.set_satisfaction(total)
+        else:
+            self.owner.nutrition.set_tension()
         if self.amount > 0:
             self.satiety += self.amount - 2
         else:
@@ -416,13 +420,13 @@ class FoodSystem(object):
             else:
                 self.satiety = min(self.satiety, self.owner.physique)
             
-        if self.satiety < -6 - self.owner.physique:
+        if self.satiety < -(6 - self.owner.physique):
             index -= 1
             self.decrease_shape(index)
             if not self.owner.has_feature('emaciated'):
                 self.satiety = 0
             else:
-                self.satiety = max(self.satiety, 6-self.owner.physique)
+                self.satiety = max(self.satiety, -(6-self.owner.physique))
             
         if self.satiety > 0 and self.is_good_feed():
             self.owner.add_buff('overfeed')

@@ -112,3 +112,62 @@ class Resources(object):
     def to_zero(self):
         for res in self.resources.keys():
             self.resources[res] = 0
+
+
+class BarterSystem(object):
+
+
+    def __init__(self):
+        self._value = 0
+        self._tendency = 0
+
+    @property
+    def tendency(self):
+        return self._tendency
+
+    def increse_tendency(self):
+        if self._tendency > 0:
+            self.value += 1
+            self._tendency = 0
+        else:
+            self._tendency += 1
+
+    def decrease_tendency(self):
+        if self._tendency < 0:
+            self.value -= 1
+            self._tendency = 0
+        else:
+            self._tendency -= 1
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = max(0, min(value, 5))
+
+    def income(self, value):
+        if value < self.value:
+            return
+        elif value > self.value:
+            self.value = value
+        else:
+            self.increase_tendency()
+
+    def spend(self, value):
+        difference = self.value - value
+        if difference >= 3:
+            return
+        elif difference == 2:
+            self.decrease_tendency()
+        elif difference == 1:
+            self.value -= 1
+        elif difference == 0:
+            self._value = 0
+
+    def can_spend(self, value):
+        if value > self.value:
+            return False
+        return True
+
