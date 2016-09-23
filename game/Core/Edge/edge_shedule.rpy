@@ -108,11 +108,11 @@ label shd_edge_job_foodwork(action):
         moral = target.check_moral(mrl, target = beneficiar)
         result = core.threshold_skillcheck(actor, skill, difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 2, special_motivators=[])        
 
-        if result[1] < 1:
-            text = action.special_values['fail_text'] 
-        else:
+        if result[0]:
             text = action.special_values['succes_text']        
             core.resources.provision += 3
+        else:
+            text = action.special_values['fail_text'] 
         
     '[name] [text]'
     return

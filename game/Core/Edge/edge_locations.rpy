@@ -70,8 +70,8 @@ label lbl_edge_grim_battlefield(location):
                 'The [location.owner.name] offer to give you some food (3 provisions units) if you {b}scavenge{/b} armaments for them for a decade. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
-                    $ special_values['succes_text'] = _('scavenging munition on the grim battlefield for a local gang, but fails to deliver. No food recived.')                    
-                    $ special_values['fail_text'] = _('succesfully scavenging munition on the grim battlefield for a local gang. Recived food (3)')
+                    $ special_values['fail_text'] = _('scavenging munition on the grim battlefield for a local gang, but fails to deliver. No food recived.')                    
+                    $ special_values['succes_text'] = _('succesfully scavenging munition on the grim battlefield for a local gang. Recived food (3)')
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -110,8 +110,8 @@ label lbl_edge_crimson_pit(location):
                 'The [location.owner.name] offer to give you some food (3 provisions units) if you will work at the pit for a decade. The {b}athletics{/b} skill could be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'athletics', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
-                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
-                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ special_values['succes_text'] = _('succesfully works for a local gang. Recived food (3)')    
+                    $ special_values['fail_text'] = _('working for local gang, but fails to deliver. No food recived.')                
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -150,8 +150,8 @@ label lbl_edge_junk_yard(location):
                 'The [location.owner.name] offer to give you some food (3 provisions units) for a decade of a hard labor. The {b}survival{/b} skill will be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
-                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
-                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ special_values['succes_text'] = _('succesfully works for a local gang. Recived food (3)')    
+                    $ special_values['fail_text'] = _('working for local gang, but fails to deliver. No food recived.')     
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -190,8 +190,8 @@ label lbl_edge_ruined_factory(location):
                 'The [location.owner.name] offer to give you some food (3 provisions units) for a decade of a hard labor. The {b}mechanics{/b} skill will be helpful. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'mechanics', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
-                    $ special_values['succes_text'] = _('working for local gang, but fails to deliver. No food recived.')                    
-                    $ special_values['fail_text'] = _('succesfully works for a local gang. Recived food (3)')
+                    $ special_values['succes_text'] = _('succesfully works for a local gang. Recived food (3)')    
+                    $ special_values['fail_text'] = _('working for local gang, but fails to deliver. No food recived.')     
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
@@ -214,7 +214,7 @@ label lbl_edge_ruined_factory(location):
         'Get out':
             return 
 
-    call lbl_edge_junk_yard(location) 
+    call lbl_edge_ruined_factory(location) 
     return
     
 label lbl_edge_squatted_slums(location):
