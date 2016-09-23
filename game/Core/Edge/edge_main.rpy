@@ -33,8 +33,9 @@ label lbl_edge_manage:
     $ consumption_fuel = core.resources.consumption('fuel')
     $ consumption_drugs = core.resources.consumption('drugs')
     $ target = player
-    
-    menu:        
+    $ food_info = player.food_info()
+    menu:
+        "Food: [food_info]"        
         "Banknotes: [core.resources.money] (-[consumption_money]) \nFood: [core.resources.provision] (-[consumption_provision]) | Fuel: [core.resources.fuel] (-[consumption_fuel]) | Drugs: [core.resources.drugs] (-[consumption_drugs])  \nHardware: [core.resources.hardware] |
          Munition: [core.resources.munition] | "
      

@@ -23,7 +23,7 @@ class Need(object):
         self.name = name
         self._level = _default_need['level']
         self._satisfaction = 0
-        self.tension = False
+        self._tension = False
 
     @property
     def satisfaction(self):
@@ -40,6 +40,10 @@ class Need(object):
             return
         self._satisfaction = value
 
+    @property
+    def tension(self):
+        return self._tension or self.owner.count_modifiers(self.name) < 0
+
     def set_satisfaction(self, value):
         levels = [0, self.owner.sensitivity, 5, 5]
         if value < 0:
@@ -51,7 +55,7 @@ class Need(object):
         self._satisfaction = value
 
     def set_tension(self):
-        self.tension = True
+        self._tension = True
 
     @property
     def level(self):
@@ -73,4 +77,4 @@ class Need(object):
 
     def reset(self):
         self._satisfaction = 0
-        self.tension = False
+        self._tension = False

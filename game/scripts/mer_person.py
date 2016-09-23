@@ -310,6 +310,125 @@ class Combatant(Skilled, InventoryWielder, Attributed):
             self.avatar_path = avatar
 
 
+class FoodSystem(object):
+    
+
+    def __init__(self, owner):
+        self.owner = owner
+        self.satiety = 0
+        self.quality = 0
+        self.amount = 0
+
+    def set_starvation(self):
+        self.quality = 0
+        self.amount = 0
+
+    def set_food(self, amount, quality):
+        quality -= 1
+        self.amount = max(self.amount, amount)
+        self.quality = min(self.quality, quality)
+
+    def food_info(self):
+        amount = store.food_amount_dict[self.amount]
+        quality = store.food_quality_dict[self.amount]
+        text = '%s(%s)'%(quality, amount)
+        total = max(0, min(5, self.amount+self.quality))
+        if self.amount < 1:
+            return utilities.encolor_text(amount, 0)
+        elif self.quality < 0:
+            return utilities.encolor_text(text, 0)
+        else:
+            return utilities.encolor_text(text, total)
+    
+    def increase_shape(self, index):
+        self.owner.remove_feature('emaciated')
+        try:
+            new_shape = flist[index]
+        except IndexError:
+            new_shape = 'max'
+        if new_shape != 'max':
+            if new_shape is None:
+                self.owner.remove_feature_by_slot('shape')
+            else:
+                self.owner.add_feature(shape)
+        else:
+            if not self.owner.has_feature('dyspnoea'):
+                self.owner.add_feature('dyspnoea')
+            else:
+                random_num = randint(1, 10)
+                satiety = min(self.satiety, self.owner.physique)
+                if random_num <= self.satiety:
+                    self.owner.add_feature('diabetes')
+
+    def decrease_shape(self, index):
+        self.owner.remove_feature('dyspnoea')
+        try:
+            new_shape = flist[index]
+        except IndexError:
+            new_shape = 'min'
+        if new_shape != 'min':
+            if new_shape is None:
+                self.owner.remove_feature_by_slot('shape')
+            else:
+                self.owner.add_feature(shape)
+        else:
+            if not self.owner.has_feature('emaciated'):
+                self.owner.add_feature('emaciated')
+            else:
+                self.owner.die()
+
+    def is_good_feed(self):
+        return (not self.owner.has_feature('diabetes')
+                or not self.owner.has_feature('obese'))
+
+    def is_bad_feed(self):
+        return (self.owner.has_feature('slim') or
+                self.owner.has_feature('emaciated'))
+    
+    def fatness_change(self):
+        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
+        shape = self.owner.feature_by_slot('shape')
+        if self.owner.has_condition('workout'):
+            self.satiety -= 1
+        if shape is not None:
+            shape = shape.name
+        index = flist.index(shape)
+        
+        if self.amount < 1:
+            total = 0
+        elif self.quality < 0:
+            total = 0 
+        else:
+            total = max(0, min(5, self.quality + self.amount - 2))
+        if self.amount > 0:
+            self.satiety += self.amount - 2
+        else:
+            if self.satiety > 0:
+                self.satiety = -1
+            else:
+                self.satiety += self.satiety - 1
+        
+        if self.satiety > self.owner.physique:
+            index += 1
+            self.increase_shape(index)
+            if not self.owner.has_feature('dyspnoea'):
+                self.satiety = 0
+            else:
+                self.satiety = min(self.satiety, self.owner.physique)
+            
+        if self.satiety < -6 - self.owner.physique:
+            index -= 1
+            self.decrease_shape(index)
+            if not self.owner.has_feature('emaciated'):
+                self.satiety = 0
+            else:
+                self.satiety = max(self.satiety, 6-self.owner.physique)
+            
+        if self.satiety > 0 and self.is_good_feed():
+            self.owner.add_buff('overfeed')
+        elif self.satiety < 0 or self.is_bad_feed():
+            self.owner.add_buff('underfeed')
+
 class Person(Skilled, InventoryWielder, Attributed):
 
     def __init__(self, age=None, gender=None, genus='human'):
@@ -390,6 +509,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._calculatable = False
         self.factions = []
         self.background = None
+        self.food_system = FoodSystem(self)
 
     def apply_background(self, background):
         self.background = background
@@ -404,6 +524,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.factions.remove(faction)
         except IndexError:
             pass
+
+    def eat(self, amount, quality):
+        self.food_system.set_food(amount, quality)
+
+    def food_info(self):
+        return self.food_system.food_info()
 
     @property
     def calculatable(self):
@@ -624,18 +750,25 @@ class Person(Skilled, InventoryWielder, Attributed):
     def get_buff_storage(self):
         return self._buffs
 
-    def add_buff(self, name, stats_dict, time=1, slot=None):
-        self.remove_buff(name)
-        Buff(self, name, stats_dict, slot, time)
+    def add_buff(self, id_, time=1, slot=None):
+        if slot is not None:
+            self.remove_buff(slot)
+        Buff(self, id_, time)
 
-    def remove_buff(self, name):
+    def remove_buff(self, id_):
         for buff in self._buffs:
-            if buff.name == name:
+            if buff.id == id_:
                 buff.remove()
+        
 
-    def has_buff(self, name):
+    def remove_buff_by_slot(self, slot):
         for buff in self._buffs:
-            if buff.name == name:
+            if buff.slot == slot:
+                buff.remove()
+    
+    def has_buff(self, id_):
+        for buff in self._buffs:
+            if buff.id == id_:
                 return True
         return False
 
@@ -733,7 +866,9 @@ class Person(Skilled, InventoryWielder, Attributed):
     def vitality(self):
         list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
                  self.count_modifiers('therapy')]
-        list_ += self.modifiers_separate('vitality')
+        vitality_mods = self.modifiers_separate('vitality')
+        list_.extend([modifier.value for modifier in vitality_mods])
+        print list_
         list_ = [i for i in list_ if i != 0]
         lgood = []
         lbad = []
@@ -956,8 +1091,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 need.satisfaction = 0
                 need.tension = False
         for need in dissapointments_inf:
-            need.satisfaction = 0
-            need.tension = False
+            need.reset()
         self.mood = mood
 
     # needs should be a list of tuples[(need, shift)]
@@ -1024,6 +1158,9 @@ class Person(Skilled, InventoryWielder, Attributed):
                 return f
         return None
 
+    def has_feature(self, id_):
+        return self.feature(id_) is not None
+
     def remove_feature(self, feature):       # feature='str' or Fearutere()
         if isinstance(feature, str):
             for f in self.features:
@@ -1060,7 +1197,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.tick_buffs_time()
         self.tick_features()
         self.schedule.use_actions()
-        self.fatness_change()
+        self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
@@ -1068,6 +1205,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.schedule.add_action('job_idle')
         self.schedule.add_action('overtime_nap')
 
+    #testing new food system, food methods are unused for some time
+    #and maybe we'll remove them
     def food_demand(self):
         """
         Evaluate optimal food consumption to maintain current weight.
@@ -1203,15 +1342,8 @@ class Person(Skilled, InventoryWielder, Attributed):
                 if not self.feature('dyspnoea'):
                     self.calorie_storage = 0
                 return 'fatness +'
+    #end of food methods
 
-    def nutrition_change(self, food_consumed):
-        if food_consumed < self.food_demand():
-            self.ration["overfeed"] -= 1
-            chance = randint(-10, -1)
-            if self.ration["overfeed"] <= chance:
-                self.ration["overfeed"] = 0
-
-        return
 
     def know_person(self, person):
         if person in self.known_characters:

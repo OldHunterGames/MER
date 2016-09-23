@@ -12,3 +12,17 @@ init python:
     alignments_translation = {'orderliness': {-1: __("chaotic"), 0: __("conformal"), 1: __("lawful")},
         'activity': {-1: __("timid"), 0: __("reasonable"), 1: __("ardent")},
         'morality': {-1: __("evil"), 0: __("selfish"), 1: __("good")}}
+
+    food_quality_dict = {-1: __("disgusting"),
+                         0: __('quality 0'),
+                         1: __('quality 1'),
+                         2: __('quality 2'),
+                         3: __('quality 3'),
+                         4: __('quality 4')
+    }
+
+    food_amount_dict = {0: __('starving'),
+                        1: __('underfeed'),
+                        2: __(''),
+                        3: __('overfeed')
+    }

@@ -62,12 +62,12 @@ init python:
 
         # nutrition
         'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'nutrition': 1}, 'visible': True, 'value': 1},
-        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2}, 'visible': True, 'value': 2},
+        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2, 'vitality': -1}, 'visible': True, 'value': 2},
         'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'nutrition': -1}, 'visible': True, 'value': -1},
-        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1}, 'visible': True, 'value': -1},
+        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'vitality': -1}, 'visible': True, 'value': -1},
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1}, 'visible': True},
         'dyspnoea': {'name': __('dyspnoea'), 'visible': True},
-        'diabetes': {'name': __('diabetes'), 'visible': False},
+        'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
 
         'dead': {'name': __('dead'), 'visible': True},
     }
