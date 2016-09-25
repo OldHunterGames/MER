@@ -114,17 +114,17 @@ class EdgeLocation(object):
         self.owner = None
         self.job = None
         self.permanent = permanent
-        self.cache = 0 if self.id in cache_locations else None
-        self.player_cache = False
+        self.stash = 0 if self.id in cache_locations else None
+        self.player_stash = False
         self.just_created = True
     
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
-        if self.cache == None:
+        if self.stash == None:
             return name
         else:
-            return encolor_text(name, self.cache)
+            return encolor_text(name, self.stash)
 
     def gen_owner(self, owner=None):
         if owner == None:
@@ -145,20 +145,11 @@ class EdgeLocation(object):
     def go_to(self):
         renpy.call(self.lbl_to_go, self)
 
-    def increase_cache(self):
-        if self.just_created:
-            self.just_created = False
-            return
-        try:
-            self.cache += 1
-        except TypeError:
-            return
-
     def explore_cache(self):
-        self.cache = 0
+        self.stash = 0
 
-    def make_cache(self):
-        self.player_cache = True
+    def make_stash(self):
+        self.player_stash = True
 
 
 
