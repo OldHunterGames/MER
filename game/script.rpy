@@ -38,6 +38,7 @@ label start:
         ##TEST CODE##
         player.firstname = 'Охотник'
         player.set_avatar('images/avatar/old_huntsman_ava.jpg')
+        player.skill('survival').training = True
         
         light_armor = Armor('light_armor')
         heavy_armor = Armor('heavy_armor')

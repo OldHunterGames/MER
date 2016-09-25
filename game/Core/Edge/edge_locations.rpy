@@ -61,6 +61,7 @@ label lbl_edge_grim_battlefield(location):
     $ dif = encolor_text('straightforward', 1)
     $ achive = encolor_text('adequate results', 2)
     $ pay = encolor_text('pay', 1)
+    $ edge.resources.income(1)
     
     menu:
         'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they looking for usible munitions.'
