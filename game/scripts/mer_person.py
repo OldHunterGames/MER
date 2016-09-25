@@ -335,7 +335,7 @@ class FoodSystem(object):
 
     def food_info(self):
         amount = store.food_amount_dict[self.amount]
-        quality = store.food_quality_dict[self.amount]
+        quality = store.food_quality_dict[self.quality]
         text = '%s(%s)'%(quality, amount)
         total = max(0, min(5, self.amount+self.quality))
         if self.amount < 1:
