@@ -317,16 +317,22 @@ class FoodSystem(object):
         self.owner = owner
         self.satiety = 0
         self.quality = 0
+        self.quality_changed = False
         self.amount = 0
 
     def set_starvation(self):
         self.quality = 0
+        self.quality_changed = False
         self.amount = 0
 
     def set_food(self, amount, quality):
         quality -= 1
+        self.quality_changed = True
         self.amount = max(self.amount, amount)
-        self.quality = min(self.quality, quality)
+        if self.quality_changed:
+            self.quality = min(self.quality, quality)
+        else:
+            self.quality = quality
 
     def food_info(self):
         amount = store.food_amount_dict[self.amount]
