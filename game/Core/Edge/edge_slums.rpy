@@ -78,7 +78,12 @@ label lbl_edge_slums_work(location):
             jump lbl_edge_manage
             
         'Manual labor (athletics)':
-            $ pass
+            $ title = __('Some manual labor (athletics).')
+            $ skill_id = 'survival'
+            $ description = _('doing manual labor at the slums. Yelds ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+            jump lbl_edge_manage
             
         'Household services (housekeeping)':
             $ pass

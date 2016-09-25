@@ -144,7 +144,7 @@ label shd_edge_job_simplework(action):
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
         descr = action.special_values['description'] 
-        resname = action.special_values['resource_name'] 
+        # resname = action.special_values['resource_name'] 
         difficulty = action.special_values['difficulty'] 
         result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
         yeld = encolor_text(__('resources'), result)

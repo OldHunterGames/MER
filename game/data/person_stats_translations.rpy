@@ -13,12 +13,12 @@ init python:
         'activity': {-1: __("timid"), 0: __("reasonable"), 1: __("ardent")},
         'morality': {-1: __("evil"), 0: __("selfish"), 1: __("good")}}
 
-    food_quality_dict = {-1: __("disgusting"),
-                         0: __('forage'),
-                         1: __('adequate'),
-                         2: __('gustable'),
-                         3: __('tasty'),
-                         4: __('delicious'),
+    food_quality_dict = {-1: __("disgusting "),
+                         0: __('forage '),
+                         1: __('adequate '),
+                         2: __('gustable '),
+                         3: __('tasty '),
+                         4: __('delicious '),
     }
 
     food_amount_dict = {0: __('starving'),
