@@ -374,7 +374,7 @@ class FoodSystem(object):
         else:
             if not self.owner.has_feature('emaciated'):
                 self.owner.add_feature('emaciated')
-            else:
+            elif self.amount < 1:
                 self.owner.die()
 
     def is_good_feed(self):
@@ -404,9 +404,11 @@ class FoodSystem(object):
             self.owner.nutrition.set_satisfaction(total)
         else:
             self.owner.nutrition.set_tension()
-        if self.amount > 0:
+        if self.amount == 3:
             self.satiety += self.amount - 2
-        else:
+        elif self.amount == 1:
+            self.satiety = -1
+        elif self.amount == 0:
             if self.satiety > 0:
                 self.satiety = -1
             else:
@@ -432,6 +434,7 @@ class FoodSystem(object):
             self.owner.add_buff('overfeed')
         elif self.satiety < 0 or self.is_bad_feed():
             self.owner.add_buff('underfeed')
+        self.set_starvation()
 
 class Person(Skilled, InventoryWielder, Attributed):
 
