@@ -347,6 +347,7 @@ class FoodSystem(object):
             return utilities.encolor_text(text, total)
     
     def increase_shape(self, index):
+        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
         self.owner.remove_feature('emaciated')
         try:
             new_shape = flist[index]
@@ -367,6 +368,7 @@ class FoodSystem(object):
                     self.owner.add_feature('diabetes')
 
     def decrease_shape(self, index):
+        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
         self.owner.remove_feature('dyspnoea')
         try:
             new_shape = flist[index]
@@ -392,7 +394,6 @@ class FoodSystem(object):
                 self.owner.has_feature('emaciated'))
     
     def fatness_change(self):
-        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
         shape = self.owner.feature_by_slot('shape')
         if self.owner.has_condition('workout'):
             self.satiety -= 1
@@ -1205,15 +1206,17 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         if not self.calculatable:
             return
-        self.conditions = []
-        self.tick_buffs_time()
-        self.tick_features()
-        self.schedule.use_actions()
+        #recalculating person stats
         self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
+        #ticking timed effects, execute schedule
+        self.conditions = []
+        self.tick_buffs_time()
+        self.tick_features()
+        self.schedule.use_actions()
         self.schedule.add_action('job_idle')
         self.schedule.add_action('overtime_nap')
 

@@ -125,7 +125,7 @@ class BarterSystem(object):
     def tendency(self):
         return self._tendency
 
-    def increse_tendency(self):
+    def increase_tendency(self):
         if self._tendency > 0:
             self.value += 1
             self._tendency = 0
