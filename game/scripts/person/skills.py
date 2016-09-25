@@ -1,38 +1,14 @@
 # -*- coding: UTF-8 -*-
-
-skills_data = {
-    'athletics': 'physique',
-
-    'combat': 'agility',
-    'stealth': 'agility',
-    'craft': 'agility',
-
-    'charisma': 'spirit',
-    'concentration': 'spirit',
-
-    'management': 'mind',
-    'survival': 'mind',
-    'alchemy': 'mind',
-    'streetwise': 'mind',
-    'scholarship': 'mind',
-    'mechanics': 'mind',
-    'electronics': 'mind',
-
-    'sex': 'sensitivity',
-    'housekeeping': 'sensitivity',
-    'observation': 'sensitivity',
-    'expression': 'sensitivity',
-    'sorcery': 'sensitivity',
-
-}
+import renpy.store as store
+import renpy.exports as renpy
 
 
 class Skill(object):
 
-    def __init__(self, owner, name, attribute='spirit'):
+    def __init__(self, owner, id_):
         self.owner = owner
-        self.name = name
-        self.attribute = attribute
+        self.id = id_
+        self.data = store.skills_data[id_]
         self.training = False
         self.expirience = False
         self.specialization = False
@@ -40,7 +16,13 @@ class Skill(object):
         self.inability = False
         self.expirience_slot = 0
         self._focus = 0
+    @property
+    def name(self):
+        return self.data['name']
 
+    @property
+    def attribute(self):
+        return self.data['attribute']
     @property
     def level(self):
         level = 0

@@ -6,7 +6,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from features import Feature, Phobia
-from skills import Skill, skills_data
+from skills import Skill
 from needs import init_needs
 from copy import copy
 from copy import deepcopy
@@ -90,25 +90,25 @@ class Skilled(object):
         self.focused_skill = None
         self.skills_used = []
 
-    def skill(self, skillname):
+    def skill(self, skill_id):
         skill = None
         for i in self.skills:
-            if i.name == skillname:
+            if i.id == skill_id:
                 skill = i
                 return skill
 
-        if skillname in skills_data:
-            skill = Skill(self, skillname, skills_data[skillname])
+        if skill_id in store.skills_data:
+            skill = Skill(self, skill_id)
             self.skills.append(skill)
             return skill
         else:
             raise Exception("No skill named %s in skills_data" % (skillname))
 
-    def use_skill(self, name):
-        if isinstance(name, Skill):
-            self.skills_used.append(name)
+    def use_skill(self, id_):
+        if isinstance(id_, Skill):
+            self.skills_used.append(id_)
         else:
-            self.skills_used.append(self.skill(name))
+            self.skills_used.append(self.skill(id_))
 
     def get_used_skills(self):
         l = []
@@ -134,7 +134,7 @@ class Skilled(object):
             from collections import Counter
             counted = Counter()
             for skill in self.get_used_skills():
-                counted[skill.name] += 1
+                counted[skill.id] += 1
             maximum = max(counted.values())
             result = []
             for skill in counted:
@@ -697,17 +697,17 @@ class Person(Skilled, InventoryWielder, Attributed):
         return
 
     def random_skills(self, pro_skill=None, talent_skill=None):
-        skilltree = list(skills_data.keys())
+        skilltree = list(store.skills_data.keys())
         skilltree.append(None)
-        if talent_skill:
+        if talent_skill is not None:
             self.skill(talent_skill).talent = True
         else:
             roll = choice(skilltree)
             if roll:
                 self.skill(roll).talent = True
 
-        if pro_skill:
-            self.skill('pro_skill').profession()
+        if pro_skill is not None:
+            self.skill(pro_skill).profession()
         else:
             roll = choice(skilltree)
             if roll:
