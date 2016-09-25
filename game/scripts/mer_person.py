@@ -357,7 +357,7 @@ class FoodSystem(object):
             if new_shape is None:
                 self.owner.remove_feature_by_slot('shape')
             else:
-                self.owner.add_feature(shape)
+                self.owner.add_feature(new_shape)
         else:
             if not self.owner.has_feature('dyspnoea'):
                 self.owner.add_feature('dyspnoea')
@@ -378,7 +378,7 @@ class FoodSystem(object):
             if new_shape is None:
                 self.owner.remove_feature_by_slot('shape')
             else:
-                self.owner.add_feature(shape)
+                self.owner.add_feature(new_shape)
         else:
             if not self.owner.has_feature('emaciated'):
                 self.owner.add_feature('emaciated')
