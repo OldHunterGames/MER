@@ -312,7 +312,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
 
 class FoodSystem(object):
     
-
+    features_list = ['emaciated', 'slim', None, 'chubby', 'obese']
     def __init__(self, owner):
         self.owner = owner
         self.satiety = 0
@@ -347,7 +347,7 @@ class FoodSystem(object):
             return utilities.encolor_text(text, total)
     
     def increase_shape(self, index):
-        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
+        flist = self.features_list
         self.owner.remove_feature('emaciated')
         try:
             new_shape = flist[index]
@@ -368,7 +368,7 @@ class FoodSystem(object):
                     self.owner.add_feature('diabetes')
 
     def decrease_shape(self, index):
-        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
+        flist = self.features_list
         self.owner.remove_feature('dyspnoea')
         try:
             new_shape = flist[index]
@@ -394,6 +394,7 @@ class FoodSystem(object):
                 self.owner.has_feature('emaciated'))
     
     def fatness_change(self):
+        flist = self.features_list
         shape = self.owner.feature_by_slot('shape')
         if self.owner.has_condition('workout'):
             self.satiety -= 1
