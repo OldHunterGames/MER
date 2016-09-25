@@ -117,6 +117,23 @@ label shd_edge_job_foodwork(action):
     '[name] [text]'
     return
     
+label shd_edge_job_beg(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        beneficiar = actor
+        actor.moral_action('timid') 
+        actor.authority.set_tension()
+        actor.wellness.set_tension()        
+        actor.comfort.set_tension()
+        actor.prosperity.set_tension()        
+        actor.ambition.set_tension()        
+        actor.independence.set_tension()
+        actor.eat(1, -1)
+        text = __('humbly begs for food and gains a few disgustning leftovers.')
+    '[name] [text]'
+    return
+    
 label shd_edge_job_simplework(action):
     python:
         actor = action.actor

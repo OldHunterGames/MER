@@ -3,7 +3,20 @@
 #
 # Slums menu
 
+label lbl_edge_squatted_slums(location):
+    menu:
+        'Only place to live in if you not in a gang.'
+        'Find some work in a slums':
+            call lbl_edge_slums_work(location)
+        'Sign in':
+            $ edge.slums_mode = True
+            call lbl_edge_slums_livein
+        'Get out':
+            return         
     
+    call lbl_edge_squatted_slums(location)
+    return
+
 label lbl_edge_slums_livein:
     $ bill = core.resources.consumption('money')
     
@@ -55,3 +68,27 @@ label lbl_edge_slums_services:
             call lbl_edge_slums_livein
 
     return
+    
+
+label lbl_edge_slums_work(location):
+    menu:
+        'You can get some selfemployeed work to get some resources with your skill, or miserablly beg for some leftovers. Any way you will get yor payment after a full decade of an adequate work.'
+        'Beg for food (no skill)':
+            $ target.schedule.add_action('job_beg')  
+            jump lbl_edge_manage
+            
+        'Manual labor (athletics)':
+            $ pass
+            
+        'Household services (housekeeping)':
+            $ pass
+                        
+        'Sexual services (sex)':
+            $ pass
+                        
+        'Newermind':
+            $ pass
+            
+    call lbl_edge_squatted_slums(location)
+    return
+    
