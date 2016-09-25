@@ -1200,16 +1200,16 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         if not self.calculatable:
             return
-        #ticking timed effects
-        self.conditions = []
-        self.tick_buffs_time()
-        self.tick_features()
         #recalculating person stats
         self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
+        #ticking timed effects
+        self.conditions = []
+        self.tick_buffs_time()
+        self.tick_features()
         #execute schedule
         self.schedule.use_actions()
         self.schedule.add_action('job_idle')
