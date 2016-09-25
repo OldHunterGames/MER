@@ -1080,7 +1080,6 @@ class Person(Skilled, InventoryWielder, Attributed):
                 mood = 2
             elif threshold + happines.count(4) + happines.count(3) + happines.count(2) + happines.count(1) > sens:
                 mood = 1
-
         elif hlen < dlen:
             axniety_holder = self.anxiety
             happines = []
@@ -1098,14 +1097,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             if despair2 > 0:
                 self.anxiety += despair2
                 mood = -1
-
         else:
             mood = 0
-        for key in satisfactions_inf:
-            for need in satisfactions_inf[key]:
-                need.reset()
-        for need in dissapointments_inf:
-            need.reset()
         self.mood = mood
 
     # needs should be a list of tuples[(need, shift)]
@@ -1207,16 +1200,17 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         if not self.calculatable:
             return
+        #ticking timed effects
+        self.conditions = []
+        self.tick_buffs_time()
+        self.tick_features()
         #recalculating person stats
         self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
-        #ticking timed effects, execute schedule
-        self.conditions = []
-        self.tick_buffs_time()
-        self.tick_features()
+        #execute schedule
         self.schedule.use_actions()
         self.schedule.add_action('job_idle')
         self.schedule.add_action('overtime_nap')
