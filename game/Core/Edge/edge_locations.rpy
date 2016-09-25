@@ -137,36 +137,36 @@ label lbl_edge_ruined_factory(location):
 
 label lbl_edge_dying_grove(location):
     $ special_values = {'place': 'grove', 'quality': location.cache}
-    menu:
-        'Look for hidden stash (job)':
-            $ target.schedule.add_action('job_lookforstash', 1, special_values=special_values)  
-            jump lbl_edge_schedule
-        'Go back':
-            $ pass            
-        
-    jump lbl_edge_locations_menu             
+    call lbl_edge_unocuppied(location)
     return
 
 label lbl_edge_hazy_marsh(location):
     $ special_values = {'place': 'marsh', 'quality': location.cache}
-    menu:
-        'Look for hidden stash (job)':
-            $ target.schedule.add_action('job_lookforstash', 1, special_values=special_values)  
-            jump lbl_edge_schedule
-        'Go back':
-            $ pass            
-        
-    jump lbl_edge_locations_menu        
+    call lbl_edge_unocuppied(location)
     return
     
 label lbl_edge_echoing_hills(location):
     $ special_values = {'place': 'hills', 'quality': location.cache}
+    call lbl_edge_unocuppied(location)    
+    return
+    
+label lbl_edge_unocuppied(location):
     menu:
-        'Look for hidden stash (job)':
+        'Stash your resorces' if edge.resources.can_spend(1) and location.stash == 0:
+            $ location.stash = edge.resources.value
+            $ edge.resources.spend(edge.resources.value)
+            call lbl_edge_unocuppied(location)
+            
+        "Retrive your stash" if location.stash:
+            $ location.stash = None
+            $ edge.resources.income(location.stash)   
+            call lbl_edge_unocuppied(location)
+            
+        "Look for someone's stash (job)":
             $ target.schedule.add_action('job_lookforstash', 1, special_values=special_values)  
-            jump lbl_edge_schedule
+            jump lbl_edge_manage
         'Go back':
             $ pass            
         
-    jump lbl_edge_locations_menu        
+    jump lbl_edge_locations_menu             
     return
