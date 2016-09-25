@@ -36,7 +36,7 @@ class EdgeEngine(object):
         location = choice(renpy.store.edge_locations.items())
         while self.has_location(location[0]) or location[0] in unique:
             location = choice(renpy.store.edge_locations.items())
-        location = EdgeLocation(location[0])
+        location = EdgeLocation(location[0], engine_ref=self)
         if location.id in ownerable:
             location.gen_owner()
         self.locations.append(location)
@@ -95,9 +95,9 @@ class EdgeEngine(object):
     def go_to_mist(self):
         self.locations = []
         self.house = choice(store.house_names.values())
-        trade_loc = EdgeLocation('outpost', True)
+        trade_loc = EdgeLocation('outpost', True, engine_ref=self)
         trade_loc.gen_owner(choice(store.great_houses))
-        mist_loc = EdgeLocation('shifting_mist', True)
+        mist_loc = EdgeLocation('shifting_mist', True, engine_ref=self)
         self.locations.append(trade_loc)
         self.locations.append(mist_loc)
     
@@ -108,17 +108,17 @@ class EdgeEngine(object):
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
 
 class EdgeLocation(object):
-    def __init__(self, id_, permanent=False):
+    def __init__(self, id_, permanent=False, engine_ref=None):
         self.id = id_
         self.lbl_to_go = 'lbl_edge_' + self.id
         self.owner = None
         self.job = None
         self.permanent = permanent
         self.stash = 0 if self.id in cache_locations else None
-        self.other_stash = True
-        self.stash_difficulty = 0
-        self.player_stash = False
+        self.richness = 0
+        self.has_player_stash = False
         self.just_created = True
+        self._engine = engine_ref
     
     @property
     def name(self):
@@ -147,16 +147,21 @@ class EdgeLocation(object):
     def go_to(self):
         renpy.call(self.lbl_to_go, self)
 
-    def explore_stash(self):
-        self.other_stash = False
-        self.stash_difficulty = 0
-
     def make_stash(self):
-        self.player_stash = True
+        if not self.has_player_stash:
+            self.has_player_stash = True
+            self._engine.resources.spend(self._engine.resources.value)
+            self.stash = self._engine.resources.value
 
+    def empty_stash(self):
+        if self.has_player_stash:
+            self.has_player_stash = False
+            self._engine.resources.income(self.stash)
+            self.stash = 0
+   
     def increase_stash_difficulty(self):
-        if self.stash_difficulty < 5 and self.other_stash:
-            self.stash_difficulty += 1
+        if self.richness < 5:
+            self.richness += 1
 
 
 

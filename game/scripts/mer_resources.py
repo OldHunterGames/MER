@@ -114,12 +114,38 @@ class Resources(object):
             self.resources[res] = 0
 
 
+class Consumption(object):
+
+
+    def __init__(self, id_, name, value, time=1, slot=None, description=""):
+        self.id = id_
+        self.name = name
+        self._value = value
+        self.slot = slot
+        self.time = time
+
+    @property
+    def value(self):
+        try:
+            value = self._value()
+        except TypeError:
+            value = self._value
+        return value
+    
+    def tick_time(self):
+        try:
+            self.time -= 1
+        except TypeError:
+            pass
+
+
 class BarterSystem(object):
 
 
     def __init__(self):
         self._value = 0
         self._tendency = 0
+        self._consumptions_list = []
 
     @property
     def tendency(self):
@@ -169,5 +195,60 @@ class BarterSystem(object):
     def can_spend(self, value):
         if value > self.value:
             return False
+        return True
+
+    def add_consumption(self, id_, name, value, slot=None, description=""):
+        if slot is not None:
+            for i in self._consumptions_list:
+                if i.slot == slot:
+                    self._consumptions_list.remove(i)
+                    break
+        self._consumptions_list.append(Consumption(id_, name, value, slot, description))
+
+    def remove_consumption(self, id_):
+        to_remove = []
+        for i in self._consumptions_list:
+            if i.id == id_:
+                to_remove.append(i)
+        for i in to_remove:
+            self._consumptions_list.remove(i)
+        
+    def tick_time(self):
+        to_remove = []
+        for i in self._consumptions_list:
+            i.tick_time()
+            try:
+                if i.time < 0:
+                    to_remove.append(i)
+            except TypeError:
+                pass
+        consumptions = [i.value for i in self.get_consumptions_list()]
+        for i in to_remove:
+            self._consumptions_list.remove(i)
+        try:
+            max_consumption = max(consumptions)
+        except ValueError:
+            return
+        if self.value >= max_consumption+3:
+            return
+        else:
+            for i in consumptions:
+                if i+3 > self.value:
+                    self.spend(i)
+
+    def get_consumptions_list(self):
+        return [i for i in self._consumptions_list]
+
+    def can_tick(self):
+        simulation = BarterSystem()
+        simulation._value = self.value
+        simulation._tendency = self.tendency
+        consumptions = [i.value for i in self.get_consumptions_list()]
+        consumptions.sort()
+        for i in consumptions:
+            if simulation.can_spend(i):
+                simulation.spend(i)
+            else:
+                return False
         return True
 
