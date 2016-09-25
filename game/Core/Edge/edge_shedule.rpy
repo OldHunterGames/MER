@@ -91,10 +91,10 @@ label shd_edge_job_moneywork(action):
         resname = action.special_values['resource_name'] 
         difficulty = action.special_values['difficulty'] 
         result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
-        gain = edge_yeld[result] * 50
-        core.resources.increase(resname, gain)
+        edge.resources.income(result)
+        yeld = encolor_text(__('resources'), result)
         actor.skill(skill).get_expirience(result)
-    '[name] [descr] [gain] [resname].'
+    '[name] [descr] [yeld].'
     return
     
 label shd_edge_job_foodwork(action):
@@ -109,8 +109,8 @@ label shd_edge_job_foodwork(action):
         result = core.threshold_skillcheck(actor, skill, difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 2, special_motivators=[])        
 
         if result[0]:
-            text = action.special_values['succes_text']        
-            core.resources.provision += 3
+            text = action.special_values['succes_text']    
+            person.eat(1, 0)
         else:
             text = action.special_values['fail_text'] 
         

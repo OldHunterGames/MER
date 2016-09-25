@@ -31,7 +31,7 @@ label lbl_edge_manage:
     $ food_info = player.food_info()
     $ resources = encolor_text(__('resources'), edge.resources.value)
     menu:
-        "Food: [food_info] | [resources]"
+        "Food: [food_info] \nYou have [resources]."
 
         'Locations':
             call lbl_edge_locations_menu  

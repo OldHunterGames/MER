@@ -60,6 +60,7 @@ label lbl_edge_shifting_mist(location=None):
 label lbl_edge_grim_battlefield(location):
     $ dif = encolor_text('straightforward', 1)
     $ achive = encolor_text('adequate results', 2)
+    $ pay = encolor_text('pay', 1)
     
     menu:
         'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they looking for usible munitions.'
@@ -67,20 +68,20 @@ label lbl_edge_grim_battlefield(location):
             call screen sc_faction_info(location.owner)
         'Work for food (full time)':
             menu:
-                'The [location.owner.name] offer to give you some food (3 provisions units) if you {b}scavenge{/b} armaments for them for a decade. It is [dif] task, but you must achieve [achive] in order to get your reward.'
+                'The [location.owner.name] offer to give you some food if you {b}scavenge{/b} armaments for them for a decade. It is [dif] task, but you must achieve [achive] in order to get your reward.'
                 'Agree':
                     $ special_values = {'skill': 'survival', 'moral': ['lawful', 'timid'], 'beneficiar': location.owner, 'difficulty': 1}
                     $ special_values['fail_text'] = _('scavenging munition on the grim battlefield for a local gang, but fails to deliver. No food recived.')                    
-                    $ special_values['succes_text'] = _('succesfully scavenging munition on the grim battlefield for a local gang. Recived food (3)')
+                    $ special_values['succes_text'] = _('succesfully scavenging munition on the grim battlefield for a local gang. Recived some food')
                     $ target.schedule.add_action('job_foodwork', 1, special_values=special_values)  
                     jump lbl_edge_manage
                 'Decline':
                     $ pass
         'Pay a tool for scavenge (full time)':
             menu:
-                'You must pay 100 banknotes to [location.owner.name] in order to scavenge their territory for usible munitions for a decade. All you can find and carry out is yours.'
-                'Agree (100 banknotes)' if core.resources.money >= 100:
-                    $ core.resources.money -= 100
+                'You must [pay] to [location.owner.name] in order to scavenge their territory for usible munitions for a decade. All you can find and carry out is yours.'
+                'Agree' if edge.resources.can_spend(1):
+                    $ edge.resources.spend(1)
                     $ description = _('scavenging munition on the gim battlefield. Yelds ')
                     $ special_values = {'description': description,  'resource_name': 'munition', 'skill': 'survival', 'difficulty' : 1, 'moral': None, 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
                     $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
@@ -216,7 +217,8 @@ label lbl_edge_ruined_factory(location):
 
     call lbl_edge_ruined_factory(location) 
     return
-    
+
+
 label lbl_edge_squatted_slums(location):
     menu:
         'Slums squatted by [location.owner.name] gang are open to live in... for a price.'
