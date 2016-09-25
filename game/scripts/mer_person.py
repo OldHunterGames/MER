@@ -1095,8 +1095,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             mood = 0
         for key in satisfactions_inf:
             for need in satisfactions_inf[key]:
-                need.satisfaction = 0
-                need.tension = False
+                need.reset()
         for need in dissapointments_inf:
             need.reset()
         self.mood = mood
