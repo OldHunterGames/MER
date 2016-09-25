@@ -57,7 +57,7 @@ label lbl_edge_shifting_mist(location=None):
         fight.start()
     return
 
-label lbl_edge_utility1(location, title, dif, achieve, pay, skill_id):
+label lbl_edge_utility1(location, title, dif, achive, pay, skill_id):
     menu:
         '[title]'
         'Find out about [location.owner.name]':
@@ -99,36 +99,40 @@ label lbl_edge_grim_battlefield(location):
     $ achive = encolor_text('adequate results', 2)
     $ pay = encolor_text('pay', 1)
     $ edge.resources.income(1)
-    $ title = 'The tides of Mist brought here an old battlefield full of dead bodies and battered armaments. Territory is under control of [location.owner.name]. You can see a few scavergers here and there, they looking for usible munitions.'
+    $ title = ('The tides of Mist brought here an old battlefield full of dead bodies and battered armaments.'
+                'Territory is under control of {location.owner.name}.'
+                'You can see a few scavergers here and there, they looking for usible munitions.').format(location=location)
     $ skill_id = 'survival'
-    call lbl_edge_utility1(location, title, dif, achieve, pay, skill_id)
+    call lbl_edge_utility1(location, title, dif, achive, pay, skill_id)
     return
 
 label lbl_edge_crimson_pit(location):
     $ dif = encolor_text('straightforward', 1)
     $ achive = encolor_text('adequate results', 2)
     $ pay = encolor_text('pay', 1)
-    $ title = 'Dense smoke and the smell of burned tar guides you to a enormous scorched pit. You can see a pool of glossy crimson liquid on its bottom, the infamous "Demon Blood", fuel of Eternal Rome. Place is guarded by [location.owner.name] while tired workers mine the substance.'
+    $ title = ('Dense smoke and the smell of burned tar guides you to a enormous scorched pit.'
+            'You can see a pool of glossy crimson liquid on its bottom, the infamous "Demon Blood", fuel of Eternal Rome.'
+            'Place is guarded by {location.owner.name} while tired workers mine the substance.').format(location=location)
     $ skill_id = 'athletics'
-    call lbl_edge_utility1(location, title, dif, achieve, pay, skill_id)
+    call lbl_edge_utility1(location, title, dif, achive, pay, skill_id)
     return
 
 label lbl_edge_junk_yard(location):
     $ dif = encolor_text('straightforward', 1)
     $ achive = encolor_text('adequate results', 2)
     $ pay = encolor_text('pay', 1)
-    $ title = 'Junk yard. Owned by [location.owner.name].'
+    $ title = 'Junk yard. Owned by {location.owner.name}.'.format(location=location)
     $ skill_id = 'survival'
-    call lbl_edge_utility1(location, title, dif, achieve, pay, skill_id)
+    call lbl_edge_utility1(location, title, dif, achive, pay, skill_id)
     return
 
 label lbl_edge_ruined_factory(location):
     $ dif = encolor_text('straightforward', 1)
     $ achive = encolor_text('adequate results', 2)
     $ pay = encolor_text('pay', 1)
-    $ title = 'Ruinded factory. Owned by [location.owner.name].'
+    $ title = 'Ruinded factory. Owned by {location.owner.name}.'.format(location=location)
     $ skill_id = 'mechanics'
-    call lbl_edge_utility1(location, title, dif, achieve, pay, skill_id)
+    call lbl_edge_utility1(location, title, dif, achive, pay, skill_id)
     return
 
 label lbl_edge_dying_grove(location):
