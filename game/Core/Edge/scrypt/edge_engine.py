@@ -85,7 +85,7 @@ class EdgeEngine(object):
 
     def locations_tick(self):
         for location in self.locations:
-            location.increase_cache()
+            location.increase_stash_difficulty()
 
     def player_has_cache(self):
         for location in self.locations:
@@ -115,13 +115,15 @@ class EdgeLocation(object):
         self.job = None
         self.permanent = permanent
         self.stash = 0 if self.id in cache_locations else None
+        self.other_stash = True
+        self.stash_difficulty = 0
         self.player_stash = False
         self.just_created = True
     
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
-        if self.stash == None:
+        if self.stash is None:
             return name
         else:
             return encolor_text(name, self.stash)
@@ -145,11 +147,16 @@ class EdgeLocation(object):
     def go_to(self):
         renpy.call(self.lbl_to_go, self)
 
-    def explore_cache(self):
-        self.stash = 0
+    def explore_stash(self):
+        self.other_stash = False
+        self.stash_difficulty = 0
 
     def make_stash(self):
         self.player_stash = True
+
+    def increase_stash_difficulty(self):
+        if self.stash_difficulty < 5 and self.other_stash:
+            self.stash_difficulty += 1
 
 
 
