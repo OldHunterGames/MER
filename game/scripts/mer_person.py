@@ -360,7 +360,7 @@ class FoodSystem(object):
                 if random_num <= satiety:
                     self.owner.add_feature('diabetes')
 
-    def decrease_shape(self, index, satiety):
+    def decrease_shape(self, index):
         self.owner.remove_feature('dyspnoea')
         try:
             new_shape = flist[index]
