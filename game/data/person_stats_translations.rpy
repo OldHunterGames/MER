@@ -18,7 +18,8 @@ init python:
                          1: __('quality 1'),
                          2: __('quality 2'),
                          3: __('quality 3'),
-                         4: __('quality 4')
+                         4: __('quality 4'),
+                         5: __('quality 5')
     }
 
     food_amount_dict = {0: __('starving'),

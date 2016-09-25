@@ -326,7 +326,6 @@ class FoodSystem(object):
         self.amount = 0
 
     def set_food(self, amount, quality):
-        quality -= 1
         self.quality_changed = True
         self.amount = max(self.amount, amount)
         if self.quality_changed:
