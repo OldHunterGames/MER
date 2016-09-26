@@ -136,30 +136,30 @@ label lbl_edge_ruined_factory(location):
     return
 
 label lbl_edge_dying_grove(location):
-    $ special_values = {'place': 'grove', 'quality': location.cache}
+    $ special_values = {'place': 'grove', 'quality': location.richness}
     call lbl_edge_unocuppied(location)
     return
 
 label lbl_edge_hazy_marsh(location):
-    $ special_values = {'place': 'marsh', 'quality': location.cache}
+    $ special_values = {'place': 'marsh', 'quality': location.richness}
     call lbl_edge_unocuppied(location)
     return
     
 label lbl_edge_echoing_hills(location):
-    $ special_values = {'place': 'hills', 'quality': location.cache}
+    $ special_values = {'place': 'hills', 'quality': location.richness}
     call lbl_edge_unocuppied(location)    
     return
     
 label lbl_edge_unocuppied(location):
     menu:
-        'Stash your resorces' if edge.resources.can_spend(1) and location.stash == 0:
+        'Stash your resorces' if edge.resources.can_spend(1) and location.stash:
             $ location.stash = edge.resources.value
-            $ edge.resources.spend(edge.resources.value)
+            $ location.make_stash()
             call lbl_edge_unocuppied(location)
             
         "Retrive your stash" if location.stash:
-            $ location.stash = None
-            $ edge.resources.income(location.stash)   
+            $ location.player_stash = False
+            $ location.empty_stash()
             call lbl_edge_unocuppied(location)
             
         "Look for someone's stash (job)":
