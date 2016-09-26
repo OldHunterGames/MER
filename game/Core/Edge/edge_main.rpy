@@ -21,7 +21,8 @@ label lbl_edge_main:
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
         player.ration['amount'] = "unlimited"  
-        player.ration['food_type'] = "forage" 
+        player.ration['food_type'] = "forage"
+
     call edge_init_events
     call lbl_edge_manage
     return
@@ -30,8 +31,15 @@ label lbl_edge_manage:
     $ target = player
     $ food_info = player.food_info()
     $ resources = encolor_text(__('resources'), edge.resources.value)
+    python:
+        consumption = edge.resources.can_tick()
+        if not consumption:
+            consumption_text = encolor_text(__("You can't skip turn because of spendings"), 0)
+        else:
+            consumption_text = __("Your spendings is ok")
     menu:
         "Food: [food_info] \nYou have [resources]."
+        "[consumption_text]"
 
         'Locations':
             call lbl_edge_locations_menu  
@@ -39,7 +47,7 @@ label lbl_edge_manage:
             call lbl_edge_info_base
         'Equipment':
             call screen sc_person_equipment(player)
-        'Carry on':
+        'Carry on' if edge.resources.can_tick():
             call lbl_edge_turn
         'Slums' if edge.slums_mode:
             call lbl_edge_slums_livein
