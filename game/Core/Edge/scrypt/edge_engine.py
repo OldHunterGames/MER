@@ -150,8 +150,8 @@ class EdgeLocation(object):
     def make_stash(self):
         if not self.has_player_stash:
             self.has_player_stash = True
-            self._engine.resources.spend(self._engine.resources.value)
             self.stash = self._engine.resources.value
+            self._engine.resources.spend(self._engine.resources.value)
 
     def empty_stash(self):
         if self.has_player_stash:
