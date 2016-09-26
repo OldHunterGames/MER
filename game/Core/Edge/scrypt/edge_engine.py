@@ -157,6 +157,7 @@ class EdgeLocation(object):
         if self.has_player_stash:
             self.has_player_stash = False
             self._engine.resources.income(self.stash)
+            self._engine.resources.decrease_tendency()
             self.stash = 0
    
     def increase_stash_difficulty(self):

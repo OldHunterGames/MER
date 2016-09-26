@@ -178,6 +178,7 @@ class BarterSystem(object):
             return
         elif value > self.value:
             self.value = value
+            self._tendency = 0
         else:
             self.increase_tendency()
 
