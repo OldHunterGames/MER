@@ -48,6 +48,10 @@ label lbl_edge_manage:
         "Nutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
 
+        'Slums' if edge.slums_mode:
+            call lbl_edge_slums_livein
+        'Faction' if edge.faction_mode:
+            $ pass
         'Locations':
             call lbl_edge_locations_menu  
         'Information':
@@ -56,10 +60,7 @@ label lbl_edge_manage:
             call screen sc_person_equipment(player)
         'Carry on' if edge.resources.can_tick():
             call lbl_edge_turn
-        'Slums' if edge.slums_mode:
-            call lbl_edge_slums_livein
-        'Faction' if edge.faction_mode:
-            $ pass
+
     
     jump lbl_edge_manage
     return

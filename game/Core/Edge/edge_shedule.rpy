@@ -68,7 +68,6 @@ label shd_edge_job_bukake(action):
         name = actor.name
         beneficiar = action.special_values['beneficiar']
         sperm = action.special_values['slut_rate']
-        core.resources.provision += sperm
         player.nutrition.set_tension()
         player.authority.set_tension()
         player.power.set_tension()
@@ -83,7 +82,17 @@ label shd_edge_job_bukake(action):
             player.wellness.set_tension() 
             player.independence.set_tension()            
         player.skills_used.append(action.special_values['skill'])
-    '[name] sucks dicks for a decade and recive ration resources ([sperm] buckets of jizz). Yakh...'
+        
+        if sperm > actor.physique:
+            nutritive_value = 3
+        elif sperm == actor.physique:
+            nutritive_value = 2
+        else:
+            nutritive_value = 1
+
+        actor.eat(nutritive_value, -1)
+
+    '[name] sucks dicks for a decade. About [sperm] buckets of jizz gulped down. Yakh...'
     return
         
 label shd_edge_job_moneywork(action):
