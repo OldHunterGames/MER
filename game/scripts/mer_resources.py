@@ -184,7 +184,7 @@ class BarterSystem(object):
 
     def spend(self, value):
         difference = self.value - value
-        if difference >= 3:
+        if difference >= 3 or value == 0:
             return
         elif difference == 2:
             self.decrease_tendency()
@@ -236,7 +236,7 @@ class BarterSystem(object):
 
     def calculate_consumption(self, value):
         if value == 0:
-            return 5
+            return 4
         difference = self.value - value
         if difference >= 3:
             return 4
@@ -272,11 +272,6 @@ class BarterSystem(object):
         return True
     """
     def can_tick(self):
-        consumptions = [i.value for i in self._get_consumptions_list()]
-        try:
-            max_consumption = max(consumptions)
-        except ValueError:
-            max_consumption = 0
         if self.can_spend(self._get_max_consumption()):
             return True
         return False
