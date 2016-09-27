@@ -65,7 +65,7 @@ label lbl_edge_slums_accomodation:
     
 label lbl_edge_slums_ration:
     menu:
-        'Junkfood lunch ([[cost_1])':
+        'Junkfood lunch ([cost_1])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 0}) 
             $ cost = 2            
         'Junkfood 3 time meals ([cost_2])':
