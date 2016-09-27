@@ -117,8 +117,8 @@ class Resources(object):
 class Consumption(object):
 
 
-    def __init__(self, id_, name, value, time=1, slot=None, description=""):
-        self.id = id_
+    def __init__(self, source, name, value, slot, time=1, description=""):
+        self.source = source
         self.name = name
         self._value = value
         self.slot = slot
@@ -190,26 +190,30 @@ class BarterSystem(object):
             self.decrease_tendency()
         elif difference == 1:
             self.value -= 1
+            self._tendency = 0
         elif difference == 0:
             self._value = 0
+            self._tendency = 0
 
     def can_spend(self, value):
         if value > self.value:
             return False
         return True
 
-    def add_consumption(self, id_, name, value, slot=None, description=""):
-        if slot is not None:
-            for i in self._consumptions_list:
-                if i.slot == slot:
-                    self._consumptions_list.remove(i)
-                    break
-        self._consumptions_list.append(Consumption(id_, name, value, slot, description))
+    def add_consumption(self, source, name, value, slot, time, description=""):
+        self.remove_consumption(source, slot)
+        self._consumptions_list.append(Consumption(source, name, value, slot, time, description))
 
-    def remove_consumption(self, id_):
+    def remove_consumption(self, source, slot):
+        for i in self._consumptions_list:
+            if i.source == source and i.slot==slot:
+                self._consumptions_list.remove(i)
+                break
+
+    def remove_all_with_source(self, source):
         to_remove = []
         for i in self._consumptions_list:
-            if i.id == id_:
+            if i.source == source:
                 to_remove.append(i)
         for i in to_remove:
             self._consumptions_list.remove(i)

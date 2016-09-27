@@ -296,6 +296,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
         self.init_inventorywielder()
         self.init_skilled()
         self.init_attributed()
+        self.name = name
     
     def set_avatar(self, avatar_folder):
         path = 'images/avatar/combatants'
