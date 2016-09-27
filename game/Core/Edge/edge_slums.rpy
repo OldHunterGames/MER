@@ -18,14 +18,21 @@ label lbl_edge_squatted_slums(location):
     return
 
 label lbl_edge_slums_livein:
-    $ bill = encolor_text(spending_rate[edge.resources.consumption_level()], edge.resources.consumption_level())
+    $ free = encolor_text('free', 5)
+    $ cost_1 = encolor_resource_text(1)
+    $ cost_2 = encolor_resource_text(2)
+    $ cost_3 = encolor_resource_text(3)
+    $ cost_4 = encolor_resource_text(4)
+    $ cost_5 = encolor_resource_text(5)    
+    $ consumption_level = edge.resources.consumption_level()
+    $ bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
     
     menu:        
         "[resources] \n
         Decade bill: [bill]"
         'Accomodation':
             call lbl_edge_slums_accomodation            
-        'Ration (food & drugs)':
+        'Catering':
             call lbl_edge_slums_ration
         'Services':
             call lbl_edge_slums_services
@@ -36,32 +43,51 @@ label lbl_edge_slums_livein:
     return
     
 label lbl_edge_slums_accomodation:
-    $ mat_cost_absolute = edge.resources.add_consumption(target, 'mat in common room',  1, 'accomodation')
-    $ mat_cost_relative = edge.resources.calculate_consumption(mat_cost_absolute)
-    $ mat_cost_show = encolor_text(spending_rate[mat_cost_relative], mat_cost_relative)
-    
+
     menu:
-        'Tiny mat in common room ([mat_cost_show])':
-            $ target.schedule.add_action('living_mat') 
-            $ summ = 10
-        'Cot & bkanket (50$/turn)':
-            $ target.schedule.add_action('living_cot') 
-            $ summ = 50
-        'Apartments (100$/turn)':
-            $ target.schedule.add_action('living_appartment') 
-            $ summ = 100            
-        'Back':
-            call lbl_edge_slums_livein
+        'Tiny mat in common room ([cost_1])':
+            $ target.schedule.add_action('accommodation_mat') 
+            $ cost = 1
+        'Cot & bkanket ([cost_2])':
+            $ target.schedule.add_action('accommodation_cot') 
+            $ cost = 2
+        'Apartments ([cost_3])':
+            $ target.schedule.add_action('accommodation_appartment') 
+            $ cost = 3            
+        'Rough ground, out of the walls ([free])':
+            $ target.schedule.add_action('accommodation_makeshift') 
+            $ cost = 0
             
-    $ core.resources.add_consumption(target, 'money', summ, time=1, slot='accomodation_fee')
+    $ edge.resources.add_consumption(target, 'accomodation fee',  cost, 'accomodation')
+    call lbl_edge_slums_livein
     return
 
     
 label lbl_edge_slums_ration:
     menu:
-        'Back':
-            call lbl_edge_slums_livein
-
+        'Junkfood lunch ([[cost_1])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 0}) 
+            $ cost = 2            
+        'Junkfood 3 time meals ([cost_2])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 2, 'taste': 0}) 
+            $ cost = 3           
+        'Cooked lunch ([cost_2])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 2}) 
+            $ cost = 3   
+        'All junkfood you can eat ([cost_3])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 0}) 
+            $ cost = 3           
+        'Cooked 3 time meals ([cost_3])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 2, 'taste': 2}) 
+            $ cost = 3   
+        'Whole roasted girl ([cost_4])':
+            $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 3}) 
+            $ cost = 3               
+        'Eat your own food ([free])':
+            $ cost = 0
+            
+    $ edge.resources.add_consumption(target, 'catering cost',  cost, 'accomodation')            
+    call lbl_edge_slums_livein
     return
     
     

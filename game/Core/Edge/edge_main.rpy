@@ -31,7 +31,7 @@ label lbl_edge_main:
 label lbl_edge_manage:
     $ target = player
     $ food_info = player.food_info()
-    $ resources = encolor_text(__('resources'), edge.resources.value)
+    $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
     python:
         consumption = edge.resources.can_tick()
         consumption_level = edge.resources.consumption_level()
@@ -167,7 +167,6 @@ label lbl_edge_info_base:
     return
 
 label lbl_edge_turn:
-    'New turn. Extra resources lost, try to find a safe stash to hold your resources!'
     python:
         edge.locations_tick()
         core.new_turn()

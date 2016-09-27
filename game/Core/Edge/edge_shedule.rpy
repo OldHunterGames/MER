@@ -17,7 +17,7 @@ label shd_edge_accommodation_makeshift(action):
         name = action.actor.name
     return
 
-label shd_edge_living_mat(action):
+label shd_edge_accommodation_mat(action):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
@@ -26,13 +26,13 @@ label shd_edge_living_mat(action):
     '[name] sleeps on a tiny mat.'          
     return 
 
-label shd_edge_living_cot(action):
+label shd_edge_accommodation_cot(action):
     $ action.actor.comfort.satisfaction = 1
     $ name = action.actor.name()
     '[name] sleeps on a rough cot.'    
     return 
 
-label shd_edge_living_appartment(action):
+label shd_edge_accommodation_appartment(action):
     python:
         action.actor.comfort.satisfaction = 3
         action.actor.add_buff('beauty_sleep')        
@@ -40,6 +40,14 @@ label shd_edge_living_appartment(action):
     '[name] sleeps in apartments.'    
     return  
 
+label shd_edge_feed_catering(action):
+    python:
+        action.actor.comfort.satisfaction = 1
+        name = action.actor.name()
+        actor.eat(action.special_values['ammount'], action.special_values['taste'])
+    '[name] eats at slums.'    
+    return  
+    
 label shd_edge_job_idle(action):
     python:
         pass
