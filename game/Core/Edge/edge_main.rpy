@@ -31,10 +31,11 @@ label lbl_edge_manage:
     $ resources = encolor_text(__('resources'), edge.resources.value)
     python:
         consumption = edge.resources.can_tick()
+        consumption_level = edge.resources.consumption_level()
         if not consumption:
             consumption_text = encolor_text(__("You can't skip turn because of spendings"), 0)
         else:
-            consumption_text = __("Your spendings is ok")
+            consumption_text = encolor_text(__("Your spendings is ok"), consumption_level)
     menu:
         "Food: [food_info] \nYou have [resources]."
         "[consumption_text]"

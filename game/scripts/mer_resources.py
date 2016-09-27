@@ -200,7 +200,7 @@ class BarterSystem(object):
             return False
         return True
 
-    def add_consumption(self, source, name, value, slot, time, description=""):
+    def add_consumption(self, source, name, value, slot, time=1, description=""):
         self.remove_consumption(source, slot)
         self._consumptions_list.append(Consumption(source, name, value, slot, time, description))
 
@@ -227,23 +227,37 @@ class BarterSystem(object):
                     to_remove.append(i)
             except TypeError:
                 pass
-        consumptions = [i.value for i in self.get_consumptions_list()]
         for i in to_remove:
             self._consumptions_list.remove(i)
-        try:
-            max_consumption = max(consumptions)
-        except ValueError:
-            return
-        if self.value >= max_consumption+3:
-            return
-        else:
-            for i in consumptions:
-                if i+3 > self.value:
-                    self.spend(i)
+        self.spend(self._get_max_consumption())
 
     def get_consumptions_list(self):
         return [i for i in self._consumptions_list]
 
+    def calculate_consumption(self, value):
+        if value == 0:
+            return 5
+        difference = self.value - value
+        if difference >= 3:
+            return 4
+        elif difference == 2:
+            return 3
+        elif difference == 1:
+            return 2
+        elif difference == 0:
+            return 1
+        else:
+            return 0
+
+    def _get_max_consumption(self):
+        consumptions = [i.value for i in self.get_consumptions_list()]
+        try:
+            max_consumption = max(consumptions)
+        except ValueError:
+            max_consumption = 0
+        return max_consumption
+    
+    """
     def can_tick(self):
         simulation = BarterSystem()
         simulation._value = self.value
@@ -256,4 +270,16 @@ class BarterSystem(object):
             else:
                 return False
         return True
+    """
+    def can_tick(self):
+        consumptions = [i.value for i in self._get_consumptions_list()]
+        try:
+            max_consumption = max(consumptions)
+        except ValueError:
+            max_consumption = 0
+        if self.can_spend(self.get_max_consumption()):
+            return True
+        return False
 
+    def consumption_level(self):
+        return self.calculate_consumption(self._get_max_consumption())
