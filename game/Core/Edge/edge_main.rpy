@@ -173,6 +173,7 @@ label lbl_edge_info_base:
 label lbl_edge_turn:
     python:
         edge.locations_tick()
+        edge.resources.tick_time()
         core.new_turn()
     if edge.faction_mode:
         call lbl_edge_faction_livein

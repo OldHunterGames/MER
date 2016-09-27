@@ -223,7 +223,7 @@ class BarterSystem(object):
         for i in self._consumptions_list:
             i.tick_time()
             try:
-                if i.time < 0:
+                if i.time < 1:
                     to_remove.append(i)
             except TypeError:
                 pass
