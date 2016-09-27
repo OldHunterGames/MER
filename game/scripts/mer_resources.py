@@ -231,7 +231,7 @@ class BarterSystem(object):
             self._consumptions_list.remove(i)
         self.spend(self._get_max_consumption())
 
-    def get_consumptions_list(self):
+    def _get_consumptions_list(self):
         return [i for i in self._consumptions_list]
 
     def calculate_consumption(self, value):
@@ -250,7 +250,7 @@ class BarterSystem(object):
             return 0
 
     def _get_max_consumption(self):
-        consumptions = [i.value for i in self.get_consumptions_list()]
+        consumptions = [i.value for i in self._get_consumptions_list()]
         try:
             max_consumption = max(consumptions)
         except ValueError:
@@ -277,7 +277,7 @@ class BarterSystem(object):
             max_consumption = max(consumptions)
         except ValueError:
             max_consumption = 0
-        if self.can_spend(self.get_max_consumption()):
+        if self.can_spend(self._get_max_consumption()):
             return True
         return False
 
