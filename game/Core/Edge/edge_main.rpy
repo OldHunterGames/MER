@@ -17,12 +17,19 @@ label lbl_edge_main:
         edge.loc_max = 7
         core.set_world('edge')
         edge.go_to_mist()
+        edge.explore_all()
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)
+        spendings_text = __("Your spendings is ")
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)
-            return encolor_text(spending_rate[5-new_value], 5-new_value)  
+            return encolor_text(spending_rate[5-new_value], 5-new_value)
+        def show_consumption_level():
+            consumption = edge.resources.can_tick()
+            consumption_level = edge.resources.consumption_level()
+            consumption_text = spendings_text + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
+            return consumption_text
 
     call edge_init_events
     call lbl_edge_manage
@@ -32,13 +39,11 @@ label lbl_edge_manage:
     $ target = player
     $ food_info = player.food_info()
     $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
+    $ consumption_text = show_consumption_level()
     python:
         consumption = edge.resources.can_tick()
-        consumption_level = edge.resources.consumption_level()
-        consumption_text = "Your spendings is " + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
-
         if not consumption:
-            consumption_text += (__(". You can't skip turn"))
+            consumption_text += ". You can't skip turn"
     menu:
         "Food: [food_info] \nYou have [resources]."
         "[consumption_text]"
