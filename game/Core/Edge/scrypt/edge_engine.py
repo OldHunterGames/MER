@@ -25,6 +25,7 @@ class EdgeEngine(object):
     gang_list = []
 
     def __init__(self):
+        self.name = 'edge'
         self.locations = []
         self.house = None
         self.loc_max = 0
@@ -117,6 +118,11 @@ class EdgeEngine(object):
     
     def in_any_gang(self, person):
         return any([gang for gang in self.gang_list if person in gang.members])
+
+    def new_turn(self):
+        self.locations_tick()
+        self.resources.tick_time()
+        self.core.new_turn()
         
 
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']

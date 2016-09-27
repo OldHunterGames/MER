@@ -1204,17 +1204,20 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         if not self.calculatable:
             return
-        #recalculating person stats
         self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
-        #ticking timed effects
+    def tick_time(self):
+        if not self.calculatable:
+            return
         self.conditions = []
         self.tick_buffs_time()
         self.tick_features()
-        #execute schedule
+    def tick_schedule(self):
+        if not self.calculatable:
+            return
         self.schedule.use_actions()
         self.schedule.add_action('job_idle')
         self.schedule.add_action('overtime_nap')
@@ -1516,10 +1519,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             return
         val = 5 - self.sensitivity
         if self.selfesteem > 0:
+            self.purporse.set_satisfaction(self.selfesteem)
             self.selfesteem -= val
             if val < 0:
                 val = 0
         elif self.selfesteem < 0:
+            self.purporse.set_tension()
             self.selfesteem += val
             if val > 0:
                 val = 0

@@ -89,7 +89,9 @@ class MistsOfEternalRome(object):
         return [faction for faction in self._factions]
 
     def set_world(self, world):
-        Schedule.set_world(world)
+        self.current_world = world
+        Schedule.set_world(world.name)
+        world.core = self
 
     def get_faction(self, id_):
         for i in self.factions:
@@ -135,8 +137,11 @@ class MistsOfEternalRome(object):
 
     def new_turn(self, label_to_jump=None):
         for person in self.characters:
-            person.rest()
+            person.tick_time()
         self.end_turn_event()
+        for person in self.characters:
+            person.tick_schedule()
+            person.rest()
         self.time += 1
         self.player.ap = 1
 
