@@ -236,18 +236,18 @@ class BarterSystem(object):
 
     def calculate_consumption(self, value):
         if value == 0:
-            return 4
+            return 1
         difference = self.value - value
         if difference >= 3:
-            return 4
-        elif difference == 2:
-            return 3
-        elif difference == 1:
-            return 2
-        elif difference == 0:
             return 1
+        elif difference == 2:
+            return 2
+        elif difference == 1:
+            return 3
+        elif difference == 0:
+            return 4
         else:
-            return 0
+            return 5
 
     def _get_max_consumption(self):
         consumptions = [i.value for i in self._get_consumptions_list()]

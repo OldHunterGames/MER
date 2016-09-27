@@ -19,7 +19,10 @@ label lbl_edge_main:
         edge.go_to_mist()
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
-        player.schedule.add_action('job_idle', False)  
+        player.schedule.add_action('job_idle', False)
+        def encolor_resource_text(value):
+            new_value = edge.resources.calculate_consumption(value)
+            return encolor_text(spending_rate[new_value], 5-new_value)  
 
     call edge_init_events
     call lbl_edge_manage
@@ -32,10 +35,10 @@ label lbl_edge_manage:
     python:
         consumption = edge.resources.can_tick()
         consumption_level = edge.resources.consumption_level()
+        consumption_text = "Your spendings is " + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
+
         if not consumption:
-            consumption_text = encolor_text(__("You can't skip turn because of spendings"), 0)
-        else:
-            consumption_text = encolor_text(__("Your spendings is ok"), consumption_level)
+            consumption_text += (__(". You can't skip turn"))
     menu:
         "Food: [food_info] \nYou have [resources]."
         "[consumption_text]"
