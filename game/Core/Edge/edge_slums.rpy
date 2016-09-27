@@ -18,10 +18,10 @@ label lbl_edge_squatted_slums(location):
     return
 
 label lbl_edge_slums_livein:
-    $ bill = core.resources.consumption('money')
+    $ bill = encolor_text(spending_rate[edge.resources.consumption_level()], edge.resources.consumption_level())
     
     menu:        
-        "Banknotes: [core.resources.money] \n
+        "[resources] \n
         Decade bill: [bill]"
         'Accomodation':
             call lbl_edge_slums_accomodation            
@@ -36,9 +36,12 @@ label lbl_edge_slums_livein:
     return
     
 label lbl_edge_slums_accomodation:
+    $ mat_cost_absolute = edge.resources.add_consumption(target, 'mat in common room',  1, 'accomodation')
+    $ mat_cost_relative = edge.resources.calculate_consumption(mat_cost_absolute)
+    $ mat_cost_show = encolor_text(spending_rate[mat_cost_relative], mat_cost_relative)
     
     menu:
-        'Tiny mat in common room (10$/turn)':
+        'Tiny mat in common room ([mat_cost_show])':
             $ target.schedule.add_action('living_mat') 
             $ summ = 10
         'Cot & bkanket (50$/turn)':

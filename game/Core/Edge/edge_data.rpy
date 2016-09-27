@@ -30,11 +30,6 @@ init python:
         
         }
 
-    house_names = {'kamira': __('Kamira'),
-                 'serpis': __('Serpis'), 
-                 'corvus': __('Corvus'),
-                 'taurus':  __('Taurus')}
-
     gang_prefix_names = [__('Black'),
         __('Red'),
         __('White'),
