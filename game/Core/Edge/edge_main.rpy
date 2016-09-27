@@ -154,12 +154,11 @@ label lbl_edge_info_base:
         job  = edge_denotation[target.job]
         overtime = edge_denotation[target.overtime]        
         focus = encolor_text(target.show_focus(), target.focus)
-        consumption = target.get_food_consumption(True)
         recalc_result_target=target
         vitality_info_target = target
         txt = "Mood: " + encolor_text(target.show_mood(), target.mood) + ' {a=lb_recalc_result_glue}[?]{/a}'
         txt += " | Vitality: %s "%(target.vitality) + '{a=lbl_vitality_info}[?]{/a}'
-        txt += ' | Ration: %s (%s)'%(consumption[0], consumption[1])
+        txt += ' | Ration: %s'%(target.food_info())
         txt += "\nOccupation: %s | Overtime: %s"% (job, overtime)
         txt += " | Accommodation: %s  \n"%target.accommodation
         txt += "Skill focus: %s\n"%(focus)
@@ -213,8 +212,6 @@ label lbl_info_new(target):
         if rel:
             txt += "Отношение: %s, %s, %s\n"%(rel)
             txt += "Гармония: %s, %s\n"%(target.relations(player).harmony()[0], target.relations(player).harmony()[1])
-        else:
-            txt += "Деньги: %s, Провизия: %s, Вещества: %s \n"%(game.money, game.resource("provision"), game.resource("drugs"))
         txt += "Запреты: %s \n "%(target.restrictions)
         txt += "Условия сна: %s  |  %s       \n"%(target.accommodation, job)
         txt += "Фокус: %s\n"%(focus)
@@ -231,8 +228,7 @@ label lbl_info_new(target):
         #    txt += '%s: [%s, %s, %s], '%(need, needs[need].level, needs[need].satisfaction, needs[need].tension)
         # txt += '\n'
         txt += "Ангст: %s, Решимость: %s\n"%(target.anxiety, target.determination)
-        consumption = target.get_food_consumption(True)
-        txt += 'Жрет: %s(%s)'%(consumption[0], consumption[1])
+        txt += target.food_info()
     "[txt]"
 
     return
