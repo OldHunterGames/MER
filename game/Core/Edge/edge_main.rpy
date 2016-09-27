@@ -178,7 +178,7 @@ label lbl_edge_turn:
     if edge.faction_mode:
         call lbl_edge_faction_livein
     if edge.slums_mode:
-        call lbl_edge_slums_livein
+        call lbl_edge_manage
     else:
         call lbl_edge_manage        
     return

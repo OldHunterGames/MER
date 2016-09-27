@@ -5,11 +5,11 @@
 
     
 label lbl_edge_faction_livein:
+    $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
     $ faction = player.factions[0]
     
     menu:        
-        "Banknotes: [core.resources.money] \n
-        Favor: ?"
+        "You have [resources] \nLeader's favor: ?"
         'Occupation':
             call lbl  
         'Clanmates':

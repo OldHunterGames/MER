@@ -8,9 +8,11 @@ label lbl_edge_squatted_slums(location):
         'Only place to live in if you not in a gang.'
         'Find some work in a slums':
             call lbl_edge_slums_work(location)
-        'Sign in':
+        'Sign in' if not edge.slums_mode:
             $ edge.slums_mode = True
             call lbl_edge_slums_livein
+        'Manage accomodation' if edge.slums_mode:
+            call lbl_edge_slums_livein            
         'Get out':
             return         
     
@@ -18,6 +20,7 @@ label lbl_edge_squatted_slums(location):
     return
 
 label lbl_edge_slums_livein:
+    $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
     $ free = encolor_text('free', 5)
     $ cost_1 = encolor_resource_text(1)
     $ cost_2 = encolor_resource_text(2)
