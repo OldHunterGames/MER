@@ -32,7 +32,16 @@ class EdgeEngine(object):
         self.faction_mode = False
         self.resources = BarterSystem()
 
+    def explore_all(self):
+        for i in store.edge_locations.items():
+            if i[0] not in unique:
+                location = EdgeLocation(i[0], engine_ref=self)
+                self.locations.append(location)
+            if location.id in ownerable:
+                location.gen_owner()
+    
     def explore_location(self):
+        """
         location = choice(renpy.store.edge_locations.items())
         while self.has_location(location[0]) or location[0] in unique:
             location = choice(renpy.store.edge_locations.items())
@@ -41,6 +50,10 @@ class EdgeEngine(object):
             location.gen_owner()
         self.locations.append(location)
         return location
+        """
+        pass
+        
+
     
     def has_location(self, location_id):
         for location in self.locations:

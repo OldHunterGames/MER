@@ -236,7 +236,7 @@ class BarterSystem(object):
 
     def calculate_consumption(self, value):
         if value == 0:
-            return 1
+            return 0
         difference = self.value - value
         if difference >= 3:
             return 1
