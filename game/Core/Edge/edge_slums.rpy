@@ -46,16 +46,16 @@ label lbl_edge_slums_accomodation:
 
     menu:
         'Tiny mat in common room ([cost_1])':
-            $ target.schedule.add_action('accommodation_mat') 
+            $ target.schedule.add_action('accommodation_mat', single=False) 
             $ cost = 1
         'Cot & bkanket ([cost_2])':
-            $ target.schedule.add_action('accommodation_cot') 
+            $ target.schedule.add_action('accommodation_cot', single=False) 
             $ cost = 2
         'Apartments ([cost_3])':
-            $ target.schedule.add_action('accommodation_appartment') 
+            $ target.schedule.add_action('accommodation_appartment', single=False) 
             $ cost = 3            
         'Rough ground, out of the walls ([free])':
-            $ target.schedule.add_action('accommodation_makeshift') 
+            $ target.schedule.add_action('accommodation_makeshift', single=False) 
             $ cost = 0
             
     $ edge.resources.add_consumption(target, 'accomodation fee',  cost, 'accomodation')
@@ -66,22 +66,22 @@ label lbl_edge_slums_accomodation:
 label lbl_edge_slums_ration:
     menu:
         'Junkfood lunch ([cost_1])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 1, 'taste': 0}) 
             $ cost = 1           
         'Junkfood 3 time meals ([cost_2])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 2, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 2, 'taste': 0}) 
             $ cost = 2           
         'Cooked lunch ([cost_2])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 2}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 1, 'taste': 2}) 
             $ cost = 2   
         'All junkfood you can eat ([cost_3])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 3, 'taste': 0}) 
             $ cost = 3           
         'Cooked 3 time meals ([cost_3])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 2, 'taste': 2}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 2, 'taste': 2}) 
             $ cost = 3   
         'Whole roasted girl ([cost_4])':
-            $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 3}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 3, 'taste': 3}) 
             $ cost = 4               
         'Eat your own food ([free])':
             $ cost = 0

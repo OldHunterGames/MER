@@ -22,13 +22,13 @@ label shd_edge_accommodation_mat(action):
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
         action.actor.wellness.set_tension()    
-        name = action.actor.name()
+        name = action.actor.name
     '[name] sleeps on a tiny mat.'          
     return 
 
 label shd_edge_accommodation_cot(action):
     $ action.actor.comfort.satisfaction = 1
-    $ name = action.actor.name()
+    $ name = action.actor.name
     '[name] sleeps on a rough cot.'    
     return 
 
@@ -36,14 +36,14 @@ label shd_edge_accommodation_appartment(action):
     python:
         action.actor.comfort.satisfaction = 3
         action.actor.add_buff('beauty_sleep')        
-        name = action.actor.name()
+        name = action.actor.name
     '[name] sleeps in apartments.'    
     return  
 
 label shd_edge_feed_catering(action):
     python:
         action.actor.comfort.satisfaction = 1
-        name = action.actor.name()
+        name = action.actor.name
         actor.eat(action.special_values['ammount'], action.special_values['taste'])
     '[name] eats at slums.'    
     return  
