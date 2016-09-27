@@ -17,7 +17,6 @@ label lbl_edge_main:
         edge.loc_max = 7
         core.set_world('edge')
         edge.go_to_mist()
-        edge.explore_all()
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)

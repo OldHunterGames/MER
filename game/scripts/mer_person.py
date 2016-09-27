@@ -336,15 +336,19 @@ class FoodSystem(object):
 
     def food_info(self):
         amount = store.food_amount_dict[self.amount]
+        if self.quality < 0:
+            quality_encolor = 0
+        else:
+            quality_encolor = self.quality
         quality = store.food_quality_dict[self.quality]
-        text = '%s(%s)'%(quality, amount)
-        total = max(0, min(5, self.amount+self.quality))
+        text = '%s'%(utilities.encolor_text(quality, quality_encolor))
+        if self.amount != 2:
+            amount = utilities.encolor_text(amount, self.amount)
+            text += '(%s)'%(amount)
         if self.amount < 1:
             return utilities.encolor_text(amount, 0)
-        elif self.quality < 0:
-            return utilities.encolor_text(text, 0)
         else:
-            return utilities.encolor_text(text, total)
+            return text
     
     def increase_shape(self, index):
         flist = self.features_list
