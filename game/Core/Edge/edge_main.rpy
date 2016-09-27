@@ -13,11 +13,10 @@ init -8 python:
 label lbl_edge_main:
     'The Mist gives you a way...'  
     python:
-        camp = EdgeCamp()
         edge.loc_max = 7
         core.set_world('edge')
         edge.go_to_mist()
-        player.schedule.add_action(camp.accommodation, False)
+        player.schedule.add_action('accommodation_makeshift', False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)
         spendings_text = __("Decade bill: ")

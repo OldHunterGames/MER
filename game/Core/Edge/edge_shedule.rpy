@@ -15,6 +15,7 @@ label shd_edge_accommodation_makeshift(action):
         action.actor.wellness.set_tension()   
         action.actor.add_buff('bad_sleep')  
         name = action.actor.name
+    'MAKESHIFT!'
     return
 
 label shd_edge_accommodation_mat(action):
