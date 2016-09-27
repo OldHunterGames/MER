@@ -67,13 +67,13 @@ label lbl_edge_slums_ration:
     menu:
         'Junkfood lunch ([cost_1])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 0}) 
-            $ cost = 2            
+            $ cost = 1           
         'Junkfood 3 time meals ([cost_2])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 2, 'taste': 0}) 
-            $ cost = 3           
+            $ cost = 2           
         'Cooked lunch ([cost_2])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 1, 'taste': 2}) 
-            $ cost = 3   
+            $ cost = 2   
         'All junkfood you can eat ([cost_3])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 0}) 
             $ cost = 3           
@@ -82,7 +82,7 @@ label lbl_edge_slums_ration:
             $ cost = 3   
         'Whole roasted girl ([cost_4])':
             $ target.schedule.add_action('feed_catering', special_values={'ammount': 3, 'taste': 3}) 
-            $ cost = 3               
+            $ cost = 4               
         'Eat your own food ([free])':
             $ cost = 0
             
