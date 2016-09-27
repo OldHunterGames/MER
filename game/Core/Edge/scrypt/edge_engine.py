@@ -113,6 +113,7 @@ class EdgeEngine(object):
         mist_loc = EdgeLocation('shifting_mist', True, engine_ref=self)
         self.locations.append(trade_loc)
         self.locations.append(mist_loc)
+        self.explore_all()
     
     def in_any_gang(self, person):
         return any([gang for gang in self.gang_list if person in gang.members])
