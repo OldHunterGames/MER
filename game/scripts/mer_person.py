@@ -299,7 +299,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
         self.name = name
     
     def set_avatar(self, avatar_folder):
-        path = 'images/avatar/combatants'
+        path = 'images/avatar/combatants/'
         path += avatar_folder
         avatars = get_avatars(path)
         try:
