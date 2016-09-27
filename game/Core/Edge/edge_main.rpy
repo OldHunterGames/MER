@@ -20,8 +20,6 @@ label lbl_edge_main:
         player.schedule.add_action(camp.accommodation, False)
         player.schedule.add_action('overtime_nap', False)  
         player.schedule.add_action('job_idle', False)  
-        player.ration['amount'] = "unlimited"  
-        player.ration['food_type'] = "forage"
 
     call edge_init_events
     call lbl_edge_manage

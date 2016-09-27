@@ -6,15 +6,15 @@ init python:
         'avatar_folder': 'bandits',
         'attributes':
             {
-            'physique': 2,
-            'agility': 1
+            'physique': 3,
+            'agility': 2
             }
         }
     }
     equip_sets = {
     'weak_agile':
         {
-        'main_hand': {'size': 'offhand', 'damage_type': 'silvered'},
+        'main_hand': {'size': 'offhand', 'damage_type': 'slashing'},
         'armor': {'armor_rate': 'light_armor'}
         }
     }

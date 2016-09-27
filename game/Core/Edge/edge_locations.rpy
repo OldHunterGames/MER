@@ -45,12 +45,18 @@ label lbl_edge_shifting_mist(location=None):
     python:
         ally1 = DuelCombatant(player)
         
-        enemy_weapon = Weapon('twohand', 'subdual', quality=1)
-        enemy_armor = Armor('heavy_armor', quality=1)
-        enemy = gen_random_person('human')
-        enemy.main_hand = enemy_weapon
-        enemy.armor = enemy_armor
+        
+        
+        # enemy_weapon = Weapon('twohand', 'subdual', quality=1)
+        # enemy_armor = Armor('heavy_armor', quality=1)
+        # enemy = gen_random_person('human')
+        # enemy.main_hand = enemy_weapon
+        # enemy.armor = enemy_armor
+        
+        enemy = make_combatant('weak_bandit')
+        equip_combatant(enemy, 'weak_agile')
         enemy1 = DuelCombatant(enemy)
+
 
         
         fight = DuelEngine([ally1],[enemy1], None)
@@ -152,12 +158,12 @@ label lbl_edge_echoing_hills(location):
     
 label lbl_edge_unocuppied(location):
     menu:
-        'Stash your resorces' if edge.resources.can_spend(1) and location.stash:
-            $ location.stash = edge.resources.value
+        'Stash your resorces' if edge.resources.can_spend(1) and not location.has_player_stash:
+            # $ location.stash = edge.resources.value
             $ location.make_stash()
             call lbl_edge_unocuppied(location)
             
-        "Retrive your stash" if location.stash:
+        "Retrive your stash" if location.has_player_stash:
             $ location.player_stash = False
             $ location.empty_stash()
             call lbl_edge_unocuppied(location)

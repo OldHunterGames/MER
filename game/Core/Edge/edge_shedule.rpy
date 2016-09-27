@@ -208,7 +208,7 @@ label shd_edge_job_lookforstash(action):
         difficulty = 5 - int(action.special_values['quality'])
         name = actor.name
         moral = ['chaotic', 'evil']
-        result = core.threshold_skillcheck(actor, 'observation', difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, threshold = 3, special_motivators=[])        
+        result = core.threshold_skillcheck(actor, 'observation', difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 3, special_motivators=[])        
         if result[1] < 1:
             'Fail'
         else:
