@@ -22,7 +22,7 @@ label lbl_edge_main:
         player.schedule.add_action('job_idle', False)
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)
-            return encolor_text(spending_rate[new_value], 5-new_value)  
+            return encolor_text(spending_rate[5-new_value], 5-new_value)  
 
     call edge_init_events
     call lbl_edge_manage
