@@ -553,7 +553,18 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def calculatable(self):
-        return self._calculatable or self.player_controlled
+        mastered_by_player = False
+        master_of_player = False
+        supervisor_of_player = False
+        try:
+            mastered_by_player = self.master.player_controlled
+        except AttributeError:
+            pass
+        master_of_player = any([i for i in self.slaves if i.player_controlled])
+
+        return (self._calculatable or self.player_controlled or
+            mastered_by_player or master_of_player)
+
 
     @calculatable.setter
     def calculatable(self, value):
