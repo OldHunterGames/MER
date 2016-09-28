@@ -42,9 +42,14 @@ label lbl_edge_manage:
         consumption = edge.resources.can_tick()
         if not consumption:
             consumption_text += ". You can't skip turn"
+        if core.favor_consumption.can_skip_turn():
+            favor_text = encolor_text(__("Your favor consumption is ok"), 3)
+        else:
+            favor_text = encolor_text(__("You can't use so much favor"), 0)
     menu:
         "Nutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
+        "[favor_text]"
 
         'Slums' if edge.slums_mode:
             call lbl_edge_slums_livein
@@ -56,7 +61,7 @@ label lbl_edge_manage:
             call lbl_edge_info_base
         'Equipment':
             call screen sc_person_equipment(player)
-        'Carry on' if edge.resources.can_tick():
+        'Carry on' if edge.resources.can_tick() and core.can_skip_turn():
             call lbl_edge_turn
 
     
