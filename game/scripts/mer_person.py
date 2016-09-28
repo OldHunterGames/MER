@@ -1616,6 +1616,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         soft_max = 3+self.player_stance().value()
         self.favor = min(hard_max, min(soft_favor, value))
 
+    def spend_favor(self, value):
+        self.gain_favor(-value)
+
     def favor_income(self):
         relations = self.player_relations()
         if relations is None:
