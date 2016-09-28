@@ -529,6 +529,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.factions = []
         self.background = None
         self.food_system = FoodSystem(self)
+        self.favor = 0
 
     def apply_background(self, background):
         self.background = background
@@ -1209,6 +1210,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
+        self.gain_favor()
     def tick_time(self):
         if not self.calculatable:
             return
@@ -1446,7 +1448,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         for rel in self._relations:
             if rel.is_player_relations():
                 return rel
-        return None
+
+    def player_stance(self):
+        for i in self._stance:
+            if i.is_player_stance():
+                return i
 
     def moral_action(self, *args, **kwargs):
         # checks moral like person.check_moral, but instantly affect selfesteem
@@ -1576,6 +1582,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             return []
 
     def attitude_tendency(self):
+        if self.player_controlled:
+            raise Exception("attitude_tendency called at player character")
         n = 0
         token = None
         for k, v in self.relations_tendency.items():
@@ -1583,8 +1591,53 @@ class Person(Skilled, InventoryWielder, Attributed):
                 n = v
                 token = k
         if self.relations_tendency.values().count(n) > 1:
-            return None
+            return 'complicated'
         return token
+
+    def gain_favor(self, value):
+        if self.player_controlled:
+            return
+        value = self.favor + value
+        if value < 0:
+            self.favor = 0
+            return
+        hard_max = 5
+        soft_max = 3+self.player_stance().value()
+        self.favor = min(hard_max, min(soft_favor, value))
+
+    def favor_income(self):
+        relations = self.player_relations()
+        if relations is None:
+            return
+        value = 0
+        stance = self.player_stance().value()
+        actual_relations = [relations.fervor_str(), relations.congruence_str(), relations.distance_str()]
+        tendency = self.attitude_tendency
+        if tendency == 'conquest':
+            needed_relations = ['passionate', 'intimate', 'contradictor']
+            for i in actual_relations:
+                if i in needed_relations:
+                    value += 1
+            value += 2-stance
+        elif tendency == 'contribution':
+            needed_relations = ['passionate', 'intimate', 'supporter']
+            value += stance
+            for i in actual_relations:
+                if i in needed_relations:
+                    value += 1
+        elif tendency == 'convention':
+            needed_relations = ['formal', 'delicate', 'supporter']
+            bad_relations = ['passionate', 'intimate', 'contradictor']
+            value += stance
+            for i in actual_relations:
+                if i in needed_Relations:
+                    value += 1
+                elif i in bad_relations:
+                    value -= 1
+        elif tendency is None:
+            value += stance
+            value += relations.harmony()[0]
+        self.gain_favor(value)
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
