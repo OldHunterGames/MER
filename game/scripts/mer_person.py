@@ -1214,6 +1214,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             need.reset()
 
     def rest(self):
+        self.gain_favor()
         if not self.calculatable:
             return
         self.food_system.fatness_change()
@@ -1221,7 +1222,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
-        self.gain_favor()
     def tick_time(self):
         if not self.calculatable:
             return
