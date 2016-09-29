@@ -21,6 +21,7 @@ from buffs import Buff
 from background import Background
 from inventory import Inventory
 from mer_item import create_weapon, create_armor
+from mer_resources import BarterSystem
 import mer_utilities as utilities
 
 
@@ -529,7 +530,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.factions = []
         self.background = None
         self.food_system = FoodSystem(self)
-        self.favor = 0
+        self._favor = BarterSystem()
 
     def apply_background(self, background):
         self.background = background
@@ -1605,6 +1606,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             return 'complicated'
         return token
 
+    #favor methods
     def gain_favor(self, value):
         if self.player_controlled:
             return
@@ -1614,10 +1616,24 @@ class Person(Skilled, InventoryWielder, Attributed):
             return
         hard_max = 5
         soft_max = 3+self.player_stance().value()
-        self.favor = min(hard_max, min(soft_favor, value))
+        favor = min(hard_max, min(soft_favor, value))
+        self._favor.income(favor)
+
+    @property
+    def favor(self):
+        return self._favor.value
 
     def spend_favor(self, value):
-        self.gain_favor(-value)
+        self._favor.spend(-value)
+
+    def add_favor_consumption(self, name, value, slot, time=1, description=""):
+        self._favor.add_consumption(self, name, value, slot, time, description)
+
+    def remove_favor_consumption(self, slot):
+        self._favor.remove_consumption(self, slot)
+
+    def get_favor_consumption(self):
+        return self._favor.consumption_level()
 
     def favor_income(self):
         relations = self.player_relations()
@@ -1652,6 +1668,10 @@ class Person(Skilled, InventoryWielder, Attributed):
             value += stance
             value += relations.harmony()[0]
         self.gain_favor(value)
+    # end of favor methods
+    
+    def can_tick(self):
+        return self._favor.can_tick()
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):

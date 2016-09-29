@@ -171,8 +171,6 @@ class Relations(object):
             if self.congruence != 0:
                 value -= 1
                 bad_axis.append(self.congruence_str())
-        if value < 0:
-            value = 0
         return value, axis, bad_axis
 
     def show_harmony_axis(self):
