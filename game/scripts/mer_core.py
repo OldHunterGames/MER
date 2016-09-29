@@ -22,62 +22,8 @@ def set_event_game_ref(game):
     Event.set_game_ref(game)
 
 
-class FavorConsumption(object):
-
-
-    def __init__(self):
-        self._list = []
-
-    def add_consumption(self, person, value, slot, time=1):
-        self._list.append((person, value, slot, time))
-
-    def remove_consumption(self, person, slot):
-        for i in self._list:
-            if i[0] == person and i[2] == slot:
-                self._list.remove(i)
-                return
-
-    def can_skip_turn(self):
-        person_list = []
-        values_list = []
-        for i in self._list:
-            person = i[0]
-            value = i[1]
-            if person not in person_list:
-                person_list.append(person)
-                values_list.append(value)
-            else:
-                index = person_list.index(person)
-                total[index] += value
-        for i in person_list:
-            index = person_list.index(i)
-            value = values_list[index]
-            if i.favor < value:
-                return False
-        return True
-
-    def tick_time(self):
-        for i in self._list:
-            i[0].spend_favor(i[1])
-            try:
-                i[3] -= 1
-                if i[3] < 1:
-                    self.remove_consumption(i[0], i[2])
-            except TypeError:
-                pass
-
-    def get_consumption(self, person):
-        total = 0
-        for i in self._list:
-            if i[0] == person:
-                total += i[1]
-        return total
-
-
-
-
-
 class UsedNeeds(object):
+
 
     def __init__(self, needs, owner):
         self.needs = copy(needs)
@@ -134,7 +80,6 @@ class MistsOfEternalRome(object):
         self.menues = []                # For custom RenPy menu screen
         self.evn_skipcheck = True
         self.resources = BarterSystem()
-        self.favor_consumption = FavorConsumption()
         self._factions = factions_list
         self.current_world = "MER"
         self.characters = persons_list
@@ -192,7 +137,7 @@ class MistsOfEternalRome(object):
         return study
 
     def can_skip_turn(self):
-        return self.favor_consumption.can_skip_turn()
+        return all([i.can_tick() for i in self.characters])
 
     def new_turn(self, label_to_jump=None):
         for person in self.characters:
