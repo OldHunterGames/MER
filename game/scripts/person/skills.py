@@ -25,7 +25,7 @@ class Skill(object):
         return self.data['attribute']
     @property
     def level(self):
-        level = 0
+        level = 1
         if self.training:
             level += 1
         if self.expirience:
