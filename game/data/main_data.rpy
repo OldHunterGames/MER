@@ -6,6 +6,7 @@ init python:
                  'taurus':  __('Taurus')}
     
     spending_rate = [__('unaffordable'), __('expensive'), __('substantial'), __('minor'), __('negligible'), __('free')]
+    favor_rate = [__('basic'), __('minor'), __('notable'), __('substantial'), __('pressing'), __('outrageous')]
     
     show_resource = [
         __('no resources'), 
