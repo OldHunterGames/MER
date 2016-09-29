@@ -47,6 +47,12 @@ label lbl_edge_faction_livein:
     
 label lbl_edge_faction_occupation:
     $ sk_cmb = target.skill('combat').show()
+    $ sk_sex = target.skill('sex').show()
+    $ sk_ath = target.skill('survival').show()
+    $ sk_hk = target.skill('housekeeping').show()
+    $ sk_alc = target.skill('alchemy').show()
+    $ sk_mng = target.skill('management').show()
+    $ sk_crf = target.skill('craft').show()
     
     menu:
         'Rest ([f_1] favor cost)':
@@ -59,34 +65,34 @@ label lbl_edge_faction_occupation:
         'Guard ([sk_cmb])':
             $ pass
                                     
-        'Concubine (sex)':
+        'Concubine ([sk_sex])':
             $ title = __('Some labor (sex).')
             $ skill_id = 'survival'
             $ description = _('doing sexual services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
             
-        'Builder (athletics)':
+        'Builder ([sk_ath])':
             $ title = __('Some manual labor (athletics).')
             $ skill_id = 'survival'
             $ description = _('doing manual labor at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
             
-        'Scullion (housekeeping)':
+        'Scullion ([sk_hk])':
             $ title = __('Some labor (housekeeping).')
             $ skill_id = 'survival'
             $ description = _('providing household services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
         
-        'Nurse (alchemy)':
+        'Nurse ([sk_alc])':
             $ pass
         
-        'Overseer (management)':
+        'Overseer ([sk_mng])':
             $ pass
         
-        'Handyman (craft)':
+        'Handyman ([sk_crf])':
             $ pass
             
     call lbl_edge_faction_livein  
