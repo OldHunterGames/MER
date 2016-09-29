@@ -9,11 +9,11 @@ label lbl_edge_faction_livein:
     $ master = player.supervisor
     $ favor = encolor_text(show_favor[master.favor], master.favor)
     $ free = encolor_text('free', 5)
-    $ f_1 = encolor_resource_text(1)
-    $ f_2 = encolor_resource_text(2)
-    $ f_3 = encolor_resource_text(3)
-    $ f_4 = encolor_resource_text(4)
-    $ f_5 = encolor_resource_text(5)    
+    $ f_1 = encolor_favor_text(1, master)
+    $ f_2 = encolor_favor_text(2, master)
+    $ f_3 = encolor_favor_text(3, master)
+    $ f_4 = encolor_favor_text(4, master)
+    $ f_5 = encolor_favor_text(5, master)   
     $ consumption_level = master.get_favor_consumption()
     $ show_consumption = encolor_text(favor_rate[consumption_level], 5-consumption_level) 
     if core.can_skip_turn():
@@ -48,7 +48,7 @@ label lbl_edge_faction_livein:
 label lbl_edge_faction_occupation:
     $ sk_cmb = target.skill('combat').show()
     $ sk_sex = target.skill('sex').show()
-    $ sk_ath = target.skill('survival').show()
+    $ sk_ath = target.skill('athletics').show()
     $ sk_hk = target.skill('housekeeping').show()
     $ sk_alc = target.skill('alchemy').show()
     $ sk_mng = target.skill('management').show()
@@ -60,7 +60,7 @@ label lbl_edge_faction_occupation:
             $ master.add_favor_consumption(target, 1, 'accomodation_favor', time=None, description="")
         
         'Servitor (no skill)':
-            $ target.schedule.add_action('job_servitor')  
+            $ target.schedule.add_action('job_servitor', False)  
             
         'Guard ([sk_cmb])':
             $ pass
