@@ -149,13 +149,13 @@ class EdgeLocation(object):
             return encolor_text(name, self.stash)
 
     def gen_owner(self, owner=None):
-        if owner == None:
+        if owner is None:
             person = gen_random_person('human')
             name = choice(store.gang_prefix_names) + ' ' + choice(store.gang_suffix_names)
             faction = Gang(person, name, self)
             self.owner = faction
         else:
-            self.owner = owner
+            self.conquer(owner)
 
     def show_owner(self):
         try:
@@ -184,22 +184,32 @@ class EdgeLocation(object):
         if self.richness < 5:
             self.richness += 1
 
-
+    def conquer(self, gang):
+        if self.owner is not None:
+            try:
+                self.owner.locations_controlled.remove(self)
+            except AttributeError:
+                pass
+        try:
+            gang.locations_controlled.append(self)
+        except AttributeError:
+            gang.locations_controlled = [self]
+        self.owner = gang
 
 
 class Gang(Faction):
     def __init__(self, owner, name, location):
         super(Gang, self).__init__(owner, name)
-        self.warlord = None
-        self.medic = None
-        self.chief = None
-        self.madame = None
+        self.roles = {'warlord': None,
+                      'medic': None,
+                      'chief': None,
+                      'madame': None,}
         self.locations_controlled = [location]
         EdgeEngine.gang_list.append(self)
 
     def set_member_to_role(self, person, role):
-        setattr(self, role, person)
+        self.roles[role] = person
         self.add_member(person)
 
-    def conquer_location(self, location):
-        self.locations_controlled.append(location)
+    def get_common_members(self):
+        return [member for member in self.members if member != self.owner and member not in self.roles.values()]

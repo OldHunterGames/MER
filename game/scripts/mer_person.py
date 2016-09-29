@@ -960,6 +960,9 @@ class Person(Skilled, InventoryWielder, Attributed):
             d[need.name] = need
         return d
 
+    def get_visible_features(self):
+        return [i for i in self.features if i.visible]
+
     # show methods returns strings, to simplify displaying various stats to
     # player
     def show_taboos(self):

@@ -159,6 +159,51 @@ screen sc_faction_info(faction):
                 textbutton 'leave':
                     action Return()
 
+screen sc_gang_info(gang):
+    use sc_faction_info(gang)
+    frame:
+        xalign 0.5
+        hbox:
+            vbox:
+                textbutton "Leader: %s"%gang.owner.name:
+                    action Hide('sc_person_info'), ShowTransient('sc_person_info', person=gang.owner)
+                for k, v in gang.roles.items():
+                    if v is not None:
+                        textbutton "%s: %s"%(k, v.name):
+                            action Hide('sc_person_info'), ShowTransient('sc_person_info', person=v)
+                for i in gang.get_common_members():
+                    textbutton "member: %s"%i.name:
+                        action Hide('sc_person_info'), ShowTransient('sc_person_info', person=i)
+
+screen sc_person_info(person):
+    frame:
+
+        vbox:
+            hbox:
+                image im.Scale(person.avatar_path, 200, 200)
+                text "Name: %s"%person.name
+            hbox:
+                vbox:
+                    text 'Alignment: '
+                    text 'morality: ' + person.alignment.show_morality()
+                    text 'activity: ' + person.alignment.show_activity()
+                    text 'orderliness: ' + person.alignment.show_orderliness()
+                text ' '
+                if not person == player:
+                    vbox:
+                        text 'Relations: '
+                        text 'fervor: ' + person.relations(player).show_fervor()
+                        text 'distance: ' + person.relations(player).show_distance()
+                        text 'congruence: ' + person.relations(player).show_congruence()
+                text ' '
+                vbox:
+                    text 'Features: '
+                    for i in person.get_visible_features():
+                        text i.name
+            textbutton "Leave":
+                action Hide('sc_person_info')
+
+
 screen sc_item_creator(creator_item_properties):
     python:
         munition_needed = 0
