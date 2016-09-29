@@ -112,7 +112,7 @@ label lbl_edge_slums_work(location):
             
         'Manual labor (athletics)':
             $ title = __('Some manual labor (athletics).')
-            $ skill_id = 'survival'
+            $ skill_id = 'athletics'
             $ description = _('doing manual labor at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
@@ -120,7 +120,7 @@ label lbl_edge_slums_work(location):
             
         'Household services (housekeeping)':
             $ title = __('Some labor (housekeeping).')
-            $ skill_id = 'survival'
+            $ skill_id = 'housekeeping'
             $ description = _('providing household services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
@@ -128,7 +128,7 @@ label lbl_edge_slums_work(location):
                                     
         'Sexual services (sex)':
             $ title = __('Some labor (sex).')
-            $ skill_id = 'survival'
+            $ skill_id = 'sex'
             $ description = _('doing sexual services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
