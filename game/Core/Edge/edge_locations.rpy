@@ -99,7 +99,7 @@ label lbl_edge_utility1(location, title, dif, achive, pay, skill_id):
         'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
             $ location.owner.add_member(player)
             $ edge.faction_mode = True
-            $ player.set_supervisor(location.owner.leader)
+            $ player.set_supervisor(location.owner.owner)
             jump lbl_edge_faction_livein
         'Get out':
             return 

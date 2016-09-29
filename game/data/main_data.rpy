@@ -16,3 +16,11 @@ init python:
         __('all resources you can handle'), 
         ]
     
+    show_favor = [
+        __('no favor'), 
+        __('a few favor'), 
+        __('some favor'), 
+        __('considerable favor'), 
+        __('great favor'), 
+        __('total trust'), 
+        ]    
