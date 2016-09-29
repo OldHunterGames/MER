@@ -1617,7 +1617,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             return
         hard_max = 5
         soft_max = 3+self.player_stance().value
-        favor = min(hard_max, min(soft_favor, value))
+        favor = min(hard_max, min(soft_max, value))
         self._favor.income(favor)
 
     @property
