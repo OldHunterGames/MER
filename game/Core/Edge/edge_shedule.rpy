@@ -15,7 +15,7 @@ label shd_edge_accommodation_makeshift(action):
         action.actor.wellness.set_tension()   
         action.actor.add_buff('bad_sleep')  
         name = action.actor.name
-    'MAKESHIFT!'
+    'Sleeps on a rocky cold ground.'
     return
 
 label shd_edge_accommodation_mat(action):
@@ -46,7 +46,7 @@ label shd_edge_feed_catering(action):
         action.actor.comfort.satisfaction = 1
         name = action.actor.name
         actor.eat(action.special_values['ammount'], action.special_values['taste'])
-    '[name] eats at slums.'    
+    '[name] eats served food.'    
     return  
     
 label shd_edge_job_idle(action):
@@ -149,6 +149,21 @@ label shd_edge_job_beg(action):
         actor.independence.set_tension()
         actor.eat(1, -1)
         text = __('humbly begs for food and gains a few disgustning leftovers.')
+    '[name] [text]'
+    return
+    
+label shd_edge_job_servitor(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        beneficiar = actor
+        actor.moral_action('timid') 
+        actor.authority.set_tension()
+        actor.comfort.set_tension()
+        actor.ambition.set_tension()        
+        actor.independence.set_tension()
+        text = __(' ministering gang members.')
+        target.supervisor.gain_favor(1)
     '[name] [text]'
     return
     
