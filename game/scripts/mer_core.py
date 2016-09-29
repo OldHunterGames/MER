@@ -66,6 +66,13 @@ class FavorConsumption(object):
             except TypeError:
                 pass
 
+    def get_consumption(self, person):
+        total = 0
+        for i in self._list:
+            if i[0] == person:
+                total += i[1]
+        return total
+
 
 
 
