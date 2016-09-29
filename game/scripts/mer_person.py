@@ -1636,6 +1636,9 @@ class Person(Skilled, InventoryWielder, Attributed):
     def get_favor_consumption(self):
         return self._favor.consumption_level()
 
+    def calculate_favor(self, value):
+        return self._favor.calculate_consumption(value)
+
     def favor_income(self):
         relations = self.player_relations()
         if relations is None:

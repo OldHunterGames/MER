@@ -23,6 +23,9 @@ label lbl_edge_main:
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)
             return encolor_text(spending_rate[5-new_value], 5-new_value)
+        def encolor_favor_text(value, person):
+            new_value = person.calculate_favor(value)
+            return encolor_text(favor_rate[5-new_value], 5-new_value)
         def show_consumption_level():
             consumption = edge.resources.can_tick()
             consumption_level = edge.resources.consumption_level()
