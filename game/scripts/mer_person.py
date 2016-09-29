@@ -1616,7 +1616,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.favor = 0
             return
         hard_max = 5
-        soft_max = 3+self.player_stance().value()
+        soft_max = 3+self.player_stance().value
         favor = min(hard_max, min(soft_favor, value))
         self._favor.income(favor)
 
@@ -1641,7 +1641,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         if relations is None:
             return
         value = 0
-        stance = self.player_stance().value()
+        stance = self.player_stance().value
         actual_relations = [relations.fervor_str(), relations.congruence_str(), relations.distance_str()]
         tendency = self.attitude_tendency
         if tendency == 'conquest':
