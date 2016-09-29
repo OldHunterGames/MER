@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import renpy.store as store
 import renpy.exports as renpy
-
+from mer_utilities import encolor_text
 
 class Skill(object):
 
@@ -37,6 +37,9 @@ class Skill(object):
         if self.inability:
             level -= 1
         return level
+
+    def show(self):
+        return encolor_text(self.name, self.level)
 
     @property
     def focus(self):

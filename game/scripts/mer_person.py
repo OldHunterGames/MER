@@ -1215,7 +1215,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             need.reset()
 
     def rest(self):
-        self.gain_favor()
+        self.favor_income()
         if not self.calculatable:
             return
         self.food_system.fatness_change()
