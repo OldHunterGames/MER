@@ -97,12 +97,8 @@ label lbl_edge_utility1(location, title, dif, achive, pay, skill_id):
                 'Decline':
                     $ pass
         'Ask to join the [location.owner.name] gang' if not core.has_any_faction(player):
-            $ location.owner.add_member(player)
-            $ edge.faction_mode = True
-            $ player.set_supervisor(location.owner.owner)
-            $ target.schedule.add_action('accommodation_mat', single=False) 
-            $ player.supervisor.add_favor_consumption(target, 0, 'accomodation_favor', time=None, description="")
-            jump lbl_edge_faction_livein
+            call lbl_edge_gang_signin(location) 
+            
         'Get out':
             return 
 
@@ -184,3 +180,16 @@ label lbl_edge_unocuppied(location):
         
     jump lbl_edge_locations_menu             
     return
+    
+label lbl_edge_gang_signin(location):
+    python:
+        location.owner.add_member(player)
+        edge.faction_mode = True
+        player.set_supervisor(location.owner.owner)
+        target.schedule.add_action('accommodation_mat', single=False) 
+        player.supervisor.add_favor_consumption(target, 0, 'accomodation_favor', time=None, description="")
+        player.supervisor.add_favor_consumption(target, 0, 'nutrition_favor', time=None, description="")
+        
+    jump lbl_edge_faction_livein    
+    return
+    

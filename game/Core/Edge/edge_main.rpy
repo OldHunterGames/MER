@@ -166,6 +166,8 @@ label lbl_edge_info_base:
         
 
     "[txt]"        
+    if edge.faction_mode:
+        jump lbl_edge_faction_livein
     call lbl_edge_manage
     return
 

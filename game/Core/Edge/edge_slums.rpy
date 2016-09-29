@@ -87,9 +87,10 @@ label lbl_edge_slums_ration:
             $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 3, 'taste': 3}) 
             $ cost = 4               
         'Eat your own food ([free])':
+            $ target.schedule.remove_action('feed_catering')
             $ cost = 0
             
-    $ edge.resources.add_consumption(target, 'catering cost',  cost, 'accomodation')            
+    $ edge.resources.add_consumption(target, 'catering cost',  cost, 'nutrition')            
     call lbl_edge_slums_livein
     return
     
