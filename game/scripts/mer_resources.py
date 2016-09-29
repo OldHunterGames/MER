@@ -220,6 +220,7 @@ class BarterSystem(object):
         
     def tick_time(self):
         to_remove = []
+        self.spend(self._get_max_consumption())
         for i in self._consumptions_list:
             i.tick_time()
             try:
@@ -229,7 +230,6 @@ class BarterSystem(object):
                 pass
         for i in to_remove:
             self._consumptions_list.remove(i)
-        self.spend(self._get_max_consumption())
 
     def _get_consumptions_list(self):
         return [i for i in self._consumptions_list]

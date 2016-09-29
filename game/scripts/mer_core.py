@@ -146,7 +146,6 @@ class MistsOfEternalRome(object):
         for person in self.characters:
             person.tick_schedule()
             person.rest()
-        self.favor_consumption.tick_time()
         self.time += 1
         self.player.ap = 1
 

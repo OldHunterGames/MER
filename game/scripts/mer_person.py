@@ -1215,6 +1215,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             need.reset()
 
     def rest(self):
+        self.favor.tick_time()
         self.favor_income()
         if not self.calculatable:
             return
