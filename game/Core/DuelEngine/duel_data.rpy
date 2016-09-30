@@ -36,10 +36,12 @@ init python:
     def rage_remove(user):
         battle_points = [value['fortitude'] for value in user.fight.points.values()]
         make_active(battle_points)
+        
     def outsmart_special(user):
         for action in user.fight.persistent_actions:
             action.remove()
         user.fight.persistent_actions = []
+        
     def fallback_special(user):
         if len(user.drop) < 1:
             return
