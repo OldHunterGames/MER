@@ -523,14 +523,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._main_hand = None
         self._other_hand = None
         self.resources_storage = None
-        self.cards_list = []
-        self.default_cards = False
         self.deck = None
         self._calculatable = False
         self.factions = []
         self.background = None
         self.food_system = FoodSystem(self)
         self._favor = BarterSystem()
+        self.card_storage = None
 
     def apply_background(self, background):
         self.background = background
@@ -570,11 +569,6 @@ class Person(Skilled, InventoryWielder, Attributed):
     @calculatable.setter
     def calculatable(self, value):
         self._calculatable = value
-
-    def add_default_cards(self, list_):
-        if not self.default_cards:
-            self.cards_list += list_
-        return
 
     def set_deck(self, deck):
         self.deck = deck
@@ -900,7 +894,6 @@ class Person(Skilled, InventoryWielder, Attributed):
                  self.count_modifiers('therapy')]
         vitality_mods = self.modifiers_separate('vitality')
         list_.extend([modifier.value for modifier in vitality_mods])
-        print list_
         list_ = [i for i in list_ if i != 0]
         lgood = []
         lbad = []

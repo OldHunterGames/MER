@@ -88,7 +88,7 @@ screen duel_battle(fight):
                 textbutton card.name:
                     hovered Show('sc_card_info', card=card)
                     unhovered Hide('sc_card_info')
-                    action [Function(fight.current_ally.use_action, card), Function(fight.enemy_run), Hide('sc_card_info')] 
+                    action [Function(fight.current_ally.use_action, card), Hide('sc_card_info')] 
         frame:
             yalign 0.9
             xalign 0.25

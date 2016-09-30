@@ -58,10 +58,10 @@ screen sc_prefight_equip(combatant, fight):
             else:
                 prefight_text2 = 'other hand: %s'%person.other_hand.description
         textbutton prefight_text1:
-            action [Show('sc_equip_weapon', person=person, hand='main_hand'),
+            action [ShowTransient('sc_equip_weapon', person=person, hand='main_hand'),
                 SensitiveIf(is_main_hand_active(person))]
         textbutton prefight_text2:
-            action [Show('sc_equip_weapon', person=person, hand='other_hand'),
+            action [ShowTransient('sc_equip_weapon', person=person, hand='other_hand'),
                 SensitiveIf(is_other_hand_active(person))]
         text 'Combat style: ' + combatant.get_combat_style()
         textbutton 'Done' action Hide('sc_enemy_stats'), Return()
@@ -69,7 +69,7 @@ screen sc_prefight_equip(combatant, fight):
         xalign(0.5)
         for enemy in fight.enemies:
             textbutton enemy.name:
-                action Hide('sc_enemy_stats'), Show('sc_enemy_stats', combatant=enemy)
+                action Hide('sc_enemy_stats'), ShowTransient('sc_enemy_stats', combatant=enemy)
 
 screen sc_enemy_stats(combatant):
     vbox:
@@ -132,7 +132,7 @@ screen sc_faction_info(faction):
             vbox:
                 text 'Faction: ' + faction.name
                 text ' '
-                text 'Leaded:'
+                text 'Leader:'
                 text faction.owner.name
                 text ' ' 
                 text 'faction alignment:'
@@ -166,40 +166,50 @@ screen sc_gang_info(gang):
         hbox:
             vbox:
                 textbutton "Leader: %s"%gang.owner.name:
-                    action Hide('sc_person_info'), ShowTransient('sc_person_info', person=gang.owner)
+                    action Hide('sc_person_info'), ShowTransient('sc_person_info', person=gang.owner, xalign=1.0, yalign=1.0)
                 for k, v in gang.roles.items():
                     if v is not None:
                         textbutton "%s: %s"%(k, v.name):
-                            action Hide('sc_person_info'), ShowTransient('sc_person_info', person=v)
+                            action Hide('sc_person_info'), ShowTransient('sc_person_info', person=v, xalign=1.0, yalign=1.0)
                 for i in gang.get_common_members():
                     textbutton "member: %s"%i.name:
-                        action Hide('sc_person_info'), ShowTransient('sc_person_info', person=i)
+                        action Hide('sc_person_info'), ShowTransient('sc_person_info', person=i, xalign=1.0, yalign=1.0)
 
-screen sc_person_info(person):
+screen sc_person_info(person, xalign=0.0, yalign=0.0):
     frame:
-
+        align(xalign, yalign)
+        xmaximum 400
+        ymaximum 400
         vbox:
             hbox:
                 image im.Scale(person.avatar_path, 200, 200)
                 text "Name: %s"%person.name
-            hbox:
-                vbox:
-                    text 'Alignment: '
-                    text 'morality: ' + person.alignment.show_morality()
-                    text 'activity: ' + person.alignment.show_activity()
-                    text 'orderliness: ' + person.alignment.show_orderliness()
-                text ' '
+            vbox:
+                hbox:
+                    text person.alignment.show_morality()
+                    text ' '
+                    text person.alignment.show_activity()
+                    text ' '
+                    text person.alignment.show_orderliness()
                 if not person == player:
-                    vbox:
-                        text 'Relations: '
-                        text 'fervor: ' + person.relations(player).show_fervor()
-                        text 'distance: ' + person.relations(player).show_distance()
-                        text 'congruence: ' + person.relations(player).show_congruence()
-                text ' '
-                vbox:
-                    text 'Features: '
-                    for i in person.get_visible_features():
-                        text i.name
+                    hbox:
+                        text person.relations(player).show_fervor()
+                        text ' '
+                        text person.relations(player).show_distance()
+                        text ' '
+                        text person.relations(player).show_congruence()
+                text "Features: "
+                hbox:
+                    spacing 5
+                    box_wrap True
+                    python:
+                        features = person.get_visible_features()
+                        features_text = ''
+                        for i in features:
+                            features_text += i.name
+                            if i != features[-1]:
+                                features_text += ', '
+                    text features_text
             textbutton "Leave":
                 action Hide('sc_person_info')
 

@@ -31,7 +31,6 @@ label lbl_edge_main:
             consumption_level = edge.resources.consumption_level()
             consumption_text = spendings_text + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
             return consumption_text
-
     call edge_init_events
     call lbl_edge_manage
     return
@@ -234,3 +233,14 @@ label lbl_info_new(target):
     "[txt]"
 
     return
+
+label lbl_all_gangs:
+    python:
+        menu_list = [(gang.name, gang) for gang in edge.gang_list]
+        menu_list.append(('Leave', 'leave'))
+        choice = renpy.display_menu(menu_list)
+    if choice == 'leave':
+        return
+    else:
+        call screen sc_gang_info(choice)
+    call lbl_all_gangs

@@ -26,7 +26,6 @@ def predict_result(npc, player, simulated_fight):
     npc.fight = test_fight
     return_to_hand = []
     saved_drop = [action for action in npc.drop]
-    saved_all = [action for action in npc.all_drop]
     returned = None
     try:
         for card in npc.hand:
@@ -53,7 +52,6 @@ def predict_result(npc, player, simulated_fight):
     for card in return_to_hand:
         npc.hand.append(card)
     npc.drop = saved_drop
-    npc.all_drop = saved_all
     npc.set_fight(simulated_fight)
     player.set_fight(simulated_fight)
     return returned
@@ -62,17 +60,28 @@ class BattlePoint(object):
     def __init__(self, name=None):
         self._value = 0
         self.active = True
-        self.doubled = False
+        self.multipliers = []
         self._color = '#fff'
         self.name = name
     
+    def multiplier(self):
+        return len(self.multipliers)
+    
+    def add_multiplier(self, name):
+        self.remove_multiplier(name)
+        self.multipliers.append(name)
+
+    def remove_multiplier(self, name):
+        try:
+            self.multipliers.remove(name)
+        except ValueError:
+            pass
+
     @property
     def value(self):
-        if self.doubled:
-            return self._value*2
         if not self.active:
             return 0
-        return self._value
+        return self._value*(len(self.multipliers)+1)
     
     @property
     def true_value(self):
@@ -85,7 +94,7 @@ class BattlePoint(object):
     def copy_points(self, points):
         self._value = points._value
         self.active = points.active
-        self.doubled = points.doubled
+        self.multipliers = points.multipliers
     @property
     def color(self):
         if self.active:
@@ -121,7 +130,21 @@ def init_points(combatant, enemy, situation):
                 armor_ignoring.append('all-half')
         elif weapon.damage_type == 'elemental':
             armor_ignoring.append('heavy')
-
+    #style bonuses
+    ally_style = combatant.get_combat_style()
+    enemy_style = enemy.get_combat_style()
+    if ally_style == enemy_style and ally_style == 'resler':
+        if combatant.physique > enemy.physique:
+            d['excellence'].value += combatant.physique * (combatant.physique-enemy.physique)
+    elif ally_style == 'rookie':
+        for weapon in weapons:
+            d['onslaught'].value += weapon.quality
+    elif ally_style == 'beast':
+        if enemy_style == 'beast':
+            if combatant.physique > enemy.physique:
+                d['excellence'].value += combatant.physique * (combatant.physique-enemy.physique)
+        elif enemy_style == 'resler':
+            d['excellence'].value += combatant.physique * min(1, (combatant.physique-enemy.physique))
 
     for weapon in weapons:
         #size bonuses
@@ -202,8 +225,6 @@ class DuelEngine(object):
             renpy.call_screen('sc_prefight_equip', combatant, self)
         else:
             combatant.set_side('enemies')
-        if not self.simulation:
-            combatant.set_hand()
         self.use_stack = {'allies': [], 'enemies': []}
         return combatant
         
@@ -267,6 +288,8 @@ class DuelEngine(object):
     def start(self):
         self.current_ally = self._get_combatant('allies')
         self.current_enemy = self._get_combatant('enemies')
+        self.current_ally.send_event('fight_started')
+        self.current_enemy.send_event('fight_started')
         self.points = {'allies': init_points(self.current_ally, self.current_enemy, self.situation),
                         'enemies': init_points(self.current_enemy, self.current_ally, self.situation)}
         self.start_new_round()
@@ -310,7 +333,15 @@ class DuelEngine(object):
     def set_show_summary(self, bool_):
         self.show_summary = bool_
 
+    def get_enemy_side(self, side):
+        if side == 'allies':
+            return 'enemies'
+        else:
+            return 'allies'
 
+    def send_event(self, fighter):
+        if fighter.side == 'allies':
+            self.enemy_run()
 class DuelCombatant(object):
     """
     This class makes a characters participating in Fast Fight.
@@ -318,17 +349,15 @@ class DuelCombatant(object):
 
     def __init__(self, person=None):
         self.person = person
-
-        cards_list = default_cards()
+        cards = default_cards()
         default_deck = Deck()
-        for card in cards_list:
+        for card in cards:
             default_deck.add_card(card)
         try:
-            if not person.default_cards:
-                person.add_default_cards(cards_list)
+            if person.card_storage is None:
+                person.card_storage = CardStorage()
         except AttributeError:
             pass
-
         try:
             if not isinstance(person.deck, Deck):
                 person.deck = default_deck
@@ -342,6 +371,12 @@ class DuelCombatant(object):
             self.name = person.name
         except AttributeError:
             self.name = 'Unknown'
+        
+        try:
+            self.skill = person.skill('combat')
+        except AttributeError:
+            self.skill = None
+        
         try:
             self.skill_level = person.skill('combat').level
         except AttributeError:
@@ -350,10 +385,8 @@ class DuelCombatant(object):
         self.init_stats()
         self.side = None
         self.fight = None
-        self.deck.set_fighter(self)
         self.hand = []
         self.drop = []
-        self.all_drop = []
         if self.armor != None:
             self.armor_rate = self.armor.armor_rate
         else:
@@ -373,6 +406,9 @@ class DuelCombatant(object):
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
         self.last_event = None
 
+    def draw_list(self):
+        list_ = [i for i in self.drop if i.drawable()]
+        return list_[:-1]
     def init_stats(self):
         for i in ['physique', 'agility']:
             try:
@@ -382,7 +418,7 @@ class DuelCombatant(object):
     @property
     def last_played_card(self):
         try:
-            last = self.all_drop[-1]
+            last = self.drop[-1]
             return last
         except IndexError:
             return 
@@ -410,6 +446,9 @@ class DuelCombatant(object):
         except AttributeError:
             armor = None
         return armor
+
+    def has_shield(self):
+        return self.person.has_shield()
     
     def hand_is_empty(self):
         if len(self.hand) < 1:
@@ -419,7 +458,7 @@ class DuelCombatant(object):
         self.deck = deck
     def set_hand(self):
         if self.deck is not None:
-            self.hand = self.deck.get_hand()
+            self.hand = self.deck.get_hand(self)
         else:
             raise Exception("set_hand called, but this combatant has no choosen deck yet")
     def shuffle_actions(self):
@@ -443,16 +482,19 @@ class DuelCombatant(object):
             self.drop.remove(card)
             self.send_event('draw_card')
     def get_combat_style(self):
-        try:
-            if self.person.has_shield():
-                return 'shieldbearer'
-            if self.person.main_hand is not None and self.person.other_hand is not None:
-                return 'juggernaut'
-            if self.person.main_hand is not None or self.person.other_hand is not None:
-                return 'breter'
-        except AttributeError:
-            pass
-        return 'restler'
+        #TODO: add beast combat style
+        style = 'resler'
+        if len(self.get_weapons()) > 0:
+            if self.skill.expirience:
+                if self.main_weapon.type == 'twohand':
+                    style = 'juggernaut'
+                elif self.has_shield():
+                    style = 'shieldbearer'
+                else:
+                    style = 'breter'
+            elif self.skill.training:
+                style = 'rookie'
+        return style
 
     def get_weapons(self):
         l = []
@@ -471,18 +513,34 @@ class DuelCombatant(object):
         self.fight = fight
     
     def use_action(self, duel_action):
-        if self.escalation < duel_action.power:
-            self.escalation = duel_action.power
-        points = duel_action.use()
+        
+        points, escalation = duel_action.use()
+        if self.escalation < escalation:
+            self.escalation = escalation
         if duel_action.slot is not None:
             self.fight.points[self.side][duel_action.slot].value += points
         self.fight.update_stack(self.side, duel_action)
         if duel_action.persistent:
             self.fight.persistent_actions.append(duel_action)
-        if duel_action.power > 0:
-            self.drop.append(duel_action)
-        self.all_drop.append(duel_action)
-        self.hand.remove(duel_action)
+        if not duel_action.blocked:
+            self.fight.send_event(self)
+        self.drop_card(duel_action)
+
+    def drop_card(self, card):
+        self.drop.append(card)
+        self.hand.remove(card)
+
+    def use_from_drop(self, duel_action):
+        if duel_action not in self.drop:
+            return
+        points, escalation = duel_action.use()
+        if self.escalation < escalation:
+            self.escalation = escalation
+        if duel_action.slot is not None:
+            self.fight.points[self.side][duel_action.slot].value += points
+        self.fight.update_stack(self.side, duel_action)
+        if duel_action.persistent:
+            self.fight.persistent_actions.append(duel_action)
 
     def send_event(self, event):
         if event == 'end_round':
@@ -499,23 +557,38 @@ class DuelCombatant(object):
                 self.default_points['excellence'] += self.escalation
         if event == 'roud_started':
             self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
+        if event == 'fight_started':
+            self.set_hand()
         self.last_event = event
-            
+    
+
+class CardStorage(object):
+
+
+    def __init__(self):
+        self.default_cards = [make_card(i) for i in default_cards()]
+        self.other_cards = []
+
+    @property
+    def cards(self):
+        list_ = []
+        list_.join(self.default_cards)
+        list_.join(self.other_cards)
+        return list_
+
+    def add_card(self, card_id):
+        self.other_cards.append(make_card(card_id))
+
 
 class Deck(object):
     def __init__(self, cards_list=None):
         self.cards_list = [make_card(card) for card in cards_list] if cards_list is not None else []
-        self.current = None
         self.style = None
-        self.fighter = None
 
     def is_completed(self):
         if len(self.cards_list) == 22:
             return True
         return False
-
-    def set_fighter(self, fighter):
-        self.fighter = fighter
 
     def set_style(self, style):
         self.style = style
@@ -543,25 +616,27 @@ class Deck(object):
             return False
         return True
 
-    def get_hand(self):
+    def get_hand(self, fighter):
         shuffled = [card for card in self.cards_list]
         shuffle(shuffled)
-        for i in shuffled:
-            i.set_fighter(self.fighter)
         hand = []
         for i in range(10):
             try:
                 hand.append(shuffled.pop())
             except IndexError:
                 break
-        return Hand(self, hand, shuffled)
+        return Hand(self, hand, shuffled, fighter)
 
 
 class Hand(object):
-    def __init__(self, deck, cards_list, cards_left):
+    def __init__(self, deck, cards_list, cards_left, fighter):
         self.deck = deck
         self._cards_left = cards_left
         self.cards_list = cards_list
+        for card in cards_list:
+            card.current_fighter = fighter
+        for card in cards_left:
+            card.current_fighter = fighter
 
     def add_card(self, card=None):
         if card is not None:
@@ -590,19 +665,35 @@ class Hand(object):
     def can_draw(self):
         return len(self._cards_left) > 0
 
+    def get_all_cards(self):
+        list_ = [i for i in self.cards_list]
+        list_.join(self._cards_left)
+        return list_
+
 
 class DuelAction(object):
     """
     This is a class for "action cards" to form a decks and use in FaFiEn.
     """
-    bool_values = ['use_weapon', 'mighty', 'unique']
+    bool_values = ['use_weapon', 'unique']
     must_have_values = ['name', 'rarity']
     def __init__(self, id_):
         self.id = id_
         self.data = store.actions_lib
         self.current_fighter = None
-    def set_fighter(self, fighter):
-        self.current_fighter = fighter
+        self.default_power = 0
+        self.escalation = 0
+        self._power = None
+        self.blocked = False
+        self.evaluate_power = True
+    @property
+    def power_mods(self):
+        try:
+            mods = self.data[self.id]['power_mods']
+        except KeyError:
+            mods = []
+        return mods
+    
     def __getattr__(self, key):
         try:
             id_ = self.__dict__['id']
@@ -617,9 +708,22 @@ class DuelAction(object):
                 raise Exception('DuelAction with id %s do not have value %s'%(self.id, key))
             elif key == 'style' or key == 'special_effect' or key == 'slot':
                 return None
+            elif key == 'special_mechanics':
+                return []
         raise AttributeError(key)
+    
+    def drawable(self):
+        return (self.rarity != 'exceptional' and self.power > 0 and
+            not any([i in store.special_mechanics['card_draw'] for i in self.special_mechanics]))
+    
     @property
     def power(self):
+        if self.evaluate_power:
+            self.evaluate_power = False
+        else:
+            return 0
+        if self._power is not None:
+            return self._power
         try:
             power = self.data[self.id]['power']
         except KeyError:
@@ -627,9 +731,17 @@ class DuelAction(object):
         if self.use_weapon:
             for weapon in self.current_fighter.get_weapons():
                 power += weapon.quality
-        if self.mighty:
-            power += 5
+        for i in self.power_mods:
+            try:
+                power += i(self)
+            except TypeError:
+                pass
+        self.evaluate_power = True
         return power
+    
+    @power.setter
+    def power(self, value):
+        self._power = value
 
     @property
     def persistent(self):
@@ -637,16 +749,23 @@ class DuelAction(object):
 
     def remove(self):
         if self.persistent:
-            self.on_remove(self.current_fighter)
+            self.on_remove(self)
 
-
-    
     def use(self):
         self.current_fighter.send_event('card_used')
-        power = self.power
         if self.special_effect is not None:
-            self.special_effect(self.current_fighter)
-        return power
+            self.special_effect(self)
+        for i in self.special_mechanics:
+            i(self)
+        self.escalation = self.power
+        if self.rarity == 'exceptional':
+            if self.power > 0:
+                self.power += 5
+            self.escalation = 0
+        values = (self.power, self.escalation)
+        self.power = None
+        self.escalation = 0
+        return values
     
     def show(self):
         try:
