@@ -106,6 +106,8 @@ class BattlePoint(object):
     @property
     def description(self):
         str_ = "{color=%s}%s: %s{/color}"%(self.color, self.name, self.value)
+        for i in self.multipliers:
+            str_ += '!'
         return str_
 def init_points(combatant, enemy, situation):
     d = {'onslaught':BattlePoint('onslaught'), 'maneuver': BattlePoint('maneuver'),

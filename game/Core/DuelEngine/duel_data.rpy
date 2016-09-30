@@ -73,6 +73,32 @@ init python:
                     max_ = card.power
             user.draw_from_drop(card_to_get)
 
+    def deescalation_special(card):
+        user = card.current_fighter
+        escalation = user.escalation
+        points = user.fight.points[user.side]
+        for i in points.values():
+            if i.value > escalation:
+                i.value -= escalation
+        user.escalation = 0
+        card.escalation = 0
+
+    def iniciative_special(card):
+        user = card.current_fighter
+        names = ['maneuver', 'onslaught', 'fortitude', 'excellence']
+        if user.side == 'allies':
+            card.blocked = True
+            renpy.show_screen('sc_chose_slot_multiplier', card, user, names, 'iniciative')
+        else:
+            points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
+
+    def set_multiplier(card, slot, multiplier_name):
+        user = card.current_fighter
+        points = user.fight.points[user.side][slot]
+        points.add_multiplier(multiplier_name)
+    
     #special mechanincs
     def reckless(card):
         user = card.current_fighter
@@ -134,15 +160,14 @@ init python:
             choosed = active_points[0]
             multi = user.fight.points[user.side][choosed].multiplier()
         except IndexError:
-            return
+            return rand.choice(names)
         if len(active_points) < 2:
             return choosed 
         for i in active_points:
             points = user.fight.points[user.side][i]
             if points.multiplier > multi:
                 choosed = i
-        points = user.fight.points[user.side][i]
-        points.value += card.power
+        return choosed
 
 
     def counterstrike(card):
@@ -163,6 +188,8 @@ init python:
             renpy.show_screen('sc_chose_slot', card, user, names)
         else:
             points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
 
     def outflank(card):
         user = card.current_fighter
@@ -172,6 +199,8 @@ init python:
             renpy.show_screen('sc_chose_slot', card, user, names)
         else:
             points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
 
     def versatile(card):
         user = card.current_fighter
@@ -181,6 +210,8 @@ init python:
             renpy.show_screen('sc_chose_slot', card, user, names)
         else:
             points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
 
     def pressing(card):
         user = card.current_fighter
@@ -288,13 +319,23 @@ screen draw_from_drop(user, text, func):
             textbutton c.name:
                 action Function(func, c), Function(user.fight.send_event, user), Hide('draw_from_drop')
 
-screen sc_chose_slot(card, user, names):
+screen sc_chose_slot(card, user, names, func):
     modal True
     vbox:
         align(0.6, 0.7)
         for name in names:
             textbutton name:
                 action Function(use_slot, card, name), Function(user.fight.send_event, user), Hide('sc_chose_slot')
+
+screen sc_chose_slot_multiplier(card, user, names, multiplier_name):
+    modal True
+    vbox:
+        align(0.6, 0.7)
+        for name in names:
+            textbutton name:
+                action [Function(set_multiplier, card, name, multiplier_name),
+                    Function(user.fight.send_event, user), Hide('sc_chose_slot_multiplier')]
+
 init python:
     sc_chose_drop_dropped = []
     def make_empty(list_):
