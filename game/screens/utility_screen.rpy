@@ -63,7 +63,13 @@ screen sc_prefight_equip(combatant, fight):
         textbutton prefight_text2:
             action [ShowTransient('sc_equip_weapon', person=person, hand='other_hand'),
                 SensitiveIf(is_other_hand_active(person))]
+        textbutton "Choose deck":
+            action [ShowTransient('sc_choose_deck', combatant=combatant)]
         text 'Combat style: ' + combatant.get_combat_style()
+        text 'Current deck: '
+        textbutton combatant.deck.name:
+            action ShowTransient('sc_show_deck', deck=combatant.deck)
+
         textbutton 'Done' action Hide('sc_enemy_stats'), Return()
     vbox:
         xalign(0.5)
@@ -72,6 +78,7 @@ screen sc_prefight_equip(combatant, fight):
                 action Hide('sc_enemy_stats'), ShowTransient('sc_enemy_stats', combatant=enemy)
 
 screen sc_enemy_stats(combatant):
+    tag prefight
     vbox:
         xalign 0.9
         image im.Scale(combatant.avatar, 200, 200)
@@ -84,6 +91,7 @@ screen sc_enemy_stats(combatant):
 
 
 screen sc_equip_weapon(person, hand):
+    tag prefight
     vbox:
         align(0.3, 0.3)
         for weapon in person.inventory.equiped_weapons().values():
@@ -96,34 +104,39 @@ screen sc_equip_weapon(person, hand):
                     textbutton weapon.description:
                         action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
         textbutton 'unequip' action Function(person.disarm_weapon, hand), Hide('sc_equip_weapon')
-
-screen sc_make_deck(person):
+        textbutton 'leave' action Hide('sc_equip_weapon')
+screen sc_choose_deck(combatant):
+    tag prefight
+    frame:
+        align(0.3, 0.3)
         vbox:
-            xalign 0.0
-            text 'current deck:'
-            for card in person.deck.cards_list:
-                textbutton card.name:
-                    hovered Show('sc_card_description', card=card)
+            text 'Available decks'
+            for i in combatant.decks:
+                if i.is_completed():
+                    textbutton i.name:
+                        action Function(combatant.set_deck, i), Hide('sc_choose_deck')
+            textbutton 'Leave':
+                action Hide('sc_choose_deck')
+
+screen sc_show_deck(deck):
+    tag prefight
+    frame:
+        align(0.3, 0.3)
+        vbox:
+            for i in deck.cards_list:
+                textbutton i.name:
+                    hovered ShowTransient('sc_card_description', card=i)
                     unhovered Hide('sc_card_description')
-                    action Function(person.deck.remove_card, card)
-        vbox:
-            xalign 0.3
-            text 'available:'
-            for card in person.cards_list:
-                if card not in person.deck.cards_list:
-                    textbutton card.name:
-                        hovered Show('sc_card_description', card=card)
-                        unhovered Hide('sc_card_description')
-                        action Function(person.deck.add_card, card)
-        textbutton 'done':
-            xalign 0.6
-            action Return()
-
-
+                    action NullAction()
+            text ""
+            textbutton 'leave' action Hide('sc_show_deck')
 
 screen sc_card_description(card):
-    text card.show():
+    frame:
+        xmaximum 300
+        ymaximum 100
         align(0.5, 0.5)
+        text card.show()
 
 
 screen sc_faction_info(faction):
@@ -270,3 +283,77 @@ screen sc_armor_properties(item_properties):
             for key, value in item_features.items():
                 if value['slot'] == 'armor_rate':
                     textbutton value['name'] action SetDict(item_properties, 'armor_rate', key)
+init python:
+    deck_creator_choosed_deck = None
+    deck_creator_current_name = ' '
+screen deck_creator:
+    $ storage = player.decks
+    hbox:
+        frame:
+            xmaximum 300
+            vbox:
+                for i in storage:
+                    textbutton i.description():
+                        action SetVariable('deck_creator_choosed_deck', i)
+                textbutton 'Create new deck':
+                    action Function(storage.append, Deck())
+                textbutton 'Leave':
+                    action SetVariable('deck_creator_choosed_deck', None), Return()
+
+        if deck_creator_choosed_deck is not None:
+            frame:
+                vbox:
+                    text deck_creator_choosed_deck.name
+                    textbutton 'Rename deck':
+                        action ShowTransient('sc_deck_namer', deck=deck_creator_choosed_deck)
+                    textbutton 'Modify deck':
+                        action ShowTransient('sc_deck_modifier', deck=deck_creator_choosed_deck)
+                    textbutton 'Remove deck':
+                        action [Function(storage.remove, deck_creator_choosed_deck), SetVariable('deck_creator_choosed_deck', None),
+                                Hide('sc_deck_modifier')]
+                    if deck_creator_choosed_deck.is_completed():
+                        textbutton 'Finish':
+                            action SetVariable('deck_creator_choosed_deck', None), Hide('sc_deck_modifier')
+                    else:
+                        textbutton 'Leave uncompleted':
+                            action SetVariable('deck_creator_choosed_deck', None), Hide('sc_deck_modifier')
+screen sc_deck_modifier(deck):
+    tag deck_editor
+    python:
+        try:
+            card_list = player.card_storage.cards
+        except AttributeError:
+            player.card_storage = CardStorage()
+            card_list = player.card_storage.cards
+    frame:
+        xalign 0.6
+        hbox:
+            spacing 10
+            vbox:
+                text 'Current cards'
+                for i in deck.cards_list:
+                    textbutton i.name:
+                        hovered ShowTransient('sc_card_description', card=i)
+                        unhovered Hide('sc_card_description')
+                        action Function(deck.remove_card, i)
+            vbox:
+                box_wrap True
+                text 'Available cards'
+                for i in card_list:
+                    textbutton i.name:
+                        hovered ShowTransient('sc_card_description', card=i)
+                        unhovered Hide('sc_card_description')
+                        action Function(deck.add_card, i), SensitiveIf(deck.can_be_added(i))
+
+screen sc_deck_namer(deck):
+    tag deck_editor
+    modal True
+    frame:
+        xmaximum 200
+        ymaximum 50
+        xalign 0.6
+        vbox:
+            input value VariableInputValue('deck_creator_current_name')
+            textbutton "Apply":
+                action [Function(deck.set_name, deck_creator_current_name), Hide('sc_deck_namer')]
+

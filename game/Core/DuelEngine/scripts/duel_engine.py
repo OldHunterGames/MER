@@ -365,6 +365,7 @@ class DuelCombatant(object):
                 person.deck = default_deck
             elif not person.deck.is_completed():
                 person.deck = default_deck
+            person.decks.append(default_deck)
             self.deck = person.deck
         except AttributeError:
             self.deck = default_deck
@@ -407,7 +408,13 @@ class DuelCombatant(object):
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
         self.last_event = None
-
+    @property
+    def decks(self):
+        try:
+            decks = self.person.decks
+        except AttributeError:
+            decks = []
+        return decks
     def draw_list(self):
         list_ = [i for i in self.drop if i.drawable()]
         return list_[:-1]
@@ -574,8 +581,8 @@ class CardStorage(object):
     @property
     def cards(self):
         list_ = []
-        list_.join(self.default_cards)
-        list_.join(self.other_cards)
+        list_.extend(self.default_cards)
+        list_.extend(self.other_cards)
         return list_
 
     def add_card(self, card_id):
@@ -584,14 +591,19 @@ class CardStorage(object):
 
 class Deck(object):
     def __init__(self, cards_list=None):
+        self.name = 'default name'
         self.cards_list = [make_card(card) for card in cards_list] if cards_list is not None else []
         self.style = None
-
+    def set_name(self, name):
+        self.name = name
     def is_completed(self):
         if len(self.cards_list) == 22:
             return True
         return False
-
+    def description(self):
+        txt = self.name
+        txt += '\n(%s/22)'%(len(self.cards_list))
+        return txt
     def set_style(self, style):
         self.style = style
     
@@ -612,9 +624,13 @@ class Deck(object):
         return value
     
     def can_be_added(self, card):
-        if self.count_cards(card.id) > 2 and not card.unique:
+        if self.is_completed():
             return False
-        elif self.count_cards(card.id) > 0 and card.unique:
+        if self.count_cards(card.id) > 2 and card.rarity == 'uncommon':
+            return False
+        if self.count_cards(card.id) > 1 and card.rarity == 'rare':
+            return False
+        if self.count_cards(card.id) > 0 and card.rarity == 'exceptional':
             return False
         return True
 
@@ -669,7 +685,7 @@ class Hand(object):
 
     def get_all_cards(self):
         list_ = [i for i in self.cards_list]
-        list_.join(self._cards_left)
+        list_.extend(self._cards_left)
         return list_
 
 

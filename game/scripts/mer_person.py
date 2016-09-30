@@ -530,7 +530,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.food_system = FoodSystem(self)
         self._favor = BarterSystem()
         self.card_storage = None
-
+        self.decks = []
     def apply_background(self, background):
         self.background = background
         background.apply(self)
