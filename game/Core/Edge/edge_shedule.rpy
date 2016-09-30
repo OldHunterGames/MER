@@ -183,7 +183,25 @@ label shd_edge_job_simplework(action):
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
         actor.skill(skill).get_expirience(result)
-    '[name] [descr] [yeld].'
+    '[name] [descr][yeld].'
+    return
+    
+label shd_edge_job_clanwork(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        moral = action.special_values['moral']
+        skill = action.special_values['skill']
+        beneficiar = action.special_values['beneficiar']
+        tense = action.special_values['tense']
+        statisfy = action.special_values['statisfy'] 
+        descr = action.special_values['description'] 
+        difficulty = action.special_values['difficulty'] 
+        result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
+        yeld = encolor_text(__('favor'), result)
+        target.supervisor.gain_favor(result)
+        actor.skill(skill).get_expirience(result)
+    '[name] [descr][yeld].'
     return
     
 label shd_edge_job_scmunition(action):

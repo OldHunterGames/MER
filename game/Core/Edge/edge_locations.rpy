@@ -43,30 +43,18 @@ label lbl_edge_outpost(location):
 
 label lbl_edge_shifting_mist(location=None):
     menu:
-        'Battle':
+        'Patrool the Edge':
+            $ ally1 = DuelCombatant(player)
+            call lbl_edge_randenc_errant
             python:
-                ally1 = DuelCombatant(player)
-                
-                
-                
-                # enemy_weapon = Weapon('twohand', 'subdual', quality=1)
-                # enemy_armor = Armor('heavy_armor', quality=1)
-                # enemy = gen_random_person('human')
-                # enemy.main_hand = enemy_weapon
-                # enemy.armor = enemy_armor
-                
-                enemy = make_combatant('weak_bandit')
-                equip_combatant(enemy, 'weak_agile')
-                enemy1 = DuelCombatant(enemy)
-
-
-                
                 fight = DuelEngine([ally1],[enemy1], None)
                 fight.start()
-        'Go to mist':
+
+        'Wander in The Mist':
             $ edge.go_to_mist()
         'Get out':        
             return
+            
     return
 
 label lbl_edge_utility1(location, title, dif, achive, pay, skill_id):
