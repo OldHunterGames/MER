@@ -41,23 +41,16 @@ init python:
         user = card.current_fighter
         battle_points = [value['fortitude'] for value in user.fight.points.values()]
         make_active(battle_points)
-<<<<<<< HEAD
+
+
     def outsmart_special(card):
         user = card.current_fighter
         for action in user.fight.persistent_actions:
             action.remove()
         user.fight.persistent_actions = []
+        
     def fallback_special(card):
         user = card.current_fighter
-=======
-        
-    def outsmart_special(user):
-        for action in user.fight.persistent_actions:
-            action.remove()
-        user.fight.persistent_actions = []
-        
-    def fallback_special(user):
->>>>>>> origin/master
         if len(user.drop) < 1:
             return
         value = 0
