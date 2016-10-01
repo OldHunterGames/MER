@@ -63,6 +63,8 @@ screen sc_prefight_equip(combatant, fight):
         textbutton prefight_text2:
             action [ShowTransient('sc_equip_weapon', person=person, hand='other_hand'),
                 SensitiveIf(is_other_hand_active(person))]
+        textbutton 'Make deck':
+            action Show('deck_creator', overlay=True)
         textbutton "Choose deck":
             action [ShowTransient('sc_choose_deck', combatant=combatant)]
         text 'Combat style: ' + combatant.get_combat_style()
@@ -286,7 +288,9 @@ screen sc_armor_properties(item_properties):
 init python:
     deck_creator_choosed_deck = None
     deck_creator_current_name = ' '
-screen deck_creator:
+screen deck_creator(overlay=False):
+    if overlay:
+        image 'interface/bg_base.jpg'
     $ storage = player.decks
     hbox:
         frame:
@@ -298,7 +302,7 @@ screen deck_creator:
                 textbutton 'Create new deck':
                     action Function(storage.append, Deck())
                 textbutton 'Leave':
-                    action SetVariable('deck_creator_choosed_deck', None), Return()
+                    action SetVariable('deck_creator_choosed_deck', None), If(overlay, true=Hide('deck_creator'), false=Return())
 
         if deck_creator_choosed_deck is not None:
             frame:
