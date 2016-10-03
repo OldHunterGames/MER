@@ -17,10 +17,10 @@ screen duel_battle(fight):
         if not fight.passed:
             textbutton 'Pass':
                 align(0.5, 0.08)
-                action [Function(fight.make_pass), Function(fight.enemy_run)]
+                action [Function(fight.make_pass), Function(fight.enemy_run), SensitiveIf(fight.player_turn)]
         if not fight.ended and fight.passed:
             textbutton 'Star next round':
-                action Function(fight.round_end)
+                action Function(fight.round_end), SensitiveIf(fight.player_turn)
         elif fight.ended:
             textbutton 'Leave' action Return()
         textbutton 'show fight summary':
@@ -88,7 +88,8 @@ screen duel_battle(fight):
                 textbutton card.name:
                     hovered Show('sc_card_info', card=card)
                     unhovered Hide('sc_card_info')
-                    action [Function(fight.current_ally.use_action, card), Hide('sc_card_info')] 
+                    action [Function(fight.current_ally.use_action, card), Hide('sc_card_info'),
+                            SensitiveIf(fight.player_turn)] 
         frame:
             yalign 0.9
             xalign 0.25

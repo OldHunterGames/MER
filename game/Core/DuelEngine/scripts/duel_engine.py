@@ -10,8 +10,8 @@ import mer_utilities as utilities
 def default_cards():
     return ['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite',
         'headbutt', 'recoil', 'dodge', 'deep_breath', 'caution', 'bite', 'bite',
-        'light_strike', 'strike', 'powerful_strike', 'move', 'dash', 'fast_dash',
-        'rebound', 'block', 'hard_block']
+        'light_strike', 'strike', 'powerful_strike', 'move', 'test1', 'test1',
+        'test1', 'test1', 'test1']
 
 def predict_result(npc, player, simulated_fight):
     test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
@@ -215,6 +215,7 @@ class DuelEngine(object):
         self.show_summary = False
         self.ended = False
         self.enemy_passed = True
+        self.player_turn = False
         
 
     def _get_combatant(self, side):
@@ -315,6 +316,7 @@ class DuelEngine(object):
         if self.passed and self.current_loser == 'allies':
             return
         if self.enemy_passed:
+            self.send_event(enemy)
             return
         action = predict_result(enemy, self.current_ally, self)
         if action is not None:
@@ -343,7 +345,10 @@ class DuelEngine(object):
 
     def send_event(self, fighter):
         if fighter.side == 'allies':
+            self.player_turn = False
             self.enemy_run()
+        if fighter.side == 'enemies':
+            self.player_turn = True
 class DuelCombatant(object):
     """
     This class makes a characters participating in Fast Fight.
@@ -417,7 +422,7 @@ class DuelCombatant(object):
         return decks
     def draw_list(self):
         list_ = [i for i in self.drop if i.drawable()]
-        return list_[:-1]
+        return list_
     def init_stats(self):
         for i in ['physique', 'agility']:
             try:
@@ -531,9 +536,9 @@ class DuelCombatant(object):
         self.fight.update_stack(self.side, duel_action)
         if duel_action.persistent:
             self.fight.persistent_actions.append(duel_action)
-        if not duel_action.blocked:
-            self.fight.send_event(self)
-        self.drop_card(duel_action)
+        self.fight.send_event(self)
+        if duel_action in self.hand:
+            self.drop_card(duel_action)
 
     def drop_card(self, card):
         self.drop.append(card)
@@ -702,8 +707,8 @@ class DuelAction(object):
         self.default_power = 0
         self.escalation = 0
         self._power = None
-        self.blocked = False
         self.evaluate_power = True
+    
     @property
     def power_mods(self):
         try:
@@ -773,7 +778,17 @@ class DuelAction(object):
         self.current_fighter.send_event('card_used')
         if self.special_effect is not None:
             self.special_effect(self)
+        eval_list = []
+        eval_last = []
         for i in self.special_mechanics:
+            if i in store.special_mechanics['eval_early']:
+                eval_list.insert(0, i)
+            elif i in store.special_mechanics['eval_last']:
+                eval_last.append(i)
+            else:
+                eval_list.append(i)
+        eval_list.extend(eval_last)
+        for i in eval_list:
             i(self)
         self.escalation = self.power
         if self.rarity == 'exceptional':

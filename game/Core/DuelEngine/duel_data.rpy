@@ -3,14 +3,6 @@ init python:
     import random as rand
 
     from duel_engine import DuelAction
-
-    def make_inactive(battlepoints_list):
-        for point in battlepoints_list:
-            point.active = False
-    
-    def make_active(battlepoints_list):
-        for point in battlepoints_list:
-            point.active = True
     
     def clinch_special(card):
         user = card.current_fighter
@@ -62,8 +54,8 @@ init python:
         if point_to_decrease != None:
             point_to_decrease.value -= user.escalation
         if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('draw_from_drop', user, 'draw_card', user.draw_from_drop)
+            card = subscreen_call('draw_from_drop', card, user=user, text='draw_card')
+            user.draw_from_drop(card)
         else:
             max_ = 0
             card_to_get = None
@@ -86,18 +78,15 @@ init python:
     def iniciative_special(card):
         user = card.current_fighter
         names = ['maneuver', 'onslaught', 'fortitude', 'excellence']
+        multiplier_name = 'iniciative'
         if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_slot_multiplier', card, user, names, 'iniciative')
+            slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
+            set_multiplier(card, slot, multiplier_name)
         else:
             points = slot_chosing(card, names)
-            points = user.fight.points[user.side][points]
-            points.value += card.power
+            set_multiplier(card, points, multiplier_name)
 
-    def set_multiplier(card, slot, multiplier_name):
-        user = card.current_fighter
-        points = user.fight.points[user.side][slot]
-        points.add_multiplier(multiplier_name)
+    
     
     #special mechanincs
     def reckless(card):
@@ -118,15 +107,15 @@ init python:
 
     def combo(card):
         user = card.current_fighter
-        if len(user.drop) < 1:
+        if len(user.draw_list()) < 1:
             return
         if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('draw_from_drop', user, 'use_card', user.use_from_drop)
+            card = subscreen_call('draw_from_drop', card, user, 'use_card')
+            user.use_from_drop(card)
         else:
             max_ = 0
             card_to_get = None
-            for card in user.drop:
+            for card in user.user.draw_list():
                 if card.power > max_:
                     card_to_get = card
                     max_ = card.power
@@ -140,11 +129,116 @@ init python:
 
     def sequence(card):
         user = card.current_fighter
-        hand = user.hand
+        hand = user.hand    
+        try:
+            if card.sequence:
+                return
+        except AttributeError:
+            pass
+        card.sequence = True
         for i in hand.get_all_cards():
             if i.id == card.id:
-                user.use_action(i)
+                i.sequence = False
+                if not i.sequence:
+                    i.sequence = True
+                    i.use()
+        for i in hand.get_all_cards():
+            i.sequence = False
+        card.sequence = False
 
+
+    def counterstrike(card):
+        user = card.current_fighter
+        names = ['onslaught', 'fortitude']
+        if user.side == 'allies':
+            slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
+            user.fight.points[user.side][slot].value += card.power
+        else:
+            points = slot_chosing(card, names)
+            
+
+    def footwork(card):
+        user = card.current_fighter
+        names = ['maneuver', 'fortitude']
+        if user.side == 'allies':
+            slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
+            user.fight.points[user.side][slot].value += card.power
+        else:
+            points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
+
+    def outflank(card):
+        user = card.current_fighter
+        names = ['maneuver', 'onslaught']
+        if user.side == 'allies':
+            slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
+            user.fight.points[user.side][slot].value += card.power
+        else:
+            points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
+
+    def versatile(card):
+        user = card.current_fighter
+        names = ['maneuver', 'onslaught', 'fortitude']
+        if user.side == 'allies':
+            slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
+            user.fight.points[user.side][slot].value += card.power
+        else:
+            points = slot_chosing(card, names)
+            points = user.fight.points[user.side][points]
+            points.value += card.power
+
+    def pressing(card):
+        user = card.current_fighter
+        escalation = user.escalation
+        points = user.fight.points[user.side]
+        points_value = [i.value for k, i in points.items() if k != 'excellence']
+        max_slot = max(points_value)
+        max_point = points.values()[points_value.index(max_slot)]
+        if escalation < max_slot:
+            max_point.value -= escalation
+        points['excellence'].value += escalation+2
+
+    def tactical(card):
+        user = card.current_fighter
+        if user.side == 'allies':
+            drop_list = subscreen_call('sc_chose_drop', card, user=user)
+            for i in drop_list:
+                user.drop_card(i)
+        else:
+            for i in range(2):
+                card = None
+                try:
+                    card = rand.choice(user.hand.cards_list)
+                except IndexError:
+                    break
+                if card is not None:
+                    user.drop_card(card)
+        user.draw(2)
+    #power mods
+    def buildup(card):
+        user = card.current_fighter
+        value = len([i for i in user.drop if i.power > 0])
+        return value
+
+    def aggravating(card):
+        user = card.current_fighter
+        points = fight.points[user.side][card.slot]
+        value = 0
+        for i in user.drop:
+            if i.id == card.id:
+                value += i.power
+        return value
+
+
+    special_mechanics = {
+        'card_draw':[combo, advantage, tactical],
+        'eval_early': [reckless],
+        'eval_last': [sequence],
+    }
+    #utility functions
     def use_slot(card, slot):
         user = card.current_fighter
         points = user.fight.points[user.side][slot]
@@ -169,95 +263,21 @@ init python:
                 choosed = i
         return choosed
 
-
-    def counterstrike(card):
+    def set_multiplier(card, slot, multiplier_name):
         user = card.current_fighter
-        names = ['onslaught', 'fortitude']
-        if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_slot', card, user, names)
-        else:
-            points = slot_chosing(card, names)
-            
+        points = user.fight.points[user.side][slot]
+        points.add_multiplier(multiplier_name)
 
-    def footwork(card):
-        user = card.current_fighter
-        names = ['maneuver', 'fortitude']
-        if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_slot', card, user, names)
-        else:
-            points = slot_chosing(card, names)
-            points = user.fight.points[user.side][points]
-            points.value += card.power
-
-    def outflank(card):
-        user = card.current_fighter
-        names = ['maneuver', 'onslaught']
-        if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_slot', card, user, names)
-        else:
-            points = slot_chosing(card, names)
-            points = user.fight.points[user.side][points]
-            points.value += card.power
-
-    def versatile(card):
-        user = card.current_fighter
-        names = ['maneuver', 'onslaught', 'fortitude']
-        if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_slot', card, user, names)
-        else:
-            points = slot_chosing(card, names)
-            points = user.fight.points[user.side][points]
-            points.value += card.power
-
-    def pressing(card):
-        user = card.current_fighter
-        escalation = user.escalation
-        points = user.fight.points[user.side]
-        points_value = [i.value for k, i in points.items() if k != 'excellence']
-        max_slot = max(points_value)
-        max_point = points.values()[points_value.index(max_slot)]
-        if escalation < max_slot:
-            max_point.value -= escalation
-        points['excellence'].value += escalation+2
-
-    def tactical(card):
-        user = card.current_fighter
-        user.draw(2)
-        if user.side == 'allies':
-            card.blocked = True
-            renpy.show_screen('sc_chose_drop', user)
-        else:
-            for i in range(2):
-                try:
-                    card = rand.choice(user.hand.cards_list)
-                except IndexError:
-                    return
-                user.drop_card(card)
-    #power mods
-    def buildup(card):
-        user = card.current_fighter
-        value = len([i for i in user.drop if i.power > 0])
-        return value
-
-    def aggravating(card):
-        user = card.current_fighter
-        points = fight.points[user.side][card.slot]
-        value = 0
-        for i in user.drop:
-            if i.id == card.id:
-                value += i.power
-        return value
-
-
-    special_mechanics = {
-        'power_calculators':{},
-        'card_draw':[combo, advantage, tactical],
-
-    }
+    def make_inactive(battlepoints_list):
+        for point in battlepoints_list:
+            point.active = False
+    
+    def make_active(battlepoints_list):
+        for point in battlepoints_list:
+            point.active = True
+    
+    def subscreen_call(screen_name, *args, **kwargs):
+        return renpy.call_in_new_context('utility_subscreen_glue', screen_name, *args, **kwargs)
 
 
     
@@ -305,36 +325,28 @@ init python:
                     'caution': {'name': __('caution'), 'rarity': 'common', 'power': 3, 'use_weapon': False, 'mighty': False, 'slot':  'fortitude', 'description': '{color=#0000ff}Unarmed defence{/color}',  'special_effect': None},
                     
                     'name': {'name': __('name'), 'rarity': 'common', 'power': 0, 'use_weapon': False, 'mighty': False, 'slot': 'onslaught', 'description': 'описалово',  'special_effect': None},
-                    'test1': {'name': __('test1'), 'rarity': 'common', 'power': 2, 'use_weapon': False, 'slot': 'onslaught', 'description': 'описалово', 'special_effect': None, 'power_mods': [buildup], 'special_mechanics': [pressing, amplifiction]}
+                    'test1': {'name': __('test1'), 'rarity': 'common', 'power': 2, 'use_weapon': False, 'slot': 'onslaught', 'description': 'описалово', 'special_effect': None, 'power_mods': [buildup], 'special_mechanics': [combo, sequence, amplifiction, advantage]}
 
                     
 }
 
-screen draw_from_drop(user, text, func):
+screen draw_from_drop(card, user, text):
     modal True
+    
     vbox:
         align(0.6, 0.7)
         text '%s:'%text
         for c in user.draw_list():
             textbutton c.name:
-                action Function(func, c), Function(user.fight.send_event, user), Hide('draw_from_drop')
+                action Return(c)
 
-screen sc_chose_slot(card, user, names, func):
+screen sc_chose_slot(card, user, names):
     modal True
     vbox:
         align(0.6, 0.7)
         for name in names:
             textbutton name:
-                action Function(use_slot, card, name), Function(user.fight.send_event, user), Hide('sc_chose_slot')
-
-screen sc_chose_slot_multiplier(card, user, names, multiplier_name):
-    modal True
-    vbox:
-        align(0.6, 0.7)
-        for name in names:
-            textbutton name:
-                action [Function(set_multiplier, card, name, multiplier_name),
-                    Function(user.fight.send_event, user), Hide('sc_chose_slot_multiplier')]
+                action Return(name)
 
 init python:
     sc_chose_drop_dropped = []
@@ -345,14 +357,31 @@ init python:
                 list_.remove(i)
             except ValueError:
                 pass
-screen sc_chose_drop(user):
+screen sc_chose_drop(card, user):
     modal True
+    $ drop_list = sc_chose_drop_dropped
     vbox:
         align(0.6, 0.7)
         text 'drop card'
         for i in user.hand:
             textbutton i.name:
-                action [Function(user.drop_card, i), AddToSet(sc_chose_drop_dropped, i),
-                    If(len(sc_chose_drop_dropped) > 0, true=Hide('sc_chose_drop')),
-                    If(len(sc_chose_drop_dropped) > 0, true=Function(user.fight.send_event, user)),
-                    If(len(sc_chose_drop_dropped) > 0, true=Function(make_empty, sc_chose_drop_dropped))]
+                selected (i in drop_list)
+                action [If(i in drop_list, true=RemoveFromSet(drop_list, i), false=AddToSet(drop_list, i)),
+                        SensitiveIf(len(drop_list) < 2 or i in drop_list)]
+        textbutton 'Done':
+            action [SensitiveIf(len(drop_list) > 1), Return(drop_list), Function(make_empty, drop_list)]
+
+screen sc_duel_blocker:
+    python:
+        img = im.MatrixColor('interface/bg_base.jpg', im.matrix.opacity(0.2))
+    modal True
+    image img
+
+screen sc_placeholder(screen_name, card, *args, **kwargs):
+    use duel_battle(card.current_fighter.fight)
+    $ renpy.show_screen('sc_duel_blocker')
+    $ renpy.show_screen(screen_name, card, *args, **kwargs)
+
+label utility_subscreen_glue(screen_name, card, *args, **kwargs):
+    $ value = renpy.call_screen('sc_placeholder', screen_name, card, *args, **kwargs)
+    return value
