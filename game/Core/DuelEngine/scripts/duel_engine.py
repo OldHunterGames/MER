@@ -10,8 +10,8 @@ import mer_utilities as utilities
 def default_cards():
     return ['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite',
         'headbutt', 'recoil', 'dodge', 'deep_breath', 'caution', 'bite', 'bite',
-        'light_strike', 'strike', 'powerful_strike', 'move', 'test1', 'test1',
-        'test1', 'test1', 'test1']
+        'light_strike', 'strike', 'powerful_strike', 'move', 'dash', 'fast_dash',
+        'rebound', 'block', 'hard_block']
 
 def predict_result(npc, player, simulated_fight):
     test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
