@@ -13,7 +13,7 @@ from copy import deepcopy
 from schedule import *
 from relations import Relations
 from stance import Stance
-from genus import init_genus, available_genuses
+from genus import available_genuses, Genus
 from alignment import Alignment
 from modifiers import ModifiersStorage
 from factions import Faction
@@ -33,23 +33,22 @@ def get_avatars(path):
 
 def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None):
     if genus != None:
-        for g in available_genuses():
-            if g.get_name() == genus:
-                genus = g
-                break
+        if genus not in available_genuses():
+            raise Exception("gen_person with genus '%s' which not exists"%(genus))
     else:
         genus = choice(available_genuses())
+    genus = Genus(genus)
     if gender is None:
         try:
-            gender = choice(genus.genders())
+            gender = choice(genus.genders)
         except IndexError:
             gender = 'male'
     if age is None:
         try:
-            age = choice(genus.ages())
+            age = choice(genus.ages)
         except IndexError:
             age = 'adolescent'
-    p = Person(age, gender, genus.get_name())
+    p = Person(age, gender, genus)
     background = Background(world, culture, family, education, occupation)
     p.apply_background(background)
     if gender == 'sexless':
@@ -514,7 +513,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._relations = []
         self.selfesteem = 0
         self.conditions = []
-        self.genus = init_genus(self, genus)
+        if isinstance(genus, Genus):
+            self.genus = genus
+        else:
+            self.genus = Genus(genus)
+        self.genus.invoke(self)
         self.add_feature(age)
         self.add_feature(gender)
         self.set_avatar()
@@ -846,7 +849,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             try:
                 genus = super(Person, self).__getattribute__('genus')
                 value = getattr(genus, key)
-                genus.last_caller = self
                 return value
             except AttributeError:
                 pass

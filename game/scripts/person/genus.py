@@ -4,83 +4,67 @@ import renpy.store as store
 import renpy.exports as renpy
 _available_ages_ = ['junior', 'adolescent', 'mature', 'elder']
 
-
-def init_genus(caller, genus):
-    for sub in Genus.__subclasses__():
-        if sub.get_name() == genus:
-            try:
-                if caller.genus.get_name() != sub.get_name():
-                    caller.genus.remove()
-            except AttributeError:
-                pass
-            genus = sub(caller)
-            genus.invoke()
-            return genus
-    raise Exception("No genus named %s" % (genus))
-
-
 def available_genuses():
-    return [genus for genus in Genus.__subclasses__()]
+    return [name for name in store.genuses_data.keys()]
 
 
 class Genus(object):
-    _available_ages_ = ['adolescent', 'mature']
-    _available_genders_ = ['male', 'female', 'sexless', 'shemale']
-    _features_ = []
+    _available_ages = ['adolescent', 'mature']
+    _available_genders = ['male', 'female', 'sexless', 'shemale']
     head_type = None
 
-    def __init__(self, owner):
-        self.owner = owner
+    def __init__(self, name):
+        self._owner = None
+        self.name = name
+        self.data = store.genuses_data[name]
 
+    def __getattr__(self, key):
+        try:
+            value = self.data[key]
+        except KeyError:
+            raise AttributeError(key)
+        else:
+            if callable(value):
+                return value(self.owner)
+            return value
+    
     def remove(self):
-        for feature in self._features_:
-            self.owner.remove_feature(feature)
-        self.owner.remove_feature(self.head_type)
+        for feature in self._features:
+            self._owner.remove_feature(feature)
+        self._owner.remove_feature(self.head_type)
+        self.owner = None
 
-    def invoke(self):
-        for feature in self._features_:
-            self.owner.add_feature(feature)
-        self.owner.add_feature(self.head_type)
-        return self
+    def invoke(self, owner):
+        self._owner = owner
+        for feature in self._features:
+            self._owner.add_feature(feature)
+        self._owner.add_feature(self.head_type)
+    
+    @property
+    def genders(self):
+        try:
+            genders = self.data['genders']
+        except KeyError:
+            genders = self._available_genders
+        return genders
 
-    @classmethod
-    def genders(cls):
-        return cls._available_genders_
+    @property
+    def ages(self):
+        try:
+            ages = self.data['ages']
+        except KeyError:
+            ages = self._available_ages
+        return ages
+    
+    @property
+    def head_type(self):
+        return self.data['head_type']
+    
+    @property
+    def _features(self):
+        try:
+            features = self.data['features']
+        except KeyError:
+            features = []
+        return features
 
-    @classmethod
-    def ages(cls):
-        return cls._available_ages_
-
-    @classmethod
-    def get_name(cls):
-        return cls._name_
-
-
-class Human(Genus):
-    _name_ = 'human'
-    head_type = 'human'
-
-
-class Vampire(Genus):
-    _available_ages_ = []
-    _name_ = 'vampire'
-    head_type = 'undead'
-
-
-class Werewolf(Genus):
-    _available_ages_ = []
-    _name_ = 'werewolf'
-    head_type = 'canine'
-
-
-class Lupine(Genus):
-    _available_ages_ = []
-    _name_ = 'lupine'
-    head_type = 'canine'
-
-
-class Slime(Genus):
-    _available_ages_ = []
-    _available_genders_ = []
-    head_type = 'slime'
-    _name_ = 'slime'

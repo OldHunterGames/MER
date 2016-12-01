@@ -323,6 +323,7 @@ class DuelEngine(object):
             enemy.use_action(action)
         else:
             self.enemy_passed = True
+            self.send_event(enemy)
             return
         if self.passed:
             if self.compare_points() != 'allies':
@@ -347,7 +348,7 @@ class DuelEngine(object):
         if fighter.side == 'allies':
             self.player_turn = False
             self.enemy_run()
-        if fighter.side == 'enemies':
+        elif fighter.side == 'enemies':
             self.player_turn = True
 class DuelCombatant(object):
     """
