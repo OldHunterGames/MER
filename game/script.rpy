@@ -4,6 +4,7 @@ init -10 python:
     sys.path.append(renpy.loader.transfn("scripts"))
     sys.path.append(renpy.loader.transfn("scripts/person"))
     sys.path.append(renpy.loader.transfn("Core"))
+    sys.path.append(renpy.loader.transfn("Core/DuelEngine/scripts"))
     from mer_core import *
     from mer_utilities import *
     from mer_item import *
@@ -12,6 +13,7 @@ init -10 python:
     from mer_metric import *      
     from mer_event import *
     from mer_metaperson import *
+    from duel_engine import *
     
 init python:
     outer_worlds = []
