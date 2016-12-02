@@ -268,35 +268,25 @@ def get_random_combatant():
 def get_random_item_set():
     return choice(store.equip_sets.keys())
 
-def make_combatant(id_=None):
-    if id_ is None:
-        id_ = get_random_combatant()
-    data = store.combatant_data[id_]
-    name = data['name']
-    combatant = Combatant(name)
-    combatant.set_avatar(data['avatar_folder'])
-    for key, value in data['attributes'].items():
-        setattr(combatant, key, value)
-    return combatant
-
-def equip_combatant(combatant, equip_set_id=None):
-    if equip_set_id is None:
-        equip_set_id = get_random_item_set()
-    data = store.equip_sets[equip_set_id]
-    for key, value in data.items():
-        if key == 'main_hand' or key == 'other_hand':
-            item = create_weapon(**value)
-        elif key == 'armor':
-            item = create_armor(**value)
-        setattr(combatant, key, item)
-
 class Combatant(Skilled, InventoryWielder, Attributed):
-    def __init__(self, name):
+    def __init__(self, combatant_id='any', equip_set_id='any'):
         super(Combatant, self).__init__()
         self.init_inventorywielder()
         self.init_skilled()
         self.init_attributed()
-        self.name = name
+        if combatant_id == 'any':
+            combatant_id = get_random_combatant()
+        if equip_set_id == 'any':
+            equip_set_id = get_random_item_set()
+        try:
+            data = store.combatant_data[combatant_id]
+        except KeyError:
+            raise Exception("No combatant with id: %s"%combatant_id)
+        self.name = data['name']
+        self.set_avatar(data['avatar_folder'])
+        for key, value in data['attributes'].items():
+            setattr(self, key, value)
+        self._equip(equip_set_id)
     
     def set_avatar(self, avatar_folder):
         path = 'images/avatar/combatants/'
@@ -309,6 +299,18 @@ class Combatant(Skilled, InventoryWielder, Attributed):
             return 
         else:
             self.avatar_path = avatar
+
+    def _equip(self, id_):
+        try:
+            data = store.equip_sets[id_]
+        except KeyError:
+            raise Exception("No item set with id: %s"%(id_))
+        for key, value in data.items():
+            if key == 'main_hand' or key == 'other_hand':
+                item = create_weapon(**value)
+            elif key == 'armor':
+                item = create_armor(**value)
+        setattr(self, key, item)
 
 
 class FoodSystem(object):
