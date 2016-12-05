@@ -354,6 +354,21 @@ class DuelEngine(object):
             self.enemy_run()
         elif fighter.side == 'enemies':
             self.player_turn = True
+
+
+def make_default_deck(combat_style):
+    deck = Deck()
+    try:
+        dict_ = store.default_decks[combat_style]
+    except KeyError:
+        dict_ = store.default_decks['default']
+    for key, value in dict_:
+        count = value
+        while count > 0:
+            deck.add_card(key)
+            count -= 1
+    return deck
+    
 class DuelCombatant(object):
     """
     This class makes a characters participating in Fast Fight.
@@ -628,6 +643,7 @@ class Deck(object):
     def description(self):
         txt = self.name
         txt += '\n(%s/40)'%(len(self.cards_list))
+        txt += '\n style: %s'%(str(self.combat_style))
         return txt
     
     def add_card(self, card_id):
@@ -753,6 +769,13 @@ class DuelAction(object):
         except KeyError:
             tag = None
         return tag
+    @property
+    def combat_style(self):
+        try:
+            style = self.data[self.id]['combat_style']
+        except KeyError:
+            style = None
+        return style
     def __getattr__(self, key):
         try:
             id_ = self.__dict__['id']

@@ -79,6 +79,8 @@ init -1 python:
         user = card.current_fighter
         names = ['maneuver', 'onslaught', 'fortitude', 'excellence']
         multiplier_name = 'iniciative'
+        for i in user.fight.points[user.side]:
+            i.remove_multiplier('iniciative')
         if user.side == 'allies':
             slot = subscreen_call('sc_chose_slot', card, user=user, names=names)
             set_multiplier(card, slot, multiplier_name)
@@ -126,6 +128,12 @@ init -1 python:
         fight = user.fight
         points = fight.points[user.side][card.slot]
         points.add_multiplier('amplifiction')
+
+    def amplify(card):
+        user = card.current_fighter
+        fight = user.fight
+        points = fight.points[user.side][card.slot]
+        points.value += points.value
 
     def sequence(card):
         try:
@@ -218,6 +226,29 @@ init -1 python:
                 if card is not None:
                     user.drop_card(card)
         user.draw(2)
+
+    def fatigue(card):
+        user = card.current_fighter
+        fight = user.fight
+        points = fight.points
+        fighters = [fight.current_ally, fight.current_enemy]
+        escalation = fighters[0].escalation
+        if escalation > fighters[1].escalation:
+            fighters.remove(fighters[1])
+        elif escalation < fighters[1].escalation:
+            fighters.remove(fighters[0])
+        for i in fighters:
+            value = 0
+            point = None
+            current_points = points[i.side]
+            for n in current_points:
+                if n.value > value:
+                    value = n.value
+                    point = n
+            n -= i.escalation
+
+
+
     #power mods
     def buildup(card):
         user = card.current_fighter
