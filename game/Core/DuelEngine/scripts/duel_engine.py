@@ -8,10 +8,7 @@ import renpy.exports as renpy
 import mer_utilities as utilities
 
 def default_cards():
-    return ['clinch', 'hit_n_run', 'rage', 'outsmart', 'fallback', 'bite',
-        'headbutt', 'recoil', 'dodge', 'deep_breath', 'caution', 'bite', 'bite',
-        'light_strike', 'strike', 'powerful_strike', 'move', 'dash', 'fast_dash',
-        'rebound', 'block', 'hard_block']
+    return [key for key, value in store.actions_lib.items() if value['rarity'] == 'base']
 
 def predict_result(npc, player, simulated_fight):
     test_fight = DuelEngine([player], [npc], simulated_fight.situation, True)
@@ -313,6 +310,8 @@ class DuelEngine(object):
 
     def enemy_run(self):
         enemy = self.current_enemy
+        if enemy.hand_is_empty():
+            return
         if self.passed and self.current_loser == 'allies':
             return
         if self.enemy_passed:
@@ -321,6 +320,11 @@ class DuelEngine(object):
         action = predict_result(enemy, self.current_ally, self)
         if action is not None:
             enemy.use_action(action)
+        elif self.passed and self.compare_points() != 'allies' and self.enemies_loose_points > 0:
+            for i in enemy.hand:
+                enemy.use_action(i)
+                break
+            return self.enemy_run()
         else:
             self.enemy_passed = True
             self.send_event(enemy)
@@ -359,8 +363,12 @@ class DuelCombatant(object):
         self.person = person
         cards = default_cards()
         default_deck = Deck()
-        for card in cards:
-            default_deck.add_card(card)
+        shuffle(cards)
+        while not default_deck.is_at_limit():
+            if len(cards) > 0:
+                default_deck.add_card(cards.pop())
+            else:
+                break
         try:
             if person.card_storage is None:
                 person.card_storage = CardStorage()
@@ -596,22 +604,31 @@ class CardStorage(object):
 
 
 class Deck(object):
+    cards_limit = {'base': 4, 'common': 4, 'uncommon': 3, 'rare': 2, 'unique': 1}
     def __init__(self, cards_list=None):
         self.name = 'default name'
         self.cards_list = [make_card(card) for card in cards_list] if cards_list is not None else []
-        self.style = None
+        self.combat_style = None
+    
     def set_name(self, name):
         self.name = name
+    def set_style(self, style):
+        self.combat_style = style
+    
+    def is_at_limit(self):
+        return len(self.cards_list) >= 40
+    
     def is_completed(self):
-        if len(self.cards_list) == 22:
+        if len(self.cards_list) == 40:
             return True
         return False
+    
+    def is_usable(self):
+        return len(self.cards_list) >= 22
     def description(self):
         txt = self.name
-        txt += '\n(%s/22)'%(len(self.cards_list))
+        txt += '\n(%s/40)'%(len(self.cards_list))
         return txt
-    def set_style(self, style):
-        self.style = style
     
     def add_card(self, card_id):
         if isinstance(card_id, DuelAction):
@@ -632,13 +649,13 @@ class Deck(object):
     def can_be_added(self, card):
         if self.is_completed():
             return False
-        if self.count_cards(card.id) > 2 and card.rarity == 'uncommon':
-            return False
-        if self.count_cards(card.id) > 1 and card.rarity == 'rare':
-            return False
-        if self.count_cards(card.id) > 0 and card.rarity == 'exceptional':
-            return False
-        return True
+        else:
+            limit = self.cards_limit[card.rarity] < self.count_cards(card.id)
+            if card.combat_style is not None:
+                style = self.combat_style == card.combat_style
+            else:
+                style = True
+            return limit and style
 
     def get_hand(self, fighter):
         shuffled = [card for card in self.cards_list]
@@ -714,10 +731,28 @@ class DuelAction(object):
     def power_mods(self):
         try:
             mods = self.data[self.id]['power_mods']
+            if mods is None:
+                mods = []
         except KeyError:
             mods = []
         return mods
     
+    @property
+    def special_mechanics(self):
+        try:
+            list_ = self.data[self.id]['special_mechanics']
+            if list_ is None:
+                list_ = []
+        except KeyError:
+            list_ = []
+        return list_
+    @property
+    def tag(self):
+        try:
+            tag = self.data[self.id]['tag']
+        except KeyError:
+            tag = None
+        return tag
     def __getattr__(self, key):
         try:
             id_ = self.__dict__['id']
@@ -732,8 +767,6 @@ class DuelAction(object):
                 raise Exception('DuelAction with id %s do not have value %s'%(self.id, key))
             elif key == 'style' or key == 'special_effect' or key == 'slot':
                 return None
-            elif key == 'special_mechanics':
-                return []
         raise AttributeError(key)
     
     def drawable(self):
@@ -777,8 +810,6 @@ class DuelAction(object):
 
     def use(self):
         self.current_fighter.send_event('card_used')
-        if self.special_effect is not None:
-            self.special_effect(self)
         eval_list = []
         eval_last = []
         for i in self.special_mechanics:

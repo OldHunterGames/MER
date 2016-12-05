@@ -312,6 +312,8 @@ screen deck_creator(overlay=False):
                         action ShowTransient('sc_deck_namer', deck=deck_creator_choosed_deck)
                     textbutton 'Modify deck':
                         action ShowTransient('sc_deck_modifier', deck=deck_creator_choosed_deck)
+                    textbutton 'Combat style: %s'%(str(deck_creator_choosed_deck.combat_style)):
+                        action [ShowTransient('sc_deck_style', deck=deck_creator_choosed_deck)]
                     textbutton 'Remove deck':
                         action [Function(storage.remove, deck_creator_choosed_deck), SetVariable('deck_creator_choosed_deck', None),
                                 Hide('sc_deck_modifier')]
@@ -360,4 +362,24 @@ screen sc_deck_namer(deck):
             input value VariableInputValue('deck_creator_current_name')
             textbutton "Apply":
                 action [Function(deck.set_name, deck_creator_current_name), Hide('sc_deck_namer')]
+
+screen sc_deck_style(deck):
+    tag deck_editor
+    frame:
+        xalign 0.6
+        vbox:
+            textbutton 'wrestler':
+                action [Function(deck.set_style, 'wrestler'), Hide('sc_deck_style')]
+            textbutton 'desperado':
+                action [Function(deck.set_style, 'desperado'), Hide('sc_deck_style')]
+            textbutton 'rookie':
+                action [Function(deck.set_style, 'rookie'), Hide('sc_deck_style')]
+            textbutton 'breter':
+                action [Function(deck.set_style, 'breter'), Hide('sc_deck_style')]
+            textbutton 'juggernaut':
+                action [Function(deck.set_style, 'juggernaut'), Hide('sc_deck_style')]
+            textbutton 'shieldbearer':
+                action [Function(deck.set_style, 'shieldbearer'), Hide('sc_deck_style')]
+            textbutton 'beast':
+                action [Function(deck.set_style, 'beast'), Hide('sc_deck_style')]
 
