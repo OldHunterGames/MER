@@ -132,7 +132,7 @@ def init_points(combatant, enemy, situation):
     #style bonuses
     ally_style = combatant.get_combat_style()
     enemy_style = enemy.get_combat_style()
-    if ally_style == enemy_style and ally_style == 'resler':
+    if ally_style == enemy_style and ally_style == 'wrestler':
         if combatant.physique > enemy.physique:
             d['excellence'].value += combatant.physique * (combatant.physique-enemy.physique)
     elif ally_style == 'rookie':
@@ -142,7 +142,7 @@ def init_points(combatant, enemy, situation):
         if enemy_style == 'beast':
             if combatant.physique > enemy.physique:
                 d['excellence'].value += combatant.physique * (combatant.physique-enemy.physique)
-        elif enemy_style == 'resler':
+        elif enemy_style == 'wrestler':
             d['excellence'].value += combatant.physique * min(1, (combatant.physique-enemy.physique))
 
     for weapon in weapons:
@@ -356,13 +356,16 @@ class DuelEngine(object):
             self.player_turn = True
 
 
-def make_default_deck(combat_style):
+def make_default_deck(combatant, combat_style):
     deck = Deck()
     try:
-        dict_ = store.default_decks[combat_style]
+        dict_ = store.leveled_decks[combat_style+str(combatant.skill_level)]
     except KeyError:
-        dict_ = store.default_decks['default']
-    for key, value in dict_:
+        try:
+            dict_ = store.default_decks[combat_style]
+        except KeyError:
+            dict_ = store.default_decks['noncombatant']
+    for key, value in dict_.items():
         count = value
         while count > 0:
             deck.add_card(key)
@@ -376,28 +379,7 @@ class DuelCombatant(object):
 
     def __init__(self, person=None):
         self.person = person
-        cards = default_cards()
-        default_deck = Deck()
-        shuffle(cards)
-        while not default_deck.is_at_limit():
-            if len(cards) > 0:
-                default_deck.add_card(cards.pop())
-            else:
-                break
-        try:
-            if person.card_storage is None:
-                person.card_storage = CardStorage()
-        except AttributeError:
-            pass
-        try:
-            if not isinstance(person.deck, Deck):
-                person.deck = default_deck
-            elif not person.deck.is_completed():
-                person.deck = default_deck
-            person.decks.append(default_deck)
-            self.deck = person.deck
-        except AttributeError:
-            self.deck = default_deck
+        
         
         try:
             self.name = person.name
@@ -437,6 +419,23 @@ class DuelCombatant(object):
         self.loosed = False
         self.default_points = {'onslaught': 0, 'maneuver': 0, 'fortitude': 0, 'excellence': 0}
         self.last_event = None
+        cards = default_cards()
+        default_deck = make_default_deck(self, self.get_combat_style())
+        shuffle(cards)
+        try:
+            if person.card_storage is None:
+                person.card_storage = CardStorage()
+        except AttributeError:
+            pass
+        try:
+            if not isinstance(person.deck, Deck):
+                person.deck = default_deck
+            elif not person.deck.is_completed():
+                person.deck = default_deck
+            person.decks.append(default_deck)
+            self.deck = person.deck
+        except AttributeError:
+            self.deck = default_deck
     @property
     def decks(self):
         try:
@@ -521,17 +520,22 @@ class DuelCombatant(object):
             self.send_event('draw_card')
     def get_combat_style(self):
         #TODO: add beast combat style
-        style = 'resler'
+        style = 'noncombatant'
         if len(self.get_weapons()) > 0:
-            if self.skill.expirience:
+            if self.skill_level > 2:
                 if self.main_weapon.type == 'twohand':
                     style = 'juggernaut'
                 elif self.has_shield():
                     style = 'shieldbearer'
                 else:
                     style = 'breter'
-            elif self.skill.training:
+            elif self.skill_level > 1:
                 style = 'rookie'
+            else:
+                style = 'desperado'
+        else:
+            if self.skill_level > 1:
+                style = 'wrestler'
         return style
 
     def get_weapons(self):
@@ -604,7 +608,7 @@ class CardStorage(object):
 
 
     def __init__(self):
-        self.default_cards = [make_card(i) for i in default_cards()]
+        self.default_cards = [i for i in default_cards()]
         self.other_cards = []
 
     @property
@@ -617,12 +621,17 @@ class CardStorage(object):
     def add_card(self, card_id):
         self.other_cards.append(make_card(card_id))
 
+    def cards_left_for_deck(self, card_id, deck):
+        return deck.cards_list.count(card_id) - self.cards.count(card_id)
+
+
+
 
 class Deck(object):
     cards_limit = {'base': 4, 'common': 4, 'uncommon': 3, 'rare': 2, 'unique': 1}
     def __init__(self, cards_list=None):
         self.name = 'default name'
-        self.cards_list = [make_card(card) for card in cards_list] if cards_list is not None else []
+        self.cards_list = [i for i in cards_list] if cards_list is not None else []
         self.combat_style = None
     
     def set_name(self, name):
@@ -647,10 +656,7 @@ class Deck(object):
         return txt
     
     def add_card(self, card_id):
-        if isinstance(card_id, DuelAction):
-            self.cards_list.append(card_id)
-        else:
-            self.cards_list.append(make_card(card_id))
+        self.cards_list.append(card_id)
 
     def remove_card(self, card):
         self.cards_list.remove(card)
@@ -658,15 +664,18 @@ class Deck(object):
     def count_cards(self, card_id):
         value = 0
         for card in self.cards_list:
-            if card.id == card_id:
+            if card == card_id:
                 value += 1
         return value
     
-    def can_be_added(self, card):
+    def can_be_added(self, card_id):
+        card = make_card(card_id)
         if self.is_completed():
             return False
+        if card.unlimited:
+            return True
         else:
-            limit = self.cards_limit[card.rarity] < self.count_cards(card.id)
+            limit = self.cards_limit[card.rarity] > self.count_cards(card.id)
             if card.combat_style is not None:
                 style = self.combat_style == card.combat_style
             else:
@@ -674,7 +683,7 @@ class Deck(object):
             return limit and style
 
     def get_hand(self, fighter):
-        shuffled = [card for card in self.cards_list]
+        shuffled = [make_card(card) for card in self.cards_list]
         shuffle(shuffled)
         hand = []
         for i in range(10):
@@ -752,7 +761,13 @@ class DuelAction(object):
         except KeyError:
             mods = []
         return mods
-    
+    @property
+    def unlimited(self):
+        try:
+            unlim = self.data[self.id]['unlimited']
+        except KeyError:
+            unlim = False
+        return unlim
     @property
     def special_mechanics(self):
         try:
@@ -762,6 +777,13 @@ class DuelAction(object):
         except KeyError:
             list_ = []
         return list_
+    @property
+    def mighty(self):
+        try:
+            mighty = self.data[self.id]['mighty']
+        except KeyError:
+            mighty = False
+        return mighty
     @property
     def tag(self):
         try:
@@ -846,7 +868,7 @@ class DuelAction(object):
         for i in eval_list:
             i(self)
         self.escalation = self.power
-        if self.rarity == 'exceptional':
+        if self.mighty:
             if self.power > 0:
                 self.power += 5
             self.escalation = 0

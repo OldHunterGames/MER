@@ -4,7 +4,9 @@ init python:
                     'rage': {'name': __('rage'), 'rarity': 'base', 'power': 0, 'special_mechanics': [rage_special], 'on_remove': rage_remove, 'description': __('Persistent effect. The fortitude do not scores for both combatants while rage is in the game.'), },
                     'outsmart': {'name': __('outsmart'), 'rarity': 'base', 'power': 0, 'special_mechanics': [outsmart_special], 'description': __('Discards all persistent effects.'), },
                     'fallback': {'name': __('fallback'), 'rarity': 'base', 'power': 0, 'special_mechanics': [fallback_special], 'description': __('Deduct your current escalation from your biggest basic point-pool. Get one new card.'), },
-                    
+                    'initiative': {'name': __('initiative'), 'rarity': 'base', 'power': 0, 'special_mechanics': [initiative_special], 'on_remove': initiative_remove, 'description': __('')},
+                    'fatigue': {'name': __('fatigue'), 'rarity': 'base', 'power': 0, 'special_mechanics': [fatigue_special], 'description': __('')},
+
                     'desperate_strike': {'name': __('puny strike'), 'rarity': 'base', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'onslaught', 'description': __('{color=#ff0000}Weapon attack{/color}')},
                     'desperate_move': {'name': __('draggle'), 'rarity': 'base', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot': 'maneuver', 'description': __('{color=#ff0000}Weapon feint{/color}')},
                     'desperate_block': {'name': __('desperation'), 'rarity': 'base', 'power': 0, 'use_weapon': True, 'mighty': False, 'slot':  'fortitude', 'description': __('{color=#ff0000}Weapon defence{/color}')},

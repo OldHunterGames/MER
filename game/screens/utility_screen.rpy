@@ -138,7 +138,10 @@ screen sc_card_description(card):
         xmaximum 300
         ymaximum 100
         align(0.5, 0.5)
+        if not isinstance(card, DuelAction):
+            $ card = make_card(card)
         text card.show()
+
 
 
 screen sc_faction_info(faction):
@@ -336,9 +339,10 @@ screen sc_deck_modifier(deck):
         hbox:
             spacing 10
             vbox:
+                box_wrap True
                 text 'Current cards'
                 for i in deck.cards_list:
-                    textbutton i.name:
+                    textbutton make_card(i).name:
                         hovered ShowTransient('sc_card_description', card=i)
                         unhovered Hide('sc_card_description')
                         action Function(deck.remove_card, i)
@@ -346,7 +350,7 @@ screen sc_deck_modifier(deck):
                 box_wrap True
                 text 'Available cards'
                 for i in card_list:
-                    textbutton i.name:
+                    textbutton make_card(i).name:
                         hovered ShowTransient('sc_card_description', card=i)
                         unhovered Hide('sc_card_description')
                         action Function(deck.add_card, i), SensitiveIf(deck.can_be_added(i))
