@@ -75,7 +75,7 @@ init -1 python:
         user.escalation = 0
         card.escalation = 0
 
-    def iniciative_special(card):
+    def initiative_special(card):
         user = card.current_fighter
         names = ['maneuver', 'onslaught', 'fortitude', 'excellence']
         multiplier_name = 'iniciative'
@@ -88,6 +88,32 @@ init -1 python:
             points = slot_chosing(card, names)
             set_multiplier(card, points, multiplier_name)
 
+    def initiative_remove(card):
+        user = card.current_fighter
+        for i in user.fight.points[user.side]:
+            i.remove_multiplier('iniciative')
+
+
+    def fatigue_special(card):
+        user = card.current_fighter
+        fight = user.fight
+        points = fight.points
+        fighters = [fight.current_ally, fight.current_enemy]
+        escalation = fighters[0].escalation
+        if escalation > fighters[1].escalation:
+            fighters.remove(fighters[1])
+        elif escalation < fighters[1].escalation:
+            fighters.remove(fighters[0])
+        for i in fighters:
+            value = 0
+            point = None
+            current_points = points[i.side]
+            for n in current_points:
+                if n.value > value:
+                    value = n.value
+                    point = n
+            n -= i.escalation
+
     
     
     #special mechanincs
@@ -95,7 +121,7 @@ init -1 python:
         user = card.current_fighter
         fight = user.fight
         side = fight.get_enemy_side(user.side)
-        if card.rarity != 'exceptional':
+        if not card.mighty:
             card.power += 5
             slot = 'excellence'
         else:
@@ -227,25 +253,7 @@ init -1 python:
                     user.drop_card(card)
         user.draw(2)
 
-    def fatigue(card):
-        user = card.current_fighter
-        fight = user.fight
-        points = fight.points
-        fighters = [fight.current_ally, fight.current_enemy]
-        escalation = fighters[0].escalation
-        if escalation > fighters[1].escalation:
-            fighters.remove(fighters[1])
-        elif escalation < fighters[1].escalation:
-            fighters.remove(fighters[0])
-        for i in fighters:
-            value = 0
-            point = None
-            current_points = points[i.side]
-            for n in current_points:
-                if n.value > value:
-                    value = n.value
-                    point = n
-            n -= i.escalation
+    
 
 
 

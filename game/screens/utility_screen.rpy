@@ -138,7 +138,10 @@ screen sc_card_description(card):
         xmaximum 300
         ymaximum 100
         align(0.5, 0.5)
+        if not isinstance(card, DuelAction):
+            $ card = make_card(card)
         text card.show()
+
 
 
 screen sc_faction_info(faction):
@@ -327,18 +330,19 @@ screen sc_deck_modifier(deck):
     tag deck_editor
     python:
         try:
-            card_list = player.card_storage.cards
+            card_list = set(player.card_storage.cards)
         except AttributeError:
             player.card_storage = CardStorage()
-            card_list = player.card_storage.cards
+            card_list = set(player.card_storage.cards)
     frame:
         xalign 0.6
         hbox:
             spacing 10
             vbox:
+                box_wrap True
                 text 'Current cards'
-                for i in deck.cards_list:
-                    textbutton i.name:
+                for i in set(deck.cards_list):
+                    textbutton make_card(i).name + " (%s)"%(deck.count_cards(i)):
                         hovered ShowTransient('sc_card_description', card=i)
                         unhovered Hide('sc_card_description')
                         action Function(deck.remove_card, i)
@@ -346,10 +350,10 @@ screen sc_deck_modifier(deck):
                 box_wrap True
                 text 'Available cards'
                 for i in card_list:
-                    textbutton i.name:
+                    textbutton make_card(i).name + " (%s)"%(player.card_storage.count_for_deck(deck, i)):
                         hovered ShowTransient('sc_card_description', card=i)
                         unhovered Hide('sc_card_description')
-                        action Function(deck.add_card, i), SensitiveIf(deck.can_be_added(i))
+                        action Function(deck.add_card, i), SensitiveIf(deck.can_be_added(i, player.card_storage))
 
 screen sc_deck_namer(deck):
     tag deck_editor
