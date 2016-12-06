@@ -1,5 +1,6 @@
 # -*- coding: <UTF-8> -*-
 from random import *
+from collections import Counter
 
 from duel_data import *
 from duel_actions import *
@@ -608,21 +609,22 @@ class CardStorage(object):
 
 
     def __init__(self):
-        self.default_cards = [i for i in default_cards()]
-        self.other_cards = []
-
-    @property
-    def cards(self):
-        list_ = []
-        list_.extend(self.default_cards)
-        list_.extend(self.other_cards)
-        return list_
+        self.cards = Counter(default_cards())
 
     def add_card(self, card_id):
-        self.other_cards.append(make_card(card_id))
+        self.cards[card_id] += 1
 
-    def cards_left_for_deck(self, card_id, deck):
-        return deck.cards_list.count(card_id) - self.cards.count(card_id)
+
+    def count(self, card_id):
+        return self.cards[card_id]
+
+    def remove(self, card_id):
+        self.cards[card_id] -= 1
+        if self.cards[card_id] < 1:
+            self.cards.pop(card_id)
+
+    def count_for_deck(self, deck, card_id):
+        return self.count(card_id) - deck.count_cards(card_id)
 
 
 
@@ -662,14 +664,12 @@ class Deck(object):
         self.cards_list.remove(card)
     
     def count_cards(self, card_id):
-        value = 0
-        for card in self.cards_list:
-            if card == card_id:
-                value += 1
-        return value
+        return self.cards_list.count(card_id)
     
-    def can_be_added(self, card_id):
+    def can_be_added(self, card_id, card_storage):
         card = make_card(card_id)
+        if card_storage.count_for_deck(self, card_id) < 1:
+            return False
         if self.is_completed():
             return False
         if card.unlimited:
