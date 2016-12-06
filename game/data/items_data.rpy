@@ -3,6 +3,7 @@ init python:
         'shield':{'name': __('shield'), 'size': 'shield', 'damage_type': 'subdual', 'quality': 3},    
         'knife':{'name': __('knife'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 2},
         'dagger':{'name': __('dagger'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 3},
+        'sdw':{'name': __('sdw'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 3},
         'crowbar': {'name': __('crowbar'),'size': 'versatile', 'damage_type': 'impact', 'quality': 2},
         'maul': {'name': __('maul'),'size': 'versatile', 'damage_type': 'impact', 'quality': 3},
         'club': {'name': __('club'),'size': 'versatile', 'damage_type': 'subdual', 'quality': 3},
