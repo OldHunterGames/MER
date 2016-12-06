@@ -362,8 +362,8 @@ init python:
             'sex': ['training', ('expirience', 1)]
             },
         },
-        'thugh':{
-            'name': __('thugh'),
+        'thug':{
+            'name': __('thug'),
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
@@ -1361,8 +1361,8 @@ init python:
             'sex': ['training', ('expirience', 1)]
             },
         },
-        'fquir':{
-            'name': __('fquir'),
+        'faquir':{
+            'name': __('faquir'),
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
