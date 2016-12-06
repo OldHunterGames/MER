@@ -79,7 +79,7 @@ init -1 python:
         user = card.current_fighter
         names = ['maneuver', 'onslaught', 'fortitude', 'excellence']
         multiplier_name = 'iniciative'
-        for i in user.fight.points[user.side]:
+        for i in user.fight.points[user.side].values():
             i.remove_multiplier('iniciative')
         if user.side == 'allies':
             slot = subscreen_call('sc_chose_slot', card, user=user, names=names)

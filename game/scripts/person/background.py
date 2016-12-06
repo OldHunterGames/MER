@@ -139,9 +139,10 @@ class Background(object):
             if value is not None:
                 if key == 'armor':
                     item = make_armor_from_dict(value, store.armor_data)
+                    owner.equip_item(item, 'overgarments')
                 else:
                     item = make_weapon_from_dict(value, store.weapon_data)
-                owner.equip_item(item, key)
+                    owner.equip_item(item, key)
 
     def make(self, world, culture, family, education, occupation):
         default_order = ['world', 'family', 'education', 'occupation']
