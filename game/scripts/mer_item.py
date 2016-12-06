@@ -13,7 +13,7 @@ class Item(object):
     type_ = 'item'
 
     def __init__(self, *args, **kwargs):
-        self._name = ""
+        self._name = None
         if 'quality' in kwargs.keys():
             self._quality = kwargs['quality']
         else:
@@ -120,6 +120,8 @@ class Weapon(Item):
                 size=size, damage_type=damage_type)
         else:
             text = 'shield'.format(size=size, damage_type=damage_type)
+        if self.name is not None:
+            text += ' %s'%(self.name)
         return encolor_text(text, self.quality)
 
 
@@ -143,6 +145,8 @@ class Armor(Item):
     @property
     def description(self):
         text = '{self.armor_rate}'.format(self=self)
+        if self.name is not None:
+            text += ' %s'%self.name
         return encolor_text(text, self.quality)
 
 def get_weapon_sizes():
@@ -166,18 +170,22 @@ def get_armor_rates():
             list_.append(key)
     return list_
 
-def create_weapon(size=None, damage_type=None, quality=1):
+def create_weapon(size=None, damage_type=None, quality=1, name=None):
     if size is None:
         size = random.choice(get_weapon_sizes())
     if damage_type is None:
         damage_type = random.choice(get_weapon_damage_types())
     weapon = Weapon(size, damage_type, quality=quality)
+    if name is not None:
+        weapon.set_name(name)
     return weapon
 
-def create_armor(armor_rate=None, quality=1):
+def create_armor(armor_rate=None, quality=1, name=None):
     if armor_rate is None:
         armor_rate = random.choice(get_armor_rates())
     armor = Armor(armor_rate, quality=quality)
+    if name is not None:
+        armor.set_name(name)
     return armor
 
 def create_item():
@@ -191,3 +199,11 @@ def create_item():
                       'size'], creator_item_properties['damage_type'])
     item.set_quality(1)
     return item
+
+def make_weapon_from_dict(key, dict_):
+    data = dict_[key]
+    return create_weapon(**data)
+
+def make_armor_from_dict(key, dict_):
+    data = dict_[key]
+    return create_armor(**data)

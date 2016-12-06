@@ -54,7 +54,14 @@ class EdgeEngine(object):
         """
         pass
         
+    def get_encounter(self, encounter=None):
 
+        if encounter is None:
+            encounter = random.choice(store.edge_encounters.values())
+        else:
+            encounter = store.edge_encounters[encounter]
+
+        return encounter
     
     def has_location(self, location_id):
         for location in self.locations:

@@ -4,6 +4,7 @@ import random
 import renpy.store as store
 import renpy.exports as renpy
 
+from mer_item import make_weapon_from_dict, make_armor_from_dict
 
 class BackgroundBase(object):
 
@@ -128,6 +129,20 @@ class Background(object):
         self.make(world, culture, family, education, occupation)
         self._applied = False
 
+    def equip(self, owner):
+        id_ = self.occupation.id
+        try:
+            equipment = store.background_equipment[id_]
+        except KeyError:
+            return
+        for key, value in equipment.items():
+            if value is not None:
+                if key == 'armor':
+                    item = make_armor_from_dict(value, store.armor_data)
+                else:
+                    item = make_weapon_from_dict(value, store.weapon_data)
+                owner.equip_item(item, key)
+
     def make(self, world, culture, family, education, occupation):
         default_order = ['world', 'family', 'education', 'occupation']
         if occupation is not None:
@@ -212,4 +227,5 @@ class Background(object):
             list_ = ['world', 'culture', 'family', 'education', 'occupation']
             for i in list_:
                 getattr(self, i).apply(owner)
+            self.equip(owner)
             self._applied = True
