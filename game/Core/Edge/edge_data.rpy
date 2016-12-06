@@ -14,6 +14,9 @@ init python:
         #'charity_mission': __('House {0} charity mission'),
         'shifting_mist': __('Shifting mist')
         }
+
+    edge_encounters = ['stranger',
+    ]
     
     edge_denotation = {
         'idle': __('idle'),
