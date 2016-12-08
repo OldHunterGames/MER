@@ -47,14 +47,6 @@ class Inventory(object):
             self._main_hand = weapon
         self._other_hand = weapon
 
-    def weapons(self):
-        list_ = []
-        if self.main_hand is not None:
-            list_.append(self.main_hand)
-        if self.other_hand is not None:
-            list_.append(self.other_hand)
-        return list(set(list_))
-
     def slots(self):
         return {
             'belt1': ['offhand', 'versatile'],

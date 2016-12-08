@@ -8,7 +8,7 @@ from features import Feature
 from modifiers import ModifiersStorage
 from mer_utilities import encolor_text
 
-# sizes 'offhand', 'versatile', 'shield', 'twohand'
+
 class Item(object):
     type_ = 'item'
 

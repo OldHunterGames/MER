@@ -126,7 +126,6 @@ screen sc_show_deck(deck):
         align(0.3, 0.3)
         vbox:
             for i in deck.cards_list:
-                $ i = make_card(i)
                 textbutton i.name:
                     hovered ShowTransient('sc_card_description', card=i)
                     unhovered Hide('sc_card_description')
@@ -330,7 +329,11 @@ screen deck_creator(overlay=False):
 screen sc_deck_modifier(deck):
     tag deck_editor
     python:
-        card_list = set(player.card_storage.cards)
+        try:
+            card_list = set(player.card_storage.cards)
+        except AttributeError:
+            player.card_storage = CardStorage()
+            card_list = set(player.card_storage.cards)
     frame:
         xalign 0.6
         hbox:
