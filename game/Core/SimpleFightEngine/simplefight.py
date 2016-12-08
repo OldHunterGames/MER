@@ -1,3 +1,4 @@
+# -*- coding: <UTF-8> -*-
 import random
 
 import renpy.store as store
