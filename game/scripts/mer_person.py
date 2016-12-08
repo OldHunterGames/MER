@@ -210,6 +210,9 @@ class InventoryWielder(object):
     def equip_on_slot(self, slot, item):
         self.inventory.equip_on_slot(slot, item)
 
+    def weapons(self):
+        return self.inventory.weapons()
+
 class Attributed(Modifiable):
 
     def init_attributed(self):
@@ -452,6 +455,7 @@ class FoodSystem(object):
 
 class Person(Skilled, InventoryWielder, Attributed):
 
+    @utilities.Observable
     def __init__(self, age=None, gender=None, genus='human'):
         super(Person, self).__init__()
         self.player_controlled = False

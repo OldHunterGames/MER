@@ -7,7 +7,7 @@ from duel_actions import *
 import renpy.store as store
 import renpy.exports as renpy
 import mer_utilities as utilities
-
+from mer_person import Person
 def default_cards():
     return [key for key, value in store.actions_lib.items() if value['rarity'] == 'base']
 
@@ -424,11 +424,6 @@ class DuelCombatant(object):
         default_deck = make_default_deck(self, self.get_combat_style())
         shuffle(cards)
         try:
-            if person.card_storage is None:
-                person.card_storage = CardStorage()
-        except AttributeError:
-            pass
-        try:
             if not isinstance(person.deck, Deck):
                 person.deck = default_deck
             elif not person.deck.is_completed():
@@ -607,10 +602,9 @@ class DuelCombatant(object):
 
 class CardStorage(object):
 
-
     def __init__(self):
         self.cards = Counter(default_cards())
-
+    
     def add_card(self, card_id):
         self.cards[card_id] += 1
 
@@ -626,6 +620,10 @@ class CardStorage(object):
     def count_for_deck(self, deck, card_id):
         return self.count(card_id) - deck.count_cards(card_id)
 
+def make_storage(person):
+    person.card_storage = CardStorage()
+Person.__init__.add_callback(make_storage)
+
 
 
 
@@ -634,7 +632,7 @@ class Deck(object):
     def __init__(self, cards_list=None):
         self.name = 'default name'
         self.cards_list = [i for i in cards_list] if cards_list is not None else []
-        self.combat_style = None
+        self.combat_style = 'noncombatant'
     
     def set_name(self, name):
         self.name = name
