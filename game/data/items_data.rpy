@@ -23,8 +23,8 @@ init python:
 
     
     armor_data = {
-        'hard_armor': {'name': __('hard armor'), 'armor_rate': 'heavy', 'quality': 3},
-        'soft_armor': {'name': __('soft armor'), 'armor_rate': 'light', 'quality': 3},            
-        'leather_coat': {'name': __('soft armor'), 'armor_rate': 'light', 'quality': 2},  
-        'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy', 'quality': 1},
+        'hard_armor': {'name': __('hard armor'), 'armor_rate': 'heavy_armor', 'quality': 3},
+        'soft_armor': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 3},            
+        'leather_coat': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 2},  
+        'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy_armor', 'quality': 1},
             }
