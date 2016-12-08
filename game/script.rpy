@@ -23,6 +23,8 @@ init python:
 # The game starts here.
 label start:
     python:
+        p = gen_random_person()
+        g = gen_random_person()
         great_houses = [Faction(gen_random_person(), __('Kamira'),'kamira'),
             Faction(gen_random_person(), __('Serpis'), 'serpis'),
             Faction(gen_random_person(), __('Corvus'), 'corvus'),
@@ -56,8 +58,7 @@ label start:
         player.equip_on_slot('armband', mace)       
         player.equip_on_slot('ankleband', sword) 
         player.equip_on_slot('harness', halberd) 
-
-    
+    call lbl_simple_fight([player, g], [p])
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
