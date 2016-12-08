@@ -5,6 +5,8 @@ init -10 python:
     sys.path.append(renpy.loader.transfn("scripts/person"))
     sys.path.append(renpy.loader.transfn("Core"))
     sys.path.append(renpy.loader.transfn("Core/DuelEngine/scripts"))
+    sys.path.append(renpy.loader.transfn("Core/SimpleFightEngine"))
+    from simplefight import SimpleFight
     from mer_core import *
     from mer_utilities import *
     from mer_item import *
@@ -33,7 +35,7 @@ label start:
         core = MistsOfEternalRome()
         set_event_game_ref(core)
         player = Person('adolescent', 'male', 'human')
-        # player = gen_random_person('human')
+        player = gen_random_person('human')
         core.set_player(player)
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
@@ -58,7 +60,7 @@ label start:
         player.equip_on_slot('armband', mace)       
         player.equip_on_slot('ankleband', sword) 
         player.equip_on_slot('harness', halberd) 
-    call lbl_simple_fight([player, g], [p])
+    # call lbl_simple_fight([player, g], [p])
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
