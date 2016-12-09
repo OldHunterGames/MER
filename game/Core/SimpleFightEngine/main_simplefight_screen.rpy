@@ -1,4 +1,4 @@
-init python:
+init -10 python:
     sys.path.append(renpy.loader.transfn("Core/SimpleFightEngine"))
     from simplefight import SimpleFight
 

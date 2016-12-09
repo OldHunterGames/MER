@@ -82,6 +82,9 @@ class Modifiable(object):
     def modifiers_separate(self, modifier, names=False):
         return self.modifiers.get_modifier_separate(modifier)
 
+    def get_all_modifiers(self):
+        return self.modifiers.get_all_modifiers()
+
 class Skilled(object):
 
     def init_skilled(self):

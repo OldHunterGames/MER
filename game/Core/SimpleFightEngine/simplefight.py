@@ -12,6 +12,21 @@ class SimpleFight(object):
 
         self.allies = [SimpleCombatant(i, self) for i in allies_list]
         self.enemies = [SimpleCombatant(i, self) for i in enemies_list]
+        allies_average_skill = sum([i.combat_level for i in self.allies])/len(self.allies)
+        enemies_average_skill = sum([i.combat_level for i in self.enemies])/len(self.enemies)
+        difference = allies_average_skill - enemies_average_skill
+        if difference < 0:
+            for i in self.allies:
+                i.skill_difference = difference
+            for i in self.enemies:
+                i.skill_difference = abs(difference)
+        else:
+            for i in self.allies:
+                i.skill_difference = difference
+            for i in self.enemies:
+                i.skill.difference = -difference
+
+
         for i in self.allies:
             i.set_enemies([i for i in self.enemies])
         for i in self.enemies:
@@ -162,6 +177,7 @@ class SimpleCombatant(object):
         self.enemies = []
         self._inactive = False
         self.incoming_damage_multipliers = []
+        self.skill_difference = 0
 
     def maneuvers_list(self):
         list_ = [i(self) for i in RuledManeuver.__subclasses__()]
@@ -171,12 +187,25 @@ class SimpleCombatant(object):
     def get_meneuvers(self):
         self.maneuvers = []
         maneuvers = [i for i in self.maneuvers_list() if i.can_be_applied(self)]
-        number = self.combat_level
+        number = self.max_maneuvers()
         while number > 0:
             maneuver = random.choice(maneuvers)
             self.maneuvers.append(maneuver)
             maneuvers.remove(maneuver)
             number -= 1
+
+    def max_maneuvers(self):
+        value = 3
+        if self.difference < 0:
+            for i in range(0, abs(self.difference)):
+                if i%2 == 0:
+                    value 0 -= 1
+        elif self.difference > 0:
+            for i in range(0, abs(self.difference)):
+                if i%2 != 0:
+                    value += 1
+        return value
+
 
     def knockdown(self):
         self._inactive = True
