@@ -61,3 +61,6 @@ class ModifiersStorage(object):
             attribute = key
             value = stats_dict[key]
             self._list.append((Modifier(name, attribute, value, source, slot)))
+
+    def get_all_modifiers(self):
+        return self._list
