@@ -199,7 +199,7 @@ class SimpleCombatant(object):
         if self.difference < 0:
             for i in range(0, abs(self.difference)):
                 if i%2 == 0:
-                    value 0 -= 1
+                    value -= 1
         elif self.difference > 0:
             for i in range(0, abs(self.difference)):
                 if i%2 != 0:
