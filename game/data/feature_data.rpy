@@ -25,11 +25,25 @@ init python:
         'dumb': {'name': __('dumb'), 'slot': 'mind_feat', 'modifiers': {'mind': -1}, 'visible': True},
         'sensitive': {'name': __('sensitive'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': +1}, 'visible': True},
         'cool': {'name': __('cool'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': -1}, 'visible': True},
+        
+        # look
+        'innocent_appearence': {'name': __('innocent appearence'), 'slot': 'look', 'visible': True},        
+        'bold_appearence': {'name': __('bold appearence'), 'slot': 'look', 'visible': True},    
+        'foxy_appearence': {'name': __('foxy appearence'), 'slot': 'look', 'visible': True},    
+        'gentle_appearence': {'name': __('gentle appearence'), 'slot': 'look', 'visible': True},        
+        'calm_appearence': {'name': __('calm appearence'), 'slot': 'look', 'visible': True},    
+        'exotic_appearence': {'name': __('exotic appearence'), 'slot': 'look', 'visible': True},                    
+        'straight_appearence': {'name': __('straight appearence'), 'slot': 'look', 'visible': True},        
+        'sleasy_appearence': {'name': __('sleasy appearence'), 'slot': 'look', 'visible': True},    
+        'wild_appearence': {'name': __('wild appearence'), 'slot': 'look', 'visible': True},    
 
         # anatomy
-        'small_breast': {'name': __('small_breast'), 'slot': 'breast_size', 'visible': True},
-        'normal_breast': {'name': __('normal_breast'), 'slot': 'breast_size', 'visible': True},
-        'large_breast': {'name': __('large_breast'), 'slot': 'breast_size', 'visible': True},
+        'flat_chest': {'name': __('flat chest'), 'slot': 'breast_size', 'modifiers': {'appearance_boobs': 0}, 'visible': True},
+        'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True},
+        'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True},
+        'large_boobs': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True},
+        'huge_tits': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4},  'visible': True},
+        'enormous_udders': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5},  'visible': True},
 
         'small_penis': {'name': __('small_penis'), 'slot': 'penis_size', 'visible': True},
         'normal_penis': {'name': __('normal_penis'), 'slot': 'penis_size', 'visible': True},
@@ -68,6 +82,12 @@ init python:
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1}, 'visible': True},
         'dyspnoea': {'name': __('dyspnoea'), 'visible': True},
         'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
+
+		# fitness
+        'tender': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': -1, 'physique': -1}, 'visible': True},
+        'fit': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'agility': +1, 'vitality': +1}, 'visible': True},
+        'muscular': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': +1, 'physique': +1}, 'visible': True},
+        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1}, 'visible': True},        		
 
         'dead': {'name': __('dead'), 'visible': True},
     }
