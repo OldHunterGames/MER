@@ -10,6 +10,7 @@ init python:
         'club': {'name': __('club'),'size': 'versatile', 'damage_type': 'subdual', 'quality': 3},
         'quarterstaff': {'name': __('quarterstaff'),'size': 'twohand', 'damage_type': 'subdual', 'quality': 3},
         'letal_weapon': {'name': __('letal weapon'),'size': 'versatile', 'damage_type': 'impact', 'quality': 3},
+        'long_weapon': {'name': __('long weapon'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 3},
         'sword': {'name': __('sword'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 3},
         'hand_axe':{'name': __('hand axe'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 2},
         'hunting_weapon': {'name': __('hunting weapon'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2},

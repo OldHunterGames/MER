@@ -83,11 +83,11 @@ init python:
         'dyspnoea': {'name': __('dyspnoea'), 'visible': True},
         'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
 
-		# fitness
+        # fitness
         'tender': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': -1, 'physique': -1}, 'visible': True},
         'fit': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'agility': +1, 'vitality': +1}, 'visible': True},
+        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1}, 'visible': True},
         'muscular': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': +1, 'physique': +1}, 'visible': True},
-        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1}, 'visible': True},        		
 
         'dead': {'name': __('dead'), 'visible': True},
     }
