@@ -72,14 +72,14 @@ class Modifiable(object):
     def init_modifiable(self):
         self.modifiers = ModifiersStorage()
 
-    def add_modifier(self, name, stats_dict, source, slot=None):
-        self.modifiers.add_modifier(name, stats_dict, source, slot)
+    def add_modifier(self, id_, stats_dict, source, slot=None):
+        self.modifiers.add_modifier(id_, stats_dict, source, slot)
 
     def count_modifiers(self, key):
         val = self.__dict__['modifiers'].count_modifiers(key)
         return val
 
-    def modifiers_separate(self, modifier, names=False):
+    def modifiers_separate(self, modifier):
         return self.modifiers.get_modifier_separate(modifier)
 
     def get_all_modifiers(self):
@@ -690,6 +690,15 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.random_features()
         return
 
+    def anatomy(self):
+        return [i for i in self.get_all_modifiers() if i.attribute.startswith('anatomy')] 
+
+    def fetishes(self):
+        return [i for i in self.get_all_modifiers() if i.attribute.startswitn('fetish')]
+
+    def taboos(self):
+        return [i for i in self.get_all_modifiers() if i.attribute.statswith('taboo')]
+
     def random_alignment(self):
         # roll activity
         roll = randint(1, 100)
@@ -773,7 +782,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         return
 
     def change_genus(self, genus):
-        self.genus = init_genus(self, genus)
+        self.genus.remove()
+        self.genus = Genus(genus)
+        self.genus.invoke(self)
 
     @property
     def known_characters(self):

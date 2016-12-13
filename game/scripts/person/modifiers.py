@@ -3,8 +3,8 @@ import collections
 
 class Modifier(object):
 
-    def __init__(self, name, attribute, value, source, slot=None):
-        self.name = name
+    def __init__(self, id_, attribute, value, source, slot=None):
+        self.id = id_
         self.attribute = attribute
         self.value = value
         self.source = source
@@ -56,11 +56,11 @@ class ModifiersStorage(object):
     def get_all(self):
         return [mod.description for mod in self._list]
 
-    def add_modifier(self, name, stats_dict, source, slot=None):
+    def add_modifier(self, id_, stats_dict, source, slot=None):
         for key in stats_dict:
             attribute = key
             value = stats_dict[key]
-            self._list.append((Modifier(name, attribute, value, source, slot)))
+            self._list.append((Modifier(id_, attribute, value, source, slot)))
 
     def get_all_modifiers(self):
         return self._list

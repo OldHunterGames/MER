@@ -13,10 +13,10 @@ class Genus(object):
     _available_genders = ['male', 'female', 'sexless', 'shemale']
     head_type = None
 
-    def __init__(self, name):
+    def __init__(self, id_):
         self._owner = None
-        self.name = name
-        self.data = store.genuses_data[name]
+        self.id = id_
+        self.data = store.genuses_data[id_]
 
     def __getattr__(self, key):
         try:
@@ -67,4 +67,8 @@ class Genus(object):
         except KeyError:
             features = []
         return features
+
+    @property
+    def name(self):
+        return self.data['name']
 

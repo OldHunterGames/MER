@@ -1,6 +1,7 @@
 import renpy.store as store
 import renpy.exports as renpy
 
+from random import shuffle
 
 class SexEngine(object):
 
@@ -14,6 +15,11 @@ class SexEngine(object):
         self.participants[0].target = self.participants[1]
         for i in range(1, len(self.participants)):
             self.participants[i].target = self.participants[0]
+        self.get_actions()
+
+    def get_actions(self):
+        for i in self.participants:
+            i.get_actions()
 
 
 
@@ -24,14 +30,18 @@ class SexParticipant(object):
 
         self.person = person
         self.willing = willing
-        self.standart = 0
+        try:
+            self.standart = person.standart
+        except AttributeError:
+            self.standart = 0
+
 
         self.drive = 0
         self.stamina = max(self.person.vitality, self.person.physique)
         if self.person.vitality < 1:
             self.stamina -= 1
 
-        self.feelings = 0
+        self.feelings = 1
         
         self.max_actions = self.sex_level
         self.actions = []
@@ -46,7 +56,7 @@ class SexParticipant(object):
         return self.person.skill('sex').level
 
     def anatomy(self):
-        return self.person.anatomy
+        return [i.attribute[8:] for i in self.person.anatomy()]
 
     @property
     def physique(self):
@@ -68,37 +78,52 @@ class SexParticipant(object):
     def sensitivity(self):
         return self.person.sensitivity
 
+    def fetishes(self):
+        return [i.attribute[8:] for i in self.person.fetishes()]
+
+    def taboos(self):
+        return [i.attribute[7:] for i in self.person.taboos()]
+
 
     def use_action(self, action):
-        markers = []
-        for i in action.markers['actor']:
-            if i == 'target':
-                for n in self.target.markers:
-                    markers.append(n)
-            else:
-                markers.append(i)
-        value = self.apply_markers(markers)
-        self.target.send_markers(action, self)
+        if action.type == 'twoway':
+            self.send_markes(self.target)
+            self.target.send_markes(self)
+        elif action.type == 'outward':
+            self.target.send_markes(self)
+        elif action.type == 'inward':
+            self.send_markes(target)
+        else:
+            raise Exception("Unknown sex action type %s"%(action.type))
 
 
     def send_markers(self, action, sender):
-        markers = []
+        markers = [send.gender, sender.genus.id]
         for i in action.markers['target']:
-            if i == 'actor':
-                for n in sender.markers:
-                    markers.append(n)
-            else:
-                markers.append(i)
+            markers.append(i)
         value = self.apply_markers(markers)
 
     def apply_markers(self, markers):
         value = 0
+        taboos = self.taboos()
+        fetishes = self.fetishes()
         for i in markers:
-            if i in self.taboos:
+            if i in taboos:
                 return -1
-            elif i in self.fetishes:
+            elif i in fetishes:
                 value += 1
         return value
+
+    def set_drive(self, situation):
+        pass
+
+    def get_actions(self):
+        actions = get_sex_actions()
+        actions = [i for i in actions if i.can_be_used(self, self.target)]
+        shuffle(actions)
+        if len(actions) > self.max_actions:
+            actions = actions[0:self.max_actions-1]
+        self.actions = actions
 
 class SexAction(object):
 

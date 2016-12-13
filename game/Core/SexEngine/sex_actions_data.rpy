@@ -7,9 +7,10 @@ init python:
                     'stamina': 1
                 },
             'markers':{
-                'target': ['actor'],
-                'actor': ['target']
+                'target': [],
+                'actor': []
             },
+            'type': 'twoway',
             'required':{
                 'actor':{
                     'willing': True,

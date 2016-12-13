@@ -11,7 +11,7 @@ class Buff(object):
         self.storage = owner_person.get_buff_storage()
         self.time = time
         self.storage.append(self)
-        self.owner.add_modifier(self.name, self.modifiers, self, self.slot)
+        self.owner.add_modifier(self.id, self.modifiers, self, self.slot)
 
     @property
     def name(self):
