@@ -87,19 +87,19 @@ class SexParticipant(object):
 
     def use_action(self, action):
         if action.type == 'twoway':
-            self.send_markes(self.target)
-            self.target.send_markes(self)
+            self.send_markes(action, self.target, 'target')
+            self.target.send_markes(action, self, 'actor')
         elif action.type == 'outward':
-            self.target.send_markes(self)
+            self.target.send_markes(action, self, 'actor')
         elif action.type == 'inward':
-            self.send_markes(target)
+            self.send_markes(action, target, 'target')
         else:
             raise Exception("Unknown sex action type %s"%(action.type))
 
 
-    def send_markers(self, action, sender):
-        markers = [send.gender, sender.genus.id]
-        for i in action.markers['target']:
+    def send_markers(self, action, sender, type_):
+        markers = [send.gender, sender.genus.name]
+        for i in action.markers[type_]:
             markers.append(i)
         value = self.apply_markers(markers)
 
