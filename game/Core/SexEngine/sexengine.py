@@ -13,8 +13,9 @@ class SexEngine(object):
         self.participants = [SexParticipant(i[0], i[1]) for i in persons]
         self.participants.insert(0, SexParticipant(player[0], player[1]))
         self.participants[0].target = self.participants[1]
-        for i in range(1, len(self.participants)):
-            self.participants[i].target = self.participants[0]
+        self.participants[1].target = self.participants[0]
+        for i in range(2, len(self.participants)):
+            self.participants[i].target = self.participants[1]
         self.get_actions()
 
     def get_actions(self):
@@ -105,8 +106,8 @@ class SexParticipant(object):
 
     def apply_markers(self, markers):
         value = 0
-        taboos = self.taboos()
-        fetishes = self.fetishes()
+        taboos = self.taboos().keys()
+        fetishes = self.fetishes().keys()
         for i in markers:
             if i in taboos:
                 return -1

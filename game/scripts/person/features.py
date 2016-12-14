@@ -6,7 +6,7 @@ import renpy.exports as renpy
 
 
 class Feature(object):
-
+    optional_keys = ['anatomy', 'fetish', 'taboo', 'like', 'dislike']
     def __init__(self, owner=None, id_="generic",
                  data_dict='person_features', time=None, *args, **kwargs):
         try:
@@ -22,6 +22,15 @@ class Feature(object):
         self.owner = owner    # the Person() who owns this feature
         self.add()
 
+    def __getattr__(self, key):
+        try:
+            value = self.stats[key]
+        except KeyError:
+            if key in self.optional_keys:
+                return None
+            raise AttributeError(key)
+        else:
+            return value
     @property
     def name(self):
         return self.stats['name']
@@ -69,7 +78,7 @@ class Feature(object):
             if self.modifiers is not None:
                 slot = self.slot if self.slot else self.id
                 self.owner.modifiers.add_modifier(
-                    self.id, self.modifiers, self, slot)
+                    self.name, self.modifiers, self, slot)
             return
         else:
             for feature in self.owner.features:
@@ -78,7 +87,7 @@ class Feature(object):
             if self.modifiers is not None:
                 slot = self.slot if self.slot else self.id
                 self.owner.modifiers.add_modifier(
-                    self.id, self.modifiers, self, slot)
+                    self.name, self.modifiers, self, slot)
             self.owner.features.append(self)
 
     def tick_time(self):

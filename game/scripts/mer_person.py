@@ -691,13 +691,27 @@ class Person(Skilled, InventoryWielder, Attributed):
         return
 
     def anatomy(self):
-        return [i for i in self.get_all_modifiers() if i.attribute.startswith('anatomy')] 
+        list_ = []
+        for i in self.features:
+            if i.anatomy is not None:
+                list_.append(i.anatomy)
+        return list_
 
     def fetishes(self):
-        return [i for i in self.get_all_modifiers() if i.attribute.startswitn('fetish')]
+        list_ = []
+        for i in self.features:
+            if i.fetish is not None:
+                list_.append(i.fetish)
+        return list_
+
 
     def taboos(self):
-        return [i for i in self.get_all_modifiers() if i.attribute.statswith('taboo')]
+        list_ = []
+        for i in self.features:
+            if i.taboo is not None:
+                list_.append(i.taboo)
+        return list_
+
 
     def random_alignment(self):
         # roll activity
@@ -906,7 +920,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def vitality_info(self):
         d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
              'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
-        list_ = self.modifiers_separate('vitality', True)
+        list_ = self.modifiers_separate('vitality')
         list_ = [(value.name, value.value) for value in list_]
         return d, list_
 
