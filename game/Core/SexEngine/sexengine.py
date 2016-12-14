@@ -112,9 +112,14 @@ class SexParticipant(object):
         fetishes = self.fetishes().keys()
         for i in markers:
             if i in taboos:
-                return -1
+                value = -1
+                if i not in self.person.revealed('taboos'):
+                    self.person.reveal('taboos', i)
             elif i in fetishes:
-                value += 1
+                if value >= 0:
+                    value += 1
+                if i not in self.person.revealed('fetishes'):
+                    self.person.reveal('fetishes', i)
         return value
 
     def set_drive(self, situation):
