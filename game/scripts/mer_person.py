@@ -543,6 +543,10 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._favor = BarterSystem()
         self.card_storage = None
         self.decks = []
+        self._taboos = []
+        self._fetishes = []
+        self.revealed_taboos = []
+        self.revealed_fetishes = []
     def apply_background(self, background):
         self.background = background
         background.apply(self)
@@ -698,19 +702,24 @@ class Person(Skilled, InventoryWielder, Attributed):
         return list_
 
     def fetishes(self):
-        list_ = []
-        for i in self.features:
-            if i.fetish is not None:
-                list_.append(i.fetish)
+        list_ = [i for i in self._fetishes]
+        list_.extend(self.revealed('fetishes'))
         return list_
 
 
     def taboos(self):
-        list_ = []
-        for i in self.features:
-            if i.taboo is not None:
-                list_.append(i.taboo)
+        list_ = [i for i in self._taboos]
+        list_.extend(self.revealed('taboos'))
         return list_
+
+    def revealed(self, key):
+        return getattr(self, 'revealed_'+key)
+
+    def reveal(self, type_, name):
+        list_ = getattr(self, type_)
+        if name in list_:
+            list_.remove(name)
+        getattr(self, 'revealed_%s'%type_).append(name)
 
 
     def random_alignment(self):
