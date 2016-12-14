@@ -110,12 +110,12 @@ init python:
 
         }
         
-    sexual_traits = ['actve', 'passive', 'straight', 'submission', 'domination', 
-        'sadism', 'masohism', 'bondage_bottom', 'bondage_top', 'roughtness', 
-        'softness', 'abuse', 'sweet_talk', 'dirty_talk', 'sucker', 
+    sexual_traits = ['actve', 'passive', 'straight', 'humiliation', 'abuse', 
+        'sadism', 'masohism', 'restraint', 'forcing', 'roughtness', 
+        'softness', 'sweet_talk', 'dirty_talk', 'sucker', 
         'nipple_stimulation', 'anal_stimulation', 'feet_stimulation', 'ass_fetish', 'oral_fetish', 
         'boobs_fetish', 'foot_fetish', 'breath_play', 'blood_play', 'iron', 
         'fire', 'toys', 'toilet_top', 'toilet_bottom', 'masculinity', 
         'feminity', 'hermafrodiction', 'androgynity', 'fur_fetish', 'brute_fetish', 
-        'zoophylia', 'xenophylia', 
+        'zoophylia', 'xenophylia', 'pedophilia', 'gerontophilia', 'incest', 
         ]
