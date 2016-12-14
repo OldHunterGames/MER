@@ -8,7 +8,8 @@ init python:
                 },
             'markers':{
                 'target': [],
-                'actor': []
+                'actor': [],
+                'both': []
             },
             'type': 'twoway',
             'required':{

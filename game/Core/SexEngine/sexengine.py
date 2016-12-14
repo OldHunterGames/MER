@@ -102,6 +102,8 @@ class SexParticipant(object):
         markers = [send.gender, sender.genus.name]
         for i in action.markers[type_]:
             markers.append(i)
+        for i in action.markers['both']:
+            markers.append(i)
         value = self.apply_markers(markers)
 
     def apply_markers(self, markers):
