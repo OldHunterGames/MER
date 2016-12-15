@@ -71,4 +71,7 @@ class Genus(object):
     @property
     def name(self):
         return self.data['name']
-
+    
+    @property
+    def type(self):
+        return self.data['type']
