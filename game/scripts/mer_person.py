@@ -67,6 +67,9 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
 
 persons_list = []
 
+def gen_sex_traits(person):
+    pass
+
 class Modifiable(object):
 
     def init_modifiable(self):

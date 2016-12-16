@@ -105,6 +105,7 @@ class SexParticipant(object):
         for i in action.markers['both']:
             markers.append(i)
         value = self.apply_markers(markers)
+        self.feelings += value * getattr(sender, action.attribute)
 
     def apply_markers(self, markers):
         value = 0
