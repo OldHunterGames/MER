@@ -16,11 +16,51 @@ class SexEngine(object):
         self.participants[1].target = self.participants[0]
         for i in range(2, len(self.participants)):
             self.participants[i].target = self.participants[1]
+        self.new_target = None
         self.get_actions()
 
+    def player(self):
+        return self.participants[0]
+
     def get_actions(self):
+        if self.new_target is not None:
+            self.change_target(self.new_target)
+            self.new_target = None
         for i in self.participants:
-            i.get_actions()
+            if i.active:
+                i.get_actions()
+            else:
+                i.actions = []
+
+    def active_participants(self):
+        return [i for i in self.participants if i.active]
+
+    def ended(self):
+        return len(self.active_participants()) < 2 or not self.participants[0].active
+
+    def change_target(self, target):
+        participants = self.active_participants()
+        for i in participants:
+            i.target = target
+        if target == self.player():
+            target.target = participants[1]
+        else:
+            target.target = self.player()
+
+    def set_target(self, target):
+        self.new_target = target
+
+    def inactive_targeted(self):
+        participants = self.active_participants()
+        for i in participants:
+            if i.target not in participants:
+                return True
+        return False
+
+    def clear_actions(self):
+        for i in self.participants:
+            i.actions = []
+
 
 
 
@@ -36,8 +76,9 @@ class SexParticipant(object):
         except AttributeError:
             self.standart = 0
 
-
-        self.drive = 0
+        self.active = True
+        self.drive = 3
+        self._stamina = 0
         self.stamina = max(self.person.vitality, self.person.physique)
         if self.person.vitality < 1:
             self.stamina -= 1
@@ -47,6 +88,29 @@ class SexParticipant(object):
         self.max_actions = self.sex_level
         self.actions = []
         self.target = None
+
+
+    @property
+    def stamina(self):
+        return self._stamina
+
+    @stamina.setter
+    def stamina(self, value):
+        self._stamina = value
+        if self._stamina < 1:
+            self._stamina = 0
+            self.active = False
+
+    @property
+    def drive(self):
+        return self._drive
+
+    @drive.setter
+    def drive(self, value):
+        self._drive = value
+        if self._drive < 1:
+            self._drive = 0
+            self.active = False
     
     @property
     def avatar(self):
@@ -57,7 +121,7 @@ class SexParticipant(object):
         return self.person.skill('sex').level
 
     def anatomy(self):
-        return [i.attribute[8:] for i in self.person.anatomy()]
+        return [i for i in self.person.anatomy()]
 
     @property
     def physique(self):
@@ -79,27 +143,41 @@ class SexParticipant(object):
     def sensitivity(self):
         return self.person.sensitivity
 
+    @property
+    def gender(self):
+        return self.person.gender
+
+    @property
+    def genus(self):
+        return self.person.genus
+
     def fetishes(self):
-        return [i.attribute[8:] for i in self.person.fetishes()]
+        return [i for i in self.person.fetishes()]
 
     def taboos(self):
-        return [i.attribute[7:] for i in self.person.taboos()]
+        return [i for i in self.person.taboos()]
+
+    def revealed_fetishes(self):
+        return self.person.revealed('fetishes')
+
+    def revealed_taboos(self):
+        return self.person.revealed('taboos')
+
+    @property
+    def name(self):
+        return self.person.name
 
 
     def use_action(self, action):
-        if action.type == 'twoway':
-            self.send_markes(action, self.target, 'target')
-            self.target.send_markes(action, self, 'actor')
-        elif action.type == 'outward':
-            self.target.send_markes(action, self, 'actor')
-        elif action.type == 'inward':
-            self.send_markes(action, target, 'target')
-        else:
-            raise Exception("Unknown sex action type %s"%(action.type))
+        self.send_markers(action, self.target, 'target')
+        self.target.send_markers(action, self, 'actor')
+        for key, value in action.pay.items():
+            old_value = getattr(self, key)
+            setattr(self, key, old_value - value)
 
 
     def send_markers(self, action, sender, type_):
-        markers = [send.gender, sender.genus.name]
+        markers = [sender.gender, sender.genus.type]
         for i in action.markers[type_]:
             markers.append(i)
         for i in action.markers['both']:
@@ -109,8 +187,8 @@ class SexParticipant(object):
 
     def apply_markers(self, markers):
         value = 0
-        taboos = self.taboos().keys()
-        fetishes = self.fetishes().keys()
+        taboos = self.taboos()
+        fetishes = self.fetishes()
         for i in markers:
             if i in taboos:
                 value = -1
@@ -130,8 +208,8 @@ class SexParticipant(object):
         actions = get_sex_actions()
         actions = [i for i in actions if i.can_be_used(self, self.target)]
         shuffle(actions)
-        if len(actions) > self.max_actions:
-            actions = actions[0:self.max_actions-1]
+        while len(actions) > self.max_actions:
+            actions.pop()
         self.actions = actions
 
 class SexAction(object):
@@ -145,7 +223,7 @@ class SexAction(object):
         try:
             attr = self.data[attr]
         except KeyError:
-            raise Exception('Have no key %s for SexAxtion %s'%(attr, self.id))
+            raise Exception('Have no key %s for SexAction %s'%(attr, self.id))
         else:
             return attr
 
@@ -156,6 +234,7 @@ class SexAction(object):
 
 def _required_stats(sex_participant, sex_action, type_):
     #type = 'actor' or 'target'
+    print sex_action.id
     sex_participant_required = sex_action.required[type_]
     try:
         sex_participant_req_stats = sex_participant_required['stats']
@@ -171,10 +250,11 @@ def _required_stats(sex_participant, sex_action, type_):
         willing = False
     success = True
     for key, value in sex_participant_req_stats.items():
-        if value[0] == '>=':
-            success = value[1] >= getattr(sex_participant, key)
-        elif value[0] == '<=':
-            success = value[1] <= getattr(sex_participant, key)
+        success = {'>=': lambda: value[1] >= getattr(sex_participant, key),
+            '>': lambda: value[1] > getattr(sex_participant, key),
+            '<=': lambda: value[1] <= getattr(sex_participant, key),
+            '<': lambda: value[1] < getattr(sex_participant, key),
+            '==': lambda: value[1] == getattr(sex_participant, key)}[value[0]]
 
     success = success and all([i in sex_participant.anatomy() for i in sex_participant_req_anatomy])
     if willing:

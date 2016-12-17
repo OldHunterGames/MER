@@ -122,7 +122,7 @@ label lbl_simple_fight(allies, enemies):
         fight = SimpleFight(allies, enemies)
     call screen sc_simple_fight(fight)
     call lbl_postfight(fight)
-    return
+    return fight
 
 label lbl_postfight(fight):
     $ winner = fight.get_winner()
