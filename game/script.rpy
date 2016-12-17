@@ -62,7 +62,7 @@ label start:
         player.equip_on_slot('ankleband', sword) 
         player.equip_on_slot('harness', halberd) 
         sex = SexEngine((player, True), [(p, True)])
-    call screen sc_sexengine_main(sex)
+    # call screen sc_sexengine_main(sex)
     # call lbl_simple_fight([player, g], [p])
     show expression "interface/bg_base.jpg" as bg
     call evn_init

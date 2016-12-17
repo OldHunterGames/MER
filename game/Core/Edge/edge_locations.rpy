@@ -46,9 +46,10 @@ label lbl_edge_shifting_mist(location=None):
         'Patrool the Edge':
             $ ally1 = DuelCombatant(player)
             call lbl_edge_randenc_errant
-            python:
-                fight = DuelEngine([ally1],[enemy1], None)
-                fight.start()
+            #python:
+            call lbl_simple_fight([ally1], [enemy1])
+                #fight = DuelEngine([ally1],[enemy1], None)
+                #fight.start()
 
         'Wander in The Mist':
             $ edge.go_to_mist()
