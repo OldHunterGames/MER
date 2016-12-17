@@ -894,7 +894,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         if not key.startswith('__') and not key.endswith('__'):
             try:
                 genus = super(Person, self).__getattribute__('genus')
-                value = getattr(genus, key)
+                value = getattr(genus, 'overload_'+key)
                 return value
             except AttributeError:
                 pass

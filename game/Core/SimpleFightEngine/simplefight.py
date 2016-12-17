@@ -24,7 +24,7 @@ class SimpleFight(object):
             for i in self.allies:
                 i.skill_difference = difference
             for i in self.enemies:
-                i.skill.difference = -difference
+                i.skill_difference = -difference
 
 
         for i in self.allies:
@@ -196,12 +196,12 @@ class SimpleCombatant(object):
 
     def max_maneuvers(self):
         value = 3
-        if self.difference < 0:
-            for i in range(0, abs(self.difference)):
+        if self.skill_difference < 0:
+            for i in range(0, abs(self.skill_difference)):
                 if i%2 == 0:
                     value -= 1
-        elif self.difference > 0:
-            for i in range(0, abs(self.difference)):
+        elif self.skill_difference > 0:
+            for i in range(0, abs(self.skill_difference)):
                 if i%2 != 0:
                     value += 1
         return value
@@ -212,7 +212,7 @@ class SimpleCombatant(object):
 
     @property
     def inactive(self):
-        return self.hp < 1 and not self._inactive
+        return self.hp < 1 or self._inactive
 
     @property
     def disabled(self):
@@ -498,9 +498,11 @@ class Parry(SimpleManeuver):
         target.protections.append(self)
 
     def protect(self, value):
-        for i in self.protected:
-            i.protections.remove(self)
-        return 0
+        if value > 0:
+            for i in self.protected:
+                i.protections.remove(self)
+            return 0
+        return value
 
 class Recovery(SimpleManeuver):
 
@@ -541,15 +543,16 @@ class ShielUp(RuledManeuver):
             print self.p_target
             target = self.person
             if target.armor_rate is None:
-                value = target.agility * 3
+                heal = target.agility * 3
             elif target.armor_rate == 'light_armor':
-                value = target.agility * 2
+                heal = target.agility * 2
             else:
-                value = target.physique * 2
-            target.defence = min(target.max_defence(), target.defence+value)
-        if value > 1:
+                heal = target.physique * 2
+            target.defence = min(target.max_defence(), target.defence+heal)
+        if value > 0:
             self.p_target.protections.remove(self)
-        return 0
+            return 0
+        return value
 
     def can_be_applied(self, person):
 
@@ -615,6 +618,7 @@ class Fiencing(RuledManeuver):
         super(Fiencing, self).__init__(person)
         self.type = 'attack'
         self.name = 'Fiencing'
+        self.targets_available = 1
 
     def _activate(self, target):
         value = int(self.person.attack / 2)
@@ -631,13 +635,16 @@ class PinDown(RuledManeuver):
     def __init__(self, person):
 
         super(PinDown, self).__init__(person)
+        self.targets_available = 1
         self.type = 'special'
         self.name = 'Pin down'
 
-    def _active(self, target):
-        self.target.knockdown()
+    def _activate(self, target):
+        target.knockdown()
 
     def can_be_applied(self, person):
+        if len(person.enemies) < 1:
+            return False
         enemy = person.enemies[0]
         amount = len(person.enemies) < 2
         physique = enemy.physique < person.physique

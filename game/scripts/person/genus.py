@@ -25,7 +25,7 @@ class Genus(object):
             raise AttributeError(key)
         else:
             if callable(value):
-                return value(self.owner)
+                return value(self._owner)
             return value
     
     def remove(self):

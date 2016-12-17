@@ -1,28 +1,28 @@
 init python:
     genuses_data = {
         'human':{
-            'name': 'human',
+            'name': __('human'),
             'head_type': 'human',
             'type': 'human'
         },
         'vampire':{
-            'name': 'vampire',
+            'name': __('vampire'),
             'head_type': 'undead',
             'type': 'undead'
         },
         'werewolf':{
-            'name': 'werewolf',
+            'name': __('werewolf'),
             'head_type': 'canin',
             'type': 'furry'
         },
         'lupine':{
-            'name': 'lupine',
+            'name': __('lupine'),
             'head_type': 'canin',
             'type': 'furry'
         },
         'slime':{
-            'name': 'slime',
-            'head_type': 'slime'
+            'name': __('slime'),
+            'head_type': 'slime',
             'type': 'xeno'
         }
     }
