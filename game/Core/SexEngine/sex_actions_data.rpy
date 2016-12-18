@@ -88,7 +88,7 @@ init python:
                 'target':{'willing': True}}},
                                 
         'slap':{'name': __("Slap"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['masochism'], 'actor': ['sadism'], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'anatomy': ['graspers'] },
                 'target':{}}},
@@ -100,13 +100,13 @@ init python:
                 'target':{}}},
 
         'spank':{'name': __("Spank"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['masochism', 'analstim'], 'actor': ['sadism', 'asslove'], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'anatomy': ['graspers'] },
                 'target':{'anatomy': ['body']}}},
 
         'bite':{'name': __("Bite"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['masochism', 'sucker'], 'actor': ['sadism', 'orallove'], 'both': ['roughness']},
             'required':{'actor':{'willing': True},
                 'target':{'anatomy': ['body']}}},
@@ -142,13 +142,13 @@ init python:
                 'target':{'anatomy': ['boobs']}}},
                 
         'rough_kiss':{'name': __("Rough kiss"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['masochism', 'orallove'], 'actor': ['sadism', 'sucker'], 'both': ['roughness']},
             'required':{'actor':{'willing': True},
                 'target':{}}},
                 
         'choke':{'name': __("Choke"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive', 'restraint'], 'actor': ['active', 'forcing'], 'both': ['roughness', 'breath']},
             'required':{'actor':{'willing': True, 'anatomy': ['graspers'] },
                 'target':{}}},
@@ -166,7 +166,7 @@ init python:
                 'target':{'anatomy': ['vagina']}}},
 
         'fisting':{'name': __("Fisting"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive', 'straight', 'masochism'], 'actor': ['active'], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'anatomy': ['graspers'] },
                 'target':{'anatomy': ['vagina']}}},
@@ -178,7 +178,7 @@ init python:
                 'target':{'anatomy': ['body']}}},
 
         'ass_fisting':{'name': __("Ass fisting"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive', 'analstim', 'masochism', ], 'actor': ['active', 'asslove'], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'anatomy': ['graspers'] },
                 'target':{'anatomy': ['body']}}},
@@ -190,7 +190,7 @@ init python:
                 'target':{'willing': True,'stats':{'feelings': ['>=', 1]}, 'anatomy': ['vagina']}}},
 
         'hard_fuck':{'name': __("Hard fuck"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive'], 'actor': ['active'], 'both': ['roughness', 'straight']},
             'required':{'actor':{'willing': True, 'stats':{'feelings': ['>=', 1]}, 'anatomy': ['penis'] },
                 'target':{'anatomy': ['vagina']}}},
@@ -202,13 +202,13 @@ init python:
                 'target':{}}},
 
         'forced_facefuck':{'name': __("Forced facefuck"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive', 'sucker', 'restraint'], 'actor': ['active', 'orallove', 'forcing', 'straight'], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'stats':{'feelings': ['>=', 1]}, 'anatomy': ['penis'] },
                 'target':{}}},
 
         'hard_anal':{'name': __("Hard anal"),
-            'pay':{'stamina': 1}, 'attribute': 'phisique',  
+            'pay':{'stamina': 1}, 'attribute': 'physique',  
             'markers':{'target': ['passive', 'analstim'], 'actor': ['active', 'asslove', 'straight', ], 'both': ['roughness']},
             'required':{'actor':{'willing': True, 'stats':{'feelings': ['>=', 1]}, 'anatomy': ['penis'] },
                 'target':{'anatomy': ['body']}}},

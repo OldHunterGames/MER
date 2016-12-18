@@ -52,6 +52,7 @@ screen sc_sexengine_info(info_object):
         yalign 0.0
         if isinstance(info_object, SexParticipant):
             vbox:
+                box_wrap True
                 text info_object.name
                 text 'standart: %s'%info_object.standart
                 text '{b}anatomy:{/b}'
@@ -71,4 +72,7 @@ screen sc_sexengine_info(info_object):
                 text '{b}pay{/b}:'
                 for k, v in info_object.pay.items():
                     text '[k]: [v]'
+                text '{b}markers:{/b}'
+                for i in info_object.markers.values():
+                    text i
 
