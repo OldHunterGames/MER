@@ -359,6 +359,13 @@ class Maneuver(object):
         self._can_target_more = True
         self.self_targeted = False
 
+    @property
+    def name(self):
+        return store.maneuvers_data[self.id]['name']
+    @property
+    def description(self):
+        return store.maneuvers_data[self.id]['description']
+
     def clear(self):
         self.targets = []
         self._can_target_more = True
@@ -435,7 +442,7 @@ class SwiftStrike(SimpleManeuver):
 
         super(SwiftStrike, self).__init__(person)
         self.targets_available = 1
-        self.name = "Swift Strike"
+        self.id = 'swift_strike'
         self.type = 'attack'
 
     def _activate(self, target):
@@ -453,7 +460,7 @@ class DirectStrike(SimpleManeuver):
 
         super(DirectStrike, self).__init__(person)
         self.targets_available = 1
-        self.name = 'Direct Strike'
+        self.id = 'direct_strike'
         self.type = 'attack'
 
     def _activate(self, target):
@@ -470,7 +477,7 @@ class HeavyStrike(SimpleManeuver):
     def __init__(self, person):
         super(HeavyStrike, self).__init__(person)
         self.targets_available = 1
-        self.name = 'Heavy Strike'
+        self.id = 'heavy_strike'
         self.type = 'attack'
 
     def _activate(self, target):
@@ -487,7 +494,7 @@ class WideStrike(SimpleManeuver):
     def __init__(self, person):
         super(WideStrike, self).__init__(person)
         self.targets_available = len(self.person.enemies)
-        self.name = 'Wide Strike'
+        self.id = 'wild_strike'
         self.type = 'attack'
 
     def _activate(self, target):
@@ -505,7 +512,7 @@ class Charge(SimpleManeuver):
 
         super(Charge, self).__init__(person)
         self.targets_available = 1
-        self.name = 'Charge'
+        self.id = 'charge'
         self.type = 'attack'
 
     def _activate(self, target):
@@ -533,7 +540,7 @@ class Dodge(SimpleManeuver):
         self.targets_available = 1
         self.self_targeted = True
         self.type = 'protection'
-        self.name = "Dodge"
+        self.id = 'dodge'
 
     def _activate(self, target):
         target.protections.append(self)
@@ -553,7 +560,7 @@ class Block(SimpleManeuver):
         super(Block, self).__init__(person)
         self.targets_available = 1
         self.type = 'protection'
-        self.name = 'Block'
+        self.id = 'block'
         self.self_targeted = True
 
     def _activate(self, target):
@@ -576,7 +583,7 @@ class Parry(SimpleManeuver):
         self.targets_available = 1
         self.self_targeted = True
         self.type = 'protection'
-        self.name = 'Parry'
+        self.id = 'parry'
 
     def _activate(self, target):
         self.protected = [i for i in self.targets]
@@ -628,7 +635,7 @@ class ShielUp(RuledManeuver):
         super(ShielUp, self).__init__(person)
         self.targets_available = 1
         self.type = 'protection'
-        self.name = 'Shield up'
+        self.id = 'shield_up'
 
     def _activate(self, target):
         target.protections.append(self)
@@ -666,7 +673,7 @@ class Grapple(RuledManeuver):
         super(Grapple, self).__init__(person)
         self.targets_available = 1
         self.type = 'disable'
-        self.name = 'Grapple'
+        self.id = 'grapple'
 
     def _activate(self, target):
         target.disabled = True
@@ -688,7 +695,7 @@ class Backstab(RuledManeuver):
         super(Backstab, self).__init__(person)
         self.targets_available = 1
         self.type = 'attack'
-        self.name = 'Backstab'
+        self.id = 'backstab'
 
     def _activate(self, target):
         target.hp -= self.person.attack * 2
@@ -705,10 +712,10 @@ class PowerStrike(RuledManeuver):
         super(PowerStrike, self).__init__(person)
         self.targets_available = 1
         self.type = 'attack'
-        self.name = 'Power strike'
+        self.id = 'power_strike'
 
     def _activate(self, target):
-        target.damage(int(self.person.attack * 3))
+        target.damage(self.person.attack * 3, self.person)
 
     def can_be_applied(self, person):
         return any([i.size == 'twohand' for i in person.weapons()])
@@ -722,7 +729,7 @@ class PinDown(RuledManeuver):
         super(PinDown, self).__init__(person)
         self.targets_available = 1
         self.type = 'special'
-        self.name = 'Pin down'
+        self.id = 'pin_down'
 
     def _activate(self, target):
         target.knockdown()
@@ -745,7 +752,7 @@ class Flee(RuledManeuver):
         super(Flee, self).__init__(person)
         self.targets_available = 1
         self.type = 'special'
-        self.name = 'Flee'
+        self.id = 'flee'
         self.self_targeted = True
 
     def _activate(self, target):
@@ -770,7 +777,7 @@ class Tank(RuledManeuver):
         self.targets_available = 1
         self.self_targeted = True
         self.type = 'protection'
-        self.name = "Tank"
+        self.id = 'tank'
 
     def _activate(self, target):
         for i in self.person.allies:
@@ -802,7 +809,7 @@ class Outflank(RuledManeuver):
         self.targets_available = 1
         self.self_targeted = True
         self.type = 'special'
-        self.name = 'Outflank'
+        self.id = 'outflank'
 
     def select(self):
         self.hp = self.person.hp
