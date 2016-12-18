@@ -26,7 +26,8 @@ init python:
 label start:
     python:
         p = gen_random_person('human', gender='female')
-        
+        g = gen_random_person('human')
+        z = gen_random_person('human')
 
         great_houses = [Faction(gen_random_person(), __('Kamira'),'kamira'),
             Faction(gen_random_person(), __('Serpis'), 'serpis'),
@@ -63,7 +64,7 @@ label start:
         player.equip_on_slot('harness', halberd) 
         sex = SexEngine((player, True), [(p, True)])
     # call screen sc_sexengine_main(sex)
-    # call lbl_simple_fight([player, g], [p])
+    call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
