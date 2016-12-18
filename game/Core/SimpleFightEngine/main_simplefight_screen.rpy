@@ -6,13 +6,15 @@ screen sc_simple_fight(fight):
     vbox:
         if fight.get_winner() is None:
             textbutton 'end_turn':
-                action Function(fight.end_turn), Hide('sc_target_picker')
+                action Function(fight.end_turn), Hide('sc_chose_maneuver')
         elif fight.get_winner() == 'allies':
             textbutton 'You win':
-                action Return()
+                action Return(), Hide('sc_chose_maneuver')
+        elif fight.get_winner() == 'fleed':
+            textbutton 'You fleed' action Return(), Hide('sc_chose_maneuver')
         else:
             textbutton 'You loose':
-                action Return()
+                action Return(), Hide('sc_chose_maneuver')
     frame:
         xalign 0.5
         yalign 1.0
@@ -27,13 +29,16 @@ screen sc_simple_fight(fight):
                             unhovered Hide('sc_maneuver_info')
                             action NullAction()
                     hbox:
-                        imagebutton:
-                            idle im.Scale(i.avatar, 100, 100)
-                            hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
-                            action Show('sc_chose_maneuver', fight=fight, fighter=i)
-                            selected i.active_maneuver is not None
-                            selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
-                            selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
+                        if not i.inactive:
+                            imagebutton:
+                                idle im.Scale(i.avatar, 100, 100)
+                                hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
+                                action Show('sc_chose_maneuver', fight=fight, fighter=i)
+                                selected i.active_maneuver is not None
+                                selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
+                                selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
+                        else:
+                            image im.Grayscale(im.Scale(i.avatar, 100, 100))
                         vbox:
                             text 'hp: %s'%str(i.hp)
                             text 'protection: %s'%str(i.defence)
@@ -93,14 +98,17 @@ screen sc_target_picker(fight, maneuver):
             vbox:
                 text 'chose targets'
                 for i in targets:
-                    imagebutton: 
-                        idle im.Scale(i.avatar, 50, 50)
-                        hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.05))
-                        action [SensitiveIf(maneuver.can_target_more()),
-                                Function(maneuver.add_target, i)]
-                        selected i in maneuver.targets
-                        selected_idle im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
-                        selected_hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
+                    if not i.inactive:
+                        imagebutton: 
+                            idle im.Scale(i.avatar, 50, 50)
+                            hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.05))
+                            action [SensitiveIf(maneuver.can_target_more()),
+                                    Function(maneuver.add_target, i)]
+                            selected i in maneuver.targets
+                            selected_idle im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
+                            selected_hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
+                    else:
+                        image im.Grayscale(im.Scale(i.avatar, 100, 100))
 
 screen sc_chose_maneuver(fight, fighter):
     window:
@@ -126,4 +134,8 @@ label lbl_simple_fight(allies, enemies):
 
 label lbl_postfight(fight):
     $ winner = fight.get_winner()
-    'fight winner is [winner]'
+    if winner != 'fleed':
+        'fight winner is [winner]'
+    else:
+        'you fleed from fight'
+    return
