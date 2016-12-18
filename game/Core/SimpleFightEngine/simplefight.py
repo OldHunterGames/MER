@@ -361,10 +361,18 @@ class Maneuver(object):
 
     @property
     def name(self):
-        return store.maneuvers_data[self.id]['name']
+        try:
+            name = store.maneuvers_data[self.id]['name']
+        except KeyError:
+            name = self.id
+        return name
     @property
     def description(self):
-        return store.maneuvers_data[self.id]['description']
+        try:
+            desc = store.maneuvers_data[self.id]['description']
+        except KeyError:
+            desc = 'No description'
+        return desc
 
     def clear(self):
         self.targets = []

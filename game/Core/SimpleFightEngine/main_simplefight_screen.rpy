@@ -114,14 +114,27 @@ screen sc_chose_maneuver(fight, fighter):
     window:
         xalign 0.5
         yalign 0.5
-        xsize 150
+        xsize 170
         ysize 280
         
         vbox:
             for i in fighter.maneuvers:
                 textbutton i.name:
+                    xmaximum 170
                     action [Function(fighter.activate_maneuver, i), Function(i.add_target, fight.target),
                         Hide('sc_chose_maneuver')]
+                    hovered Show('sc_maneuver_info', maneuver=i)
+                    unhovered Hide('sc_maneuver_info')
+
+screen sc_maneuver_info(maneuver):
+    window:
+        xalign 0.0
+        yalign 0.5
+        xsize 250
+        ysize 100
+        vbox:
+            text maneuver.name
+            text maneuver.description
 
 label lbl_simple_fight(allies, enemies):
 
