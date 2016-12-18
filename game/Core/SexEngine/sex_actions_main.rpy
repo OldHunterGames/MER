@@ -9,7 +9,8 @@ screen sc_sexengine_main(sexengine):
             box_reverse True
             spacing 10
             if sexengine.ended():
-                textbutton 'end sex' action Return(), Hide('sc_sexengine_info')
+                textbutton 'end sex' action [Return(), Hide('sc_sexengine_info'),
+                    Function(sexengine.apply_feelings)]
             else:
                 if not sexengine.inactive_targeted():
 
@@ -53,13 +54,16 @@ screen sc_sexengine_info(info_object):
             vbox:
                 text info_object.name
                 text 'standart: %s'%info_object.standart
+                text '{b}anatomy:{/b}'
+                for i in info_object.anatomy():
+                    text i.name
                 text '{b}fetishes:{/b}'
                 for i in info_object.revealed_fetishes():
                     text i
                 text '{b}taboos:{/b}'
                 for i in info_object.revealed_taboos():
                     text i
-                text 'target: '
+                text '{b}target{/b}: '
                 text info_object.target.name
         else:
             vbox:

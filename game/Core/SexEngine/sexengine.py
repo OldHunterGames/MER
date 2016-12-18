@@ -61,6 +61,14 @@ class SexEngine(object):
         for i in self.participants:
             i.actions = []
 
+    def apply_feelings(self):
+        for i in self.participants:
+            if i.feelings < 0:
+                pass
+            elif i.feelings > 0:
+                pass
+            if i.feelings > i.standart:
+                i.standart = i.feelings
 
 
 
@@ -122,6 +130,9 @@ class SexParticipant(object):
 
     def anatomy(self):
         return [i for i in self.person.anatomy()]
+
+    def has_anatomy_feat(self, name):
+        return self.person.has_anatomy_feat(name)
 
     @property
     def physique(self):
@@ -255,7 +266,7 @@ def _required_stats(sex_participant, sex_action, type_):
             '<': lambda: value[1] < getattr(sex_participant, key),
             '==': lambda: value[1] == getattr(sex_participant, key)}[value[0]]
 
-    success = success and all([i in sex_participant.anatomy() for i in sex_participant_req_anatomy])
+    success = success and all([sex_participant.has_anatomy_feat(i) for i in sex_participant_req_anatomy])
     if willing:
         willing = sex_participant.willing
     else:

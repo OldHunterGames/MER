@@ -4,9 +4,11 @@ from random import *
 import renpy.store as store
 import renpy.exports as renpy
 
+import mer_utilities
+
 
 class Feature(object):
-    optional_keys = ['anatomy', 'fetish', 'taboo', 'like', 'dislike']
+    optional_keys = ['anatomy']
     def __init__(self, owner=None, id_="generic",
                  data_dict='person_features', time=None, *args, **kwargs):
         try:
@@ -20,6 +22,7 @@ class Feature(object):
         self._time = time
         self._revealed = False   # true if the feature is revealed to player
         self.owner = owner    # the Person() who owns this feature
+        self.dependencies = []
         self.add()
 
     def __getattr__(self, key):
@@ -65,6 +68,8 @@ class Feature(object):
     def remove(self):
         if self.modifiers is not None:
             self.owner.modifiers.remove_modifier(self)
+        for i in self.dependencies:
+            i.remove()
         self.owner.features.remove(self)
 
     def reveal(self):
@@ -73,22 +78,40 @@ class Feature(object):
     def add(self):
         if self in self.owner.features:
             return
-        if self.slot is None:
-            self.owner.features.append(self)
-            if self.modifiers is not None:
-                slot = self.slot if self.slot else self.id
-                self.owner.modifiers.add_modifier(
-                    self.name, self.modifiers, self, slot)
-            return
-        else:
+        if self.slot is not None:
             for feature in self.owner.features:
                 if feature.slot == self.slot:
                     feature.remove()
-            if self.modifiers is not None:
-                slot = self.slot if self.slot else self.id
-                self.owner.modifiers.add_modifier(
-                    self.name, self.modifiers, self, slot)
-            self.owner.features.append(self)
+            
+        if self.modifiers is not None:
+            slot = self.slot if self.slot else self.id
+            self.owner.modifiers.add_modifier(
+                self.name, self.modifiers, self, slot)
+        self.owner.features.append(self)
+        
+        if self.anatomy:
+            if self.id in store.anatomy_dependency.keys():
+                for i in store.anatomy_dependency[self.id]:
+                    self.owner.add_feature(i)
+                    self.dependencies.append(i)
+            if self.id in store.anatomy_weights.keys():
+                dict_ = store.anatomy_weights[self.id]
+                for key in dict_.keys():
+                    if key != 'default':
+                        try:
+                            check = getattr(self.owner, key).id
+                        except AttributeError:
+                            check = getattr(self.owner, key)
+                        for k in dict_[key]:
+                            if k == check:
+                                dict_ = dict[key][k]
+                                break
+                else:
+                    dict_ = dict_['default']
+                    feature = mer_utilities.weighted_random([(key, value) for key, value in dict_.items()])
+                    self.owner.add_feature(feature)
+                    self.dependencies.append(feature)
+
 
     def tick_time(self):
         try:

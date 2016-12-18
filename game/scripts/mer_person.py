@@ -63,12 +63,39 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p.random_alignment()
     p.random_features()
     p.random_skills()
+    gen_sex_traits(p)
     return p
 
 persons_list = []
 
 def gen_sex_traits(person):
-    pass
+    kink_data = store.kink_types
+    kink = choice(kink_data.keys())
+    genders_data = store.gender_types
+    gender = person.gender
+    basic = store.basic_preferences
+    get_traits_from_dict(person, kink_data[kink])
+    get_traits_from_dict(person, genders_data[gender])
+    get_traits_from_dict(person, basic)
+
+def get_traits_from_dict(person, dict): 
+    for key, value in dict.items():
+        roll = trait_chance(*value)
+        if roll == 'fetish':
+            person.add_fetish(key)
+        elif roll == 'taboo':
+            person.add_taboo(key)
+
+
+
+
+def trait_chance(fetish_value, taboo_value):
+    roll = randint(1, 10)
+    if roll <= fetish_value:
+        return 'fetish'
+    elif roll <= fetish_value + taboo_value:
+        return 'taboo'
+
 
 class Modifiable(object):
 
@@ -700,15 +727,25 @@ class Person(Skilled, InventoryWielder, Attributed):
     def anatomy(self):
         list_ = []
         for i in self.features:
-            if i.anatomy is not None:
-                list_.append(i.anatomy)
+            if i.anatomy:
+                list_.append(i)
         return list_
+
+    def has_anatomy_feat(self, name):
+        if self.has_feature('polymorphous'):
+            return True
+        return any([i.id == name for i in self.anatomy()])
 
     def fetishes(self):
         list_ = [i for i in self._fetishes]
         list_.extend(self.revealed('fetishes'))
         return list_
 
+    def add_taboo(self, taboo):
+        self._taboos.append(taboo)
+
+    def add_fetish(self, fetish):
+        self._fetishes.append(fetish)
 
     def taboos(self):
         list_ = [i for i in self._taboos]
@@ -719,10 +756,18 @@ class Person(Skilled, InventoryWielder, Attributed):
         return getattr(self, 'revealed_'+key)
 
     def reveal(self, type_, name):
-        list_ = getattr(self, type_)
+        list_ = getattr(self, '_'+type_)
         if name in list_:
             list_.remove(name)
         getattr(self, 'revealed_%s'%type_).append(name)
+
+    def reveal_all_taboos(self):
+        for i in self._taboos:
+            self.reveal('taboos', i)
+
+    def reveal_all_fetishes(self):
+        for i in self._fetishes:
+            self.reveal('fetishes', i)
 
 
     def random_alignment(self):

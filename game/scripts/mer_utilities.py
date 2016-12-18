@@ -1,5 +1,5 @@
 # -*- coding: <UTF-8> -*-
-
+import random
 
 def encolor_text(text, value):
     if value < 0:
@@ -12,6 +12,15 @@ def encolor_text(text, value):
 
 def default_avatar_path():
     return 'images/avatar/none.jpg'
+
+def weighted_random(pairs):
+   total = sum(w for c, w in pairs)
+   r = random.uniform(0, total)
+   upto = 0
+   for c, w in pairs:
+      if upto + w >= r:
+         return c
+      upto += w
 
 class Observable(object):
 

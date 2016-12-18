@@ -38,38 +38,38 @@ init python:
         'wild_appearence': {'name': __('wild appearence'), 'slot': 'look', 'visible': True},    
 
         # anatomy
-        'polymorphous': {'name': __('polymorphous'), 'slot': None, 'visible': True},
-        'body': {'name': __('Corporeal'), 'slot': None, 'visible': True},
-        'megatongue': {'name': __('Super tongue'), 'slot': None, 'visible': True},
-        'fangs': {'name': __('Dangerous fangs'), 'slot': None, 'visible': True},
-        'horns': {'name': __('Tough horns'), 'slot': None, 'visible': True},
-        'graspers': {'name': __('Graspers'), 'slot': None, 'visible': False},                
-        'claws': {'name': __('Dangerous claws'), 'slot': None, 'visible': True},
-        'hoofs': {'name': __('Tough hoofs'), 'slot': None, 'visible': True},
-        'locomotors': {'name': __('Locomotors'), 'slot': None, 'visible': False},
-        'feets': {'name': __('Human feets'), 'slot': None, 'visible': False},
-        'tail': {'name': __('Flexible tail'), 'slot': None, 'visible': True},
-        'stinger': {'name': __('Poisonous stinger'), 'slot': None, 'visible': True},        
-        'penis': {'name': __('Functional coock'), 'slot': None, 'visible': False},
-        'dualpenis': {'name': __('Dual coock'), 'slot': None, 'visible': True},
-        'multipenis': {'name': __('Many coocks'), 'slot': None, 'visible': True},
-        'vagina': {'name': __('Functional pussy'), 'slot': None, 'visible': False},
-        'cloaca': {'name': __('Huge cloaca'), 'slot': None, 'visible': True},
-        'boobs': {'name': __('Boobs'), 'slot': None, 'visible': False},                
+        'polymorphous': {'name': __('polymorphous'), 'slot': None, 'visible': True, 'anatomy': True},
+        'body': {'name': __('Corporeal'), 'slot': None, 'visible': True, 'anatomy': True},
+        'megatongue': {'name': __('Super tongue'), 'slot': None, 'visible': True, 'anatomy': True},
+        'fangs': {'name': __('Dangerous fangs'), 'slot': None, 'visible': True, 'anatomy': True},
+        'horns': {'name': __('Tough horns'), 'slot': None, 'visible': True, 'anatomy': True},
+        'graspers': {'name': __('Graspers'), 'slot': None, 'visible': False, 'anatomy': True},                
+        'claws': {'name': __('Dangerous claws'), 'slot': None, 'visible': True, 'anatomy': True},
+        'hoofs': {'name': __('Tough hoofs'), 'slot': None, 'visible': True, 'anatomy': True},
+        'locomotors': {'name': __('Locomotors'), 'slot': None, 'visible': False, 'anatomy': True},
+        'feets': {'name': __('Human feets'), 'slot': None, 'visible': False, 'anatomy': True},
+        'tail': {'name': __('Flexible tail'), 'slot': None, 'visible': True, 'anatomy': True},
+        'stinger': {'name': __('Poisonous stinger'), 'slot': None, 'visible': True, 'anatomy': True},        
+        'penis': {'name': __('Functional coock'), 'slot': None, 'visible': False, 'anatomy': True},
+        'dualpenis': {'name': __('Dual coock'), 'slot': None, 'visible': True, 'anatomy': True},
+        'multipenis': {'name': __('Many coocks'), 'slot': None, 'visible': True, 'anatomy': True},
+        'vagina': {'name': __('Functional pussy'), 'slot': None, 'visible': False, 'anatomy': True},
+        'cloaca': {'name': __('Huge cloaca'), 'slot': None, 'visible': True, 'anatomy': True},
+        'boobs': {'name': __('Boobs'), 'slot': None, 'visible': False, 'anatomy': True},                
 
-        'flat_chest': {'name': __('flat chest'), 'slot': 'breast_size', 'modifiers': {'appearance_boobs': 0}, 'visible': True},
-        'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True},
-        'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True},
-        'large_boobs': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True},
-        'huge_tits': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4},  'visible': True},
-        'enormous_udders': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5},  'visible': True},
+        'flat_chest': {'name': __('flat chest'), 'slot': 'breast_size', 'modifiers': {'appearance_boobs': 0}, 'visible': True, 'anatomy': True},
+        'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True, 'anatomy': True},
+        'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True, 'anatomy': True},
+        'large_boobs': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True, 'anatomy': True},
+        'huge_tits': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4},  'visible': True, 'anatomy': True},
+        'enormous_udders': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5},  'visible': True, 'anatomy': True},
 
-        'small_penis': {'name': __('small_penis'), 'slot': 'penis_size', 'visible': True},
-        'normal_penis': {'name': __('normal_penis'), 'slot': 'penis_size', 'visible': True},
-        'large_penis': {'name': __('large_penis'), 'slot': 'penis_size', 'visible': True},
+        'small_penis': {'name': __('small_penis'), 'slot': 'penis_size', 'visible': True, 'anatomy': True},
+        'normal_penis': {'name': __('normal_penis'), 'slot': 'penis_size', 'visible': True, 'anatomy': True},
+        'large_penis': {'name': __('large_penis'), 'slot': 'penis_size', 'visible': True, 'anatomy': True},
 
-        'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True},
-        'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True},
+        'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
+        'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
 
         # needs
         'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True},
@@ -395,8 +395,8 @@ init python:
     }
 
     basic_preferences = {
-        'pleasure': (10,0)
-        'vexation': (0,10)
+        'pleasure': (10,0),
+        'vexation': (0,10),
         'junior': (4, 2),
         'elder': (4, 2),
         'incest': (4, 2),
@@ -404,3 +404,26 @@ init python:
         'zoo': (3, 5),
         'xeno': (2, 6),
         } 
+
+    anatomy_weights = {
+        'penis': {
+            'default': {'micropenis': 1, 'small_penis': 3, 'normal_penis': 6, 'big_penis': 3, 'huge_penis': 1},
+            'genus':{
+                'werwolf': {'small_penis': 1, 'normal_penis': 3, 'big_penis': 6, 'huge_penis': 3, 'enormous_penis': 1},
+                'lupine': {'small_penis': 1, 'normal_penis': 3, 'big_penis': 6, 'huge_penis': 3, 'enormous_penis': 1}
+            }
+
+        },
+        'boobs': {
+            'default': {'flat_chest': 1, 'small_breast': 3, 'normal_breast': 6, 'big_breast': 3, 'huge_breast': 1},
+            'age':{
+                'junior': {'flat_chest': 1},
+                'mature': {'flat_chest': 1, 'small_breast': 3, 'normal_breast': 5, 'big_breast': 4, 'huge_breast': 2, 'enormous_breast': 1}
+            }
+        }
+    }
+    anatomy_dependency = {
+        'male': ['penis'],
+        'female': ['boobs', 'vagina'],
+        'shemale': ['penis', 'boobs', 'vagina']
+    }
