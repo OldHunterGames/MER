@@ -112,7 +112,10 @@ init python:
     
     ##Sexual preferences
         
-    sexual_traits = {'active': {'name': __('Active position'), 'description': __('Sexual initiative, acting position.'),}, 
+    sexual_traits = {
+        'pleasure': {'name': __('Pleasure'), 'description': __('Universaly good feelings.'),}, 
+        'vexation': {'name': __('Suffering'), 'description': __('Universaly good feelings.'),}, 
+        'active': {'name': __('Active position'), 'description': __('Sexual initiative, acting position.'),}, 
         'passive': {'name': __('Passive position'), 'description': __('Sexualy receiving side, no initiative.'),}, 
         'straight': {'name': __('Straight stimulation'), 'description': __('Direct stimulation of sexual organs.'),}, 
         'humiliation': {'name': __('Humiliated'), 'description': __('Character is humuliated.'),}, 
@@ -154,10 +157,10 @@ init python:
         }
             
     gender_types = {
-        'male': {'straight': (7,1), 'male': (1, 5), 'female': (5, 1), 'shemale': (3, 3), 'sexless': (3, 2), },
+        'male': {'straight': (8,1), 'male': (1, 5), 'female': (5, 1), 'shemale': (3, 3), 'sexless': (3, 2), },
         'female': {'straight': (6,1), 'male': (6, 1), 'female': (3, 2), 'shemale': (3, 3), 'sexless': (5, 2), },
-        'shemale': {'straight': (7,1), 'male': (5, 1), 'female': (7, 1), 'shemale': (4, 2), 'sexless': (6, 1),},
-        'sexless': { 'straight': (3,3), 'male': (3, 3), 'female': (3, 3), 'shemale': (3, 3), 'sexless': (1, 2),},
+        'shemale': {'straight': (8,1), 'male': (5, 1), 'female': (7, 1), 'shemale': (4, 2), 'sexless': (6, 1),},
+        'sexless': { 'straight': (0,0), 'male': (3, 3), 'female': (3, 3), 'shemale': (3, 3), 'sexless': (1, 2),},
     }
     
     kink_types = {
@@ -372,7 +375,10 @@ init python:
             },
     }
 
-    basic_preferences = {'junior': (4, 2),
+    basic_preferences = {
+        'pleasure': (10,0)
+        'vexation': (0,10)
+        'junior': (4, 2),
         'elder': (4, 2),
         'incest': (4, 2),
         'furry': (4, 1),
