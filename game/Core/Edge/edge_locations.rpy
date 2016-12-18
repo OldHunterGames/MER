@@ -47,7 +47,7 @@ label lbl_edge_shifting_mist(location=None):
             $ ally1 = DuelCombatant(player)
             call lbl_edge_randenc_errant
             #python:
-            call lbl_simple_fight([ally1], [enemy1])
+            call lbl_simple_fight([player], [enemy])
                 #fight = DuelEngine([ally1],[enemy1], None)
                 #fight.start()
 
