@@ -18,16 +18,10 @@ screen sc_simple_fight(fight):
     frame:
         xalign 0.5
         yalign 1.0
-        ysize 120
         hbox:
             for i in fight.allies:
                 vbox:
-                    if i.active_maneuver is not None:
-                        textbutton i.active_maneuver.name:
-                            xmaximum 150
-                            hovered Show('sc_maneuver_info', maneuver=i.active_maneuver)
-                            unhovered Hide('sc_maneuver_info')
-                            action NullAction()
+                    
                     hbox:
                         if not i.inactive:
                             imagebutton:
@@ -43,6 +37,12 @@ screen sc_simple_fight(fight):
                             text 'hp: %s'%str(i.hp)
                             text 'protection: %s'%str(i.defence)
                             text 'attack: %s'%(i.attack)
+                    if i.active_maneuver is not None:
+                        textbutton i.active_maneuver.name:
+                            xmaximum 150
+                            hovered Show('sc_maneuver_info', maneuver=i.active_maneuver)
+                            unhovered Hide('sc_maneuver_info')
+                            action NullAction()
     frame:
         xalign 0.5
         yalign 0.0

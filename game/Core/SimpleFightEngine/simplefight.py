@@ -652,7 +652,7 @@ class ShielUp(RuledManeuver):
 
     def can_be_applied(self, person):
         if person.type == 'npc':
-            if person.protection < 1:
+            if person.defence < 1:
                 return any([i.size == 'shield' for i in person.weapons()])
             else:
                 return False
@@ -791,7 +791,7 @@ class Tank(RuledManeuver):
 
         allies = len(person.allies) > 1
         enemies = len(person.enemies) > 1
-        defence = all([person.defence > i.defence for i in person.allies])
+        defence = all([person.defence >= i.defence for i in person.allies])
         return allies and enemies and defence
 
 class Outflank(RuledManeuver):
@@ -806,19 +806,19 @@ class Outflank(RuledManeuver):
 
     def select(self):
         self.hp = self.person.hp
-        self.armor = self.person.armor
+        self.defence = self.person.defence
 
     def _activate(self, target):
-        if self.hp > target.hp or self.armor > target.armor:
+        if self.hp > target.hp or self.defence > target.defence:
             return
         else:
             self.target.power_up
 
     def can_be_applied(self, person):
         armor = person.armor_rate
-        if armor_rate == 'heavy_armor':
+        if armor == 'heavy_armor':
             return False
-        elif armor_rate == 'light_armor':
+        elif armor == 'light_armor':
             return all([i.armor_rate == 'heavy_armor' for i in person.enemies])
         else:
             return all([i.armor_rate == 'heavy_armor' or i.armor_rate == 'light_armor' for i in person.enemies])

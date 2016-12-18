@@ -54,6 +54,8 @@ screen sc_sexengine_info(info_object):
             vbox:
                 box_wrap True
                 text info_object.name
+                text 'gender: %s'%info_object.gender
+                text 'morphology: %s'%info_object.genus.type
                 text 'standart: %s'%info_object.standart
                 text '{b}anatomy:{/b}'
                 for i in info_object.anatomy():
