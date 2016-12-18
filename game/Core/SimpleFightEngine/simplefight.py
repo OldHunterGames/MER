@@ -598,6 +598,7 @@ class Parry(SimpleManeuver):
                 return False
         return True
 
+"""
 class Recovery(SimpleManeuver):
 
 
@@ -618,7 +619,7 @@ class Recovery(SimpleManeuver):
             value = target.physique * 2
         target.defence = min(target.max_defence(), target.defence+value)
         self.person.fight.escalation += 1
-
+"""
 class ShielUp(RuledManeuver):
 
 
@@ -650,7 +651,11 @@ class ShielUp(RuledManeuver):
         return value
 
     def can_be_applied(self, person):
-
+        if person.type == 'npc':
+            if person.protection < 1:
+                return any([i.size == 'shield' for i in person.weapons()])
+            else:
+                return False
         return any([i.size == 'shield' for i in person.weapons()])
 
 class Grapple(RuledManeuver):
@@ -667,9 +672,13 @@ class Grapple(RuledManeuver):
         target.disabled = True
 
     def can_be_applied(self, person):
+        npc = True
+        if person.type == 'npc':
+            if len(person.allies) > 1:
+                npc = False
         two_weapons = len(person.weapons()) > 1
         twohand = any([i.size == 'twohand' for i in person.weapons()])
-        return not (twohand and two_weapons)
+        return (not (twohand and two_weapons)) and npc
 
 class Backstab(RuledManeuver):
 
@@ -777,4 +786,40 @@ class Tank(RuledManeuver):
         return 0
 
     def can_be_applied(self, person):
-        return True
+        if person.type == 'player':
+            return True and person.armor_rate == 'heavy_armor'
+
+        allies = len(person.allies) > 1
+        enemies = len(person.enemies) > 1
+        defence = all([person.defence > i.defence for i in person.allies])
+        return allies and enemies and defence
+
+class Outflank(RuledManeuver):
+
+
+    def __init__(self, person):
+        super(Outflank, self).__init__(person)
+        self.targets_available = 1
+        self.self_targeted = True
+        self.type = 'special'
+        self.name = 'Outflank'
+
+    def select(self):
+        self.hp = self.person.hp
+        self.armor = self.person.armor
+
+    def _activate(self, target):
+        if self.hp > target.hp or self.armor > target.armor:
+            return
+        else:
+            self.target.power_up
+
+    def can_be_applied(self, person):
+        armor = person.armor_rate
+        if armor_rate == 'heavy_armor':
+            return False
+        elif armor_rate == 'light_armor':
+            return all([i.armor_rate == 'heavy_armor' for i in person.enemies])
+        else:
+            return all([i.armor_rate == 'heavy_armor' or i.armor_rate == 'light_armor' for i in person.enemies])
+
