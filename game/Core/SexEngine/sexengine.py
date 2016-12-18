@@ -234,7 +234,6 @@ class SexAction(object):
 
 def _required_stats(sex_participant, sex_action, type_):
     #type = 'actor' or 'target'
-    print sex_action.id
     sex_participant_required = sex_action.required[type_]
     try:
         sex_participant_req_stats = sex_participant_required['stats']

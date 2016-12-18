@@ -29,6 +29,7 @@ init -1 python hide:
     # with tracebacks and other debugging logs.
     config.name = "MER Prototype"
     config.version = "0.1"
+    config.rollback_enabled = False
 
     #########################################
     # Themes

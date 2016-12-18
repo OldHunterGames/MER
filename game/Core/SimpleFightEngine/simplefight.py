@@ -15,6 +15,8 @@ class SimpleFight(object):
         allies_average_skill = sum([i.combat_level for i in self.allies])/len(self.allies)
         enemies_average_skill = sum([i.combat_level for i in self.enemies])/len(self.enemies)
         difference = allies_average_skill - enemies_average_skill
+        self.target = self.enemies[0]
+        self.escalation = 0
         if difference < 0:
             for i in self.allies:
                 i.skill_difference = difference
@@ -28,22 +30,20 @@ class SimpleFight(object):
 
 
         for i in self.allies:
+            i.type = 'player'
             i.set_enemies([i for i in self.enemies])
         for i in self.enemies:
+            i.type = 'npc'
             i.set_enemies([i for i in self.allies])
-        self.selected_ally = None
         self.enemies_turn()
+
+    def set_target(self, target):
+        self.target = target
     
     def combatants(self):
         list_ = [i for i in self.allies]
         list_.extend(self.enemies)
         return list_
-    
-    def select(self, combatant):
-        self.selected_ally = combatant
-
-    def unselect(self):
-        self.selected_ally = None
 
     def active_allies(self):
         return [i for i in self.allies if not i.inactive]
@@ -84,6 +84,9 @@ class SimpleFight(object):
             i.activate()
         for i in specials:
             i.activate()
+        if self.target is not None:
+            if self.target not in self.active_enemies():
+                self.target = self.active_enemies()[0]
         self.enemies_turn()
 
     def enemies_turn(self):
@@ -167,6 +170,7 @@ class SimpleCombatant(object):
         
         self.fight = fight
         self.person = person
+        self.type = None
         self.maneuvers = []
         self.selected_maneuver = None
         self.active_maneuver = None
@@ -302,11 +306,13 @@ class SimpleCombatant(object):
         self.selected_maneuver = maneuver
         maneuver.select()
 
-    def activate_maneuver(self):
+    def activate_maneuver(self, maneuver):
+        self.select_maneuver(maneuver)
         self.active_maneuver = self.selected_maneuver
         self.selected_maneuver = None
 
     def damage(self, value):
+        value += self.fight.escalation
         for i in self.incoming_damage_multipliers:
             value *= i
         value = int(value)
@@ -377,6 +383,8 @@ class Maneuver(object):
         raise Exception("Not implemented")
 
     def add_target(self, target):
+        if not self.can_target_more():
+            return
         if target not in self.targets:
             self.targets.append(target)
 
@@ -442,6 +450,13 @@ class Cleave(SimpleManeuver):
             self.add_target(targets.pop())
         self._can_target_more = False
 
+    def can_be_applied(self, person):
+        if person.type == 'player':
+            return True
+        else:
+            if len(person.enemies) > 1:
+                return True
+        return False
 
 
 class Charge(SimpleManeuver):
@@ -461,7 +476,16 @@ class Charge(SimpleManeuver):
         targets = [i for i in self.person.enemies]
         target = random.choice(targets)
         self.add_target(target)
+        self.person.incoming_damage_multipliers.append(2)
         self._can_target_more = False
+
+    def can_be_applied(self, person):
+        if person.type == 'player':
+            return True
+        else:
+            if len(person.enemies) > 1:
+                return False
+        return True
 
 
 class Block(SimpleManeuver):
@@ -482,6 +506,13 @@ class Block(SimpleManeuver):
     def protect(self, value):
         return value/2
 
+    def can_be_applied(self, person):
+        if person.type == 'player':
+            return True
+        else:
+            if len(person.enemies) > 1:
+                return True
+        return False
 class Parry(SimpleManeuver):
 
 
@@ -504,6 +535,14 @@ class Parry(SimpleManeuver):
             return 0
         return value
 
+    def can_be_applied(self, person):
+        if person.type == 'player':
+            return True
+        else:
+            if len(person.enemies) > 1:
+                return False
+        return True
+
 class Recovery(SimpleManeuver):
 
 
@@ -523,6 +562,7 @@ class Recovery(SimpleManeuver):
         else:
             value = target.physique * 2
         target.defence = min(target.max_defence(), target.defence+value)
+        self.person.fight.escalation += 1
 
 class ShielUp(RuledManeuver):
 
@@ -540,7 +580,6 @@ class ShielUp(RuledManeuver):
 
     def protect(self, value):
         if self.p_target == self.person:
-            print self.p_target
             target = self.person
             if target.armor_rate is None:
                 heal = target.agility * 3
@@ -549,6 +588,7 @@ class ShielUp(RuledManeuver):
             else:
                 heal = target.physique * 2
             target.defence = min(target.max_defence(), target.defence+heal)
+            self.person.fight.escalation += 1
         if value > 0:
             self.p_target.protections.remove(self)
             return 0

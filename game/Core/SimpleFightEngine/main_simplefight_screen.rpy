@@ -13,12 +13,6 @@ screen sc_simple_fight(fight):
         else:
             textbutton 'You loose':
                 action Return()
-        if fight.selected_ally is not None:
-            if fight.selected_ally.selected_maneuver is not None:
-                textbutton 'activate':
-                    action [SensitiveIf(fight.selected_ally.selected_maneuver.ready()),
-                        Function(fight.selected_ally.activate_maneuver), Function(fight.unselect),
-                        Hide('sc_target_picker')]
     frame:
         xalign 0.5
         yalign 1.0
@@ -36,42 +30,35 @@ screen sc_simple_fight(fight):
                         imagebutton:
                             idle im.Scale(i.avatar, 100, 100)
                             hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
-                            action [Function(fight.select, i)]
-                            selected i == fight.selected_ally
+                            action Show('sc_chose_maneuver', fight=fight, fighter=i)
+                            selected i.active_maneuver is not None
                             selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
                             selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
                         vbox:
                             text 'hp: %s'%str(i.hp)
                             text 'protection: %s'%str(i.defence)
                             text 'attack: %s'%(i.attack)
-    if fight.selected_ally is not None:
-        window:
-            xalign 0.5
-            yalign 0.5
-            xsize 150
-            ysize 280
-            
-            vbox:
-                for i in fight.selected_ally.maneuvers:
-                    textbutton i.name:
-                        action Function(fight.selected_ally.select_maneuver, i), Show('sc_target_picker', fight=fight, maneuver=i)
-                        selected i == fight.selected_ally.selected_maneuver
     frame:
         xalign 0.5
         yalign 0.0
-        xsize 250
         hbox:
             for i in fight.enemies:
                 hbox:
                     vbox:
                         imagebutton:
                             idle im.Scale(i.avatar, 100, 100)
+                            action Function(fight.set_target, i)
+                            hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
+                            selected i == fight.target
+                            selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.20))
+                            selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.20))
                         if i.active_maneuver is not None:
                             textbutton i.active_maneuver.name:
                                 xmaximum 150
                                 hovered Show('sc_maneuver_info', maneuver=i.active_maneuver)
                                 unhovered Hide('sc_maneuver_info')
                                 action NullAction()
+                                
                         
                     vbox:
                         text 'hp: %s'%str(i.hp)
@@ -114,6 +101,19 @@ screen sc_target_picker(fight, maneuver):
                         selected i in maneuver.targets
                         selected_idle im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
                         selected_hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
+
+screen sc_chose_maneuver(fight, fighter):
+    window:
+        xalign 0.5
+        yalign 0.5
+        xsize 150
+        ysize 280
+        
+        vbox:
+            for i in fighter.maneuvers:
+                textbutton i.name:
+                    action [Function(fighter.activate_maneuver, i), Function(i.add_target, fight.target),
+                        Hide('sc_chose_maneuver')]
 
 label lbl_simple_fight(allies, enemies):
 
