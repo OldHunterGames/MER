@@ -3,18 +3,22 @@ init -10 python:
     from simplefight import SimpleFight
 
 screen sc_simple_fight(fight):
-    vbox:
-        if fight.get_winner() is None:
-            textbutton 'end_turn':
-                action Function(fight.end_turn), Hide('sc_chose_maneuver')
-        elif fight.get_winner() == 'allies':
-            textbutton 'You win':
-                action Return(), Hide('sc_chose_maneuver')
-        elif fight.get_winner() == 'fleed':
-            textbutton 'You fleed' action Return(), Hide('sc_chose_maneuver')
-        else:
-            textbutton 'You loose':
-                action Return(), Hide('sc_chose_maneuver')
+    tag overlay_hud
+    if fight.get_winner() is None:
+        textbutton 'end_turn':
+            yalign 0.5
+            action Function(fight.end_turn), Hide('sc_chose_maneuver')
+    elif fight.get_winner() == 'allies':
+        textbutton 'You win':
+            yalign 0.5
+            action Return(), Hide('sc_chose_maneuver')
+    elif fight.get_winner() == 'fleed':
+        yalign 0.5
+        textbutton 'You fleed' action Return(), Hide('sc_chose_maneuver')
+    else:
+        textbutton 'You loose':
+            yalign 0.5
+            action Return(), Hide('sc_chose_maneuver')
     frame:
         xalign 0.5
         yalign 1.0
@@ -77,8 +81,8 @@ screen sc_simple_fight(fight):
     frame:
         xalign 1.0
         yalign 0.5
-        xsize 250
-        ysize 550
+        xsize 500
+        ysize 350
         viewport:
             xalign 1.0
             scrollbars 'vertical'
