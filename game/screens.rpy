@@ -77,7 +77,7 @@ screen sc_dialog(name='', avatar=None, what=''):
             pos(99, 295)
             hovered If(not core.sayer == narrator, Show('sc_info_popup', person=core.sayer))
             unhovered Hide('sc_info_popup')
-            action NullAction()
+            action Show('sc_character_info_screen', person=core.sayer)
     if name is not None:
         text name:
             pos(310, 470)
