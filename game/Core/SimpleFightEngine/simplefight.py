@@ -15,9 +15,10 @@ class SimpleFight(object):
         allies_average_skill = sum([i.combat_level for i in self.allies])/len(self.allies)
         enemies_average_skill = sum([i.combat_level for i in self.enemies])/len(self.enemies)
         difference = allies_average_skill - enemies_average_skill
-        self.target = self.enemies[0]
+        self.selected_ally = self.allies[0]
         self.escalation = 0
         self.fleed = False
+        self._log = []
         if difference < 0:
             for i in self.allies:
                 i.skill_difference = difference
@@ -37,9 +38,18 @@ class SimpleFight(object):
             i.type = 'npc'
             i.set_enemies([i for i in self.allies])
         self.enemies_turn()
+    
+    def select(self, ally):
+        self.selected_ally = ally
 
-    def set_target(self, target):
-        self.target = target
+    def clear_log(self):
+        self._log = []
+
+    def log(self, log):
+        self._log.append(log)
+
+    def get_log(self):
+        return self._log
     
     def combatants(self):
         list_ = [i for i in self.allies]
@@ -85,9 +95,6 @@ class SimpleFight(object):
             i.activate()
         for i in specials:
             i.activate()
-        if self.target is not None:
-            if self.target not in self.active_enemies():
-                self.target = self.active_enemies()[0]
         self.enemies_turn()
 
     def enemies_turn(self):
@@ -97,6 +104,9 @@ class SimpleFight(object):
                 continue
             try:
                 maneuver = random.choice(i.maneuvers)
+                if isinstance(maneuver, Tank) and any([isinstance(n.active_maneuver, Tank) for n in i.allies]):
+                    i.maneuvers.remove(maneuver)
+                    maneuver = random.choice(i.maneuvers)
             except IndexError:
                 i.inactive = True
                 continue
@@ -141,6 +151,9 @@ class SimpleFight(object):
                     target = targets.pop(index)
                     vitalities.pop(index)
                     maneuver.add_target(target)
+        for i in self.enemies:
+            if i.active_maneuver is not None:
+                i.active_maneuver.select()
         self.refresh_allies()
 
     def refresh_allies(self):
@@ -148,6 +161,12 @@ class SimpleFight(object):
             i.enemies = self.active_enemies()
             i.allies = self.active_allies()
             i.clear()
+            if i.target is not None:
+                if i.target not in self.active_enemies():
+                    try:
+                        i.target = self.active_enemies()[0]
+                    except IndexError:
+                        i.target = None
 
     def refresh_enemies(self):
         for i in self.enemies:
@@ -190,6 +209,16 @@ class SimpleCombatant(object):
         self.incoming_damage_multipliers = []
         self.skill_difference = 0
         self.power_up = 0
+        self._target = None
+
+    @property
+    def target(self):
+        if self._target is None:
+            return self.enemies[0]
+        return self._target
+    
+    def set_target(self, target):
+        self._target = target
 
     def maneuvers_list(self):
         list_ = [i(self) for i in RuledManeuver.__subclasses__()]
@@ -319,14 +348,18 @@ class SimpleCombatant(object):
         self.active_maneuver = self.selected_maneuver
         self.selected_maneuver = None
 
-    def damage(self, value, source):
-        print 'incoming damage %s for %s'%(value, self)
+    def damage(self, value, source, ignore_armor=False):
+        self.fight.log("{name} damaged for {value}, source:{source}".format(
+            name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
         value += self.fight.escalation
         for i in self.incoming_damage_multipliers:
             value *= i
         value = int(value)
         for i in self.protections:
             value = i.protect(value, source)
+        if ignore_armor:
+            self.hp -= value
+            return
         if self.defence < value:
             self.defence = 0
             value -= self.defence
@@ -412,6 +445,13 @@ class Maneuver(object):
             return
         if target not in self.targets:
             self.targets.append(target)
+
+    def protect(self, value, source):
+        start = value
+        new = self._protect(value, source)
+        self.person.fight.log('{name} protected {start} damage, result: {new}'.format(
+            name=self.person.name.encode('utf-8'), start=start, new=new))
+        return new
 
     def _protect(self, target):
         raise Exception("Not implemented")
@@ -512,35 +552,6 @@ class WideStrike(SimpleManeuver):
         for i in self.person.enemies:
             self.add_target(i)
 
-
-class Charge(SimpleManeuver):
-
-
-    def __init__(self, person):
-
-        super(Charge, self).__init__(person)
-        self.targets_available = 1
-        self.id = 'charge'
-        self.type = 'attack'
-
-    def _activate(self, target):
-        target.damage(self.person.attack * 2, self.person)
-
-    def select(self):
-        targets = [i for i in self.person.enemies]
-        target = random.choice(targets)
-        self.add_target(target)
-        self.person.incoming_damage_multipliers.append(2)
-        self._can_target_more = False
-
-    def can_be_applied(self, person):
-        if person.type == 'player':
-            return True
-        else:
-            if len(person.enemies) > 1:
-                return False
-        return True
-
 class Dodge(SimpleManeuver):
 
     def __init__(self, person):
@@ -553,7 +564,7 @@ class Dodge(SimpleManeuver):
     def _activate(self, target):
         target.protections.append(self)
 
-    def protect(self, value, source):
+    def _protect(self, value, source):
         if isinstance(source.active_maneuver, SwiftStrike):
             return value
         elif isinstance(source.active_maneuver, HeavyStrike):
@@ -575,10 +586,10 @@ class Block(SimpleManeuver):
         target.protections.append(self)
 
 
-    def protect(self, value, source):
+    def _protect(self, value, source):
         if isinstance(source.active_maneuver, HeavyStrike):
             return value
-        elif isinstance(source.active_maneuver, SwiftStrike):
+        elif isinstance(source.active_maneuver, SwiftStrike) or isinstance(source.active_maneuver, WideStrike):
             self.person.power_up += 1
         return 0
 
@@ -597,7 +608,7 @@ class Parry(SimpleManeuver):
         self.protected = [i for i in self.targets]
         target.protections.append(self)
 
-    def protect(self, value, source):
+    def _protect(self, value, source):
         if value > 0:
             for i in self.protected:
                 i.protections.remove(self)
@@ -649,7 +660,7 @@ class ShielUp(RuledManeuver):
         target.protections.append(self)
         self.p_target = target
 
-    def protect(self, value, source):
+    def _protect(self, value, source):
         if self.p_target == self.person:
             target = self.person
             if target.armor_rate is None:
@@ -706,7 +717,7 @@ class Backstab(RuledManeuver):
         self.id = 'backstab'
 
     def _activate(self, target):
-        target.hp -= self.person.attack * 2
+        target.damage(self.person.attack * 2, self.person, True)
 
     def can_be_applied(self, person):
         return any([i.size == 'offhand' for i in person.weapons()])
@@ -793,7 +804,7 @@ class Tank(RuledManeuver):
                 i.protections.append(self)
 
 
-    def protect(self, value, source):
+    def _protect(self, value, source):
         print 'protected %s'%value
         value /= 2
         value = int(value)
@@ -822,6 +833,13 @@ class Outflank(RuledManeuver):
     def select(self):
         self.hp = self.person.hp
         self.defence = self.person.defence
+        self.person.add_protection(self)
+
+    def _protect(self, value, source):
+        if value > 0:
+            self.person.protections.remove(self)
+            return 0
+        return value
 
     def _activate(self, target):
         if self.hp > target.hp or self.defence > target.defence:

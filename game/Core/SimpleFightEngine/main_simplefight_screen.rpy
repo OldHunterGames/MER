@@ -27,8 +27,9 @@ screen sc_simple_fight(fight):
                             imagebutton:
                                 idle im.Scale(i.avatar, 100, 100)
                                 hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
-                                action Show('sc_chose_maneuver', fight=fight, fighter=i)
-                                selected i.active_maneuver is not None
+                                action [If(fight.selected_ally == i, Show('sc_chose_maneuver', fight=fight, fighter=i)),
+                                    If(fight.selected_ally != i, Function(fight.select, i))]
+                                selected fight.selected_ally == i
                                 selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
                                 selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
                         else:
@@ -55,9 +56,9 @@ screen sc_simple_fight(fight):
                         if not i.inactive:
                             imagebutton:
                                 idle im.Scale(i.avatar, 100, 100)
-                                action Function(fight.set_target, i)
+                                action Function(fight.selected_ally.set_target, i)
                                 hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
-                                selected i == fight.target
+                                selected i == fight.selected_ally.target
                                 selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.20))
                                 selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.20))
                         else:
@@ -72,38 +73,24 @@ screen sc_simple_fight(fight):
                             hovered Show('sc_maneuver_info', maneuver=i.active_maneuver)
                             unhovered Hide('sc_maneuver_info')
                             action NullAction()
-                                
-                        
-                    
 
-screen sc_target_picker(fight, maneuver):
-    
-    if maneuver.can_target_more():
-        python:
-            if maneuver.type == 'protection':
-                targets = fight.allies
-            else:
-                targets = fight.enemies
-        
-        window:
-            xalign 0.0
-            yalign 0.5
-            xsize 150
-            ymaximum 400
-            vbox:
-                text 'chose targets'
-                for i in targets:
-                    if not i.inactive:
-                        imagebutton: 
-                            idle im.Scale(i.avatar, 50, 50)
-                            hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.05))
-                            action [SensitiveIf(maneuver.can_target_more()),
-                                    Function(maneuver.add_target, i)]
-                            selected i in maneuver.targets
-                            selected_idle im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
-                            selected_hover im.MatrixColor(im.Scale(i.avatar, 50, 50), im.matrix.brightness(0.10))
-                    else:
-                        image im.Grayscale(im.Scale(i.avatar, 100, 100))
+    frame:
+        xalign 1.0
+        yalign 0.5
+        xsize 250
+        ysize 550
+        viewport:
+            xalign 1.0
+            scrollbars 'vertical'
+            draggable True
+            mousewheel True
+            ymaximum 550
+            yfill True
+            has vbox
+            for i in fight.get_log():
+                text i
+            
+                                
 
 screen sc_chose_maneuver(fight, fighter):
     window:
@@ -111,12 +98,11 @@ screen sc_chose_maneuver(fight, fighter):
         yalign 0.5
         xsize 170
         ysize 280
-        
         vbox:
             for i in fighter.maneuvers:
                 textbutton i.name:
                     xmaximum 170
-                    action [Function(fighter.activate_maneuver, i), Function(i.add_target, fight.target),
+                    action [Function(fighter.activate_maneuver, i), Function(i.add_target, fighter.target),
                         Hide('sc_chose_maneuver'), Hide('sc_maneuver_info')]
                     hovered Show('sc_maneuver_info', maneuver=i)
                     unhovered Hide('sc_maneuver_info')
