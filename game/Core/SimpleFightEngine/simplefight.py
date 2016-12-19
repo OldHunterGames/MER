@@ -20,6 +20,7 @@ class SimpleFight(object):
         self.fleed = False
         self._log = []
         self.round = 1
+        self.ended = False
         if difference < 0:
             for i in self.allies:
                 i.skill_difference = difference
@@ -97,6 +98,8 @@ class SimpleFight(object):
         for i in specials:
             i.activate()
         self.round += 1
+        if self.get_winner() is not None:
+            self.ended = True
         self.enemies_turn()
 
     def enemies_turn(self):
@@ -167,9 +170,9 @@ class SimpleFight(object):
             if i.target is not None:
                 if i.target not in self.active_enemies():
                     try:
-                        i.target = self.active_enemies()[0]
+                        i.set_target(self.active_enemies()[0])
                     except IndexError:
-                        i.target = None
+                        self.ended = True
 
     def refresh_enemies(self):
         for i in self.enemies:
@@ -350,6 +353,9 @@ class SimpleCombatant(object):
         self.select_maneuver(maneuver)
         self.active_maneuver = self.selected_maneuver
         self.selected_maneuver = None
+        if self.type == 'player':
+            if all([i.active_maneuver is not None for i in self.allies]):
+                self.fight.end_turn()
 
     def damage(self, value, source, ignore_armor=False):
         
@@ -453,6 +459,8 @@ class Maneuver(object):
 
     def protect(self, value, source, who):
         if value < 1:
+            return value
+        if self.person.disabled:
             return value
         start = value
         new = self._protect(value, source)
