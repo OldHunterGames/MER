@@ -37,14 +37,14 @@ label lbl_edge_mistmarine:
         def generate_warrior(genus):
             ocpn = choice(['mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
             
-            return gen_random_person(genus=gns, occupation=ocpn)
+            return gen_random_person(genus=genus, occupation=ocpn)
             
         allies = [player]
         for i in range(3):
-            allies.append(generate_warrior(human))
+            allies.append(generate_warrior('human'))
         enemies = []
         for i in range(4):
-            enemies.append(generate_warrior(human))        
+            enemies.append(generate_warrior('human'))        
         
     call lbl_simple_fight(allies, enemies)
 
