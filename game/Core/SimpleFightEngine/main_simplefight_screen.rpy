@@ -28,7 +28,7 @@ screen sc_simple_fight(fight):
                                 idle im.Scale(i.avatar, 100, 100)
                                 hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.05))
                                 action [If(fight.selected_ally == i, Show('sc_chose_maneuver', fight=fight, fighter=i)),
-                                    If(fight.selected_ally != i, Function(fight.select, i))]
+                                    If(fight.selected_ally != i, [Function(fight.select, i), Hide('sc_chose_maneuver')])]
                                 selected fight.selected_ally == i
                                 selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))
                                 selected_hover im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.10))

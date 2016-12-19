@@ -19,6 +19,7 @@ class SimpleFight(object):
         self.escalation = 0
         self.fleed = False
         self._log = []
+        self.round = 1
         if difference < 0:
             for i in self.allies:
                 i.skill_difference = difference
@@ -95,9 +96,11 @@ class SimpleFight(object):
             i.activate()
         for i in specials:
             i.activate()
+        self.round += 1
         self.enemies_turn()
 
     def enemies_turn(self):
+        self.log('{b}round:{/b}%s'%self.round)
         self.refresh_enemies()
         for i in self.enemies:
             if i.inactive:
@@ -349,14 +352,16 @@ class SimpleCombatant(object):
         self.selected_maneuver = None
 
     def damage(self, value, source, ignore_armor=False):
-        self.fight.log("{name} damaged for {value}, source:{source}".format(
-            name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
+        
         value += self.fight.escalation
         for i in self.incoming_damage_multipliers:
             value *= i
         value = int(value)
         for i in self.protections:
-            value = i.protect(value, source)
+            value = i.protect(value, source, self)
+        if value > 0:
+            self.fight.log("{name} damaged for {value}, source:{source}".format(
+            name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
         if ignore_armor:
             self.hp -= value
             return
@@ -446,11 +451,13 @@ class Maneuver(object):
         if target not in self.targets:
             self.targets.append(target)
 
-    def protect(self, value, source):
+    def protect(self, value, source, who):
+        if value < 1:
+            return value
         start = value
         new = self._protect(value, source)
         self.person.fight.log('{name} protected {start} damage, result: {new}'.format(
-            name=self.person.name.encode('utf-8'), start=start, new=new))
+            name=who.name.encode('utf-8'), start=start, new=new))
         return new
 
     def _protect(self, target):
@@ -800,12 +807,12 @@ class Tank(RuledManeuver):
 
     def _activate(self, target):
         for i in self.person.allies:
-            if i != self.person:
+            if (not isinstance(i.active_maneuver, Tank) and
+                not any(isinstance(n, Tank) for n in i.protections)):
                 i.protections.append(self)
 
 
     def _protect(self, value, source):
-        print 'protected %s'%value
         value /= 2
         value = int(value)
         self.person.damage(value, source)
@@ -833,7 +840,7 @@ class Outflank(RuledManeuver):
     def select(self):
         self.hp = self.person.hp
         self.defence = self.person.defence
-        self.person.add_protection(self)
+        self.person.protections.append(self)
 
     def _protect(self, value, source):
         if value > 0:
@@ -845,7 +852,7 @@ class Outflank(RuledManeuver):
         if self.hp > target.hp or self.defence > target.defence:
             return
         else:
-            self.target.power_up
+            self.person.power_up
 
     def can_be_applied(self, person):
         armor = person.armor_rate
