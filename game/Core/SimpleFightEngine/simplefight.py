@@ -502,7 +502,7 @@ class WideStrike(SimpleManeuver):
     def __init__(self, person):
         super(WideStrike, self).__init__(person)
         self.targets_available = len(self.person.enemies)
-        self.id = 'wild_strike'
+        self.id = 'wide_strike'
         self.type = 'attack'
 
     def _activate(self, target):
