@@ -32,7 +32,6 @@ label lbl_edge_hiring:
     return
 
 label lbl_edge_mistmarine:
-    'FIGHT'
     python:
         def generate_warrior(genus):
             ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
@@ -40,12 +39,13 @@ label lbl_edge_mistmarine:
             return gen_random_person(genus=genus, occupation=ocpn)
             
         allies = [player]
-        for i in range(3):
+        for i in range(4):
             allies.append(generate_warrior('human'))
         enemies = []
-        for i in range(4):
+        for i in range(5):
             enemies.append(generate_warrior('human'))        
-        
+
+    enemies[0] 'Test your might!!!'        
     call lbl_simple_fight(allies, enemies)
 
     jump game_over

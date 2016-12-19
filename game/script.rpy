@@ -68,7 +68,7 @@ label start:
         sex = SexEngine((player, True), [(p, True)])
     
     # call screen sc_sexengine_main(sex)
-    call lbl_simple_fight([player, g], [p, z])
+    # call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
     'hello'
     player 'Hello'
