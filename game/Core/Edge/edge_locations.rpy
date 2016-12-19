@@ -33,6 +33,10 @@ label lbl_edge_outpost(location):
             $ special_values = {'description': description, 'resource_name': 'money', 'skill': 'sex', 'difficulty' : 1, 'moral': None, 'tense': ['wellness', 'comfort'], 'statisfy': ['prosperity', 'communication', 'eros'], 'beneficiar': player,}
             $ target.schedule.add_action('job_moneywork',special_values=special_values)   
             jump lbl_edge_manage
+        'Slave trader':
+            call lbl_edge_slavery
+        '[location.owner.name] HR office':
+            call lbl_edge_hiring
         'Trade':
             call screen sc_universal_trade
         'Get out':

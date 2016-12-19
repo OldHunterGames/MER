@@ -27,15 +27,15 @@ init python:
         'cool': {'name': __('cool'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': -1}, 'visible': True},
         
         # look
-        'innocent_appearence': {'name': __('innocent appearence'), 'slot': 'look', 'visible': True},        
-        'bold_appearence': {'name': __('bold appearence'), 'slot': 'look', 'visible': True},    
-        'foxy_appearence': {'name': __('foxy appearence'), 'slot': 'look', 'visible': True},    
-        'gentle_appearence': {'name': __('gentle appearence'), 'slot': 'look', 'visible': True},        
-        'calm_appearence': {'name': __('calm appearence'), 'slot': 'look', 'visible': True},    
-        'exotic_appearence': {'name': __('exotic appearence'), 'slot': 'look', 'visible': True},                    
-        'straight_appearence': {'name': __('straight appearence'), 'slot': 'look', 'visible': True},        
-        'sleasy_appearence': {'name': __('sleasy appearence'), 'slot': 'look', 'visible': True},    
-        'wild_appearence': {'name': __('wild appearence'), 'slot': 'look', 'visible': True},    
+        'innocent_appearance': {'name': __('innocent appearance'), 'slot': 'look', 'visible': True},        
+        'bold_appearance': {'name': __('bold appearance'), 'slot': 'look', 'visible': True},    
+        'foxy_appearance': {'name': __('foxy appearance'), 'slot': 'look', 'visible': True},    
+        'gentle_appearance': {'name': __('gentle appearence'), 'slot': 'look', 'visible': True},        
+        'calm_appearance': {'name': __('calm appearance'), 'slot': 'look', 'visible': True},    
+        'exotic_appearance': {'name': __('exotic appearance'), 'slot': 'look', 'visible': True},                    
+        'straight_appearance': {'name': __('straight appearance'), 'slot': 'look', 'visible': True},        
+        'sleasy_appearance': {'name': __('sleasy appearance'), 'slot': 'look', 'visible': True},    
+        'wild_appearance': {'name': __('wild appearance'), 'slot': 'look', 'visible': True},    
 
         # anatomy
         'polymorphous': {'name': __('polymorphous'), 'slot': None, 'visible': True, 'anatomy': True},
