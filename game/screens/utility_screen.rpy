@@ -384,3 +384,54 @@ screen sc_deck_style(deck):
             textbutton 'beast':
                 action [Function(deck.set_style, 'beast'), Hide('sc_deck_style')]
 
+
+screen sc_character_info_screen(person):
+    modal True
+    window:
+        hbox:
+            xalign 0.0
+            yalign 0.0
+            image im.Scale(person.avatar_path, 150, 150)
+            textbutton 'Leave' action Return()
+            
+        xfill True
+        yfill True
+        vbox:
+            xalign 0.5
+            text person.full_name():
+                size 25
+            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
+            text "{0} {1} {2} ({mood})".format(*person.alignment.description(),
+                mood=encolor_text(person.show_mood(), person.mood))
+            if person != player:
+                text (person.stance(player).show_type() + ' ' +
+                    '{0} {1} {2}'.format(*person.relations(player).description()))
+        hbox:
+            spacing 10
+            yalign 0.38
+            vbox:
+                for i in person.visible_features():
+                    text i.name
+            vbox:
+                for i in person.equiped_items():
+                    text i.description
+
+screen sc_info_popup(person):
+    window:  
+        xfill False
+        xalign 0.5
+        yalign 0.0
+        vbox:
+            xalign 0.5
+            text person.full_name():
+                size 25
+            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
+            text "{0} {1} {2} ({mood})".format(*person.alignment.description(),
+                mood=encolor_text(person.show_mood(), person.mood))
+            if person != player:
+                text (person.stance(player).show_type() + ' ' +
+                    '{0} {1} {2}'.format(*person.relations(player).description()))
+            for i in person.visible_features():
+                text i.name
+            for i in person.equiped_items():
+                text i.description
