@@ -3,12 +3,16 @@ init -10 python:
     from simplefight import SimpleFight
 
 screen sc_simple_fight(fight):
+    if fight.get_winner() is None:
+        textbutton 'end_turn':
+            yalign 0.5
+            action Function(fight.end_turn), Hide('sc_chose_maneuver')
+    else:
+        timer 0.01:
+            action Return()
     frame:
         xalign 0.5
         yalign 1.0
-        if fight.ended:
-            timer 0.01:
-                action Return()
         hbox:
             for i in fight.allies:
                 vbox:
@@ -68,7 +72,7 @@ screen sc_simple_fight(fight):
     frame:
         xalign 1.0
         yalign 0.5
-        xsize 500
+        xsize 550
         ysize 350
         viewport:
             xalign 1.0

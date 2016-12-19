@@ -353,9 +353,6 @@ class SimpleCombatant(object):
         self.select_maneuver(maneuver)
         self.active_maneuver = self.selected_maneuver
         self.selected_maneuver = None
-        if self.type == 'player':
-            if all([i.active_maneuver is not None for i in self.allies]):
-                self.fight.end_turn()
 
     def damage(self, value, source, ignore_armor=False):
         
