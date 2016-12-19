@@ -15,6 +15,7 @@ init -10 python:
     from mer_metric import *      
     from mer_event import *
     from mer_metaperson import *
+    from mer_sayer import *
     from duel_engine import *
     
 init python:
@@ -36,8 +37,8 @@ label start:
         discovered_worlds = []
         core = MistsOfEternalRome()
         set_event_game_ref(core)
-        player = Person('adolescent', 'male', 'human')
-        player = gen_random_person('human')
+        Person.game_ref = core
+        player = gen_random_person(age='adolescent', gender='male', genus='human')
         core.set_player(player)
         core.protagonist.sparks = 250
         meter = Meter(core.protagonist)
@@ -66,9 +67,12 @@ label start:
         player.reveal_all_fetishes()
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
+    
     # call screen sc_sexengine_main(sex)
     # call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
+    'hello'
+    player 'Hello'
     call evn_init
     call lbl_edge_main
     

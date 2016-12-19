@@ -13,6 +13,13 @@ class Inventory(object):
         self._other_hand = None
         self.storage = []
 
+    def equiped_items(self):
+        list_ = self.weapons()
+        for value in self.carried_armor.values():
+            if value is not None:
+                list_.append(value)
+        return list_
+
     def weapon_slots(self):
         return self.carried_weapons.keys()
 

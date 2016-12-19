@@ -71,6 +71,7 @@ class MistsOfEternalRome(object):
     def __init__(self):
         self._player = None  # Our main hero
         self._actor = None       # Our active character, hero by default but maybe someone else!
+        self.sayer = None
         # The number of decades (turns) passed in ERome
         self.decade = 1
         # Number of happiness points player scored through the game

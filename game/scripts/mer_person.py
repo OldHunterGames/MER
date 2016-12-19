@@ -71,6 +71,7 @@ persons_list = []
 def gen_sex_traits(person):
     kink_data = store.kink_types
     kink = choice(kink_data.keys())
+    person.kink = kink
     genders_data = store.gender_types
     gender = person.gender
     basic = store.basic_preferences
@@ -183,6 +184,9 @@ class InventoryWielder(object):
 
     def init_inventorywielder(self):
         self.inventory = Inventory()
+
+    def equiped_items(self):
+        return self.inventory.equiped_items()
 
     @property
     def items(self):
@@ -487,16 +491,17 @@ class FoodSystem(object):
         self.set_starvation()
 
 class Person(Skilled, InventoryWielder, Attributed):
-
+    game_ref = None
     @utilities.Observable
     def __init__(self, age=None, gender=None, genus='human'):
         super(Person, self).__init__()
+
         self.player_controlled = False
         self.init_inventorywielder()
         self.init_skilled()
         self.init_attributed()
         self._event_type = 'person'
-        self.firstname = u"Anonimous"
+        self._firstname = u"Anonimous"
         self.surname = u""
         self.nickname = u"Anon"
         self.alignment = Alignment()
@@ -573,10 +578,30 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._favor = BarterSystem()
         self.card_storage = None
         self.decks = []
+
         self._taboos = []
         self._fetishes = []
         self.revealed_taboos = []
         self.revealed_fetishes = []
+
+        self.renpy_character = store.Character(self.firstname)
+    @property
+    def firstname(self):
+        return self._firstname
+
+    @firstname.setter
+    def firstname(self, name):
+        self._firstname = name
+        self.renpy_character.name = name
+    
+    def __call__(self, what, interact=True):
+        self.game_ref.sayer = self
+        self.renpy_character(what, interact=interact)
+
+    def predict(self, what):
+        self.renpy_character.predict(what)
+
+
     def apply_background(self, background):
         self.background = background
         background.apply(self)
@@ -1046,9 +1071,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             d[need.name] = need
         return d
 
-    def get_visible_features(self):
-        return [i for i in self.features if i.visible]
-
     # show methods returns strings, to simplify displaying various stats to
     # player
     def show_taboos(self):
@@ -1087,10 +1109,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return s
 
     def show_mood(self):
-        m = {-1: '!!!CRUSHED!!!', 0: 'Gloomy', 1: 'Tense',
-             2: 'Content', 3: 'Serene', 4: 'Jouful', 5: 'Enthusiastic'}
-        mood = self.mood
-        return "{mood}({val})".format(mood=m[mood], val=mood)
+        return store.mood_translation[self.mood]
 
     def show_attributes(self):
         s = ""
@@ -1290,6 +1309,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         for f in self.features:
             if f.slot == slot:
                 f.remove()
+
+    def visible_features(self,):
+        return [i for i in self.features if i.id != self.age and i.id != self.gender]
+
+    def full_name(self):
+        return self.firstname + ' "' + self.nickname + '" ' + self.surname
 
     def description(self):
         txt = self.firstname + ' "' + self.nickname + '" ' + self.surname

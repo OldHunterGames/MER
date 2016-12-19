@@ -10,7 +10,7 @@
 #
 # Screen that's used to display adv-mode dialogue.
 # http://www.renpy.org/doc/html/screen_special.html#say
-screen say(who, what, side_image=None, two_window=False):
+screen narration(who, what, side_image=None, two_window=False):
 
     # Decide if we want to use the one-window or two-window variant.
     if not two_window:
@@ -56,7 +56,37 @@ screen say(who, what, side_image=None, two_window=False):
 
     # Use the quick menu.
     use quick_menu
+screen say(who, what, side_image=None, two_window=False):
+    python:
+        try:
+            avatar = core.sayer.avatar_path
+        except AttributeError:
+            avatar = None
+    if who is not None:
+        use sc_dialog(who, avatar, what)
+    else:
+        use narration(who, what, side_image, two_window)
 
+screen sc_dialog(name='', avatar=None, what=''):
+    add "images/gui/dialog.png":
+        ypos 220
+    if avatar is not None:
+        $ avatar = im.Scale(avatar, 200, 200)
+        imagebutton:
+            idle avatar
+            pos(99, 295)
+            hovered If(not core.sayer == narrator, Show('sc_info_popup', person=core.sayer))
+            unhovered Hide('sc_info_popup')
+            action NullAction()
+    if name is not None:
+        text name:
+            pos(310, 470)
+    viewport:
+        pos(110, 520)
+        xysize(780, 500)
+        text what id "what"
+    on 'hide':
+        action Hide('sc_info_popup')
 
 screen choice(items):
 
