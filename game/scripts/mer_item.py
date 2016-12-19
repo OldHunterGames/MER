@@ -72,7 +72,9 @@ class Item(object):
 
     @property
     def name(self):
-        return self._name
+        if self._name is None:
+            return encolor_text(self.description, self.quality)
+        return encolor_text(self._name, self.quality)
 
     @property
     def type(self):
@@ -120,8 +122,6 @@ class Weapon(Item):
                 size=size, damage_type=damage_type)
         else:
             text = 'shield'.format(size=size, damage_type=damage_type)
-        if self.name is not None:
-            text += ' %s'%(self.name)
         return encolor_text(text, self.quality)
 
 
@@ -145,8 +145,6 @@ class Armor(Item):
     @property
     def description(self):
         text = '{self.armor_rate}'.format(self=self)
-        if self.name is not None:
-            text += ' %s'%self.name
         return encolor_text(text, self.quality)
 
 def get_weapon_sizes():

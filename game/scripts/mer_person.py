@@ -1186,9 +1186,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         dlen = len(dissapointment)
         happines.sort()
         dissapointment.sort()
-        if renpy.has_label('mood_recalc_result'):
-            renpy.call_in_new_context('mood_recalc_result', dissapointments_inf,
-                                      satisfactions_inf, determination, anxiety, True, self)
+        self.mood_memory = {'diss_inf': dissapointments_inf,
+            'satisfy_inf': satisfactions_inf, 'determination': determination,
+            'anxiety': anxiety}
         if hlen > dlen:
             dissapointment = []
             for i in range(dlen):
