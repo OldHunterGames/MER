@@ -35,7 +35,7 @@ label lbl_edge_mistmarine:
     'FIGHT'
     python:
         def generate_warrior(genus):
-            ocpn = choice(['mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
+            ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
             
             return gen_random_person(genus=genus, occupation=ocpn)
             

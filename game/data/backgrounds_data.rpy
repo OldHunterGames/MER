@@ -569,15 +569,6 @@ init python:
             'sex': ['training', ('expirience', 1)]
             },
         },
-        'athlete':{
-            'name': __('athlete'),
-            'technical_level': 1,
-            'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
-        },
         'rethor':{
             'name': __('rethor'),
             'technical_level': 1,
