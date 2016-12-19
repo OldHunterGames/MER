@@ -6,7 +6,8 @@ screen sc_simple_fight(fight):
     if fight.get_winner() is None:
         textbutton 'end_turn':
             yalign 0.5
-            action Function(fight.end_turn), Hide('sc_chose_maneuver')
+            action [Function(fight.end_turn), Hide('sc_chose_maneuver'), 
+                SensitiveIf(all([i.active_maneuver is not None for i in fight.allies]))]
     else:
         timer 0.01:
             action Return()
@@ -16,7 +17,7 @@ screen sc_simple_fight(fight):
         hbox:
             for i in fight.allies:
                 vbox:
-                    
+                    text i.name
                     hbox:
                         if not i.inactive:
                             imagebutton:
@@ -47,6 +48,7 @@ screen sc_simple_fight(fight):
         hbox:
             for i in fight.enemies:
                 vbox:
+                    text i.name
                     hbox:
                         if not i.inactive:
                             imagebutton:
@@ -82,8 +84,9 @@ screen sc_simple_fight(fight):
             ymaximum 550
             yfill True
             has vbox
-            for i in fight.get_log():
-                text i
+            for i in fight.get_log().values():
+                for n in i:
+                    text n
             
                                 
 
