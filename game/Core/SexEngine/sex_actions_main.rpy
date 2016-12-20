@@ -2,6 +2,10 @@ init -1 python:
     sys.path.append(renpy.loader.transfn('Core/SexEngine'))
     from sexengine import *
 
+label lbl_simple_sex(player_tuple, others):
+    $ sex = sexengine(player_typle, others)
+    call screen sc_sexengine
+    return
 screen sc_sexengine_main(sexengine):
     frame:
         if sexengine.ended():
@@ -38,7 +42,7 @@ screen sc_sexengine_main(sexengine):
                             vbox:
                                 text 'drive: %s'%i.drive
                                 text 'stamina: %s'%i.stamina
-                                text 'feelings: %s(%s)'%(i.feelings, i.standart)
+                                text '%s(%s)'%(i.show_feelings(), i.standart)
                         if not sex.ended():
                             vbox:
                                 for n in i.actions:

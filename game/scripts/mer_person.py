@@ -126,6 +126,9 @@ class Skilled(object):
         self.focused_skill = None
         self.skills_used = []
 
+    def get_all_skills(self):
+        return [i for i in self.skills]
+
     def skill(self, skill_id):
         skill = None
         for i in self.skills:
@@ -553,6 +556,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.rewards = []
         self.used_rewards = []
         self.merit = 0  # player only var for storing work result
+        self.sex_standart = 0
 
         # Other persons known and relations with them, value[1] = [needed
         # points, current points]

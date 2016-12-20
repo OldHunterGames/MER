@@ -10,50 +10,59 @@ screen sc_character_info_screen(person):
     window:
         xfill True
         yfill True
+        xalign 0.0
+        yalign 0.0
         style 'char_info_window'
-        vbox:
-            xalign 0.0
-            yalign 0.0
-            hbox:  
-                image im.Scale(person.avatar_path, 150, 150)
-                textbutton 'Leave' action Hide('sc_character_info_screen')
+        hbox:
+            frame:
+                vbox:
+                    
+                    hbox:  
+                        image im.Scale(person.avatar_path, 150, 150)
+                        textbutton 'Leave' action Hide('sc_character_info_screen')
+                    hbox:
+                        spacing 10
+                        vbox:
+                            for i in person.visible_features():
+                                text i.name
+                        vbox:
+                            for i in person.equiped_items():
+                                textbutton i.name:
+                                    text_style 'hoverable_text'
+                                    style 'hoverable_text'
+                                    action NullAction()
+                                    hovered Show('sc_weapon_info', weapon=i)
+                                    unhovered Hide('sc_weapon_info')
             hbox:
-                spacing 10
-                vbox:
-                    for i in person.visible_features():
-                        text i.name
-                vbox:
-                    for i in person.equiped_items():
-                        textbutton i.name:
-                            text_style 'hoverable_text'
+                xalign 0.32
+                frame:
+                    
+                    vbox:
+                        text person.full_name():
+                            size 25
+                        text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
+                        hbox:
+                            text "{0} {1} {2} ".format(*person.alignment.description())
+                            textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
+                                style 'hoverable_text'
+                                text_style 'hoverable_text'
+                                hovered Show('sc_mood_info', person=person)
+                                unhovered Hide('sc_mood_info')
+                                action NullAction()
+                        if person != core.player:
+                            text (person.stance(player).show_type() + ' ' +
+                                '{0} {1} {2}'.format(*person.relations(player).description()))
+                        textbutton 'Vitality: %s'%person.vitality:
                             style 'hoverable_text'
+                            text_style 'hoverable_text'
+                            hovered Show('sc_vitality_info', person=person)
+                            unhovered Hide('sc_vitality_info')
                             action NullAction()
-                            hovered Show('sc_weapon_info', weapon=i)
-                            unhovered Hide('sc_weapon_info')
-            
-        
-        vbox:
-            xalign 0.5
-            text person.full_name():
-                size 25
-            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-            hbox:
-                text "{0} {1} {2} ".format(*person.alignment.description())
-                textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
-                    style 'hoverable_text'
-                    text_style 'hoverable_text'
-                    hovered Show('sc_mood_info', person=person)
-                    unhovered Hide('sc_mood_info')
-                    action NullAction()
-            if person != core.player:
-                text (person.stance(player).show_type() + ' ' +
-                    '{0} {1} {2}'.format(*person.relations(player).description()))
-            textbutton 'Vitality: %s'%person.vitality:
-                style 'hoverable_text'
-                text_style 'hoverable_text'
-                hovered Show('sc_vitality_info', person=person)
-                unhovered Hide('sc_vitality_info')
-                action NullAction()
+                frame:
+                    vbox:
+                        text '{b}Skills{/b}'
+                        for i in person.get_all_skills():
+                            text encolor_text(i.name, i.level) + '(%s)'%i.level
         
 
 screen sc_info_popup(person):

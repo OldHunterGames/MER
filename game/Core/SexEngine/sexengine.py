@@ -79,7 +79,7 @@ class SexEngine(object):
             elif i.feelings > 0:
                 pass
             if i.feelings > i.standart:
-                i.standart = i.feelings
+                i.person.sex_standart = i.feelings
 
 
 
@@ -91,7 +91,7 @@ class SexParticipant(object):
         self.person = person
         self.willing = willing
         try:
-            self.standart = person.standart
+            self.standart = person.sex_standart
         except AttributeError:
             self.standart = 0
 
@@ -109,6 +109,18 @@ class SexParticipant(object):
         self.target = None
         self.discovered_fetishes = []
         self.discovered_taboos = []
+
+
+    def show_feelings(self):
+        if self.feelings < 0:
+            return encolor_text('below zero', 'red')
+        if self.feelings > 0:
+            if self.feelings < self.standart:
+                return encolor_text('above zero', 'green')
+            else:
+                return encolor_text('Standart', 5)
+        else:
+            return 'zero'
 
 
     @property
