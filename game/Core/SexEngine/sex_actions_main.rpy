@@ -32,7 +32,7 @@ screen sc_sexengine_main(sexengine):
                                         action If(not i == sexengine.player(), Function(sexengine.set_target, i), NullAction())
                                     else:
                                         action If(not i == sexengine.player(), Function(sexengine.change_target, i),
-                                            Function(sexengine.get_actions), NullACtion())
+                                            Function(sexengine.get_actions), NullAction())
                             else:
                                 image im.Grayscale(im.Scale(i.avatar, 100, 100))
                             vbox:
@@ -92,10 +92,10 @@ screen sc_sexengine_info(info_object, owner=None):
                 for k, v in info_object.pay.items():
                     text '[k]: [v]'
                 text '{b}markers:{/b}'
-                text '{b}actor:{/b}'
+                text '{b}%s:{/b}'%owner.name
                 for i in info_object.colored_markers(owner, 'actor'):
                     text i
-                text '{b}target:{/b}'
+                text '{b}%s:{/b}'%owner.target.name
                 for i in info_object.colored_markers(owner.target, 'target'):
                     text i
 
