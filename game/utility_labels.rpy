@@ -29,27 +29,3 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
             txt = 'Проверка провалена из-за низкой мотивации'
     '[txt]'
     return
-
-
-label lbl_vitality_info():
-    python:
-        txt_good = ""
-        txt_bad = ""
-        zero_factors = ""
-        d, l = vitality_info_target.vitality_info()
-        items = list(d.items())
-        for i in l:
-            items.append(i)
-        for k, v in items:
-            if v > 0:
-                txt_good += encolor_text(k, v) + '\n'
-            elif v < 0:
-                txt_bad += encolor_text(k, 0) + '\n'
-            else:
-                zero_factors += encolor_text(k, 6) + '\n'
-        txt_good += '---------- \n'
-        txt_good += txt_bad
-        txt_good += '---------- \n'
-        txt_good += zero_factors
-    '[txt_good]'
-    return
