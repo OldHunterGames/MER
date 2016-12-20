@@ -75,7 +75,7 @@ screen sc_simple_fight(fight):
         xalign 1.0
         yalign 0.5
         xsize 550
-        ysize 350
+        ysize 300
         viewport:
             xalign 1.0
             scrollbars 'vertical'

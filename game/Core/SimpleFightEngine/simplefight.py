@@ -711,6 +711,8 @@ class Grapple(RuledManeuver):
 
     def _activate(self, target):
         target.disabled = True
+        self.person.fight.log(
+            '{0} grappled {1}'.format(self.person.name.encode('utf-8'), target.name.encode('utf-8')))
 
     def can_be_applied(self, person):
         npc = True
