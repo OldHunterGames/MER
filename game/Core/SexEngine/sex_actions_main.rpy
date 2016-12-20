@@ -29,7 +29,7 @@ screen sc_sexengine_main(sexengine):
                                     selected sexengine.new_target is i
                                     selected_idle im.MatrixColor(im.Scale(i.avatar, 100, 100), im.matrix.brightness(0.15))
                                     if not sexengine.inactive_targeted():
-                                        action If(not i == sexengine.player(), Function(sexengine.set_target, i), NullAction())
+                                        action If(not i == sexengine.player(), Function(sexengine.set_target, i), false=NullAction())
                                     else:
                                         action If(not i == sexengine.player(), Function(sexengine.change_target, i),
                                             Function(sexengine.get_actions), NullAction())
