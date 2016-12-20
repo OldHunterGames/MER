@@ -1,4 +1,4 @@
-init -10 python:
+init -1 python:
     sys.path.append(renpy.loader.transfn('Core/SexEngine'))
     from sexengine import *
 
@@ -12,14 +12,12 @@ screen sc_sexengine_main(sexengine):
                 textbutton 'end sex' action [Return(), Hide('sc_sexengine_info'),
                     Function(sexengine.apply_feelings)]
             else:
-                if not sexengine.inactive_targeted():
-
-                    textbutton 'next' action Function(sexengine.get_actions)
-                else:
+                if sexengine.inactive_targeted():
                     textbutton '{b}chose new target{/b}' action NullAction()
             for i in sexengine.participants:
                 hbox:
                     vbox:
+                        text i.name
                         if i.active:
                             imagebutton:
                                 idle im.Scale(i.avatar, 100, 100)
@@ -36,16 +34,19 @@ screen sc_sexengine_main(sexengine):
                             image im.Grayscale(im.Scale(i.avatar, 100, 100))
                         text 'drive: %s'%i.drive
                         text 'stamina: %s'%i.stamina
-                        text 'feelings: %s'%i.feelings
+                        text 'feelings: %s(%s)'%(i.feelings, i.standart)
                     if not sex.ended():
                         vbox:
                             for n in i.actions:
                                 textbutton n.name:
                                     action Function(i.use_action, n), Function(sexengine.clear_actions)
-                                    hovered Show('sc_sexengine_info', info_object=n)
+                                    hovered Show('sc_sexengine_info', info_object=n, owner=i)
                                     unhovered Hide('sc_sexengine_info')
 
-screen sc_sexengine_info(info_object):
+screen sc_sexengine_info(info_object, owner=None):
+    python:
+        if owner is not None:
+            attribute = getattr(owner, info_object.attribute)
     window:
         xalign 1.0
         xsize 320
@@ -54,12 +55,9 @@ screen sc_sexengine_info(info_object):
             vbox:
                 box_wrap True
                 text info_object.name
-                text 'gender: %s'%info_object.gender
-                text 'morphology: %s'%info_object.genus.type
-                text 'standart: %s'%info_object.standart
-                text '{b}anatomy:{/b}'
-                for i in info_object.anatomy():
-                    text i.name
+                text '%s %s %s (%s)'%(
+                    info_object.age, info_object.genus.name, info_object.gender,
+                    info_object.kink)
                 text '{b}fetishes:{/b}'
                 for i in info_object.revealed_fetishes():
                     text i
@@ -71,10 +69,15 @@ screen sc_sexengine_info(info_object):
         else:
             vbox:
                 text info_object.name
+                text encolor_text(info_object.attribute, attribute)
                 text '{b}pay{/b}:'
                 for k, v in info_object.pay.items():
                     text '[k]: [v]'
                 text '{b}markers:{/b}'
-                for i in info_object.markers.values():
+                text '{b}actor:{/b}'
+                for i in info_object.colored_markers(owner, 'actor'):
+                    text i
+                text '{b}target:{/b}'
+                for i in info_object.colored_markers(owner.target, 'target'):
                     text i
 

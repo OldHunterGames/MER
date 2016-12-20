@@ -1,7 +1,10 @@
+from random import shuffle
+
 import renpy.store as store
 import renpy.exports as renpy
 
-from random import shuffle
+from mer_utilities import encolor_text
+
 
 class SexEngine(object):
 
@@ -60,6 +63,7 @@ class SexEngine(object):
     def clear_actions(self):
         for i in self.participants:
             i.actions = []
+        self.get_actions()
 
     def apply_feelings(self):
         for i in self.participants:
@@ -119,6 +123,14 @@ class SexParticipant(object):
         if self._drive < 1:
             self._drive = 0
             self.active = False
+    
+    @property
+    def age(self):
+        return self.person.age
+
+    @property
+    def kink(self):
+        return self.person.kink
     
     @property
     def avatar(self):
@@ -239,9 +251,24 @@ class SexAction(object):
             return attr
 
     def can_be_used(self, actor, target):
+        print self.id
         actor_success = _required_stats(actor, self, 'actor')
         target_success = _required_stats(target, self, 'target')
         return actor_success and target_success
+
+    def colored_markers(self, person, type_):
+        list_ = [i for i in self.markers[type_]]
+        list_.extend(self.markers['both'])
+        new_list = []
+        for i in list_:
+            if i in person.revealed_taboos():
+                new_list.append(encolor_text(i, 'red'))
+            elif i in person.revealed_fetishes():
+                new_list.append(encolor_text(i, 'green'))
+            else:
+                new_list.append(i)
+        return new_list
+
 
 def _required_stats(sex_participant, sex_action, type_):
     #type = 'actor' or 'target'
@@ -257,21 +284,23 @@ def _required_stats(sex_participant, sex_action, type_):
     try:
         willing = sex_participant_required['willing']
     except KeyError:
-        willing = False
+        willing = None
+    willing_part = sex_participant.willing
     success = True
+    stats = []
     for key, value in sex_participant_req_stats.items():
-        success = {'>=': lambda: value[1] >= getattr(sex_participant, key),
-            '>': lambda: value[1] > getattr(sex_participant, key),
-            '<=': lambda: value[1] <= getattr(sex_participant, key),
-            '<': lambda: value[1] < getattr(sex_participant, key),
-            '==': lambda: value[1] == getattr(sex_participant, key)}[value[0]]
-
+        stats.append({'>=': lambda: getattr(sex_participant, key) >= value[1],
+            '>': lambda: getattr(sex_participant, key) > value[1],
+            '<=': lambda: getattr(sex_participant, key) <= value[1],
+            '<': lambda: getattr(sex_participant, key) < value[1],
+            '==': lambda: value[1] == getattr(sex_participant, key)}[value[0]]())
+    success = all(stats)
     success = success and all([sex_participant.has_anatomy_feat(i) for i in sex_participant_req_anatomy])
-    if willing:
-        willing = sex_participant.willing
+    
+    if willing is None:
+        return success
     else:
-        willing = True
-    return success and willing
+        return success and (willing == willing_part)
 
 def get_sex_actions():
     return [SexAction(key) for key in store.sex_actions_data.keys()]
