@@ -63,6 +63,13 @@ class SexEngine(object):
     def clear_actions(self):
         for i in self.participants:
             i.actions = []
+            for n in i.discovered_fetishes:
+                renpy.call_in_new_context('lbl_discover_dirty', i, n)
+            for n in i.discovered_taboos:
+                renpy.call_in_new_context('lbl_discover_dirty', i, n)
+            i.discovered_fetishes = []
+            i.discovered_taboos = []
+
         self.get_actions()
 
     def apply_feelings(self):
@@ -100,6 +107,8 @@ class SexParticipant(object):
         self.max_actions = self.sex_level
         self.actions = []
         self.target = None
+        self.discovered_fetishes = []
+        self.discovered_taboos = []
 
 
     @property
@@ -217,11 +226,13 @@ class SexParticipant(object):
                 value = -1
                 if i not in self.person.revealed('taboos'):
                     self.person.reveal('taboos', i)
+                    self.discovered_taboos.append('Taboo discovered: %s'%i)
             elif i in fetishes:
                 if value >= 0:
                     value += 1
                 if i not in self.person.revealed('fetishes'):
                     self.person.reveal('fetishes', i)
+                    self.discovered_fetishes.append('Fetish discovered: %s'%i)
         return value
 
     def set_drive(self, situation):
@@ -251,7 +262,6 @@ class SexAction(object):
             return attr
 
     def can_be_used(self, actor, target):
-        print self.id
         actor_success = _required_stats(actor, self, 'actor')
         target_success = _required_stats(target, self, 'target')
         return actor_success and target_success

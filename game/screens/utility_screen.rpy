@@ -393,7 +393,6 @@ style char_info_window is window:
 
 screen sc_character_info_screen(person):
     modal True
-    zorder 10
     window:
         xfill True
         yfill True

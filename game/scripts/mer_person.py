@@ -96,6 +96,8 @@ def trait_chance(fetish_value, taboo_value):
         return 'fetish'
     elif roll <= fetish_value + taboo_value:
         return 'taboo'
+    else:
+        print 'failed'
 
 
 class Modifiable(object):
@@ -808,11 +810,17 @@ class Person(Skilled, InventoryWielder, Attributed):
         getattr(self, 'revealed_%s'%type_).append(name)
 
     def reveal_all_taboos(self):
+        reveal = []
         for i in self._taboos:
+            reveal.append(i)
+        for i in reveal:
             self.reveal('taboos', i)
 
     def reveal_all_fetishes(self):
+        reveal = []
         for i in self._fetishes:
+            reveal.append(i)
+        for i in reveal:
             self.reveal('fetishes', i)
 
 
