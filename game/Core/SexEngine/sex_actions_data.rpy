@@ -42,6 +42,7 @@ init python:
         'required':{'actor':{'willing': True},
             'target':{'anatomy': ['vagina']}}},
 
+
         'fellation':{'name': __("Fellation"),
         'pay':{'drive': 1}, 'attribute': 'sensitivity',  
         'markers':{'target': ['orallove', 'passive', 'straight'], 'actor': ['sucker', 'active'], 'both': ['softness']},
@@ -254,11 +255,12 @@ init python:
             'markers':{'target': ['sadism'], 'actor': ['masochism', 'pleasure'], 'both': []},
             'required':{'actor':{'stats':{'feelings': ['>=', 10]}},
                 'target':{'willing': True}}},
+                                 
+    }
 
         ##TEST
-        'test':{'name': __("Test"),
-            'pay':{'stamina': 1}, 'attribute': 'agility',  
-            'markers':{'target': ['nothing', 'nothing', 'nothing', ], 'actor': ['nothing', 'nothing', 'nothing', ], 'both': ['nothing', 'nothing', 'nothing', ]},
-            'required':{'actor':{'willing': True, 'stats':{'feelings': ['>=', 1]}, 'anatomy': ['penis'] },
-                'target':{'willing': True,'stats':{'feelings': ['>=', 1]}, 'anatomy': ['body']}}},                                    
-    }
+#        'test':{'name': __("Test"),
+#            'pay':{'stamina': 1}, 'attribute': 'agility',  
+#            'markers':{'target': ['nothing', 'nothing', 'nothing', ], 'actor': ['nothing', 'nothing', 'nothing', ], 'both': ['nothing', 'nothing', 'nothing', ]},
+#            'required':{'actor':{'willing': True, 'stats':{'feelings': ['>=', 1]}, 'anatomy': ['penis'] },
+#                'target':{'willing': True,'stats':{'feelings': ['>=', 1]}, 'anatomy': ['body']}}},  

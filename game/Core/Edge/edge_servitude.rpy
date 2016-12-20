@@ -51,12 +51,31 @@ label lbl_edge_mistmarine:
     jump game_over
     return
 
-label lbl_edge_sexy_check(skill):
-    'PLACEHOLDER'
-    call lbl_edge_outpost(location)
+label lbl_edge_sexy_exam(skill):
+    'Skillcheck [skill]'
+    python:
+        moral = target.check_moral(['timid', 'lawful'], player)
+        result = core.threshold_skillcheck(player, skill, difficulty = 0, tense_needs=['authority', 'independence'], satisfy_needs=['eros', 'order'], beneficiar=player, morality=moral, success_threshold = 1, special_motivators=[])        
+
+    if result[0]:
+        'scuccess'    
+        call lbl_edge_fuck_challenge(skill)
+    else:
+        'fail'
+        call lbl_edge_outpost(location)
+    
     return
 
-label lbl_edge_sexy_check(skill):
+label lbl_edge_fuck_challenge(skill):
+    $ partner = gen_random_person(genus='human', occupation='slut', gender='female')
+    $ partner2 = gen_random_person(genus='human', occupation='slut', gender='female')
+    partner 'Hi there!'
+    $ sex = SexEngine((player, True), [(partner, True), (partner2, True)])
+    call screen sc_sexengine_main(sex)
+    
+    return
+
+label lbl_edge_skill_exam(skill):
     'PLACEHOLDER'
     call lbl_edge_outpost(location)
     return

@@ -34,6 +34,9 @@ label evn_edge_template(event):
         
     #тело эвента
     return True
+
+############## HERO EVENTS ##################
+
     
 ############## NO CHARACTER EVENTS ##################
 
