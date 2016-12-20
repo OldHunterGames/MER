@@ -6,7 +6,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from features import Feature, Phobia
-from skills import Skill
+from skills import Skill, Skilled
 from needs import init_needs
 from copy import copy
 from copy import deepcopy
@@ -15,11 +15,11 @@ from relations import Relations
 from stance import Stance
 from genus import available_genuses, Genus
 from alignment import Alignment
-from modifiers import ModifiersStorage
+from modifiers import ModifiersStorage, Modifiable
 from factions import Faction
 from buffs import Buff
 from background import Background
-from inventory import Inventory
+from inventory import Inventory, InventoryWielder
 from mer_item import create_weapon, create_armor
 from mer_resources import BarterSystem
 import mer_utilities as utilities
@@ -62,7 +62,6 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p.firstname = choice(names)
     p.random_alignment()
     p.random_features()
-    p.random_skills()
     gen_sex_traits(p)
     return p
 
@@ -97,163 +96,8 @@ def trait_chance(fetish_value, taboo_value):
     elif roll <= fetish_value + taboo_value:
         return 'taboo'
     else:
-        print 'failed'
+        return None
 
-
-class Modifiable(object):
-
-    def init_modifiable(self):
-        self.modifiers = ModifiersStorage()
-
-    def add_modifier(self, id_, stats_dict, source, slot=None):
-        self.modifiers.add_modifier(id_, stats_dict, source, slot)
-
-    def count_modifiers(self, key):
-        val = self.__dict__['modifiers'].count_modifiers(key)
-        return val
-
-    def modifiers_separate(self, modifier):
-        return self.modifiers.get_modifier_separate(modifier)
-
-    def get_all_modifiers(self):
-        return self.modifiers.get_all_modifiers()
-
-class Skilled(object):
-
-    def init_skilled(self):
-        self.skills = []
-        self.specialized_skill = None
-        self.focused_skill = None
-        self.skills_used = []
-
-    def get_all_skills(self):
-        return [i for i in self.skills]
-
-    def skill(self, skill_id):
-        skill = None
-        for i in self.skills:
-            if i.id == skill_id:
-                skill = i
-                return skill
-
-        if skill_id in store.skills_data:
-            skill = Skill(self, skill_id)
-            self.skills.append(skill)
-            return skill
-        else:
-            raise Exception("No skill named %s in skills_data" % (skillname))
-
-    def use_skill(self, id_):
-        if isinstance(id_, Skill):
-            self.skills_used.append(id_)
-        else:
-            self.skills_used.append(self.skill(id_))
-
-    def get_used_skills(self):
-        l = []
-        for skill in self.skills_used:
-            if isinstance(skill, Skill):
-                l.append(skill)
-            else:
-                l.append(self.skill(skill))
-        return l
-
-    def calc_focus(self):
-        if self.focused_skill:
-            if self.focused_skill in self.get_used_skills():
-                self.focused_skill.focus += 1
-                self.skills_used = []
-                return
-        try:
-            self.focused_skill.focus = 0
-        except AttributeError:
-            pass
-
-        if len(self.skills_used) > 0:
-            from collections import Counter
-            counted = Counter()
-            for skill in self.get_used_skills():
-                counted[skill.id] += 1
-            maximum = max(counted.values())
-            result = []
-            for skill in counted:
-                if counted[skill] == maximum:
-                    result.append(skill)
-            self.skill(choice(result)).set_focus()
-        else:
-            self.focused_skill = None
-
-        self.skills_used = []
-
-class InventoryWielder(object):
-
-    def init_inventorywielder(self):
-        self.inventory = Inventory()
-
-    def equiped_items(self):
-        return self.inventory.equiped_items()
-
-    @property
-    def items(self):
-        return self.inventory.storage
-
-    @property
-    def main_hand(self):
-        return self.inventory.main_hand
-
-    @main_hand.setter
-    def main_hand(self, weapon):
-        self.inventory.main_hand = weapon
-
-    @property
-    def other_hand(self):
-        return self.inventory.other_hand
-
-    @other_hand.setter
-    def other_hand(self, weapon):
-        self.inventory.other_hand = weapon
-
-    @property
-    def armor(self):
-        return self.inventory.carried_armor['overgarments']
-
-    @armor.setter
-    def armor(self, armor):
-        self.inventory.equip_armor(armor, 'overgarments')
-
-    def has_shield(self):
-        try:
-            main = self.inventory.main_hand
-            other = self.inventory.other_hand
-            if main.size == 'shield' or other.size == 'shield':
-                return True
-        except AttributeError:
-            pass
-        return False
-
-    def equip_weapon(self, weapon, hand='main_hand'):
-        self.inventory.equip_weapon(weapon, hand)
-
-    def disarm_weapon(self, hand='main_hand'):
-        self.inventory.disarm_weapon(hand)
-
-    def add_item(self, item):
-        self.inventory.storage.append(item)
-
-    def equip_armor(self, item, slot):
-        self.inventory.equip_armor(item, slot)
-
-    def equip_item(self, item, slot):
-        if item.type == 'armor':
-            self.equip_armor(item, slot)
-        elif item.type == 'weapon':
-            self.equip_weapon(item, slot)
-
-    def equip_on_slot(self, slot, item):
-        self.inventory.equip_on_slot(slot, item)
-
-    def weapons(self):
-        return self.inventory.weapons()
 
 class Attributed(Modifiable):
 
@@ -561,7 +405,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         # Other persons known and relations with them, value[1] = [needed
         # points, current points]
         self._relations = []
-        self.selfesteem = 0
+        self._selfesteem = 0
         self.conditions = []
         if isinstance(genus, Genus):
             self.genus = genus
@@ -591,6 +435,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.revealed_fetishes = []
 
         self.renpy_character = store.Character(self.firstname)
+    
+
     def get_combat_style(self):
         #TODO: add beast combat style
         skill_level = self.skill('combat').level
@@ -612,6 +458,19 @@ class Person(Skilled, InventoryWielder, Attributed):
             if skill_level > 1:
                 style = 'wrestler'
         return style
+
+    @property
+    def selfesteem(self):
+        return self._selfesteem
+
+    @selfesteem.setter
+    def selfesteem(self, value):
+        if self._selfesteem < 0:
+            return
+        else:
+            self._selfesteem = max(-1, min(5, value))
+
+
     @property
     def firstname(self):
         return self._firstname
@@ -856,24 +715,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         else:
             self.alignment.morality = "selfish"
 
-        return
-
-    def random_skills(self, pro_skill=None, talent_skill=None):
-        skilltree = list(store.skills_data.keys())
-        skilltree.append(None)
-        if talent_skill is not None:
-            self.skill(talent_skill).talent = True
-        else:
-            roll = choice(skilltree)
-            if roll:
-                self.skill(roll).talent = True
-
-        if pro_skill is not None:
-            self.skill(pro_skill).profession()
-        else:
-            roll = choice(skilltree)
-            if roll:
-                self.skill(roll).profession()
         return
 
     def random_features(self):
@@ -1681,19 +1522,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         return result
 
     def reduce_esteem(self):
-        if self.selfesteem == 0:
-            return
-        val = 5 - self.sensitivity
         if self.selfesteem > 0:
             self.purporse.set_satisfaction(self.selfesteem)
-            self.selfesteem -= val
-            if val < 0:
-                val = 0
-        elif self.selfesteem < 0:
-            self.purporse.set_tension()
-            self.selfesteem += val
-            if val > 0:
-                val = 0
+        else:
+            self.purporse.set_tension(self.selfesteem)
+        self._selfesteem = 0
+
+            
 
     def enslave(self, target):
         target.master = self

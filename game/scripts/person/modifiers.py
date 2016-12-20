@@ -64,3 +64,22 @@ class ModifiersStorage(object):
 
     def get_all_modifiers(self):
         return self._list
+
+
+class Modifiable(object):
+
+    def init_modifiable(self):
+        self.modifiers = ModifiersStorage()
+
+    def add_modifier(self, id_, stats_dict, source, slot=None):
+        self.modifiers.add_modifier(id_, stats_dict, source, slot)
+
+    def count_modifiers(self, key):
+        val = self.__dict__['modifiers'].count_modifiers(key)
+        return val
+
+    def modifiers_separate(self, modifier):
+        return self.modifiers.get_modifier_separate(modifier)
+
+    def get_all_modifiers(self):
+        return self.modifiers.get_all_modifiers()
