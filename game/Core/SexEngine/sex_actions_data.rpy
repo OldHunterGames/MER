@@ -108,7 +108,7 @@ init python:
 
         'bite':{'name': __("Bite"),
             'pay':{'stamina': 1}, 'attribute': 'physique',  
-            'markers':{'target': ['masochism', 'sucker'], 'actor': ['sadism', 'orallove'], 'both': ['roughness']},
+            'markers':{'target': ['masochism', 'orallove'], 'actor': ['sadism', 'sucker'], 'both': ['roughness']},
             'required':{'actor':{'willing': True},
                 'target':{'anatomy': ['body']}}},
 

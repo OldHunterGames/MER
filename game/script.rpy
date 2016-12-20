@@ -93,7 +93,7 @@ label choose_action:
             $ loc_to_call = core.discover_world(outer_worlds)
         "Relax":
             $ loc_to_call = "end_turn"
-        "finish":
+        "Finish":
             jump end_turn
     jump choose_action
    
@@ -104,6 +104,12 @@ label end_turn:
     
 label new_turn:
     call choose_action
+    return
+
+label lbl_edge_fate:
+    $ txt = fates_list[fate]
+    '[txt]'    
+    jump game_over
     return
     
 label game_over:
