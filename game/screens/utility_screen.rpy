@@ -386,15 +386,20 @@ screen sc_deck_style(deck):
 
 
 label lbl_gen_player:
-    $ core.set_player(gen_random_person(genus='human'))
     call screen sc_generate_player
     $ player = core.player
     return 
 
+
+init python:
+    def gen_player(core):
+        person = gen_random_person()
+        core.set_player(person)
 screen sc_generate_player:
-    use sc_character_info_screen(core.player)
+    if core.player is not None:
+        use sc_character_info_screen(core.player, True)
     textbutton 'generate':
         xalign 0.6
         yalign 0.6
-        action Function(core.set_player, gen_random_person(genus='human'))
+        action Function(gen_player, core)
         

@@ -5,7 +5,7 @@ style hoverable_text is text:
 style char_info_window is window:
     background Color((0, 0, 0, 255))
 
-screen sc_character_info_screen(person):
+screen sc_character_info_screen(person, return_l=False):
     modal True
     window:
         xfill True
@@ -19,7 +19,7 @@ screen sc_character_info_screen(person):
                     
                     hbox:  
                         image im.Scale(person.avatar_path, 150, 150)
-                        textbutton 'Leave' action Hide('sc_character_info_screen')
+                        textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
                         vbox:
