@@ -62,7 +62,20 @@ screen sc_character_info_screen(person, return_l=False):
                     vbox:
                         text '{b}Skills{/b}'
                         for i in person.get_all_skills():
-                            text encolor_text(i.name, i.level) + '(%s)'%i.level
+                            textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+                                style 'hoverable_text'
+                                text_style 'hoverable_text'
+                                hovered Show('sc_skill_info', skill=i)
+                                unhovered Hide('sc_skill_info')
+                                action NullAction()
+
+screen sc_skill_info(skill):
+    frame:
+        xalign 0.5
+        yalign 0.5
+        vbox:
+            for i in skill.description:
+                text i
         
 
 screen sc_info_popup(person):

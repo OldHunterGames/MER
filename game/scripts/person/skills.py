@@ -51,6 +51,7 @@ class Skill(object):
             list_.append('talent')
         if self.inability:
             list_.append('inability')
+        return list_
 
     def show(self):
         return encolor_text(self.name, self.level)
