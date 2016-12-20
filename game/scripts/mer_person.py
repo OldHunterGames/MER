@@ -585,6 +585,27 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.revealed_fetishes = []
 
         self.renpy_character = store.Character(self.firstname)
+    def get_combat_style(self):
+        #TODO: add beast combat style
+        skill_level = self.skill('combat').level
+        style = 'noncombatant'
+        weapons = self.weapons()
+        if len(weapons) > 0:
+            if skill_level > 2:
+                if any([i.type == 'twohand' for i in weapons]):
+                    style = 'juggernaut'
+                elif self.has_shield():
+                    style = 'shieldbearer'
+                else:
+                    style = 'breter'
+            elif skill_level > 1:
+                style = 'rookie'
+            else:
+                style = 'desperado'
+        else:
+            if skill_level > 1:
+                style = 'wrestler'
+        return style
     @property
     def firstname(self):
         return self._firstname

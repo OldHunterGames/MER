@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import random
+from collections import defaultdict
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -18,8 +19,9 @@ class SimpleFight(object):
         self.selected_ally = self.allies[0]
         self.escalation = 0
         self.fleed = False
-        self._log = []
+        self._log = defaultdict(list)
         self.round = 1
+        self.logged_round = 1
         self.ended = False
         if difference < 0:
             for i in self.allies:
@@ -45,10 +47,10 @@ class SimpleFight(object):
         self.selected_ally = ally
 
     def clear_log(self):
-        self._log = []
+        del self._log[abs(self.round - self.logged_round-1)]
 
     def log(self, log):
-        self._log.append(log)
+        self._log[self.round].append(log)
 
     def get_log(self):
         return self._log
@@ -103,7 +105,8 @@ class SimpleFight(object):
         self.enemies_turn()
 
     def enemies_turn(self):
-        self.log('{b}round:{/b}%s'%self.round)
+        if abs(self.round - self.logged_round) >= 2:
+            self.clear_log()
         self.refresh_enemies()
         for i in self.enemies:
             if i.inactive:
@@ -708,6 +711,8 @@ class Grapple(RuledManeuver):
 
     def _activate(self, target):
         target.disabled = True
+        self.person.fight.log(
+            '{0} grappled {1}'.format(self.person.name.encode('utf-8'), target.name.encode('utf-8')))
 
     def can_be_applied(self, person):
         npc = True

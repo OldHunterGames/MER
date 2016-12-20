@@ -432,7 +432,7 @@ screen sc_character_info_screen(person):
                     hovered Show('sc_mood_info', person=person)
                     unhovered Hide('sc_mood_info')
                     action NullAction()
-            if person != player:
+            if person != core.player:
                 text (person.stance(player).show_type() + ' ' +
                     '{0} {1} {2}'.format(*person.relations(player).description()))
         
@@ -516,3 +516,27 @@ screen sc_weapon_info(weapon):
         xalign 0.5
         yalign 0.5
         text weapon.description
+
+transform rotate:
+    rotate 0
+    linear 5.0 rotate 360
+    repeat
+
+screen sc_test:
+    transform rotate:
+        image im.Scale(player.avatar_path, 100, 100)
+        xalign 0.5
+        yalign 0.5
+
+label lbl_gen_player:
+    $ core.set_player(gen_random_person(genus='human'))
+    call screen sc_generate_player
+    $ player = core.player
+    return 
+screen sc_generate_player:
+    use sc_character_info_screen(core.player)
+    textbutton 'generate':
+        xalign 0.6
+        yalign 0.6
+        action Function(core.set_player, gen_random_person(genus='human'))
+        
