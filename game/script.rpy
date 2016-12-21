@@ -66,12 +66,10 @@ label start:
         player.reveal_all_fetishes()
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
-<<<<<<< HEAD
+    
     call screen sc_faction_info(great_houses[0])
-=======
     
     # call lbl_gen_player
->>>>>>> origin/master
     # call screen sc_sexengine_main(sex)
     # call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
