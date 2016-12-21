@@ -3,47 +3,6 @@
 #
 # Slums menu
 
-label lbl_edge_squatted_slums(location):
-    menu:
-        'Only place to live in if you not in a gang.'
-        'Find some work in a slums':
-            call lbl_edge_slums_work(location)
-        'Sign in' if not edge.slums_mode:
-            $ edge.slums_mode = True
-            call lbl_edge_slums_livein
-        'Manage accomodation' if edge.slums_mode:
-            call lbl_edge_slums_livein            
-        'Get out':
-            return         
-    
-    call lbl_edge_squatted_slums(location)
-    return
-
-label lbl_edge_slums_livein:
-    $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-    $ free = encolor_text('free', 5)
-    $ cost_1 = encolor_resource_text(1)
-    $ cost_2 = encolor_resource_text(2)
-    $ cost_3 = encolor_resource_text(3)
-    $ cost_4 = encolor_resource_text(4)
-    $ cost_5 = encolor_resource_text(5)    
-    $ consumption_level = edge.resources.consumption_level()
-    $ bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
-    
-    menu:        
-        "[resources] \nDecade bill: [bill]"
-        'Accomodation':
-            call lbl_edge_slums_accomodation            
-        'Catering':
-            call lbl_edge_slums_ration
-        'Services':
-            call lbl_edge_slums_services
-        'Back':
-            call lbl_edge_manage
-   
-    jump lbl_edge_slums_livein
-    return
-    
 label lbl_edge_slums_accomodation:
 
     menu:
@@ -92,7 +51,19 @@ label lbl_edge_slums_ration:
     $ edge.resources.add_consumption(target, 'catering cost',  cost, 'nutrition')            
     call lbl_edge_slums_livein
     return
-    
+
+label lbl_egde_slums_job:
+    menu:
+        'You can work for food (easy but no gains) or find a way to earn some valueables (hard work). Or maybe you have a special plan? Anyways, more you know about people and places around you, more opportunities you have!'
+        'Earn some food':
+            call lbl_edge_slums_work_food
+        'Gain resources':
+            call lbl_edge_slums_work_res
+        'Special plan':
+            call lbl_edge_slums_work_special   
+        'Relax':
+            $ target.schedule.add_action('job_idle', False)  
+    return
     
 label lbl_edge_slums_services:
     menu:
@@ -100,15 +71,22 @@ label lbl_edge_slums_services:
             call lbl_edge_slums_livein
 
     return
-    
 
 label lbl_edge_slums_work_food:
     menu:
-        'You slacking right now - relaxing, but will not fill your belly and pockets. You can get some selfemployeed work to get some resources with your skill, or miserablly beg for some leftovers. Any way you will get yor payment after a full decade of an adequate work.'
         'Beg for food (no skill)':
             $ target.schedule.add_action('job_beg')  
             jump lbl_edge_manage
+                                    
+        'Newermind':
+            $ pass
             
+    call lbl_edge_squatted_slums(location)
+    return
+        
+
+label lbl_edge_slums_work_res:
+    menu:
         'Manual labor (athletics)':
             $ title = __('Some manual labor (athletics).')
             $ skill_id = 'athletics'

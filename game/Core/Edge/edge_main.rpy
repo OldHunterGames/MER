@@ -36,11 +36,20 @@ label lbl_edge_main:
     return
     
 label lbl_edge_manage:
-    $ target = player
-    $ food_info = player.ration_status
-    $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-    $ consumption_text = show_consumption_level()
     python:
+        target = player
+        food_info = player.ration_status()
+        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
+        consumption_text = show_consumption_level()
+        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
+        free = encolor_text('free', 5)
+        cost_1 = encolor_resource_text(1)
+        cost_2 = encolor_resource_text(2)
+        cost_3 = encolor_resource_text(3)
+        cost_4 = encolor_resource_text(4)
+        cost_5 = encolor_resource_text(5)    
+        consumption_level = edge.resources.consumption_level()
+        bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)    
         consumption = edge.resources.can_tick()
         if not consumption:
             consumption_text += ". You can't skip turn"
@@ -48,23 +57,14 @@ label lbl_edge_manage:
         "Nutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
         
-        'Slums' if not edge.faction_mode:
+        'Slums':
             call lbl_edge_slums_accomodation            
-        'Eatery' if not edge.faction_mode:
+        'Eatery':
             call lbl_edge_slums_ration
-        'Services' if not edge.faction_mode:
+        'Services':
             call lbl_edge_slums_services
         'Buissiness' if not edge.faction_mode:
-            menu:
-                'You can work for food (easy but no gains) or find a way to earn some valueables (hard work). Or maybe you have a special plan? Anyways, more you know about people and places around you, more opportunities you have!'
-                'Earn some food':
-                    call lbl_edge_slums_work_food
-                'Gain resources':
-                    call lbl_edge_slums_work_res
-                'Special plan':
-                    call lbl_edge_slums_work_special   
-                'Relax':
-                    $ target.schedule.add_action('job_idle', False)  
+            call lbl_edge_slums_jobs
 
         'Faction' if edge.faction_mode:
             $ pass
@@ -82,6 +82,66 @@ label lbl_edge_manage:
     
     jump lbl_edge_manage
     return
+
+    
+label lbl_info_new(target):
+    python:
+        alignment = target.alignment.description() 
+        job = target.show_job()
+        desu = target.description()
+        # taboos = child.show_taboos()
+        features = target.show_features()
+        tokens = target.tokens
+        focus = encolor_text(target.show_focus(), target.focus)
+        rel = target.relations(player).description() if target!=player else None
+        stance = target.stance(player).level if target!=player else None
+        skills = target.show_skills()
+        tendency = target.attitude_tendency()
+        needs = target.get_needs()
+        recalc_result_target = target
+        vitality_info_target = target
+        txt = "Настроение: " + encolor_text(target.show_mood(), target.mood) + '{a=lb_recalc_result_glue}?{/a}'
+        if stance:
+            txt += " | Поза: " + str(stance)
+        txt += " | Здоровье: %s "%(target.vitality) + '{a=lbl_vitality_info}?{/a}' + '\n'
+        txt += "Характер: %s, %s, %s\n"%(target.alignment.description())
+        if rel:
+            txt += "Отношение: %s, %s, %s\n"%(rel)
+            txt += "Гармония: %s, %s\n"%(target.relations(player).harmony()[0], target.relations(player).harmony()[1])
+        txt += "Запреты: %s \n "%(target.restrictions)
+        txt += "Условия сна: %s  |  %s       \n"%(target.accommodation, job)
+        txt += "Фокус: %s\n"%(focus)
+        txt += "Особенности: %s\n"%(features)
+        txt += "Аттрибуты: %s\n"%(target.show_attributes())
+        if tendency:
+            txt += "Тенденция: %s\n"%(tendency)
+        if skills:
+            txt += "Навыки: %s\n"%(skills)
+        if tokens:
+            txt += "Токены: %s\n"%(tokens)
+        txt += 'Потребности: '
+        # for need in needs:
+        #    txt += '%s: [%s, %s, %s], '%(need, needs[need].level, needs[need].satisfaction, needs[need].tension)
+        # txt += '\n'
+        txt += "Ангст: %s, Решимость: %s\n"%(target.anxiety, target.determination)
+        txt += target.food_info()
+    "[txt]"
+
+    return
+
+label lbl_all_gangs:
+    python:
+        menu_list = [(gang.name, gang) for gang in edge.gang_list]
+        menu_list.append(('Leave', 'leave'))
+        choice = renpy.display_menu(menu_list)
+    if choice == 'leave':
+        return
+    else:
+        call screen sc_gang_info(choice)
+    call lbl_all_gangs
+
+
+############## ARCHIVE ########################
 
 label lbl_edge_schedule:
     $ schedule_major = edge_denotation[target.job]
@@ -206,59 +266,3 @@ label lbl_edge_noloc:
     
     return
     
-    
-label lbl_info_new(target):
-    python:
-        alignment = target.alignment.description() 
-        job = target.show_job()
-        desu = target.description()
-        # taboos = child.show_taboos()
-        features = target.show_features()
-        tokens = target.tokens
-        focus = encolor_text(target.show_focus(), target.focus)
-        rel = target.relations(player).description() if target!=player else None
-        stance = target.stance(player).level if target!=player else None
-        skills = target.show_skills()
-        tendency = target.attitude_tendency()
-        needs = target.get_needs()
-        recalc_result_target = target
-        vitality_info_target = target
-        txt = "Настроение: " + encolor_text(target.show_mood(), target.mood) + '{a=lb_recalc_result_glue}?{/a}'
-        if stance:
-            txt += " | Поза: " + str(stance)
-        txt += " | Здоровье: %s "%(target.vitality) + '{a=lbl_vitality_info}?{/a}' + '\n'
-        txt += "Характер: %s, %s, %s\n"%(target.alignment.description())
-        if rel:
-            txt += "Отношение: %s, %s, %s\n"%(rel)
-            txt += "Гармония: %s, %s\n"%(target.relations(player).harmony()[0], target.relations(player).harmony()[1])
-        txt += "Запреты: %s \n "%(target.restrictions)
-        txt += "Условия сна: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Фокус: %s\n"%(focus)
-        txt += "Особенности: %s\n"%(features)
-        txt += "Аттрибуты: %s\n"%(target.show_attributes())
-        if tendency:
-            txt += "Тенденция: %s\n"%(tendency)
-        if skills:
-            txt += "Навыки: %s\n"%(skills)
-        if tokens:
-            txt += "Токены: %s\n"%(tokens)
-        txt += 'Потребности: '
-        # for need in needs:
-        #    txt += '%s: [%s, %s, %s], '%(need, needs[need].level, needs[need].satisfaction, needs[need].tension)
-        # txt += '\n'
-        txt += "Ангст: %s, Решимость: %s\n"%(target.anxiety, target.determination)
-        txt += target.food_info()
-    "[txt]"
-
-    return
-
-label lbl_all_gangs:
-    python:
-        menu_list = [(gang.name, gang) for gang in edge.gang_list]
-        menu_list.append(('Leave', 'leave'))
-        choice = renpy.display_menu(menu_list)
-    if choice == 'leave':
-        return
-    else:
-        call screen sc_gang_info(choice)
-    call lbl_all_gangs
