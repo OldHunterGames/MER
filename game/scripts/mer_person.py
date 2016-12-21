@@ -217,6 +217,37 @@ class FoodSystem(object):
         self.quality_changed = False
         self.amount = 0
 
+
+    def ration_status(self):
+        ration = self.owner.schedule.find_by_slot('feed')
+        if ration is not None:
+            try:
+                amount = ration.special_values['amount']
+                quality = ration.speical_values['quality']
+            except KeyError:
+                amount = self.amount
+                quality = self.quality
+        else:
+            amount = self.amount
+            quality = self.quality
+        if quality < self.quality:
+            quality = self.quality
+
+        colorize_amount = amount
+        amount = store.food_amount_dict[amount]
+        colorize_quality = quality
+        quality = store.food_quality_dict[quality]
+        text = '%s'%(utilities.encolor_text(quality, colorize_quality))
+        if colorize_amount != 2:
+            amount = utilities.encolor_text(amount, colorize_amount)
+            text += '(%s)'%(amount)
+        if colorize_amount < 1:
+            return utilities.encolor_text(amount, 0)
+        else:
+            return text
+        
+        
+
     def set_food(self, amount, quality):
         self.quality_changed = True
         self.amount = max(self.amount, amount)
@@ -436,6 +467,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.renpy_character = store.Character(self.firstname)
     
+
+    def ration_status(self):
+        return self.food_system.ration_status()
 
     def get_combat_style(self):
         #TODO: add beast combat style
