@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-factions_list = []
 
 
 class Faction(object):
@@ -10,7 +9,6 @@ class Faction(object):
         self.members = []
         self.event_type = 'faction'
         self.set_owner(owner)
-        factions_list.append(self)
 
     def set_owner(self, owner):
         self.add_member(owner)

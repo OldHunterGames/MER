@@ -21,9 +21,6 @@ class EdgeEngine(object):
     This is the main script of Edge of Mists core module for Mists of Eternal Rome.
     """
 
-
-    gang_list = []
-
     def __init__(self):
         self.name = 'edge'
         self.locations = []
@@ -32,6 +29,7 @@ class EdgeEngine(object):
         self.slums_mode = False
         self.faction_mode = False
         self.resources = BarterSystem()
+        self.gang_list = []
 
     def explore_all(self):
         for i in store.edge_locations.items():
@@ -203,6 +201,10 @@ class EdgeLocation(object):
             gang.locations_controlled = [self]
         self.owner = gang
 
+    def add_faction(self, owner, name, location):
+        self.gang_list.append(
+            Gang(owner, name, location))
+
 
 class Gang(Faction):
     def __init__(self, owner, name, location):
@@ -212,7 +214,6 @@ class Gang(Faction):
                       'chief': None,
                       'madame': None,}
         self.locations_controlled = [location]
-        EdgeEngine.gang_list.append(self)
 
     def set_member_to_role(self, person, role):
         self.roles[role] = person

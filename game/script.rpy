@@ -21,6 +21,7 @@ init python:
     outer_worlds = []
     renpy.block_rollback()
     register_actions()
+    core = MistsOfEternalRome()
 
 # The game starts here.
 label start:
@@ -29,12 +30,11 @@ label start:
         g = gen_random_person('human')
         z = gen_random_person('human')
 
-        great_houses = [Faction(gen_random_person(), __('Kamira'),'kamira'),
-            Faction(gen_random_person(), __('Serpis'), 'serpis'),
-            Faction(gen_random_person(), __('Corvus'), 'corvus'),
-            Faction(gen_random_person(), __('Taurus'), 'taurus')]
+        great_houses = [core.add_faction(gen_random_person(), __('Kamira'),'kamira'),
+            core.add_faction(gen_random_person(), __('Serpis'), 'serpis'),
+            core.add_faction(gen_random_person(), __('Corvus'), 'corvus'),
+            core.add_faction(gen_random_person(), __('Taurus'), 'taurus')]
         discovered_worlds = []
-        core = MistsOfEternalRome()
         set_event_game_ref(core)
         Person.game_ref = core
         player = gen_random_person(age='adolescent', gender='male', genus='human')
@@ -66,7 +66,7 @@ label start:
         player.reveal_all_fetishes()
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
-    
+    call screen sc_faction_info(great_houses[0])
     # call screen sc_sexengine_main(sex)
     # call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg

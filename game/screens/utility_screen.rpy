@@ -152,7 +152,11 @@ screen sc_faction_info(faction):
                 text 'Faction: ' + faction.name
                 text ' '
                 text 'Leader:'
-                text faction.owner.name
+                imagebutton:
+                    idle im.Scale(faction.owner.avatar_path, 50, 50)
+                    action Show('sc_character_info_screen', person=faction.owner)
+                    hovered Show('sc_info_popup', person=faction.owner)
+                    unhovered Hide('sc_info_popup')
                 text ' ' 
                 text 'faction alignment:'
                 text 'morality: ' + faction.owner.alignment.show_morality()
@@ -177,6 +181,8 @@ screen sc_faction_info(faction):
                 text ' '
                 textbutton 'leave':
                     action Return()
+    on 'hide':
+        action Hide('sc_info_popup')
 
 screen sc_gang_info(gang):
     use sc_faction_info(gang)
@@ -402,4 +408,3 @@ screen sc_generate_player:
         xalign 0.6
         yalign 0.6
         action Function(gen_player, core)
-        
