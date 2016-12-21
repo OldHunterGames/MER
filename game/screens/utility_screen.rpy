@@ -399,7 +399,7 @@ label lbl_gen_player:
 
 init python:
     def gen_player(core):
-        person = gen_random_person()
+        person = gen_random_person(genus='human')
         core.set_player(person)
 screen sc_generate_player:
     if core.player is not None:
