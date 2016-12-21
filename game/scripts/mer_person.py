@@ -230,7 +230,7 @@ class FoodSystem(object):
         else:
             amount = self.amount
             quality = self.quality
-        if quality < self.quality:
+        if quality < self.quality and self.quality_changed:
             quality = self.quality
 
         colorize_amount = amount
