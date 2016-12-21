@@ -37,7 +37,7 @@ label lbl_edge_main:
     
 label lbl_edge_manage:
     $ target = player
-    $ food_info = player.food_info()
+    $ food_info = player.ration_status
     $ resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
     $ consumption_text = show_consumption_level()
     python:
