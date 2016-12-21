@@ -232,6 +232,7 @@ class FoodSystem(object):
             quality = self.quality
         if quality < self.quality and self.quality_changed:
             quality = self.quality
+        amount = max(self.amount, amount)
 
         colorize_amount = amount
         amount = store.food_amount_dict[amount]
