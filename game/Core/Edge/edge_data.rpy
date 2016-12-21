@@ -126,3 +126,7 @@ init python:
         'integrator': __('You become an electrinics system integrator at the Major House of Eternal Rome. Game of career developement ecpected...'),   
         'mistmarine': __('You become a mistmarine at the Major House of Eternal Rome. Game of epic warfare and violence in Outer Worlds is ecpected...'),   
     }
+    
+    edge_jobs = {
+    'idle': {'name': 'Idle', 'description': 'Descriptext'},
+        }

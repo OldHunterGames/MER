@@ -31,8 +31,7 @@ label lbl_edge_slums_livein:
     $ bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
     
     menu:        
-        "[resources] \n
-        Decade bill: [bill]"
+        "[resources] \nDecade bill: [bill]"
         'Accomodation':
             call lbl_edge_slums_accomodation            
         'Catering':
@@ -103,9 +102,9 @@ label lbl_edge_slums_services:
     return
     
 
-label lbl_edge_slums_work(location):
+label lbl_edge_slums_work_food:
     menu:
-        'You can get some selfemployeed work to get some resources with your skill, or miserablly beg for some leftovers. Any way you will get yor payment after a full decade of an adequate work.'
+        'You slacking right now - relaxing, but will not fill your belly and pockets. You can get some selfemployeed work to get some resources with your skill, or miserablly beg for some leftovers. Any way you will get yor payment after a full decade of an adequate work.'
         'Beg for food (no skill)':
             $ target.schedule.add_action('job_beg')  
             jump lbl_edge_manage

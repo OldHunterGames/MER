@@ -47,22 +47,38 @@ label lbl_edge_manage:
     menu:
         "Nutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
+        
+        'Slums' if not edge.faction_mode:
+            call lbl_edge_slums_accomodation            
+        'Eatery' if not edge.faction_mode:
+            call lbl_edge_slums_ration
+        'Services' if not edge.faction_mode:
+            call lbl_edge_slums_services
+        'Buissiness' if not edge.faction_mode:
+            menu:
+                'You can work for food (easy but no gains) or find a way to earn some valueables (hard work). Or maybe you have a special plan? Anyways, more you know about people and places around you, more opportunities you have!'
+                'Earn some food':
+                    call lbl_edge_slums_work_food
+                'Gain resources':
+                    call lbl_edge_slums_work_res
+                'Special plan':
+                    call lbl_edge_slums_work_special   
+                'Relax':
+                    $ target.schedule.add_action('job_idle', False)  
 
-        'Slums' if edge.slums_mode:
-            call lbl_edge_slums_livein
         'Faction' if edge.faction_mode:
             $ pass
-        'Locations':
-            call lbl_edge_locations_menu  
+        #'Locations':
+        #    call lbl_edge_locations_menu  
         #'Information':
         #    call lbl_edge_info_base
         #'Equipment':
         #    call screen sc_person_equipment(player)
         #'Deck':
         #    call screen deck_creator
+        
         'Carry on' if edge.resources.can_tick() and core.can_skip_turn():
             call lbl_edge_turn
-
     
     jump lbl_edge_manage
     return
