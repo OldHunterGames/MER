@@ -82,6 +82,7 @@ label lbl_edge_fuck_challenge(skill):
     #$ partner3 = gen_random_person(genus='human', occupation='slut', gender='female')
     partner 'Hi there!'
     $ sex = SexEngine((player, True), [(partner, True)])
+    
     call screen sc_sexengine_main(sex)
     
     return

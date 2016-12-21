@@ -54,12 +54,12 @@ label lbl_edge_manage:
             $ pass
         'Locations':
             call lbl_edge_locations_menu  
-        'Information':
-            call lbl_edge_info_base
-        'Equipment':
-            call screen sc_person_equipment(player)
-        'Deck':
-            call screen deck_creator
+        #'Information':
+        #    call lbl_edge_info_base
+        #'Equipment':
+        #    call screen sc_person_equipment(player)
+        #'Deck':
+        #    call screen deck_creator
         'Carry on' if edge.resources.can_tick() and core.can_skip_turn():
             call lbl_edge_turn
 
