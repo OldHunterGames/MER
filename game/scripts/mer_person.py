@@ -1222,8 +1222,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         if not self.calculatable:
             return
         self.schedule.use_actions()
-        self.schedule.add_action('job_idle')
-        self.schedule.add_action('overtime_nap')
+        if self.schedule.find_by_slot('job') is None:
+            self.schedule.add_action('job_idle')
+        if self.schedule.find_by_slot('overtime') is None:
+
+            self.schedule.add_action('overtime_nap')
 
     #testing new food system, food methods are unused for some time
     #and maybe we'll remove them
