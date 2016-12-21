@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
+from random import *
+
 import renpy.store as store
 import renpy.exports as renpy
+
 from mer_utilities import encolor_text
 
 class Skill(object):

@@ -1523,9 +1523,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def reduce_esteem(self):
         if self.selfesteem > 0:
-            self.purporse.set_satisfaction(self.selfesteem)
+            self.purpose.set_satisfaction(self.selfesteem)
         else:
-            self.purporse.set_tension(self.selfesteem)
+            self.purpose.set_tension()
         self._selfesteem = 0
 
             
