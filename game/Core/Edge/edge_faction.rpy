@@ -30,19 +30,21 @@ label lbl_edge_faction_livein:
         'Ration':
             call lbl_edge_faction_ration
         'Services':
-            call lbl
+            call lbl_edge_faction_services
         'Earnings share':
             call lbl_edge_faction_share
-        'Equipement':
-           call lbl   
         'Clanmates':
             call screen sc_gang_info(faction)
-        'Information':
-            call lbl_edge_info_base           
         'Carry on' if core.can_skip_turn():
             call lbl_edge_turn
    
     jump lbl_edge_faction_livein
+    return
+    
+label lbl_edge_faction_services:
+    menu:
+        'Thats all':
+            call lbl_edge_faction_livein 
     return
     
 label lbl_edge_faction_occupation:

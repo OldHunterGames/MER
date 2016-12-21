@@ -352,7 +352,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._event_type = 'person'
         self._firstname = u"Anonimous"
         self.surname = u""
-        self.nickname = u"Anon"
+        self.nickname = u""
         self.alignment = Alignment()
         # gets Feature() objects and their child's. Add new Feature only with
         # self.add_feature()
