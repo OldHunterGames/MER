@@ -13,7 +13,7 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
         txt += 'Результат: %s\n'%(info_show_quality[result])
         if threshold is not None:
             txt += 'Требуется: %s\n'%(info_show_quality[threshold])
-        txt += 'Лимитирующий фактор: %s(%s) \n'%(encolor_text(skill.name, skill.level+1), skill.level+1)
+        txt += 'Лимитирующий фактор: %s(%s) \n'%(encolor_text(skill.name, skill.level), skill.level)
         txt += '+++++++ \n'
         unused = []
         for key in stats.keys():
