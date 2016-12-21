@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
+from random import *
+
 import renpy.store as store
 import renpy.exports as renpy
+
 from mer_utilities import encolor_text
 
 class Skill(object):
@@ -38,6 +41,21 @@ class Skill(object):
             level -= 1
         return level
 
+    @property
+    def description(self):
+        list_ = []
+        if self.training:
+            list_.append('training')
+        if self.expirience:
+            list_.append('expirience')
+        if self.specialization:
+            list_.append('specialization')
+        if self.talent:
+            list_.append('talent')
+        if self.inability:
+            list_.append('inability')
+        return list_
+
     def show(self):
         return encolor_text(self.name, self.level)
 
@@ -61,19 +79,24 @@ class Skill(object):
         if len(available_slots) > 0:
             self.expirience_slot = max(available_slots)
             self.expirience = True
-        expirienced = {
-            skill.expirience_slot: skill for skill in self.owner.skills if skill.expirience_slot != 0}
+        expirienced = {}
+        for skill in self.owner.skills:
+            if skill.expirience_slot != 0:
+                expirienced[skill.expirience_slot] = skill
         if len(expirienced.keys()) > 1:
             max_skill = expirienced[max(expirienced.keys())]
-            ind = self.owner.skills.index(max_skill)
-            self.owner.skills[ind].specialization = True
-            self.owner.specialized_skill = max_skill
+            max_skill.specialize()
 
+
+    def specialize(self):
+        for i in self.owner.skills:
+            i.specialization = False
+        self.specialization = True
+        self.owner.specialized_skill = self
+    
     def profession(self, power=5):
         self.training = True
-        self.expirience = True
-        self.specialization = True
-        self.expirience_slot = power
+        self.get_expirience(power)
 
     def expert(self):
         slots = []
@@ -84,8 +107,75 @@ class Skill(object):
         minimum = 1
         while minimum in slots:
             minimum += 1
-        self.expirience = True
-        self.expirience_slot = minimum
+        self.get_expirience(minimum)
 
     def attribute_value(self):
         return getattr(self.owner, self.attribute)
+
+
+class Skilled(object):
+
+    def init_skilled(self):
+        self.skills = []
+        self.specialized_skill = None
+        self.focused_skill = None
+        self.skills_used = []
+
+    def get_all_skills(self):
+        return [i for i in self.skills]
+
+    def skill(self, skill_id):
+        skill = None
+        for i in self.skills:
+            if i.id == skill_id:
+                skill = i
+                return skill
+
+        if skill_id in store.skills_data:
+            skill = Skill(self, skill_id)
+            self.skills.append(skill)
+            return skill
+        else:
+            raise Exception("No skill named %s in skills_data" % (skillname))
+
+    def use_skill(self, id_):
+        if isinstance(id_, Skill):
+            self.skills_used.append(id_)
+        else:
+            self.skills_used.append(self.skill(id_))
+
+    def get_used_skills(self):
+        l = []
+        for skill in self.skills_used:
+            if isinstance(skill, Skill):
+                l.append(skill)
+            else:
+                l.append(self.skill(skill))
+        return l
+
+    def calc_focus(self):
+        if self.focused_skill:
+            if self.focused_skill in self.get_used_skills():
+                self.focused_skill.focus += 1
+                self.skills_used = []
+                return
+        try:
+            self.focused_skill.focus = 0
+        except AttributeError:
+            pass
+
+        if len(self.skills_used) > 0:
+            from collections import Counter
+            counted = Counter()
+            for skill in self.get_used_skills():
+                counted[skill.id] += 1
+            maximum = max(counted.values())
+            result = []
+            for skill in counted:
+                if counted[skill] == maximum:
+                    result.append(skill)
+            self.skill(choice(result)).set_focus()
+        else:
+            self.focused_skill = None
+
+        self.skills_used = []

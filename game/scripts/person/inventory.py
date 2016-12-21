@@ -153,3 +153,74 @@ class Inventory(object):
         if self.main_hand == item or self.other_hand == item:
             return True
         return False
+
+
+class InventoryWielder(object):
+
+    def init_inventorywielder(self):
+        self.inventory = Inventory()
+
+    def equiped_items(self):
+        return self.inventory.equiped_items()
+
+    @property
+    def items(self):
+        return self.inventory.storage
+
+    @property
+    def main_hand(self):
+        return self.inventory.main_hand
+
+    @main_hand.setter
+    def main_hand(self, weapon):
+        self.inventory.main_hand = weapon
+
+    @property
+    def other_hand(self):
+        return self.inventory.other_hand
+
+    @other_hand.setter
+    def other_hand(self, weapon):
+        self.inventory.other_hand = weapon
+
+    @property
+    def armor(self):
+        return self.inventory.carried_armor['overgarments']
+
+    @armor.setter
+    def armor(self, armor):
+        self.inventory.equip_armor(armor, 'overgarments')
+
+    def has_shield(self):
+        try:
+            main = self.inventory.main_hand
+            other = self.inventory.other_hand
+            if main.size == 'shield' or other.size == 'shield':
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def equip_weapon(self, weapon, hand='main_hand'):
+        self.inventory.equip_weapon(weapon, hand)
+
+    def disarm_weapon(self, hand='main_hand'):
+        self.inventory.disarm_weapon(hand)
+
+    def add_item(self, item):
+        self.inventory.storage.append(item)
+
+    def equip_armor(self, item, slot):
+        self.inventory.equip_armor(item, slot)
+
+    def equip_item(self, item, slot):
+        if item.type == 'armor':
+            self.equip_armor(item, slot)
+        elif item.type == 'weapon':
+            self.equip_weapon(item, slot)
+
+    def equip_on_slot(self, slot, item):
+        self.inventory.equip_on_slot(slot, item)
+
+    def weapons(self):
+        return self.inventory.weapons()

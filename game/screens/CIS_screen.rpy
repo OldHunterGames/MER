@@ -5,7 +5,7 @@ style hoverable_text is text:
 style char_info_window is window:
     background Color((0, 0, 0, 255))
 
-screen sc_character_info_screen(person):
+screen sc_character_info_screen(person, return_l=False):
     modal True
     window:
         xfill True
@@ -19,7 +19,7 @@ screen sc_character_info_screen(person):
                     
                     hbox:  
                         image im.Scale(person.avatar_path, 150, 150)
-                        textbutton 'Leave' action Hide('sc_character_info_screen')
+                        textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
                         vbox:
@@ -62,7 +62,30 @@ screen sc_character_info_screen(person):
                     vbox:
                         text '{b}Skills{/b}'
                         for i in person.get_all_skills():
-                            text encolor_text(i.name, i.level) + '(%s)'%i.level
+                            if i != person.focused_skill:
+                                textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+                                    style 'hoverable_text'
+                                    text_style 'hoverable_text'
+                                    hovered Show('sc_skill_info', skill=i)
+                                    unhovered Hide('sc_skill_info')
+                                    action NullAction()
+                        if person.focused_skill is not None:
+                            $ i = person.focused_skill
+                            text '{b}Focus:{/b}'
+                            textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+                                style 'hoverable_text'
+                                text_style 'hoverable_text'
+                                hovered Show('sc_skill_info', skill=i)
+                                unhovered Hide('sc_skill_info')
+                                action NullAction()
+
+screen sc_skill_info(skill):
+    frame:
+        xalign 0.5
+        yalign 0.5
+        vbox:
+            for i in skill.description:
+                text i
         
 
 screen sc_info_popup(person):

@@ -122,6 +122,16 @@ class SexParticipant(object):
         else:
             return 'zero'
 
+    def get_result(self):
+        if self.feelings > self.standart:
+            return 'standart'
+        if self.feelings < 0:
+            return 'below_zero'
+        elif self.feelings > 0:
+            return 'above_zero'
+        else:
+            return 'zero'
+
 
     @property
     def stamina(self):

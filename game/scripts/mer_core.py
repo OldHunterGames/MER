@@ -184,7 +184,7 @@ class MistsOfEternalRome(object):
 
     def threshold_skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
                              morality=0, success_threshold=0, special_motivators=[]):
-        success_threshold += 1
+        # success_threshold += 1
         result = self.skillcheck(actor, skill, difficulty, tense_needs, satisfy_needs,
                                  beneficiar, morality, special_motivators, success_threshold)
         if success_threshold <= result:
@@ -199,14 +199,14 @@ class MistsOfEternalRome(object):
         motivation = actor.motivation(
             skill.name, tense_needs, satisfy_needs, beneficiar)
         # factors['attraction'] and equipment bonuses not implemented yet
-        factors = {'level': 1 + skill.level,
+        factors = {'level': skill.level,
                    skill.attribute: skill.attribute_value(),
                    'focus': skill.focus,
                    'mood': actor.mood,
                    'motivation': motivation,
                    'vitality': actor.vitality,
                    'bonus': actor.count_modifiers(skill.name)}
-        result = 1 + skill.level
+        result = skill.level
         used = []
         found = False
         while result != 0:
