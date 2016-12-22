@@ -223,7 +223,7 @@ class FoodSystem(object):
         if ration is not None:
             try:
                 amount = ration.special_values['amount']
-                quality = ration.speical_values['quality']
+                quality = ration.special_values['quality']
             except KeyError:
                 amount = self.amount
                 quality = self.quality
@@ -250,12 +250,12 @@ class FoodSystem(object):
         
 
     def set_food(self, amount, quality):
-        self.quality_changed = True
         self.amount = max(self.amount, amount)
         if self.quality_changed:
             self.quality = min(self.quality, quality)
         else:
             self.quality = quality
+        self.quality_changed = True
 
     def food_info(self):
         amount = store.food_amount_dict[self.amount]
