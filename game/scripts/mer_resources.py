@@ -223,7 +223,7 @@ class BarterSystem(object):
         self.spend(self._get_max_consumption())
         for i in self._consumptions_list:
             i.tick_time()
-            if i.time < 1 and isinstance(time, int):
+            if i.time < 1 and isinstance(i.time, int):
                 to_remove.append(i)
             else:
                 pass
