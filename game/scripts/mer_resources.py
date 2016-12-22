@@ -223,10 +223,9 @@ class BarterSystem(object):
         self.spend(self._get_max_consumption())
         for i in self._consumptions_list:
             i.tick_time()
-            try:
-                if i.time < 1:
-                    to_remove.append(i)
-            except TypeError:
+            if i.time < 1 and isinstance(time, int):
+                to_remove.append(i)
+            else:
                 pass
         for i in to_remove:
             self._consumptions_list.remove(i)
