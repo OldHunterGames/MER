@@ -20,7 +20,7 @@ label lbl_edge_slums_accomodation:
             $ cost = 0
             
     $ edge.resources.add_consumption(target, 'accomodation fee',  cost, 'accomodation')
-    call lbl_edge_slums_livein
+    call lbl_edge_manage
     return
 
     
@@ -49,10 +49,10 @@ label lbl_edge_slums_ration:
             $ cost = 0
             
     $ edge.resources.add_consumption(target, 'catering cost',  cost, 'nutrition')            
-    call lbl_edge_slums_livein
+    call lbl_edge_manage
     return
 
-label lbl_egde_slums_job:
+label lbl_edge_slums_jobs:
     menu:
         'You can work for food (easy but no gains) or find a way to earn some valueables (hard work). Or maybe you have a special plan? Anyways, more you know about people and places around you, more opportunities you have!'
         'Earn some food':
@@ -62,13 +62,13 @@ label lbl_egde_slums_job:
         'Special plan':
             call lbl_edge_slums_work_special   
         'Relax':
-            $ target.schedule.add_action('job_idle', False)  
+            $ target.schedule.add_action('job_idle', single=False)  
     return
     
 label lbl_edge_slums_services:
     menu:
         'Back':
-            call lbl_edge_slums_livein
+            call lbl_edge_manage
 
     return
 
@@ -81,7 +81,7 @@ label lbl_edge_slums_work_food:
         'Newermind':
             $ pass
             
-    call lbl_edge_squatted_slums(location)
+    call lbl_edge_slums_jobs
     return
         
 
@@ -92,7 +92,7 @@ label lbl_edge_slums_work_res:
             $ skill_id = 'athletics'
             $ description = _('doing manual labor at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+            $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
             jump lbl_edge_manage
             
         'Household services (housekeeping)':
@@ -100,7 +100,7 @@ label lbl_edge_slums_work_res:
             $ skill_id = 'housekeeping'
             $ description = _('providing household services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+            $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
             jump lbl_edge_manage
                                     
         'Sexual services (sex)':
@@ -108,12 +108,12 @@ label lbl_edge_slums_work_res:
             $ skill_id = 'sex'
             $ description = _('doing sexual services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_simplework', 1, special_values=special_values)  
+            $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
             jump lbl_edge_manage
                                     
         'Newermind':
             $ pass
             
-    call lbl_edge_squatted_slums(location)
+    call lbl_edge_slums_jobs
     return
     
