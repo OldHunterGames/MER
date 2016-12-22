@@ -45,7 +45,7 @@ label shd_edge_feed_catering(action):
     python:
         action.actor.comfort.satisfaction = 1
         name = action.actor.name
-        actor.eat(action.special_values['ammount'], action.special_values['taste'])
+        actor.eat(action.special_values['amount'], action.special_values['qiality'])
     '[name] eats served food.'    
     return  
     

@@ -61,15 +61,17 @@ label lbl_edge_manage:
     menu:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
-        
-        'Slums':
+        'Marketplace':
+            call lbl_edge_slums_marketplace
+        'Dwellings':
             call lbl_edge_slums_accomodation            
         'Eatery':
             call lbl_edge_slums_ration
         'Services':
             call lbl_edge_slums_services
-        'Buissiness' if not edge.faction_mode:
-            call lbl_edge_slums_jobs
+        'Jobs' if not edge.faction_mode:
+            call lbl_edge_slums_jobs        
+
 
         'Faction' if edge.faction_mode:
             $ pass
@@ -87,8 +89,45 @@ label lbl_edge_manage:
     
     jump lbl_edge_manage
     return
-
     
+label lbl_edge_slums_marketplace:
+    python:
+        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
+        free = encolor_text('free', 5)
+        cost_1 = encolor_resource_text(1)
+        cost_2 = encolor_resource_text(2)
+        cost_3 = encolor_resource_text(3)
+        cost_4 = encolor_resource_text(4)
+        cost_5 = encolor_resource_text(5) 
+    
+    menu:
+        'Here you can barter some resources for food and equipment. \nYou have [resources].'
+        'Buy food' if edge.resources.value > 0:
+            menu:
+                'Whole roasted girl ([cost_1])':
+                    player 'Munch-munch. Toasty!'
+                    $ edge.resources.spend(1)  
+                    $ player.eat(3,3)
+                'Back':
+                    $ pass
+                
+        'Buy weapon' if edge.resources.value > 0:
+            menu:
+                'knife ([cost_1])':
+                    player "Nice knife!"
+                    python:
+                        edge.resources.spend(1)
+                        create_weapon(id='knife')
+                        
+                    
+        'Buy equipement' if edge.resources.value > 0:
+            $ pass
+        'Noting interesting':
+            call lbl_edge_manage
+    
+    call lbl_edge_slums_marketplace
+    return
+        
 label lbl_info_new(target):
     python:
         alignment = target.alignment.description() 

@@ -185,33 +185,4 @@ label lbl_edge_gang_signin(location):
         
     jump lbl_edge_faction_livein    
     return
-    
-label lbl_edge_market(location):
-    python:
-        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-        free = encolor_text('free', 5)
-        cost_1 = encolor_resource_text(1)
-        cost_2 = encolor_resource_text(2)
-        cost_3 = encolor_resource_text(3)
-        cost_4 = encolor_resource_text(4)
-        cost_5 = encolor_resource_text(5) 
-    
-    menu:
-        'Here you can barter some resources for food and equipment. \nYou have [resources].'
-        'Buy food' if edge.resources.value > 0:
-            menu:
-                'Whole roasted girl ([cost_1])':
-                    player 'Munch-munch. Toasty!'
-                    $ edge.resources.spend(1)  
-                    $ player.eat(3,3)
-                'Back':
-                    call lbl_edge_market(location)
-                
-        'Buy armaments' if edge.resources.value > 0:
-            $ pass
-        'Buy equipement' if edge.resources.value > 0:
-            $ pass
-        'Noting interesting':
-            call lbl_edge_outpost(location)
-    
-    return
+

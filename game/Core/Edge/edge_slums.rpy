@@ -19,7 +19,7 @@ label lbl_edge_slums_accomodation:
             $ target.schedule.add_action('accommodation_makeshift', single=False) 
             $ cost = 0
             
-    $ edge.resources.add_consumption(target, 'accomodation fee',  cost, 'accomodation')
+    $ edge.resources.add_consumption(target, 'accomodation fee', cost, 'accomodation', time = None)
     call lbl_edge_manage
     return
 
@@ -27,28 +27,28 @@ label lbl_edge_slums_accomodation:
 label lbl_edge_slums_ration:
     menu:
         'Junkfood lunch ([cost_1])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 1, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 0}) 
             $ cost = 1           
         'Junkfood 3 time meals ([cost_2])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 2, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 0}) 
             $ cost = 2           
         'Cooked lunch ([cost_2])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 1, 'taste': 2}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 2}) 
             $ cost = 2   
         'All junkfood you can eat ([cost_3])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 3, 'taste': 0}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 0}) 
             $ cost = 3           
         'Cooked 3 time meals ([cost_3])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 2, 'taste': 2}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 2}) 
             $ cost = 3   
         'Whole roasted girl ([cost_4])':
-            $ target.schedule.add_action('feed_catering', single=False, special_values={'ammount': 3, 'taste': 3}) 
+            $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 3}) 
             $ cost = 4               
         'Eat your own food ([free])':
             $ target.schedule.remove_action('feed_catering')
             $ cost = 0
             
-    $ edge.resources.add_consumption(target, 'catering cost',  cost, 'nutrition')            
+    $ edge.resources.add_consumption(target, 'catering cost',  cost, 'nutrition', time = None)            
     call lbl_edge_manage
     return
 
@@ -75,7 +75,7 @@ label lbl_edge_slums_services:
 label lbl_edge_slums_work_food:
     menu:
         'Beg for food (no skill)':
-            $ target.schedule.add_action('job_beg')  
+            $ target.schedule.add_action('job_beg', single=False)  
             jump lbl_edge_manage
                                     
         'Newermind':
