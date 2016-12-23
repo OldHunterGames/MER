@@ -6,7 +6,7 @@ screen sc_person_equipment(person):
             python:
                 sc_equipment_desc = person.inventory.carried_weapons[i]
                 if sc_equipment_desc != None:
-                    sc_equipment_desc = i + ': ' + sc_equipment_desc.description
+                    sc_equipment_desc = i + ': ' + sc_equipment_desc.name
                 else:
                     sc_equipment_desc = i
             textbutton sc_equipment_desc:
@@ -17,7 +17,7 @@ screen sc_person_equipment(person):
             python:
                 sc_equipment_desc = person.inventory.carried_armor[i]
                 if sc_equipment_desc != None:
-                    sc_equipment_desc = i + ': ' + sc_equipment_desc.description
+                    sc_equipment_desc = i + ': ' + sc_equipment_desc.name
                 else:
                     sc_equipment_desc = i
             textbutton sc_equipment_desc:
@@ -32,7 +32,7 @@ screen sc_equip_item(person, slot):
         align(0.0, 0.7)
         text slot + ':'
         for i in person.inventory.available_for_slot(slot):
-            textbutton i.description:
+            textbutton i.name:
                 action Function(person.inventory.equip_on_slot, slot, i)
         textbutton 'unequip':
             action Function(person.inventory.equip_on_slot, slot, None)
