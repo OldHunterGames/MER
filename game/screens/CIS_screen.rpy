@@ -165,7 +165,10 @@ screen sc_weapon_info(weapon):
     frame:
         xalign 0.5
         yalign 0.5
-        text weapon.description
+        vbox:
+            spacing 5
+            text weapon.stats()
+            text 'price: ' + str(weapon.price)
 
 screen sc_vitality_info(person):
     $ d, l = person.vitality_info()

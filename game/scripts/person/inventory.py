@@ -14,11 +14,10 @@ class Inventory(object):
         self.storage = []
 
     def equiped_items(self):
-        list_ = self.weapons()
-        for value in self.carried_armor.values():
-            if value is not None:
-                list_.append(value)
-        return list_
+        return [i for i in self.storage if i.equiped]
+
+    def get_items(self, item_type):
+        return [i for i in self.storage if i.type == item_type]
 
     def weapon_slots(self):
         return self.carried_weapons.keys()
@@ -32,8 +31,8 @@ class Inventory(object):
 
     @main_hand.setter
     def main_hand(self, weapon):
-        if weapon in self.storage:
-            self.storage.remove(weapon)
+        self.add_item(weapon)
+        weapon.equip()
         self.disarm_weapon('main_hand')
         if weapon.size == 'twohand':
             self.disarm_weapon('other_hand')
@@ -46,8 +45,7 @@ class Inventory(object):
 
     @other_hand.setter
     def other_hand(self, weapon):
-        if weapon in self.storage:
-            self.storage.remove(weapon)
+        self.add_item(weapon)
         self.disarm_weapon('other_hand')
         if weapon.size == 'twohand':
             self.disarm_weapon('main_hand')
@@ -91,15 +89,15 @@ class Inventory(object):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         dict_ = getattr(self, slots)
         current_item = dict_[slot]
+        item.equip()
         if current_item is not None:
-            self.storage.append(current_item)
-        if item in self.storage:
-            self.storage.remove(item)
+            current_item.unequip()
+            self.add_item(current_item)
         dict_[slot] = item
 
     def equip_weapon(self, weapon, hand='main_hand'):
-        if weapon in self.storage:
-            self.storage.remove(weapon)
+        weapon.equip()
+        self.add_item(weapon)
         if weapon.size == 'twohand':
             self.main_hand = weapon
             self.other_hand = weapon
@@ -114,9 +112,6 @@ class Inventory(object):
 
     def disarm_weapon(self, hand):
         weapon = getattr(self, hand)
-        
-        if weapon not in self.storage and weapon not in self.equiped_weapons().values():
-            self.storage.append(weapon) 
         try:
             weapon.unequip()
             if weapon.size == 'twohand':
@@ -127,11 +122,11 @@ class Inventory(object):
         setattr(self, '_'+hand, None)
 
     def equip_armor(self, armor, slot):
-        if armor in self.storage:
-            self.storage.remove(armor)
+        self.add_item(armor)
         if self.carried_armor[slot] is not None:
-            self.storage.append(self.carried_armor[slot])
+            self.carried_armor[slot].unequip()
         self.carried_armor[slot] = armor
+        armor.equip()
 
     def is_slot_active(self, slot):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
@@ -154,6 +149,54 @@ class Inventory(object):
             return True
         return False
 
+    def has_item(self, id_):
+        for i in self.storage:
+            if i.id == id_:
+                return True
+        return False
+
+    def remove_item(self, item, value=1):
+        get_item = None
+        if isinstance(item, str):
+            for i in self.storage:
+                if i.id == item:
+                    get_item = i
+                    break
+        else:
+            for i in self.storage:
+                if i == item:
+                    get_item = i
+                    break
+        if get_item is not None:
+            if hasattr(get_item, 'amount'):
+                returned = get_item.decrease_amount(value)
+                if get_item.amount <= 0:
+                    self.storage.remove(get_item)
+            else:
+                self.storage.remove(get_item)
+                returned = get_item
+        return returned
+
+    def get_by_id(self, id_):
+        for i in self.storage:
+            if i.id == id_:
+                return i
+
+    def add_item(self, item, value=1):
+        if value < 0:
+            raise Exception('value < 0 use remove_item instead')
+        if item is None:
+            return
+        if hasattr(item, 'amount'):
+            current = self.get_by_id(item.id)
+            if current is not None:
+                current.increase_amount(value)
+            else:
+                self.storage.append(item)
+                item.increase_amount(value-1)
+        else:
+            if item not in self.storage:
+                self.storage.append(item)
 
 class InventoryWielder(object):
 
@@ -224,3 +267,12 @@ class InventoryWielder(object):
 
     def weapons(self):
         return self.inventory.weapons()
+
+    def has_item(self, item):
+        return self.inventory.has_item(item)
+
+    def remove_item(self, item, value=1):
+        return self.inventory.remove_item(item, value)
+
+    def add_item(self, item, value=1):
+        self.inventory.add_item(item, value)
