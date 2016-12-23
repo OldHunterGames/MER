@@ -17,6 +17,10 @@ class Item(object):
             self._name = kwargs['name']
         else:
             self._name = None
+        if 'mutable_name' in kwargs.keys():
+            self.mutable_name = kwargs['mutable_name']
+        else:
+            self.mutable_name = True
         if id is None:
             self.id = None
         else:

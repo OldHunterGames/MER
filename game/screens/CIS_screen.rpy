@@ -26,7 +26,7 @@ screen sc_character_info_screen(person, return_l=False):
                             for i in person.visible_features():
                                 text i.name
                         vbox:
-                            for i in person.equiped_items():
+                            for i in person.items:
                                 textbutton i.name:
                                     text_style 'hoverable_text'
                                     style 'hoverable_text'
