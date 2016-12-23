@@ -168,6 +168,7 @@ screen sc_weapon_info(weapon):
         vbox:
             spacing 5
             text weapon.stats()
+            text weapon.description()
             text 'price: ' + str(weapon.price)
 
 screen sc_vitality_info(person):
