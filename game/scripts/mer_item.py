@@ -13,7 +13,10 @@ class Item(object):
     type_ = 'item'
 
     def __init__(self, item_id=None, *args, **kwargs):
-        self._name = None
+        if 'name' in kwargs.keys():
+            self._name = kwargs['name']
+        else:
+            self._name = None
         if id is None:
             self.id = None
         else:
@@ -27,7 +30,10 @@ class Item(object):
         self.features = []
         self.modifiers = ModifiersStorage()
         self.features_data_dict = 'item_features'
-        self._price = 1
+        if 'price' in kwargs.keys():
+            self._price = kwargs['price']
+        else:
+            self._price = 1
 
     def add_feature(self, id_):
         Feature(self, id_, self.features_data_dict)
@@ -150,6 +156,13 @@ class Stackable(Item):
             new._amount = value
         return new
 
+
+class Treasure(Stackable):
+
+    _type = 'treasure'
+
+
+
 class Weapon(Item):
     type_ = 'weapon'
 
@@ -258,6 +271,16 @@ def create_armor(armor_rate=None, quality=1, name=None, price=1, id=None):
     if name is not None:
         armor.set_name(name)
     return armor
+
+def create_treasure(id):
+    data = store.treasure_data
+    try:
+        data = data[id]
+    except KeyError:
+        raise Exception("Unknow treasure %s"%id)
+    treasure = Treasure(item_id=id, **data)
+
+    return treasure
 
 def create_item():
     creator_item_properties = {'type': None}

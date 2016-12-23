@@ -29,3 +29,11 @@ init python:
         'leather_coat': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 2},  
         'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy_armor', 'quality': 1},
             }
+
+
+    treasure_data = {
+        'diamond':{
+            'name': __("diamond"),
+            'price': 5
+        }
+    }
