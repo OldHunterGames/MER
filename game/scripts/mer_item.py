@@ -25,12 +25,20 @@ class Item(object):
             self.id = None
         else:
             self.id = item_id
+        if 'description' in kwargs.keys():
+            self._description = kwargs['description']
+        else:
+            self._description = ''
+        if 'mutable_description' in kwargs.keys():
+            self.mutable_description = kwargs['mutable_description']
+        else:
+            self.mutable_description = True
         if 'quality' in kwargs.keys():
             self._quality = kwargs['quality']
         else:
             self._quality = 1
         self.equiped = False
-        self._description = ''
+        
         self.features = []
         self.modifiers = ModifiersStorage()
         self.features_data_dict = 'item_features'
@@ -63,6 +71,8 @@ class Item(object):
         return self.modifiers.count_modifiers(attribute)
 
     def set_name(self, name):
+        if not self.mutable_name:
+            return
         self._name = name
 
     def set_quality(self, quality):
@@ -110,6 +120,8 @@ class Item(object):
         return self._description
 
     def set_description(self, value):
+        if not self.mutable_description:
+            return
         self._description = value
 
     def stats(self):

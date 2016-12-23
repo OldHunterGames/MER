@@ -34,7 +34,9 @@ init python:
     treasure_data = {
         'diamond':{
             'name': __("diamond"),
+            'descritpion': __(''),
             'price': 5,
-            'mutable_name': False
+            'mutable_name': False,
+            'mutable_description': False
         }
     }
