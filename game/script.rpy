@@ -47,21 +47,6 @@ label start:
         player.firstname = 'Охотник'
         player.set_avatar('images/avatar/old_huntsman_ava.jpg')
         player.skill('survival').training = True
-        
-        light_armor = Armor('light_armor')
-        heavy_armor = Armor('heavy_armor')
-        knife = Weapon('offhand', 'slashing')
-        stiletto = Weapon('offhand', 'piercing')
-        mace = Weapon('versatile', 'impact')
-        sword = Weapon('versatile', 'slashing')
-        halberd = Weapon('twohand', 'slashing')        
-        
-        player.equip_armor(light_armor, 'overgarments') 
-        player.equip_on_slot('belt1', knife)
-        player.equip_on_slot('belt2', stiletto)
-        player.equip_on_slot('armband', mace)       
-        player.equip_on_slot('ankleband', sword) 
-        player.equip_on_slot('harness', halberd) 
         player.reveal_all_taboos()
         player.reveal_all_fetishes()
         player.add_feature('penis')

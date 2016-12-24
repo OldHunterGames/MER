@@ -16,7 +16,7 @@ class Item(object):
         if 'name' in kwargs.keys():
             self._name = kwargs['name']
         else:
-            self._name = None
+            raise Exception('Unnamed item')
         if 'mutable_name' in kwargs.keys():
             self.mutable_name = kwargs['mutable_name']
         else:
@@ -28,7 +28,7 @@ class Item(object):
         if 'description' in kwargs.keys():
             self._description = kwargs['description']
         else:
-            self._description = ''
+            self._description = None
         if 'mutable_description' in kwargs.keys():
             self.mutable_description = kwargs['mutable_description']
         else:
@@ -46,6 +46,9 @@ class Item(object):
             self._price = kwargs['price']
         else:
             self._price = 1
+
+        self.new_description = None
+        self.new_name = None
 
     def add_feature(self, id_):
         Feature(self, id_, self.features_data_dict)
@@ -73,16 +76,10 @@ class Item(object):
     def set_name(self, name):
         if not self.mutable_name:
             return
-        self._name = name
+        self.new_name = name
 
     def set_quality(self, quality):
         self._quality = quality
-
-    def make(self):
-        try:
-            self._init_features()
-        except AttributeError:
-            pass
 
     def make_from_dict(self, properties_dict):
         for key, value in properties_dict.items():
@@ -98,9 +95,12 @@ class Item(object):
 
     @property
     def name(self):
-        if self._name is None:
-            return encolor_text(self.description, self.quality)
+        if self.new_name is not None:
+            return encolor_text(self.new_name, self.quality)
         return encolor_text(self._name, self.quality)
+
+    def reset_name(self):
+        self.new_name = None
 
     @property
     def type(self):
@@ -117,12 +117,17 @@ class Item(object):
 
     @property
     def description(self):
+        if self.new_description is not None:
+            return self.new_description
         return self._description
 
     def set_description(self, value):
         if not self.mutable_description:
             return
-        self._description = value
+        self.new_description = value
+
+    def reset_description(self):
+        self.new_description = None
 
     def stats(self):
         return ''
@@ -270,10 +275,8 @@ def create_weapon(size=None, damage_type=None, wpn_range=None, quality=1, name=N
         size = random.choice(get_weapon_sizes())
     if damage_type is None:
         damage_type = random.choice(get_weapon_damage_types())
-    weapon = Weapon(size, damage_type, wpn_range, quality=quality)
+    weapon = Weapon(size, damage_type, wpn_range, quality=quality, name=name)
     weapon.price = price
-    if name is not None:
-        weapon.set_name(name)
     return weapon
 
 def create_armor(armor_rate=None, quality=1, name=None, price=1, id=None):
@@ -282,10 +285,8 @@ def create_armor(armor_rate=None, quality=1, name=None, price=1, id=None):
         return armor
     if armor_rate is None:
         armor_rate = random.choice(get_armor_rates())
-    armor = Armor(armor_rate, quality=quality)
+    armor = Armor(armor_rate, quality=quality, name=name)
     armor.price = price
-    if name is not None:
-        armor.set_name(name)
     return armor
 
 def create_treasure(id):
