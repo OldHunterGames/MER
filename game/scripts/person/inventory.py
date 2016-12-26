@@ -198,6 +198,9 @@ class Inventory(object):
             if item not in self.storage:
                 self.storage.append(item)
 
+    def weapon_slots(self):
+        return self.carried_weapons
+
 class InventoryWielder(object):
 
     def init_inventorywielder(self):
@@ -276,3 +279,6 @@ class InventoryWielder(object):
 
     def add_item(self, item, value=1):
         self.inventory.add_item(item, value)
+
+    def weapon_slots(self):
+        return self.inventory.weapon_slots()
