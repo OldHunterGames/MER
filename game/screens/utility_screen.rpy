@@ -311,6 +311,8 @@ screen sc_relations():
     modal True
     textbutton 'leave':
         action Hide('sc_relations')
+        xpos 447
+        ypos 512
     frame:
         xalign 0.5
         viewport:
@@ -352,44 +354,6 @@ screen sc_gang_info(gang):
                 for i in gang.get_common_members():
                     textbutton "member: %s"%i.name:
                         action Hide('sc_person_info'), ShowTransient('sc_person_info', person=i, xalign=1.0, yalign=1.0)
-
-screen sc_person_info(person, xalign=0.0, yalign=0.0):
-    frame:
-        align(xalign, yalign)
-        xmaximum 400
-        ymaximum 400
-        vbox:
-            hbox:
-                image im.Scale(person.avatar_path, 200, 200)
-                text "Name: %s"%person.name
-            vbox:
-                hbox:
-                    text person.alignment.show_morality()
-                    text ' '
-                    text person.alignment.show_activity()
-                    text ' '
-                    text person.alignment.show_orderliness()
-                if not person == player:
-                    hbox:
-                        text person.relations(player).show_fervor()
-                        text ' '
-                        text person.relations(player).show_distance()
-                        text ' '
-                        text person.relations(player).show_congruence()
-                text "Features: "
-                hbox:
-                    spacing 5
-                    box_wrap True
-                    python:
-                        features = person.get_visible_features()
-                        features_text = ''
-                        for i in features:
-                            features_text += i.name
-                            if i != features[-1]:
-                                features_text += ', '
-                    text features_text
-            textbutton "Leave":
-                action Hide('sc_person_info')
 
 
 screen sc_item_creator(creator_item_properties):

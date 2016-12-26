@@ -107,6 +107,9 @@ class MistsOfEternalRome(object):
         self._factions.append(faction)
         return faction
 
+    def remove_faction(self, faction):
+        self._factions.remove(faction)
+
     def is_member_of_faction(self, person, faction):
         return faction.has_member(person)
 

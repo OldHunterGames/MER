@@ -58,6 +58,7 @@ label start:
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
         player.add_item(create_weapon(id='sword'))
+        player.relations(p)
 
     
     # call screen sc_faction_info(great_houses[0])
