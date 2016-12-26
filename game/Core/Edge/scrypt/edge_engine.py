@@ -132,8 +132,8 @@ class EdgeEngine(object):
         self.resources.tick_time()
         self.core.new_turn()
     
-    def add_faction(self, owner, name, location):
-        gang = Gang(owner, name, location)
+    def add_faction(self, owner, name, location, id=None):
+        gang = Gang(owner, name, location, id=id)
         self.gang_list.append(gang)
         self.core.factions.append(gang)
 
@@ -210,8 +210,8 @@ class EdgeLocation(object):
 
 
 class Gang(Faction):
-    def __init__(self, owner, name, location):
-        super(Gang, self).__init__(owner, name)
+    def __init__(self, owner, name, location, id=None):
+        super(Gang, self).__init__(owner, name, id=id)
         self.roles = {'warlord': None,
                       'medic': None,
                       'chief': None,
