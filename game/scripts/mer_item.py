@@ -267,7 +267,7 @@ def get_armor_rates():
             list_.append(key)
     return list_
 
-def create_weapon(size=None, damage_type=None, wpn_range=None, quality=1, name=None, price=1, id=None):
+def create_weapon(size=None, damage_type=None, wpn_range=None, quality=1, name=None, description=None, price=1, id=None):
     if id is not None:
         weapon = make_weapon_from_dict(id, store.weapon_data)
         return weapon
@@ -275,17 +275,17 @@ def create_weapon(size=None, damage_type=None, wpn_range=None, quality=1, name=N
         size = random.choice(get_weapon_sizes())
     if damage_type is None:
         damage_type = random.choice(get_weapon_damage_types())
-    weapon = Weapon(size, damage_type, wpn_range, quality=quality, name=name)
+    weapon = Weapon(size, damage_type, wpn_range, quality=quality, name=name, description=description)
     weapon.price = price
     return weapon
 
-def create_armor(armor_rate=None, quality=1, name=None, price=1, id=None):
+def create_armor(armor_rate=None, quality=1, name=None, price=1, description=None, id=None):
     if id is not None:
         armor = make_armor_from_dict(id, store.armor_data)
         return armor
     if armor_rate is None:
         armor_rate = random.choice(get_armor_rates())
-    armor = Armor(armor_rate, quality=quality, name=name)
+    armor = Armor(armor_rate, quality=quality, name=name, description=description)
     armor.price = price
     return armor
 
