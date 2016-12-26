@@ -35,6 +35,7 @@ class Inventory(object):
             for key in self.weapon_slots():
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
                     self.carried_weapons[key] = weapon
+                    break
         self.add_item(weapon)
         weapon.equip()
         self.disarm_weapon('main_hand')
@@ -49,6 +50,11 @@ class Inventory(object):
 
     @other_hand.setter
     def other_hand(self, weapon):
+        if not any([i == weapon for i in self.carried_weapons.values()]):
+            for key in self.weapon_slots():
+                if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
+                    self.carried_weapons[key] = weapon
+                    break
         self.add_item(weapon)
         self.disarm_weapon('other_hand')
         if weapon.size == 'twohand':
