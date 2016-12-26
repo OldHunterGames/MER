@@ -408,3 +408,48 @@ screen sc_generate_player:
         xalign 0.6
         yalign 0.6
         action Function(gen_player, core)
+
+
+label lbl_skillcheck(person, skill, difficulty=0):
+    $ skillcheck = Skillcheck(person, skill, difficulty)
+    call screen sc_skillcheck(skillcheck)
+    return skillcheck
+
+
+screen sc_skillcheck(skillcheck):
+    hbox:
+        xalign 0.5
+        xmaximum 400
+        
+        frame:
+            xsize 200
+            ysize 300
+            has vbox
+            text 'Resources'
+            for i in skillcheck.resources.items():
+                textbutton encolor_text(attributes_translation[i[0]], i[1]):
+                    if skillcheck.has_cons():
+                        action Function(skillcheck.use_resource, i[0])
+                    else:
+                        action [Function(skillcheck.use_resource, i[0]),
+                            SensitiveIf(i[1] > skillcheck.skill_level)]
+
+        frame:
+            xsize 200
+            ysize 300
+            has vbox
+            text 'Cons'
+            for i in skillcheck.cons:
+                if i[0] == 'anxiety':
+                    text encolor_text(attributes_translation['anxiety'], i[1])
+                else:
+                    text encolor_text(__('difficulty'), i[1])
+    frame:
+        xsize 400
+        xalign 0.5
+        ypos 301
+        has vbox
+        xalign 0.5
+        text 'Result: %s'%skillcheck.result
+        textbutton 'End check':
+            action Return()

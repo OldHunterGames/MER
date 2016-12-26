@@ -247,3 +247,77 @@ class MistsOfEternalRome(object):
 
     def discover_world(self, worlds):
         return choice(worlds)().point_of_arrival
+
+
+#Alternate Skillcheck
+
+class Skillcheck(object):
+
+
+    def __init__(self, person, skill, difficulty=0):
+        self.skill = person.skill(skill)
+        self.person = person
+        self.skill_level = self.skill.level
+        self.difficulty = difficulty
+        self.resources = {}
+        self.cons = []
+        self.init_resources()
+        self.init_cons()
+
+    def init_cons(self):
+        for i in range(1, self.difficulty+1):
+            self.cons.append(('difficulty', i))
+        if self.person.anxiety > 0:
+            self.cons.append(('anxiety', min(self.person.anxiety, 5)))
+
+    def init_resources(self):
+        skill = self.skill
+        person = self.person
+        attribute = skill.attribute
+        attribute_value = skill.attribute_value()
+        is_focused = skill.is_focused()
+        has_determination = person.determination > 0
+        if person.has_inner_resource(attribute):
+            self.resources[attribute] = attribute_value
+
+        if person.has_inner_resource('focus') and is_focused:
+            self.resources['focus'] = person.focus
+
+        if person.has_inner_resource('determination') and has_determination:
+            self.resources['determination'] = 5
+
+        if person.has_inner_resource('vitality') and person.vitality > 0:
+            self.resources['vitality'] = person.vitality
+        if person.has_inner_resource('mood') and person.mood > 0:
+            self.resources['mood'] = person.mood
+
+    def use_resource(self, resource):
+        value = self.resources[resource]
+        cons_values = [i[1] for i in self.cons]
+        cons_values = sorted(cons_values)
+        remove = 0
+        for i in reversed(cons_values):
+            if i <= value:
+                remove = value
+                break
+        if remove > 0:
+            for i in self.cons:
+                if i[1] == remove:
+                    self.cons.remove(i)
+        else:
+            if value > self.skill_level:
+                self.skill_level += 1
+
+        del self.resources[resource]
+        self.person.use_inner_resource(resource)
+
+    @property
+    def result(self):
+        if len(self.cons) > 0:
+            return 0
+        else:
+            return self.skill_level
+
+    def has_cons(self):
+        return len(self.cons) > 0
+

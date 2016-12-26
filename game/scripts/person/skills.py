@@ -112,6 +112,9 @@ class Skill(object):
     def attribute_value(self):
         return getattr(self.owner, self.attribute)
 
+    def is_focused(self):
+        return self == self.owner.focused_skill
+
 
 class Skilled(object):
 
@@ -120,6 +123,7 @@ class Skilled(object):
         self.specialized_skill = None
         self.focused_skill = None
         self.skills_used = []
+        self.used_inner_resources = []
 
     def get_all_skills(self):
         return [i for i in self.skills]
@@ -136,7 +140,7 @@ class Skilled(object):
             self.skills.append(skill)
             return skill
         else:
-            raise Exception("No skill named %s in skills_data" % (skillname))
+            raise Exception("No skill named %s in skills_data" % (skill_id))
 
     def use_skill(self, id_):
         if isinstance(id_, Skill):
@@ -177,5 +181,11 @@ class Skilled(object):
             self.skill(choice(result)).set_focus()
         else:
             self.focused_skill = None
-
+        self.used_inner_resources = []
         self.skills_used = []
+
+    def use_inner_resource(self, resource):
+        self.used_inner_resources.append(resource)
+
+    def has_inner_resource(self, resource):
+        return resource not in self.used_inner_resources

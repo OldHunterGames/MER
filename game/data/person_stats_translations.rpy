@@ -15,3 +15,15 @@ init python:
 
     mood_translation = {-1: '!!!CRUSHED!!!', 0: 'Gloomy', 1: 'Tense',
         2: 'Content', 3: 'Serene', 4: 'Jouful', 5: 'Enthusiastic'}
+
+    attributes_translation = {
+        'physique': __('physique'),
+        'agility': __('agility'),
+        'mind': __('mind'),
+        'spirit': __('spirit'),
+        'sensitivity': __('sensitivity'),
+        'anxiety': __('anxiety'),
+        'determination': __('determination'),
+        'mood': __('mood'),
+        'vitality': __('vitality')
+    }
