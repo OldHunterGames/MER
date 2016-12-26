@@ -50,9 +50,9 @@ label start:
         ap = player.ap
         
         ##TEST CODE##
-        player.firstname = 'Охотник'
-        player.set_avatar('images/avatar/old_huntsman_ava.jpg')
-        player.skill('survival').training = True
+        # player.firstname = 'Охотник'
+        # player.set_avatar('images/avatar/old_huntsman_ava.jpg')
+        # player.skill('survival').training = True
         player.reveal_all_taboos()
         player.reveal_all_fetishes()
         player.add_feature('penis')

@@ -10,7 +10,7 @@ init -8 python:
     edge = EdgeEngine()
     pass
 
-label lbl_edge_main:
+label lbl_edge_main:    
     'The Mist gives you a way...'  
     python:
         edge.loc_max = 7
@@ -31,6 +31,30 @@ label lbl_edge_main:
             consumption_level = edge.resources.consumption_level()
             consumption_text = spendings_text + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
             return consumption_text
+        
+        ## Edge NPC initialisation
+        slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
+        slums_faction = core.add_faction(slums_leader, __('Slums'))
+        player.relations(slums_faction)
+        ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
+        slums_champion = gen_random_person(genus='human', occupation=ocpn)
+        slums_faction.add_member(slums_champion)
+        slums_faction.set_member_to_role(slums_champion, 'champion') 
+        ocpn = choice(['entertainer'], )
+        slums_entertainer = gen_random_person(genus='human', occupation=ocpn)
+        slums_faction.add_member(slums_entertainer)
+        slums_faction.set_member_to_role(slums_entertainer, 'entertainer') 
+        ocpn = choice(['medic', ])
+        slums_medic = gen_random_person(genus='human', occupation=ocpn)
+        slums_faction.add_member(slums_medic)
+        slums_faction.set_member_to_role(slums_medic, 'medic') 
+    
+    slums_leader 'Hi, I am a leader of the Slums'
+    slums_champion "I'll watch for you"
+    slums_entertainer 'If you need to relax, welcome to my pub.'
+    slums_medic "I'll patch you if you'l get hurt... for a price!"
+        
+
     call edge_init_events
     call lbl_edge_manage
     return
@@ -73,7 +97,9 @@ label lbl_edge_manage:
         'Services':
             call lbl_edge_slums_services
         'Jobs' if not edge.faction_mode:
-            call lbl_edge_slums_jobs        
+            call lbl_edge_slums_jobs    
+        'People':
+            pass
 
         'Faction' if edge.faction_mode:
             $ pass
@@ -91,7 +117,7 @@ label lbl_edge_manage:
     
     jump lbl_edge_manage
     return
-    
+
 label lbl_edge_slums_marketplace:
     python:
         resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
@@ -115,20 +141,22 @@ label lbl_edge_slums_marketplace:
                 
         'Buy weapon' if edge.resources.value > 0:
             menu:
-                'knife ([cost_1])':
+                'knife ([cost_2])' if edge.resources.value > 2:
                     player "Nice knife!"
                     python:
-                        edge.resources.spend(1)
-                        create_weapon(id='knife')
+                        edge.resources.spend(2)
+                        player.add_item(create_weapon(id='knife'))
+                'Back':
+                    pass
                         
                     
         'Buy equipement' if edge.resources.value > 0:
-            $ pass
+            pass
             
         'Sell weapons':
             call screen edge_sell_screen(player, 'weapon')
                 
-        'Noting interesting':
+        'Get out':
             call lbl_edge_manage
     
     call lbl_edge_slums_marketplace
