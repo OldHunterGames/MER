@@ -76,11 +76,11 @@ class Inventory(object):
         list_ = []
         if slot in self.armor_slots():
             for item in storage:
-                if item.type == 'armor':
+                if item.type == 'armor' and not item.equiped:
                     list_.append(item)
         else:
             for item in storage:
-                if item.type != 'armor':
+                if item.type != 'armor' and not item.equiped:
                     if item.size in slots[slot]:
                         list_.append(item)
         return list_
@@ -89,7 +89,8 @@ class Inventory(object):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         dict_ = getattr(self, slots)
         current_item = dict_[slot]
-        item.equip()
+        if item is not None:
+            item.equip()
         if current_item is not None:
             current_item.unequip()
             self.add_item(current_item)

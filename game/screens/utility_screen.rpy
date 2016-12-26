@@ -1,31 +1,38 @@
 
 screen sc_person_equipment(person):
-    vbox:
-        text 'Weapon:'
-        for i in person.inventory.weapon_slots():
-            python:
-                sc_equipment_desc = person.inventory.carried_weapons[i]
-                if sc_equipment_desc != None:
-                    sc_equipment_desc = i + ': ' + sc_equipment_desc.name
-                else:
-                    sc_equipment_desc = i
-            textbutton sc_equipment_desc:
-                action [Show('sc_equip_item', person=person, slot=i),
-                        SensitiveIf(person.inventory.is_slot_active(i))]
-        text 'Armor:'
-        for i in person.inventory.armor_slots():
-            python:
-                sc_equipment_desc = person.inventory.carried_armor[i]
-                if sc_equipment_desc != None:
-                    sc_equipment_desc = i + ': ' + sc_equipment_desc.name
-                else:
-                    sc_equipment_desc = i
-            textbutton sc_equipment_desc:
-                action [Show('sc_equip_item', person=person, slot=i),
-                        SensitiveIf(person.inventory.is_slot_active(i))]
-        text ' '
-        textbutton 'leave':
-            action Hide('sc_person_equipment'), Hide('sc_equip_item'), Return()
+    modal True
+    window:
+        xfill True
+        yfill True
+        xalign 0.0
+        yalign 0.0
+        style 'char_info_window'
+        vbox:
+            text 'Weapon:'
+            for i in person.inventory.weapon_slots():
+                python:
+                    sc_equipment_desc = person.inventory.carried_weapons[i]
+                    if sc_equipment_desc != None:
+                        sc_equipment_desc = i + ': ' + sc_equipment_desc.name
+                    else:
+                        sc_equipment_desc = i
+                textbutton sc_equipment_desc:
+                    action [Show('sc_equip_item', person=person, slot=i),
+                            SensitiveIf(person.inventory.is_slot_active(i))]
+            text 'Armor:'
+            for i in person.inventory.armor_slots():
+                python:
+                    sc_equipment_desc = person.inventory.carried_armor[i]
+                    if sc_equipment_desc != None:
+                        sc_equipment_desc = i + ': ' + sc_equipment_desc.name
+                    else:
+                        sc_equipment_desc = i
+                textbutton sc_equipment_desc:
+                    action [Show('sc_equip_item', person=person, slot=i),
+                            SensitiveIf(person.inventory.is_slot_active(i))]
+            text ' '
+            textbutton 'leave':
+                action Hide('sc_person_equipment'), Hide('sc_equip_item')
 
 screen sc_equip_item(person, slot):
     vbox:
