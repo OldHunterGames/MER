@@ -298,7 +298,7 @@ class Skillcheck(object):
         remove = 0
         for i in reversed(cons_values):
             if i <= value:
-                remove = value
+                remove = i
                 break
         if remove > 0:
             for i in self.cons:
