@@ -41,10 +41,61 @@ screen sc_equip_item(person, slot):
         for i in person.inventory.available_for_slot(slot):
             textbutton i.name:
                 action Function(person.inventory.equip_on_slot, slot, i)
+                if i.mutable_name:
+                    alternate Show('sc_item_namer', item=i)
+                hovered Show('sc_item_description', item=i)
+                unhovered Hide('sc_item_description')
         textbutton 'unequip':
             action Function(person.inventory.equip_on_slot, slot, None)
         textbutton 'leave':
             action Hide('sc_equip_item')
+
+init python:
+    item_namer_name = ''
+    item_namer_description = False
+
+screen sc_item_namer(item):
+    window:
+        xalign 0.5
+        yalign 0.5
+        xmaximum 250
+        ymaximum 250
+        key 'K_RETURN':
+            if item_namer_description:
+                action Function(item.set_description, item_namer_name)
+            else:
+                action Function(item.set_name, item_namer_name)
+        
+        vbox:
+            input value VariableInputValue('item_namer_name'):
+                if item_namer_description:
+                    length 256
+            hbox:
+                textbutton 'Description':
+                    if not item_namer_description:
+                        action SetVariable('item_namer_description', True)
+                    else:
+                        action SetVariable('item_namer_description', False)
+                    selected item_namer_description
+            textbutton "Apply":
+                if item_namer_description:
+
+                    action [Function(item.set_description, item_namer_name), Hide('sc_item_namer')]
+                else:
+                    action [Function(item.set_name, item_namer_name), Hide('sc_item_namer')]
+    on 'show':
+        action SetVariable('item_namer_name', '')
+screen sc_item_description(item):
+    frame:
+        xalign 1.0
+        xsize 400
+        ysize 300
+        vbox:
+            text item.name
+            text item.stats()
+            if item.description is not None:
+                text item.description
+            
 
 screen sc_prefight_equip(combatant, fight):
     vbox:
