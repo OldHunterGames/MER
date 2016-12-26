@@ -104,8 +104,8 @@ class MistsOfEternalRome(object):
                 return i
         raise Exception("No faction with id: %s" % (id_))
 
-    def add_faction(self, owner, name, type='unbound', id_=None):
-        faction = Faction(owner, name, type, id_)
+    def add_faction(self, owner, name, type='unbound', id=None):
+        faction = Faction(owner, name, type, id)
         self._factions.append(faction)
         return faction
 
