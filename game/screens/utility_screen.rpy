@@ -243,41 +243,97 @@ screen sc_card_description(card):
 
 
 screen sc_faction_info(faction):
+    modal True
+    hbox:
+        frame:
+            hbox:
+                vbox:
+                    text 'Faction: ' + faction.name
+                    text ' '
+                    text 'Leader:'
+                    imagebutton:
+                        idle im.Scale(faction.owner.avatar_path, 50, 50)
+                        action Show('sc_character_info_screen', person=faction.owner)
+                        hovered Show('sc_info_popup', person=faction.owner)
+                        unhovered Hide('sc_info_popup')
+                    text ' ' 
+                    text 'faction alignment:'
+                    text 'morality: ' + faction.owner.alignment.show_morality()
+                    text 'activity: ' + faction.owner.alignment.show_activity()
+                    text 'orderliness: ' + faction.owner.alignment.show_orderliness()
+                    text ' '
+                    text 'Relations: '
+                    text 'fervor: ' + player.relations(faction).show_fervor()
+                    text 'distance: ' + player.relations(faction).show_distance()
+                    text 'congruence: ' + player.relations(faction).show_congruence()
+                    text ' '
+                    text 'Stance:'
+                    text 'type: ' + str(player.stance(faction).show_type())
+                    text 'level: ' + str(player.stance(faction).show_stance())
+                    text ' '
+                    text 'Harmony: ' + str(player.relations(faction).harmony()[0])
+                    $ axis = player.relations(faction).show_harmony_axis()
+                    if len(axis[0]) > 0:
+                        text 'harmonized_axis: ' + str(axis[0])
+                    if len(axis[1]) > 0:
+                        text 'bad harmony: ' + str(axis[1])
+                    text ' '
+                    textbutton 'leave':
+                        action Hide('sc_faction_info')
+        frame:
+            viewport:
+                scrollbars 'vertical'
+                draggable True
+                mousewheel True
+                xsize 360
+                ysize 500
+                hbox:
+                    spacing 3
+                    xsize 380
+                    ysize 500
+                    box_wrap True
+                    for i in faction.get_members():
+                        vbox:
+                            spacing 2
+                            
+                            imagebutton:
+                                idle im.Scale(i.avatar_path, 100, 100)
+                                action Show('sc_character_info_screen', person=i)
+                                hovered Show('sc_info_popup', person=i)
+                                unhovered Hide('sc_info_popup')
+                            text i.name[0:8]
+
+    on 'hide':
+        action Hide('sc_info_popup')
+
+
+screen sc_relations():
+    modal True
+    textbutton 'leave':
+        action Hide('sc_relations')
     frame:
-        hbox:
-            vbox:
-                text 'Faction: ' + faction.name
-                text ' '
-                text 'Leader:'
-                imagebutton:
-                    idle im.Scale(faction.owner.avatar_path, 50, 50)
-                    action Show('sc_character_info_screen', person=faction.owner)
-                    hovered Show('sc_info_popup', person=faction.owner)
-                    unhovered Hide('sc_info_popup')
-                text ' ' 
-                text 'faction alignment:'
-                text 'morality: ' + faction.owner.alignment.show_morality()
-                text 'activity: ' + faction.owner.alignment.show_activity()
-                text 'orderliness: ' + faction.owner.alignment.show_orderliness()
-                text ' '
-                text 'Relations: '
-                text 'fervor: ' + player.relations(faction).show_fervor()
-                text 'distance: ' + player.relations(faction).show_distance()
-                text 'congruence: ' + player.relations(faction).show_congruence()
-                text ' '
-                text 'Stance:'
-                text 'type: ' + str(player.stance(faction).show_type())
-                text 'level: ' + str(player.stance(faction).show_stance())
-                text ' '
-                text 'Harmony: ' + str(player.relations(faction).harmony()[0])
-                $ axis = player.relations(faction).show_harmony_axis()
-                if len(axis[0]) > 0:
-                    text 'harmonized_axis: ' + str(axis[0])
-                if len(axis[1]) > 0:
-                    text 'bad harmony: ' + str(axis[1])
-                text ' '
-                textbutton 'leave':
-                    action Return()
+        xalign 0.5
+        viewport:
+            scrollbars 'vertical'
+            draggable True
+            mousewheel True
+            xsize 360
+            ysize 500
+            hbox:
+                spacing 3
+                xsize 380
+                ysize 500
+                box_wrap True
+                for i in player.known_characters:
+                    vbox:
+                        spacing 2
+                        
+                        imagebutton:
+                            idle im.Scale(i.avatar_path, 100, 100)
+                            action Show('sc_character_info_screen', person=i)
+                            hovered Show('sc_info_popup', person=i)
+                            unhovered Hide('sc_info_popup')
+                        text i.name[0:8]
     on 'hide':
         action Hide('sc_info_popup')
 

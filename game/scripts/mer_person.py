@@ -467,6 +467,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.revealed_fetishes = []
 
         self.renpy_character = store.Character(self.firstname)
+
+    def owned_faction(self):
+        for i in self.factions:
+            if faction.owner == self:
+                return i
+        return None
     
 
     def ration_status(self):
@@ -1717,6 +1723,16 @@ class Person(Skilled, InventoryWielder, Attributed):
         if self.player_controlled:
             renpy.call('lbl_gameover')
         self.add_feature('dead')
+        to_remove = []
+        for i in self._relations:
+            for p in i.persons:
+                to_remove.append((p._relations.remove, i))
+        for i in self._stance:
+            for p in i.persons:
+                to_remove.append((p._stance.remove, i))
+        for i in to_remove:
+            i[0](i[1])
+
 
     def is_dead(self):
         if self.feature('dead') is not None:

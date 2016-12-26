@@ -34,6 +34,12 @@ label start:
             core.add_faction(gen_random_person(), __('Serpis'), 'serpis'),
             core.add_faction(gen_random_person(), __('Corvus'), 'corvus'),
             core.add_faction(gen_random_person(), __('Taurus'), 'taurus')]
+        guilds = [core.add_faction(gen_random_person(), __('Slavers guild'), 'slavers_guild'),
+            core.add_faction(gen_random_person(), __('Merchant guild'), 'merchant_guild'),
+            core.add_faction(gen_random_person(), __('Entertainment guild'), 'entertanment_guild'),
+            core.add_faction(gen_random_person(), __('Lanisters guild'), 'lanisters_guild'),
+            core.add_faction(gen_random_person(), __('Ascencors guild'), 'ascencors_guild')]
+        minor_houses = []
         discovered_worlds = []
         set_event_game_ref(core)
         Person.game_ref = core
@@ -52,6 +58,7 @@ label start:
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
         player.add_item(create_weapon(id='sword'))
+
     
     # call screen sc_faction_info(great_houses[0])
     call lbl_gen_player

@@ -85,6 +85,7 @@ class MistsOfEternalRome(object):
         self.current_world = "MER"
         self.characters = persons_list
         self.time = 0
+        self.additional_factions = []
 
     @property
     def factions(self):

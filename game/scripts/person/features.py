@@ -40,7 +40,11 @@ class Feature(object):
 
     @property
     def slot(self):
-        return self.stats['slot']
+        try:
+            slot = self.stats['slot']
+        except KeyError:
+            slot = None
+        return slot
 
     @property
     def modifiers(self):
