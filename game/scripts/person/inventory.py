@@ -31,6 +31,10 @@ class Inventory(object):
 
     @main_hand.setter
     def main_hand(self, weapon):
+        if not any([i == weapon for i in self.carried_weapons.values()]):
+            for key in self.weapon_slots():
+                if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
+                    self.carried_weapons[key] = weapon
         self.add_item(weapon)
         weapon.equip()
         self.disarm_weapon('main_hand')
@@ -287,3 +291,7 @@ class InventoryWielder(object):
 
     def get_items(self, item_type):
         return self.inventory.get_items(item_type)
+
+    @property
+    def carried_weapons(self):
+        return self.inventory.carried_weapons
