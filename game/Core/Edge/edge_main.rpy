@@ -34,7 +34,7 @@ label lbl_edge_main:
         
         ## Edge NPC initialisation
         slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
-        slums_faction = core.add_faction(slums_leader, __('Slums'))
+        slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
         player.relations(slums_faction)
         ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
         slums_champion = gen_random_person(genus='human', occupation=ocpn)
@@ -48,6 +48,10 @@ label lbl_edge_main:
         slums_medic = gen_random_person(genus='human', occupation=ocpn)
         slums_faction.add_member(slums_medic)
         slums_faction.set_member_to_role(slums_medic, 'medic') 
+        edge_slaver = gen_random_person(genus='human', occupation='merchant')
+        slavers = core.get_faction('slavers_guild')
+        slavers.add_member(edge_slaver)
+               
     
     slums_leader 'Hi, I am a leader of the Slums'
     slums_champion "I'll watch for you"
@@ -141,7 +145,7 @@ label lbl_edge_slums_marketplace:
                 
         'Buy weapon' if edge.resources.value > 0:
             menu:
-                'knife ([cost_2])' if edge.resources.value > 2:
+                'knife ([cost_2])' if edge.resources.value >= 2:
                     player "Nice knife!"
                     python:
                         edge.resources.spend(2)
