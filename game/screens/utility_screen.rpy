@@ -450,6 +450,20 @@ screen sc_skillcheck(skillcheck):
         ypos 301
         has vbox
         xalign 0.5
-        text 'Result: %s'%skillcheck.result
+        text skillcheck_quality[skillcheck.result]
         textbutton 'End check':
             action Return()
+
+screen edge_sell_screen(person, item_type):
+    
+    frame:
+        has vbox
+        for i in person.get_items(item_type):
+            textbutton "%s(%s)"%(i.name, encolor_text(show_resource[i.price], i.price)):
+                action Function(person.remove_item, i, return_item=False), Function(edge.resources.income, i.price)
+        textbutton 'Leave':
+            action Return()
+    frame:
+        xalign 1.0
+        has vbox
+        text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))

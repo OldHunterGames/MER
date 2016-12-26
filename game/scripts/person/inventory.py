@@ -155,7 +155,7 @@ class Inventory(object):
                 return True
         return False
 
-    def remove_item(self, item, value=1):
+    def remove_item(self, item, value=1, return_item=True):
         get_item = None
         if isinstance(item, str):
             for i in self.storage:
@@ -175,7 +175,8 @@ class Inventory(object):
             else:
                 self.storage.remove(get_item)
                 returned = get_item
-        return returned
+        if return_item:
+            return returned
 
     def get_by_id(self, id_):
         for i in self.storage:
@@ -274,11 +275,14 @@ class InventoryWielder(object):
     def has_item(self, item):
         return self.inventory.has_item(item)
 
-    def remove_item(self, item, value=1):
-        return self.inventory.remove_item(item, value)
+    def remove_item(self, item, value=1, return_item=True):
+        return self.inventory.remove_item(item, value, return_item)
 
     def add_item(self, item, value=1):
         self.inventory.add_item(item, value)
 
     def weapon_slots(self):
         return self.inventory.weapon_slots()
+
+    def get_items(self, item_type):
+        return self.inventory.get_items(item_type)

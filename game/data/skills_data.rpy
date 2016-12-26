@@ -24,7 +24,7 @@ init python:
 
     }
     
-    slillcheck_quality = [encolor_text(__('Fail'), 0), 
+    skillcheck_quality = [encolor_text(__('Fail'), 0), 
                             encolor_text(__('Marginal'), 1),
                             encolor_text(__('Statisfactory'), 2),
                             encolor_text(__('Fine'), 3),
