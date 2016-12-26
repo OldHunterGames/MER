@@ -1722,3 +1722,42 @@ class Person(Skilled, InventoryWielder, Attributed):
         if self.feature('dead') is not None:
             return True
         return False
+
+    #rating methods
+    def alure(self):
+        return self.count_modifiers('alure')
+
+    def hardiness(self):
+        return self.count_modifiers('hardiness')
+
+    def succulence(self):
+        return self.count_modifiers('succulence')
+
+    def exotic(self):
+        return self.count_modifiers('exotic')
+
+    def style(self):
+        return self.count_modifiers('style')
+
+    def menace(self):
+        value = self.physique
+        weapons = self.weapon_slots()
+        if (weapons['harness'] is None and
+            weapons['belt1'] is None and
+            weapons['belt2'] is None):
+                value -= 1
+        for i in weapons.values():
+            if i is not None:
+                if i.size == 'twohand':
+                    value += 1
+                    break
+        if self.armor is None:
+            value -= 1
+        elif self.armor.armor_rate == 'heavy_armor':
+            value += 1
+
+        if self.skill('combat').expirience:
+            value += 1
+
+        value += self.count_modifiers('menace')
+        return value
