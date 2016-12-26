@@ -9,7 +9,7 @@ label lbl_edge_missed_location:
     call lbl_edge_manage
     return
     
-label lbl_edge_outpost(location):
+label lbl_edge_outpost_old(location):
     menu:
         'Bukake-slut for food (full time)':
             $ special_values = {'skill': 'sex', 'beneficiar': player, 'slut_rate': 0,}

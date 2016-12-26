@@ -36,6 +36,7 @@ label lbl_edge_main:
     return
     
 label lbl_edge_manage:
+    show expression "interface/bg_base.jpg" as bg
     python:
         target = player
         food_info = player.ration_status()
@@ -61,6 +62,8 @@ label lbl_edge_manage:
     menu:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
+        'Outpost':
+            call lbl_edge_outpost
         'Marketplace':
             call lbl_edge_slums_marketplace
         'Dwellings':
@@ -184,6 +187,16 @@ label lbl_all_gangs:
         call screen sc_gang_info(choice)
     call lbl_all_gangs
 
+label lbl_edge_outpost:
+    show expression "interface/bg_base.jpg" as bg
+    menu:
+        'Slaver' if 'slaver' in edge.options:
+            call lbl_edge_slavery
+        'Get out':
+            call lbl_edge_manage
+        
+    call lbl_edge_outpost
+    return
 
 ############## ARCHIVE ########################
 

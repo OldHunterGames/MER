@@ -87,8 +87,10 @@ label lbl_edge_slums_work_food:
 
 label lbl_edge_slums_work_res:
     menu:
-        'Check your sex':
+        'Check your skill':
             call lbl_skillcheck(player, 'sex', 1)
+            $ resl = skillcheck.result
+            'Результат: [resl]'
         
         'Manual labor (athletics)':
             $ title = __('Some manual labor (athletics).')
