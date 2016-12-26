@@ -37,7 +37,7 @@ label lbl_edge_hiring:
             $ fate = 'integrator'
             call lbl_edge_skill_exam('electronics')                                                            
         'Not today':
-            call lbl_edge_outpost(location)
+            pass
 
     return
 

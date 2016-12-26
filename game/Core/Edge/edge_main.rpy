@@ -75,7 +75,6 @@ label lbl_edge_manage:
         'Jobs' if not edge.faction_mode:
             call lbl_edge_slums_jobs        
 
-
         'Faction' if edge.faction_mode:
             $ pass
         #'Locations':
@@ -125,6 +124,10 @@ label lbl_edge_slums_marketplace:
                     
         'Buy equipement' if edge.resources.value > 0:
             $ pass
+            
+        'Sell weapons':
+            call screen edge_sell_screen(player, 'weapon')
+                
         'Noting interesting':
             call lbl_edge_manage
     
@@ -188,15 +191,21 @@ label lbl_all_gangs:
     call lbl_all_gangs
 
 label lbl_edge_outpost:
-    show expression "interface/bg_base.jpg" as bg
     menu:
         'Slaver' if 'slaver' in edge.options:
             call lbl_edge_slavery
+        'Recruiter' if 'recruiter' in edge.options:
+            call lbl_edge_hiring            
         'Get out':
             call lbl_edge_manage
         
     call lbl_edge_outpost
     return
+
+
+
+
+
 
 ############## ARCHIVE ########################
 
