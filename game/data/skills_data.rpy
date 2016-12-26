@@ -23,3 +23,11 @@ init python:
         'expression': {'name': __('expression'), 'attribute': 'sensitivity'}
 
     }
+    
+    slillcheck_quality = [encolor_text(__('Fail'), 0), 
+                            encolor_text(__('Marginal'), 1),
+                            encolor_text(__('Statisfactory'), 2),
+                            encolor_text(__('Fine'), 3),
+                            encolor_text(__('Great'), 4),
+                            encolor_text(__('Awesome'), 5),
+                            encolor_text(__('Impossible'), 6)]

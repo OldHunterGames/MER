@@ -30,6 +30,7 @@ class EdgeEngine(object):
         self.faction_mode = False
         self.resources = BarterSystem()
         self.gang_list = []
+        self.caches = []
 
     def explore_all(self):
         for i in store.edge_locations.items():
