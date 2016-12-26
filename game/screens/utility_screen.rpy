@@ -37,6 +37,8 @@ screen sc_person_equipment(person):
             text ' '
             textbutton 'leave':
                 action Hide('sc_person_equipment'), Hide('sc_equip_item')
+    on 'hide':
+        action Hide('sc_item_namer'), Hide('sc_equip_item')
 
 screen sc_equip_item(person, slot):
     vbox:
@@ -51,8 +53,6 @@ screen sc_equip_item(person, slot):
                 unhovered Hide('sc_item_description')
         textbutton 'unequip':
             action Function(person.inventory.equip_on_slot, slot, None)
-        textbutton 'leave':
-            action Hide('sc_equip_item')
 
 init python:
     item_namer_name = ''
