@@ -3,11 +3,12 @@
 
 class Faction(object):
 
-    def __init__(self, owner, name, id_=None):
+    def __init__(self, owner, name, type='unboud', id_=None):
         self.name = name
         self.id = id_
         self.members = []
         self.event_type = 'faction'
+        self.type = type
         self.roles = {}
         self.set_owner(owner)
         

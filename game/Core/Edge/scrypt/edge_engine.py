@@ -30,6 +30,7 @@ class EdgeEngine(object):
         self.faction_mode = False
         self.resources = BarterSystem()
         self.gang_list = []
+        self.factions = self.gang_list
         self.caches = []
         self.options = []
 
@@ -130,7 +131,11 @@ class EdgeEngine(object):
         self.locations_tick()
         self.resources.tick_time()
         self.core.new_turn()
-        
+    
+    def add_faction(self, owner, name, location):
+        gang = Gang(owner, name, location)
+        self.gang_list.append(gang)
+        self.core.add_faction(gang)
 
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
 
@@ -202,10 +207,6 @@ class EdgeLocation(object):
         except AttributeError:
             gang.locations_controlled = [self]
         self.owner = gang
-
-    def add_faction(self, owner, name, location):
-        self.gang_list.append(
-            Gang(owner, name, location))
 
 
 class Gang(Faction):

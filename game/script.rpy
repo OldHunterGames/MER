@@ -30,15 +30,15 @@ label start:
         g = gen_random_person('human')
         z = gen_random_person('human')
 
-        great_houses = [core.add_faction(gen_random_person(), __('Kamira'),'kamira'),
-            core.add_faction(gen_random_person(), __('Serpis'), 'serpis'),
-            core.add_faction(gen_random_person(), __('Corvus'), 'corvus'),
-            core.add_faction(gen_random_person(), __('Taurus'), 'taurus')]
-        guilds = [core.add_faction(gen_random_person(), __('Slavers guild'), 'slavers_guild'),
-            core.add_faction(gen_random_person(), __('Merchant guild'), 'merchant_guild'),
-            core.add_faction(gen_random_person(), __('Entertainment guild'), 'entertanment_guild'),
-            core.add_faction(gen_random_person(), __('Lanisters guild'), 'lanisters_guild'),
-            core.add_faction(gen_random_person(), __('Ascencors guild'), 'ascencors_guild')]
+        great_houses = [core.add_faction(gen_random_person(), __('Kamira'), 'major_house', 'kamira'),
+            core.add_faction(gen_random_person(), __('Serpis'), 'major_house', 'serpis'),
+            core.add_faction(gen_random_person(), __('Corvus'), 'major_house', 'corvus'),
+            core.add_faction(gen_random_person(), __('Taurus'), 'major_house', 'taurus')]
+        guilds = [core.add_faction(gen_random_person(), __('Slavers guild'), 'guild', 'slavers_guild'),
+            core.add_faction(gen_random_person(), __('Merchant guild'), 'guild', 'merchant_guild'),
+            core.add_faction(gen_random_person(), __('Entertainment guild'), 'guild', 'entertanment_guild'),
+            core.add_faction(gen_random_person(), __('Lanisters guild'), 'guild', 'lanisters_guild'),
+            core.add_faction(gen_random_person(), __('Ascencors guild'), 'guild', 'ascencors_guild')]
         minor_houses = []
         discovered_worlds = []
         set_event_game_ref(core)
@@ -57,8 +57,6 @@ label start:
         player.reveal_all_fetishes()
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
-        player.add_item(create_weapon(id='sword'))
-        player.relations(p)
 
     
     # call screen sc_faction_info(great_houses[0])

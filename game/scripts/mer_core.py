@@ -82,14 +82,16 @@ class MistsOfEternalRome(object):
         self.evn_skipcheck = True
         self.resources = BarterSystem()
         self._factions = []
-        self.current_world = "MER"
+        self.current_world = self
         self.characters = persons_list
         self.time = 0
-        self.additional_factions = []
 
     @property
     def factions(self):
-        return [faction for faction in self._factions]
+        return [i for i in self._factions]
+
+    def get_factions_by_type(self, type):
+        return [i for i in self.factions if i.type == type]
 
     def set_world(self, world):
         self.current_world = world
@@ -102,8 +104,8 @@ class MistsOfEternalRome(object):
                 return i
         raise Exception("No faction with id: %s" % (id_))
 
-    def add_faction(self, owner, name, id_=None):
-        faction = Faction(owner, name, id_)
+    def add_faction(self, owner, name, type='unbound', id_=None):
+        faction = Faction(owner, name, type, id_)
         self._factions.append(faction)
         return faction
 

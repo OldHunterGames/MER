@@ -17,6 +17,8 @@ class Inventory(object):
         return [i for i in self.storage if i.equiped]
 
     def get_items(self, item_type):
+        if item_type == 'all':
+            return [i for i in self.storage]
         return [i for i in self.storage if i.type == item_type]
 
     def weapon_slots(self):
@@ -186,6 +188,16 @@ class Inventory(object):
             else:
                 self.storage.remove(get_item)
                 returned = get_item
+        for key, value in self.carried_weapons.items():
+            if value == item:
+                self.carried_weapons[key] = None
+        for key, value in self.carried_armor.items():
+            if value == item:
+                self.carried_armor[key] = None
+        if self.main_hand == item:
+            self.main_hand = None
+        if self.other_hand == item:
+            self.other_hand = None
         if return_item:
             return returned
 

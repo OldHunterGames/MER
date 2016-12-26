@@ -457,6 +457,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.factions = []
         self.background = None
         self.food_system = FoodSystem(self)
+        self.known_factions = []
         self._favor = BarterSystem()
         self.card_storage = None
         self.decks = []
@@ -1414,16 +1415,26 @@ class Person(Skilled, InventoryWielder, Attributed):
             return True
         return False
 
+    def know_faction(self, faction):
+        if faction in self.known_factions:
+            return True
+        return False
+
     def _set_relations(self, person):
         relations = Relations(self, person)
         person._relations.append(relations)
         self._relations.append(relations)
         return relations
 
+    def aknowledge_faction(self, faction):
+        if not self.know_faction(faction):
+            self.known_factions.append(faction)
+
     def relations(self, person):
         if person == self:
             raise Exception("relations: target and caller is same person")
         if isinstance(person, Faction):
+            self.aknowledge_faction(person)
             return self.relations(person.owner)
         elif not isinstance(person, Person):
             raise Exception("relations called with not valid arg: %s" % person)
@@ -1445,6 +1456,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         if person == self:
             raise Exception("stance: target and caller is same person")
         if isinstance(person, Faction):
+            self.aknowledge_faction(person)
             return self.stance(person.owner)
         elif not isinstance(person, Person):
             raise Exception("relations called with not valid arg: %s" % person)
