@@ -123,6 +123,7 @@ label lbl_simple_fight(allies, enemies):
     python:
         
         fight = SimpleFight(allies, enemies)
+    call screen sc_simplefight_equip(allies[0])
     call screen sc_simple_fight(fight)
     call lbl_postfight(fight)
     return fight

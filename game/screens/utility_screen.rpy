@@ -38,7 +38,7 @@ screen sc_person_equipment(person):
             textbutton 'leave':
                 action Hide('sc_person_equipment'), Hide('sc_equip_item')
     on 'hide':
-        action Hide('sc_item_namer'), Hide('sc_equip_item')
+        action Hide('sc_item_namer'), Hide('sc_equip_item'), Hide('sc_item_description')
 
 screen sc_equip_item(person, slot):
     vbox:
@@ -99,7 +99,49 @@ screen sc_item_description(item):
             text item.stats()
             if item.description is not None:
                 text item.description
-            
+
+
+screen sc_simplefight_equip(person):
+    python:
+        def is_main_hand_active(person):
+                return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not person.inventory.in_hands(weapon)])
+                    or person.main_hand is not None)
+        def is_other_hand_active(person):
+            return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not (person.inventory.in_hands(weapon)
+                or weapon.size == 'versatile')]) or person.other_hand is not None)
+
+    window:
+        xfill True
+        yfill True
+        xalign 0.0
+        yalign 0.0
+        style 'char_info_window'
+        vbox:
+            python:
+                if person.main_hand is None:
+                    prefight_text1 = "main hand"
+                else:
+                    prefight_text1 = "main hand: %s"%person.main_hand.name
+                if person.other_hand is None:
+                    prefight_text2 = 'other hand'
+                else:
+                    prefight_text2 = 'other hand: %s'%person.other_hand.name
+            text 'Prefight equip'
+            textbutton prefight_text1:
+                action [ShowTransient('sc_equip_weapon', person=person, hand='main_hand'),
+                SensitiveIf(is_main_hand_active(person))]
+                if person.main_hand is not None:
+                    hovered Show('sc_item_description', item=person.main_hand)
+                    unhovered Hide('sc_item_description')
+            textbutton prefight_text2:
+                action [ShowTransient('sc_equip_weapon', person=person, hand='other_hand'),
+                SensitiveIf(is_other_hand_active(person))]
+                if person.other_hand is not None:
+                    hovered Show('sc_item_description', item=person.other_hand)
+                    unhovered Hide('sc_item_description')
+            textbutton 'leave':
+                action Return()
+
 
 screen sc_prefight_equip(combatant, fight):
     vbox:
@@ -111,15 +153,8 @@ screen sc_prefight_equip(combatant, fight):
             def is_other_hand_active(person):
                 return (any([weapon for weapon in person.inventory.equiped_weapons().values() if not (person.inventory.in_hands(weapon)
                     or weapon.size == 'versatile')]) or person.other_hand is not None)
-            if person.main_hand is None:
-                prefight_text1 = "main hand"
-            else:
-                prefight_text1 = "main hand: %s"%person.main_hand.description
-            if person.other_hand is None:
-                prefight_text2 = 'other hand'
-            else:
-                prefight_text2 = 'other hand: %s'%person.other_hand.description
-        textbutton prefight_text1:
+
+        textbutton "prefight_text1":
             action [ShowTransient('sc_equip_weapon', person=person, hand='main_hand'),
                 SensitiveIf(is_main_hand_active(person))]
         textbutton prefight_text2:
@@ -162,13 +197,13 @@ screen sc_equip_weapon(person, hand):
             if weapon is not None and not person.inventory.in_hands(weapon):
                 if hand == 'other_hand':
                     if weapon.size != 'versatile':
-                        textbutton weapon.description:
+                        textbutton weapon.name:
                             action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
                 else:
-                    textbutton weapon.description:
+                    textbutton weapon.name:
                         action Function(person.equip_weapon, weapon, hand), Hide('sc_equip_weapon')
         textbutton 'unequip' action Function(person.disarm_weapon, hand), Hide('sc_equip_weapon')
-        textbutton 'leave' action Hide('sc_equip_weapon')
+
 screen sc_choose_deck(combatant):
     tag prefight
     frame:
