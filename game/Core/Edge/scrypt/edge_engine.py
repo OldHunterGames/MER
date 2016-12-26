@@ -211,12 +211,13 @@ class EdgeLocation(object):
 
 
 class Gang(Faction):
+    """roles{'warlord': None,
+            'medic': None,
+            'chief': None,
+            'madame': None,}
+    """
     def __init__(self, owner, name, location, id=None):
         super(Gang, self).__init__(owner, name, id=id)
-        self.roles = {'warlord': None,
-                      'medic': None,
-                      'chief': None,
-                      'madame': None,}
         self.locations_controlled = [location]
 
     def set_member_to_role(self, person, role):
