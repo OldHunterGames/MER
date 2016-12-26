@@ -19,6 +19,10 @@ screen sc_person_equipment(person):
                 textbutton sc_equipment_desc:
                     action [Show('sc_equip_item', person=person, slot=i),
                             SensitiveIf(person.inventory.is_slot_active(i))]
+                    if person.inventory.carried_weapons[i] is not None:
+                        alternate Show('sc_item_namer', item=person.inventory.carried_weapons[i])
+                        hovered Show('sc_item_description', item=person.inventory.carried_weapons[i])
+                        unhovered Hide('sc_item_description')
             text 'Armor:'
             for i in person.inventory.armor_slots():
                 python:
@@ -62,9 +66,9 @@ screen sc_item_namer(item):
         ymaximum 250
         key 'K_RETURN':
             if item_namer_description:
-                action Function(item.set_description, item_namer_name)
+                action Function(item.set_description, item_namer_name), Hide('sc_item_namer')
             else:
-                action Function(item.set_name, item_namer_name)
+                action Function(item.set_name, item_namer_name), Hide('sc_item_namer')
         
         vbox:
             input value VariableInputValue('item_namer_name'):
