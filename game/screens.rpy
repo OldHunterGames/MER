@@ -66,7 +66,6 @@ screen say(who, what, side_image=None, two_window=False):
         use sc_dialog(who, avatar, what)
     else:
         use narration(who, what, side_image, two_window)
-    use sc_player_hud
 
 screen sc_dialog(name='', avatar=None, what=''):
     add "images/gui/dialog.png":
