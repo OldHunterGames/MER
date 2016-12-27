@@ -109,6 +109,10 @@ class MistsOfEternalRome(object):
         self._factions.append(faction)
         return faction
 
+    def add_ready_faction(self, faction):
+        if not faction in self._factions:
+            self._factions.append(faction)
+
     def remove_faction(self, faction):
         self._factions.remove(faction)
 
@@ -272,7 +276,7 @@ class Skillcheck(object):
 
     def init_cons(self):
         for i in range(1, self.difficulty+1):
-            self.cons.append(('difficulty', i))
+            self.cons.append(('difficulty', 5-self.skill_level))
         if self.person.anxiety > 0:
             self.cons.append(('anxiety', min(self.person.anxiety, 5)))
 

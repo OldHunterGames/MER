@@ -135,7 +135,7 @@ class EdgeEngine(object):
     def add_faction(self, owner, name, location, id=None):
         gang = Gang(owner, name, location, id=id)
         self.gang_list.append(gang)
-        self.core.factions.append(gang)
+        self.core.add_ready_faction(gang)
         return gang
 
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
