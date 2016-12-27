@@ -26,7 +26,9 @@ class Faction(object):
         self.set_owner(owner)
 
 
-    def add_member(self, person):
+    def add_member(self, person, role=False):
+        if person is None:
+            return
         if not self.has_member(person):
             self.members.append(person)
             person.add_faction(self)
@@ -37,6 +39,9 @@ class Faction(object):
                 self.members.remove(person)
             if person == self.owner:
                 self.owner = None
+        for k, v in self.roles.items():
+            if v == person:
+                self.roles[k] == None
         person.remove_faction(self)
 
     def has_member(self, person):
@@ -45,12 +50,14 @@ class Faction(object):
         return False
 
     def get_members(self):
-        list_ = [self.owner]
+        list_ = [(self.owner, 'owner')]
         roles = sorted(self.roles.keys())
+        print roles
         for key in roles:
-            if self.roles[key] not in list_:
-                list_.append(self.roles[key])
-        members = [i for i in self.members if i not in list_]
+            if (self.roles[key], key) not in list_:
+                list_.append((self.roles[key], key))
+        print list_
+        members = [i for i in self.members if i not in self.roles.values()]
         members_names = {}
         for i in members:
             if i.name not in members_names:
@@ -60,7 +67,7 @@ class Faction(object):
         keys = sorted(members_names.keys())
         for key in keys:
             for i in members_names[key]:
-                list_.append(i)
+                list_.append((i, 'member'))
         return list_
 
     def set_member_to_role(self, person, role):

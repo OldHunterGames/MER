@@ -299,14 +299,23 @@ screen sc_faction_info(faction):
                     box_wrap True
                     for i in faction.get_members():
                         vbox:
+                            python:
+                                person = i[0]
+                                role = i[1]
+                                try:
+                                    title = factions_roles[role]
+                                except KeyError:
+                                    title = role
+                            if title is not None:
+                                text title
                             spacing 2
-                            if player.know_person(i):
+                            if player.know_person(person):
                                 imagebutton:
-                                    idle im.Scale(i.avatar_path, 100, 100)
-                                    action Show('sc_character_info_screen', person=i)
-                                    hovered Show('sc_info_popup', person=i)
+                                    idle im.Scale(person.avatar_path, 100, 100)
+                                    action Show('sc_character_info_screen', person=person)
+                                    hovered Show('sc_info_popup', person=person)
                                     unhovered Hide('sc_info_popup')
-                                text i.name[0:8]
+                                text person.name[0:8]
                             else:
                                 image im.Scale(default_avatar_path(), 100, 100)
                                 text 'Unknown'
