@@ -3,7 +3,7 @@
 
 class Faction(object):
 
-    def __init__(self, owner, name, type='unboud', id=None):
+    def __init__(self, owner, name, type='unbound', id=None):
         self.name = name
         self.id = id
         self.members = []

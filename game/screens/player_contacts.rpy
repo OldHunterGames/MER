@@ -11,29 +11,30 @@ screen sc_player_contacts():
                 if player.owned_faction() is not None:
                         textbutton player.owned_faction().name:
                             action Show('sc_faction_info', faction=player.owned_faction())
-                if any([player.know_faction(i) for i in core.get_factions_by_type('major_house')]):
+                if any([i.type == 'major_house' for i in player.known_factions()]):
                     textbutton 'Major houses':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('major_house'))
-                if any([player.know_faction(i) for i in core.get_factions_by_type('guild')]):
+                if any([i.type == 'guild' for i in player.known_factions()]):
                     textbutton 'Guilds':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('guild'))
-                if any([player.know_faction(i) for i in core.get_factions_by_type('minor_house')]):
+                if any([i.type == 'minor_house' for i in player.known_factions()]):
                     textbutton 'Minor houses':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('minor_house'))
-                if len(core.get_factions_by_type('unbound')) > 0:
+                if any([i.type == 'unbound' for i in player.known_factions()]):
                     textbutton 'Unbound':
-                        action Show('sc_list_factions', factions=core.get_factions_by_type('unbound'))
-                if len(player.known_characters) > 0:
-                    textbutton 'all relations':
-                        action Show('sc_relations')
+                        action Show('sc_list_factions', factions=core.get_factions_by_type('unbound'), show_others=True)
                 textbutton 'Leave':
                     action Hide('sc_player_contacts')
 
-screen sc_list_factions(factions):
+screen sc_list_factions(factions, show_others=False):
     frame:
         xalign 0.5
         vbox:
             for i in factions:
-                if player.know_person(i.owner):
+                if player.know_faction(i):
                     textbutton i.name:
                         action Show('sc_faction_info', faction=i)
+            if show_others:
+                if any([i for i in player.known_characters if not i.has_faction()]):
+                    textbutton 'others':
+                        action Show('sc_relations')
