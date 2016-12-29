@@ -15,7 +15,6 @@ label lbl_edge_observations:
     python:
         rnd = choice(edge_exploration)
         evn = 'evn_edge_' + rnd
-
-    call expression '[evn]([evn])'
+        call_event(evn, player)
     
     return

@@ -3,7 +3,7 @@ import renpy.store as store
 import renpy.exports as renpy
 from copy import copy
 
-events_list = []
+events_dict = {}
 
 
 def register_event(location, *args, **kwargs):
@@ -15,13 +15,16 @@ def register_event(location, *args, **kwargs):
             event.unique = kwargs['unique']
         if key == 'restrictions':
             event.restrictions = kwargs['restrictions']
-    events_list.append(event)
+    events_dict[location] = event
 
 
 def get_event(name):
-    for event in events_list:
-        if event.name == name:
-            return event
+    try:
+        event = events_dict[name]
+    except KeyError:
+        raise Exception('No event named "%s" registered'%name)
+    else:
+        return event
 
 
 def registration_check():
@@ -30,7 +33,7 @@ def registration_check():
     for label in l:
         if label.split('_')[0] == 'evn':
             ll.append(label)
-    names = [event.name for event in events_list]
+    names = [event.name for event in events_dict.values()]
     bad = []
     for name in ll:
         if name not in names:
@@ -40,6 +43,10 @@ def registration_check():
         for name in bad:
             txt += "label for event(%s) is created, but not registered\n" % (name)
         raise Exception(txt)
+
+def call_event(name, target, skipcheck=True):
+    event = get_event(name)
+    event.trigger(target, skipcheck)
 
 
 class Event(object):

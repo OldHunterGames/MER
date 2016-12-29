@@ -8,7 +8,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_person import *
-from mer_event import events_list, Event
+from mer_event import events_dict, Event
 from mer_resources import Resources, BarterSystem
 from factions import Faction
 from mer_item import *
@@ -77,7 +77,7 @@ class MistsOfEternalRome(object):
         # Number of happiness points player scored through the game
         self.score = 0
         self.events_seen = []           # Unique events seen by player in this game instance
-        self.events_list = events_list  # List of all possible events in this game instance
+        self.events_dict = events_dict  # List of all possible events in this game instance
         self.menues = []                # For custom RenPy menu screen
         self.evn_skipcheck = True
         self.resources = BarterSystem()
@@ -166,10 +166,10 @@ class MistsOfEternalRome(object):
         self.player.ap = 1
 
     def end_turn_event(self, skipcheck=False):
-        shuffle(self.events_list)
-        possible = self.events_list
+        events = self.events_dict.values()
+        shuffle(events)
         char = choice([char for char in self.characters if char.calculatable])
-        for ev in possible:
+        for ev in events:
             r = ev.trigger(char, skipcheck)
             if r:
                 return
