@@ -27,6 +27,13 @@ def weighted_random(pairs):
             return c
         upto += w
 
+def roll(value, max_):
+    dice = random.randint(1, max_)
+    if value < dice:
+        return False
+    return True
+
+
 class Observable(object):
 
 
