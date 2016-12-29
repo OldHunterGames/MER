@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
 import collections
+from mer_itemsstorage import ItemsStorage
 
-
-class Inventory(object):
+class Inventory(ItemsStorage):
 
     def __init__(self):
+        super(Inventory, self).__init__()
         self.carried_weapons = collections.OrderedDict([('harness', None), ('belt1', None),
                                                         ('belt2', None), ('armband', None), ('ankleband', None)])
         self.carried_armor = collections.OrderedDict(
@@ -16,10 +17,7 @@ class Inventory(object):
     def equiped_items(self):
         return [i for i in self.storage if i.equiped]
 
-    def get_items(self, item_type):
-        if item_type == 'all':
-            return [i for i in self.storage]
-        return [i for i in self.storage if i.type == item_type]
+    
 
     def weapon_slots(self):
         return self.carried_weapons.keys()
@@ -33,6 +31,9 @@ class Inventory(object):
 
     @main_hand.setter
     def main_hand(self, weapon):
+        self.disarm_weapon('main_hand')
+        if weapon is None:
+            return
         if not any([i == weapon for i in self.carried_weapons.values()]):
             for key in self.weapon_slots():
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
@@ -40,7 +41,7 @@ class Inventory(object):
                     break
         self.add_item(weapon)
         weapon.equip()
-        self.disarm_weapon('main_hand')
+        
         if weapon.size == 'twohand':
             self.disarm_weapon('other_hand')
             self._other_hand = weapon
@@ -52,13 +53,15 @@ class Inventory(object):
 
     @other_hand.setter
     def other_hand(self, weapon):
+        self.disarm_weapon('other_hand')
+        if weapon is None:
+            return
         if not any([i == weapon for i in self.carried_weapons.values()]):
             for key in self.weapon_slots():
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
                     self.carried_weapons[key] = weapon
                     break
         self.add_item(weapon)
-        self.disarm_weapon('other_hand')
         if weapon.size == 'twohand':
             self.disarm_weapon('main_hand')
             self._main_hand = weapon
@@ -162,12 +165,6 @@ class Inventory(object):
             return True
         return False
 
-    def has_item(self, id_):
-        for i in self.storage:
-            if i.id == id_:
-                return True
-        return False
-
     def remove_item(self, item, value=1, return_item=True):
         get_item = None
         if isinstance(item, str):
@@ -206,22 +203,6 @@ class Inventory(object):
             if i.id == id_:
                 return i
 
-    def add_item(self, item, value=1):
-        if value < 0:
-            raise Exception('value < 0 use remove_item instead')
-        if item is None:
-            return
-        if hasattr(item, 'amount'):
-            current = self.get_by_id(item.id)
-            if current is not None:
-                current.increase_amount(value)
-            else:
-                self.storage.append(item)
-                item.increase_amount(value-1)
-        else:
-            if item not in self.storage:
-                self.storage.append(item)
-
     def weapon_slots(self):
         return self.carried_weapons
 
@@ -235,7 +216,7 @@ class InventoryWielder(object):
 
     @property
     def items(self):
-        return self.inventory.storage
+        return self.inventory.items
 
     @property
     def main_hand(self):
@@ -313,3 +294,6 @@ class InventoryWielder(object):
     @property
     def carried_weapons(self):
         return self.inventory.carried_weapons
+
+    def transfer_item(self, item, storage, value=1):
+        self.inventory.transfer_item(item, storage, value)

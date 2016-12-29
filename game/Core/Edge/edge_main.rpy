@@ -110,7 +110,9 @@ label lbl_edge_manage:
         'Services':
             call lbl_edge_slums_services
         'Jobs' if not edge.faction_mode:
-            call lbl_edge_slums_jobs    
+            call lbl_edge_slums_jobs
+        'Stashes' if edge.any_stash_found():
+            call lbl_edge_stashes    
         'People':
             pass
 
@@ -373,3 +375,16 @@ label lbl_edge_noloc:
     
     return
     
+
+label lbl_edge_stashes:
+    python:
+        stashes = edge.active_stashes()
+        stashes = [(edge_locations[i], i) for i in stashes]
+        stashes.append((__("leave"), 'leave'))
+        stash = renpy.display_menu(stashes)
+        if not stash == 'leave':
+            stash = edge.get_stash(stash)
+    if stash == 'leave':
+        return
+    call screen sc_manage_stash(stash)
+    jump lbl_edge_stashes

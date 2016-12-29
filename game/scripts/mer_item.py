@@ -289,7 +289,9 @@ def create_armor(armor_rate=None, quality=1, name=None, price=1, description=Non
     armor.price = price
     return armor
 
-def create_treasure(id):
+def create_treasure(id=None):
+    if id is None:
+        raise Exception('create_treasure called without id')
     data = store.treasure_data
     try:
         data = data[id]
@@ -298,7 +300,7 @@ def create_treasure(id):
     treasure = Treasure(item_id=id, **data)
 
     return treasure
-
+"""
 def create_item():
     creator_item_properties = {'type': None}
     renpy.call_screen('sc_item_creator', creator_item_properties)
@@ -310,6 +312,12 @@ def create_item():
                       'size'], creator_item_properties['damage_type'])
     item.set_quality(1)
     return item
+"""
+
+def create_item(id, type):
+    types = {'armor': create_armor, 'weapon': create_weapon,
+        'treasure': create_treasure}
+    return types[type](id=id)
 
 def make_weapon_from_dict(key, dict_):
     data = dict_[key]

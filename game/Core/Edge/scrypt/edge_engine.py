@@ -2,10 +2,12 @@
 from random import *
 import renpy.store as store
 import renpy.exports as renpy
-from mer_utilities import encolor_text
+from mer_utilities import encolor_text, roll
 from factions import Faction
 from mer_person import gen_random_person
 from mer_resources import BarterSystem
+from mer_itemsstorage import ItemsStorage
+from mer_item import create_item
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -31,8 +33,55 @@ class EdgeEngine(object):
         self.resources = BarterSystem()
         self.gang_list = []
         self.factions = self.gang_list
-        self.caches = []
+        self.stashes = {'echoing_hills': [False, ItemsStorage()], 'hazy_marshes': [False, ItemsStorage()],
+            'dying_grove': [False, ItemsStorage()]}
         self.options = []
+
+    def explore_stash(self, name):
+        self.stashes[name][0] = True
+
+    def unexplore_stash(self, name):
+        self.stashes[name][0] = False
+        self.stashes[name][1] = ItemsStorage()
+
+    def is_stash_found(self, name):
+        return self.stashes[name][0]
+
+    def get_stash(self, name):
+        return self.stashes[name][1]
+
+    def active_stashes(self):
+        return [key for key, value in self.stashes.items() if value[0]]
+
+    def any_stash_found(self):
+        return any([i[0] for i in self.stashes.values()])
+
+    def robber_stash(self, name):
+        storage = self.stashes[name][1]
+        for i in storage.items():
+            storage.remove_item(i, 'all')
+
+    def gen_treasures(self):
+        chances = [(('gem', 'treasure'), 20), 
+            (('notes', 'treasure'), 50), 
+            (('knife', 'weapon'), 25),
+            (('sword', 'weapon'), 20),
+            (('shield', 'weapon'), 15),
+            (('strudy_axe', 'weapon'), 20)]
+        generated = []
+        can_break = False
+        while True:
+            for i in chances:
+                generate = roll(i[1], 100)
+                if generate:
+                    item = i[0]
+                    generated.append(create_item(item[0], item[1]))
+                    can_break = True
+            if can_break:
+                break
+        return generated
+
+
 
     def explore_all(self):
         for i in store.edge_locations.items():
