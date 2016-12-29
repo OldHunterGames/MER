@@ -51,6 +51,12 @@ label lbl_edge_main:
         edge_slaver = gen_random_person(genus='human', occupation='merchant')
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
+        edge_recruiter = gen_random_person(genus='human', occupation='administrator')
+        slavers.add_member(edge_recruiter)
+        
+        ## Exploration variatns
+        edge_exploration = ['slaver', 'recruiter']
+        
                
     
     slums_leader 'Hi, I am a leader of the Slums'
@@ -90,6 +96,9 @@ label lbl_edge_manage:
     menu:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
+        
+        'Opportunities (1 AP)' if ap > 0:
+            call lbl_edge_opportunities     
         'Outpost':
             call lbl_edge_outpost
         'Marketplace':
