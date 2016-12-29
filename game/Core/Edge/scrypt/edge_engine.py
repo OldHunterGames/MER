@@ -33,8 +33,8 @@ class EdgeEngine(object):
         self.resources = BarterSystem()
         self.gang_list = []
         self.factions = self.gang_list
-        self.stashes = {'echoing_hills': [False, ItemsStorage()], 'hazy_marshes': [False, ItemsStorage()],
-            'dying_grove': [False, ItemsStorage()]}
+        self.stashes = {'echoing_hills': [False, ItemsStorage(), 0], 'hazy_marshes': [False, ItemsStorage(), 0],
+            'dying_grove': [False, ItemsStorage(), 0]}
         self.options = []
 
     def explore_stash(self, name):
@@ -43,6 +43,13 @@ class EdgeEngine(object):
     def unexplore_stash(self, name):
         self.stashes[name][0] = False
         self.stashes[name][1] = ItemsStorage()
+        self.stashes[name][2] = 0
+
+    def stash_quality(self, name):
+        return self.stashes[name][2]
+
+    def increase_stash_quality(self, name):
+        self.stashes[name][2] += 1
 
     def is_stash_found(self, name):
         return self.stashes[name][0]
@@ -180,6 +187,9 @@ class EdgeEngine(object):
         self.locations_tick()
         self.resources.tick_time()
         self.core.new_turn()
+        for i in self.active_stashes:
+            self.increase_stash_quality(i)
+
     
     def add_faction(self, owner, name, location, id=None):
         gang = Gang(owner, name, location, id=id)
