@@ -52,11 +52,9 @@ class Faction(object):
     def get_members(self):
         list_ = [(self.owner, 'owner')]
         roles = sorted(self.roles.keys())
-        print roles
         for key in roles:
             if (self.roles[key], key) not in list_:
                 list_.append((self.roles[key], key))
-        print list_
         members = [i for i in self.members if i not in self.roles.values()]
         members_names = {}
         for i in members:
@@ -76,3 +74,10 @@ class Faction(object):
 
     def get_common_members(self):
         return [member for member in self.members if member != self.owner and member not in self.roles.values()]
+
+    def get_role(self, role):
+        try:
+            role = self.roles[role]
+        except KeyError:
+            role = None
+        return role
