@@ -261,7 +261,7 @@ screen sc_relations():
                 ysize 500
                 box_wrap True
                 for i in player.known_characters:
-                    if not i.has_factions():
+                    if not i.has_faction():
                         vbox:
                             spacing 2
                             

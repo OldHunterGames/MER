@@ -37,8 +37,6 @@ class Faction(object):
         for i in self.members:
             if person == i:
                 self.members.remove(person)
-            if person == self.owner:
-                self.owner = None
         for k, v in self.roles.items():
             if v == person:
                 self.roles[k] == None

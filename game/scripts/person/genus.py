@@ -32,7 +32,7 @@ class Genus(object):
         for feature in self._features:
             self._owner.remove_feature(feature)
         self._owner.remove_feature(self.head_type)
-        self.owner = None
+        self._owner = None
 
     def invoke(self, owner):
         self._owner = owner

@@ -24,7 +24,7 @@ screen sc_player_contacts():
                     textbutton 'Unbound':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('unbound'), show_others=True)
                 textbutton 'Leave':
-                    action Hide('sc_player_contacts')
+                    action Hide('sc_player_contacts'), Hide('sc_list_factions')
 
 screen sc_list_factions(factions, show_others=False):
     frame:

@@ -1418,6 +1418,27 @@ class Person(Skilled, InventoryWielder, Attributed):
             return True
         return False
 
+    def forget_person(self, person):
+        to_remove = []
+        for i in self._relations:
+            if person in i.persons:
+                to_remove.append(i)
+        for i in to_remove:
+            self._relations.remove(i)
+            person._relations.remove(i)
+        
+        for i in self._stance:
+            if person in i.persons:
+                to_remove.append(i)
+        for i in to_remove:
+            if i in self._stance:
+                self._stance.remove(i)
+            if i in person._stance:
+                person._stance.remove(i)
+        
+        for i in to_remove:
+            i.persons = []
+
     def know_faction(self, faction):
         if faction in self.known_factions():
             return True
@@ -1747,20 +1768,58 @@ class Person(Skilled, InventoryWielder, Attributed):
         except ValueError:
             pass
 
-    def die(self):
+    def die(self, destroy=True):
+        self.remove_relations()
+        if destroy:
+            self.destroy()
         if self.player_controlled:
             renpy.call('lbl_gameover')
         self.add_feature('dead')
-        to_remove = []
-        for i in self._relations:
-            for p in i.persons:
-                to_remove.append((p._relations.remove, i))
-        for i in self._stance:
-            for p in i.persons:
-                to_remove.append((p._stance.remove, i))
-        for i in to_remove:
-            i[0](i[1])
+    
+    def destroy(self):
+        self.remove_relations()
+        self._remove_features()
+        self._remove_needs()
+        self.remove_schedule()
+        self._remove_foodsystem()
+        self.remove_genus()
+        self.remove_skills()
+        persons_list.remove(self)
 
+    def remove_genus(self):
+        self.genus.remove()
+
+    def _remove_needs(self):
+        for i in self._needs:
+            i.owner = None
+        self._needs = []
+
+    def remove_schedule(self):
+        self.schedule.actions = []
+
+    def _remove_foodsystem(self):
+        self.food_system.owner = None
+
+
+
+    def _remove_features(self):
+        to_remove = []
+        for i in self.features:
+            to_remove.append(i)
+        for i in to_remove:
+            i.remove()
+
+    def remove_skills(self):
+        for i in self.skills:
+            i.owner = None
+        self.skills = []
+
+
+    def remove_relations(self):
+        characters = self.known_characters
+        for i in characters:
+            self.forget_person(i)
+        
 
     def is_dead(self):
         if self.feature('dead') is not None:
