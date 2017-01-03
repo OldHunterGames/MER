@@ -10,6 +10,9 @@ label edge_init_events:
     $ register_event('evn_edge_mistadvance')
     $ register_event('evn_edge_slaver')
     $ register_event('evn_edge_recruiter')
+    $ register_event('evn_edge_hazy_marsh')
+    $ register_event('evn_edge_dying_grove')
+    $ register_event('evn_edge_hazy_marsh')        
     
     return True
     

@@ -155,8 +155,11 @@ label shd_edge_job_simplework(action):
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
+        motivation = action.actor.motivation(skill, tense, satisfy, beneficiar, moral)
 
-        call lbl_skillcheck(actor, skill, difficulty)
+    call lbl_skillcheck(actor, skill, motivation, difficulty)
+
+    python:
         result = skillcheck.result
 
         yeld = encolor_text(__('resources'), result)
