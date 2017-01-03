@@ -39,3 +39,12 @@ init python:
         __('great favor'), 
         __('total trust'), 
         ]    
+        
+    #Houses
+    major_names = {
+    'vatican': __('Holy Vatican'), 
+    'serpis': __('House Serpis'), 
+    'pardus': __('House Pardus'), 
+    'kamira': __('House Kamira'), 
+    'corvus': __('House Corvus'),             
+    }

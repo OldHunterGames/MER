@@ -32,13 +32,17 @@ label lbl_edge_main:
             consumption_text = spendings_text + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
             return consumption_text
         
-        ## Edge NPC initialisation
+        
+        ## Houses & Persons
+        edge_sovereign = 'serpis'
+        major_house = major_names[edge_sovereign]
+        
         slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
         slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
         player.relations(slums_faction)
         ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
         slums_champion = gen_random_person(genus='human', occupation=ocpn)
-        slums_faction.add_member(slums_champion)
+        slums_faction.add_member(slums_champion) 
         slums_faction.set_member_to_role(slums_champion, 'champion') 
         ocpn = choice(['entertainer'], )
         slums_entertainer = gen_random_person(genus='human', occupation=ocpn)
@@ -99,7 +103,7 @@ label lbl_edge_manage:
         
         'Opportunities (1 AP)' if ap > 0:
             call lbl_edge_opportunities     
-        'Outpost':
+        '[major_house] outpost':
             call lbl_edge_outpost
         'Marketplace':
             call lbl_edge_slums_marketplace
