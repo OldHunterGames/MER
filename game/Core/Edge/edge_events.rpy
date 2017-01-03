@@ -87,7 +87,7 @@ label evn_edge_dying_grove(event):
         return False
         
     "You found a Dying Grove location. Here you can make a hidden stash or look for other's stashes"
-    edge.options.append('dying_grove')
+    $ edge.explore_stash('dying_grove')
     return True
       
 label evn_edge_hazy_marsh(event):
@@ -101,7 +101,7 @@ label evn_edge_hazy_marsh(event):
         return False
         
     "You found a Hazy Marsh location. Here you can make a hidden stash or look for other's stashes"
-    edge.options.append('hazy_marsh')
+    $ edge.explore_stash('hazy_marsh')
     return True
    
       
@@ -116,7 +116,7 @@ label evn_edge_echoing_hills(event):
         return False
         
     "You found a Echoing Hills location. Here you can make a hidden stash or look for other's stashes"
-    edge.options.append('echoing_hills')
+    $ edge.explore_stash('echoing_hills')
     return True
                 
 ############## NO CHARACTER EVENTS ##################

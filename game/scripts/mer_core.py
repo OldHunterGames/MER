@@ -86,6 +86,10 @@ class MistsOfEternalRome(object):
         self.characters = persons_list
         self.time = 0
 
+        self.gender_options = ['shemale', 'sexless']
+        self.self_gender_options = ['male', 'female', 'shemale', 'sexless']
+        self.self_partners_options = ['female', 'male', 'shemale', 'sexless', 'incest', 'lolicon', 'elders', 'furry', 'animals', 'monsters', 'corpses']
+
     @property
     def factions(self):
         return [i for i in self._factions]

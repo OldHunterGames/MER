@@ -49,6 +49,11 @@ label start:
         meter = Meter(core.protagonist)
         ap = player.ap
         
+        ##SEX_OPTIONS
+        core.gender_options = ['shemale', 'sexless']
+        core.gender_self = ['male', 'female', 'shemale', 'sexless']
+        core.sex_options = ['female', 'male', 'shemale', 'sexless', 'incest', 'lolicon', 'elders', 'furry', 'animals', 'monsters', 'corpses']
+        
         ##TEST CODE##
         # player.firstname = 'Охотник'
         # player.set_avatar('images/avatar/old_huntsman_ava.jpg')

@@ -54,47 +54,6 @@ label shd_edge_job_idle(action):
         pass
     'idling...'
     return
-    
-label shd_edge_job_explore(action):
-    python:
-        while len(edge.locations) < edge.loc_max:
-            edge.explore_location()
-        
-    'All nearby locations explored'
-    return
-    
-label shd_edge_job_bukake(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        beneficiar = action.special_values['beneficiar']
-        sperm = action.special_values['slut_rate']
-        player.nutrition.set_tension()
-        player.authority.set_tension()
-        player.power.set_tension()
-        if sperm > 1:
-            player.relief.set_tension()
-        if sperm > 2:
-            player.ambition.set_tension()
-        if sperm > 3:
-            player.comfort.set_tension()
-            player.amusement.set_tension()
-        if sperm > 4:
-            player.wellness.set_tension() 
-            player.independence.set_tension()            
-        player.skills_used.append(action.special_values['skill'])
-        
-        if sperm > actor.physique:
-            nutritive_value = 3
-        elif sperm == actor.physique:
-            nutritive_value = 2
-        else:
-            nutritive_value = 1
-
-        actor.eat(nutritive_value, -1)
-
-    '[name] sucks dicks for a decade. About [sperm] buckets of jizz gulped down. Yakh...'
-    return
         
 label shd_edge_job_moneywork(action):
     python:
@@ -147,11 +106,27 @@ label shd_edge_job_beg(action):
         actor.prosperity.set_tension()        
         actor.ambition.set_tension()        
         actor.independence.set_tension()
+        actor.power.set_tension()
+        actor.approval.set_tension()
         actor.eat(1, -1)
         text = __('humbly begs for food and gains a few disgustning leftovers.')
     '[name] [text]'
     return
     
+label shd_edge_job_bukake(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        beneficiar = actor
+        actor.wellness.set_tension()        
+        actor.comfort.set_tension()
+        actor.ambition.set_tension()        
+        actor.independence.set_tension()
+        actor.eat(3, -1)
+        text = __('humbly sucks stangers diks and consume their semen for nutrition.')
+    '[name] [text]'
+    return
+        
 label shd_edge_job_servitor(action):
     python:
         actor = action.actor
@@ -170,16 +145,20 @@ label shd_edge_job_servitor(action):
 label shd_edge_job_simplework(action):
     python:
         actor = action.actor
-        name = actor.name
-        moral = action.special_values['moral']
         skill = action.special_values['skill']
+        difficulty = action.special_values['difficulty'] 
+
+        name = actor.name
+        descr = action.special_values['description'] 
+
+        moral = action.special_values['moral']
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
-        descr = action.special_values['description'] 
-        # resname = action.special_values['resource_name'] 
-        difficulty = action.special_values['difficulty'] 
-        result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
+
+        call lbl_skillcheck(actor, skill, difficulty)
+        result = skillcheck.result
+
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
         actor.skill(skill).get_expirience(result)

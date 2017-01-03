@@ -77,6 +77,10 @@ label lbl_edge_slums_work_food:
         'Beg for food (no skill)':
             $ target.schedule.add_action('job_beg', single=False)  
             jump lbl_edge_manage
+                                  
+        'Bukake slut' if 'bukake' in edge.options:
+            $ target.schedule.add_action('job_bukake', single=False)  
+            jump lbl_edge_manage
                                     
         'Newermind':
             $ pass
@@ -98,7 +102,6 @@ label lbl_edge_slums_work_res:
             $ description = _('doing manual labor at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
-            jump lbl_edge_manage
             
         'Household services (housekeeping)':
             $ title = __('Some labor (housekeeping).')
@@ -106,7 +109,6 @@ label lbl_edge_slums_work_res:
             $ description = _('providing household services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
-            jump lbl_edge_manage
                                     
         'Sexual services (sex)':
             $ title = __('Some labor (sex).')
@@ -114,11 +116,25 @@ label lbl_edge_slums_work_res:
             $ description = _('doing sexual services at the slums. Yelds ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
+                                                
+        'Newermind':
+            call lbl_edge_slums_jobs
+            
+    jump lbl_edge_manage
+    return
+
+label lbl_edge_slums_work_special:
+    menu:
+        'Trasure hunt in Echoing Hills (observation)' if 'echoing_hills' in edge.options:
+            $ description = _('seek treasures in Echoing Hills.')
+            $ special_values = {'description': description,  'difficulty' : edge.stash_quality('echoing_hills'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
+            edge.gen_treasures
             jump lbl_edge_manage
-                                    
+                                  
         'Newermind':
             $ pass
             
     call lbl_edge_slums_jobs
-    return
-    
+    return    
+
