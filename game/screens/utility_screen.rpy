@@ -468,6 +468,8 @@ label lbl_skillcheck(person, skill, motivation, difficulty=0):
         call screen sc_skillcheck(skillcheck)
     else:
         $ skillcheck.npc_check()
+    if skillcheck.result >= 0:
+        $ person.use_skill(skill)
     return skillcheck
 
 
