@@ -268,21 +268,28 @@ class MistsOfEternalRome(object):
 class Skillcheck(object):
 
 
-    def __init__(self, person, skill, difficulty=0):
+    def __init__(self, person, skill, motivation, difficulty=0):
         self.skill = person.skill(skill)
         self.person = person
         self.skill_level = self.skill.level
         self.difficulty = difficulty
+        self.motivation = motivation
         self.resources = {}
         self.cons = []
         self.init_resources()
         self.init_cons()
+        self.sabotaged = False
 
     def init_cons(self):
         for i in range(1, self.difficulty+1):
             self.cons.append(('difficulty', 5-self.skill_level))
         if self.person.anxiety > 0:
             self.cons.append(('anxiety', min(self.person.anxiety, 5)))
+        if self.motivation < 0:
+            self.cons.append(('motivation', 6 - self.person.spirit))
+
+    def sabotage(self):
+        self.sabotaged = True
 
     def init_resources(self):
         skill = self.skill
@@ -304,6 +311,9 @@ class Skillcheck(object):
             self.resources['vitality'] = person.vitality
         if person.has_inner_resource('mood') and person.mood > 0:
             self.resources['mood'] = person.mood
+        if person.has_inner_resource('motivation'):
+            if self.motivation > 0:
+                self.resources['motivation'] = self.motivation
 
     def use_resource(self, resource):
         value = self.resources[resource]
@@ -327,6 +337,8 @@ class Skillcheck(object):
 
     @property
     def result(self):
+        if self.sabotaged:
+            return -1
         if len(self.cons) > 0:
             return 0
         else:
@@ -334,4 +346,24 @@ class Skillcheck(object):
 
     def has_cons(self):
         return len(self.cons) > 0
+
+    def npc_check(self):
+        if self.motivation < 0:
+            self.sabotaged = True
+            return
+        elif self.motivation == 0:
+            return
+        
+        for v in self.resources.values():
+            cons = [i for i in self.cons]
+            if not self.has_cons():
+                return
+            used = False
+            if v >= min([i[1] for i in cons]):
+                if not used:
+                    for key, value in self.resources.items():
+                        if value == v:
+                            self.use_resource(key)
+                            used = True
+
 

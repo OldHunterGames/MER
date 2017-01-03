@@ -73,6 +73,9 @@ class Item(object):
     def count_modifiers(self, attribute):
         return self.modifiers.count_modifiers(attribute)
 
+    def get_all_modifiers(self):
+        return self.modifiers.get_all_modifiers()
+
     def set_name(self, name):
         if not self.mutable_name:
             return
