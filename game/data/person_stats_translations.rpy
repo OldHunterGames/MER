@@ -26,5 +26,6 @@ init python:
         'determination': __('determination'),
         'mood': __('mood'),
         'vitality': __('vitality'),
-        'motivation': __('motivation')
+        'motivation': __('motivation'),
+        'focus': __('focus')
     }

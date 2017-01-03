@@ -486,7 +486,8 @@ screen sc_skillcheck(skillcheck):
             for i in skillcheck.resources.items():
                 textbutton encolor_text(attributes_translation[i[0]], i[1]):
                     if skillcheck.has_cons():
-                        action Function(skillcheck.use_resource, i[0])
+                        action [Function(skillcheck.use_resource, i[0]),
+                            SensitiveIf(i[1] >= min(skillcheck.cons_values()))]
                     else:
                         action [Function(skillcheck.use_resource, i[0]),
                             SensitiveIf(i[1] > skillcheck.skill_level)]

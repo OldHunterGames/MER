@@ -354,6 +354,9 @@ class Skillcheck(object):
     def has_cons(self):
         return len(self.cons) > 0
 
+    def cons_values(self):
+        return [i[1] for i in self.cons]
+
     def npc_check(self):
         if self.motivation < 0:
             self.sabotaged = True
