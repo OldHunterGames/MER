@@ -1834,27 +1834,33 @@ class Person(Skilled, InventoryWielder, Attributed):
         value = self.sensitivity
         value += (self.skill('expression').level-3)
         value += (self.vitality-2)
-        return value + self.count_modifiers('alure')
+        value += self.count_modifiers('alure')
+        return max(0, min(value, 5))
 
     def hardiness(self):
         value = self.physique
         value += (self.skill('athletics').level-3)
         value += (self.vitality-2)
-        return value + self.count_modifiers('hardiness')
+        value += self.count_modifiers('hardiness')
+        return max(0, min(value, 5))
 
     def succulence(self):
-        return 3 + self.count_modifiers('succulence')
+        value = 3 + self.count_modifiers('succulence')
+        return max(0, min(value, 5))
 
     def exotic(self):
-        return self.count_modifiers('exotic')
+        value = self.count_modifiers('exotic')
+        return max(0, min(value, 5))
 
     def style(self):
         value = self.agility
         value += (self.skill('charisma').level - 3)
-        return value + self.count_modifiers('style')
+        value += self.count_modifiers('style')
+        return max(0, min(value, 5))
 
     def purity(self):
-        return self.count_modifiers('purity')
+        value = self.count_modifiers('purity')
+        return max(0, min(value, 5))
 
     def menace(self):
         value = self.physique
@@ -1877,4 +1883,4 @@ class Person(Skilled, InventoryWielder, Attributed):
             value += 1
 
         value += self.count_modifiers('menace')
-        return value
+        return max(0, min(value, 5))

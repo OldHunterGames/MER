@@ -152,6 +152,7 @@ label shd_edge_job_simplework(action):
         descr = action.special_values['description'] 
 
         moral = action.special_values['moral']
+        moral = actor.check_moral(*moral)
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
@@ -161,6 +162,8 @@ label shd_edge_job_simplework(action):
 
     python:
         result = skillcheck.result
+        if result > 0:
+            actor.moral_action(moral)
         change_needs(actor, tense, satisfy, result)
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
