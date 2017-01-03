@@ -1260,6 +1260,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.reset_needs()
         self.calc_focus()
         self.reduce_esteem()
+        self.ap = 1
     def tick_time(self):
         if not self.calculatable:
             return
