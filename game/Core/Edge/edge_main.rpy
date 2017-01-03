@@ -59,7 +59,7 @@ label lbl_edge_main:
         slavers.add_member(edge_recruiter)
         
         ## Exploration variatns
-        edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marsh', 'echoing_hills',]
+        edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills',]
         
                
     

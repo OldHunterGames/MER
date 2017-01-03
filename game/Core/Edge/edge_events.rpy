@@ -83,15 +83,18 @@ label evn_edge_recruiter(event):
 label evn_edge_bukake(event):
     
     if not event.skipcheck:
-        if 'bukake' not in edge_exploration and 'male' in core.orientation[target.gender]:
+        if 'bukake' not in edge_exploration:
             $ event.skipcheck = True
         else:
             $ edge_exploration.remove('bukake')
     if not event.skipcheck:
         return False
-       
-    'You can be a bukake slut now'
-    $ edge.options.append('bukake')
+    
+    if 'male' in core.orientation[target.gender]:
+        'Some bukake slut sucks. Work not for you'
+    else:
+        'You can be a bukake slut now'
+        $ edge.options.append('bukake')
     return True
           
 label evn_edge_dying_grove(event):
@@ -108,7 +111,7 @@ label evn_edge_dying_grove(event):
     $ edge.explore_stash('dying_grove')
     return True
       
-label evn_edge_hazy_marsh(event):
+label evn_edge_hazy_marshes(event):
     
     if not event.skipcheck:
         if 'hazy_marshes' not in edge_exploration:

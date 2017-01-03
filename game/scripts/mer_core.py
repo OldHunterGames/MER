@@ -88,7 +88,7 @@ class MistsOfEternalRome(object):
 
         self.allow_shemales = True
         self.allow_sexless = True
-        self.self_gender_options = ['male', 'female', 'shemale', 'sexless']
+        self.hero_gender_options = ['male', 'female', 'shemale', 'sexless']
         self.orientation = {
            'male': ['female', 'incest', 'furry', 'corpses'],
            'female': ['female', 'male', 'shemale', 'incest', 'elders', 'furry', 'animals', 'monsters'],
