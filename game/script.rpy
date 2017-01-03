@@ -58,7 +58,6 @@ label start:
         player.add_feature('penis')
         sex = SexEngine((player, True), [(p, True)])
 
-    
     # call screen sc_faction_info(great_houses[0])
     call lbl_gen_player
     # call screen sc_sexengine_main(sex)

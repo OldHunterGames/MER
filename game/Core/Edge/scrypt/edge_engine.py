@@ -39,11 +39,22 @@ class EdgeEngine(object):
 
     def explore_stash(self, name):
         self.stashes[name][0] = True
+        self.options.append('treasure_hunt_%s'%name)
 
     def unexplore_stash(self, name):
         self.stashes[name][0] = False
         self.stashes[name][1] = ItemsStorage()
         self.stashes[name][2] = 0
+        try:
+            self.options.remove('treasure_hunt_%s'%name)
+        except ValueError:
+            pass
+
+
+
+    def unexplore_all_stahses(self):
+        for key in self.stashes.keys():
+            self.unexplore_stash(key)
 
     def stash_quality(self, name):
         return self.stashes[name][2]
