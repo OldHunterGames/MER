@@ -161,7 +161,7 @@ label shd_edge_job_simplework(action):
 
     python:
         result = skillcheck.result
-
+        change_needs(actor, tense, satisfy, result)
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
         actor.skill(skill).get_expirience(result)

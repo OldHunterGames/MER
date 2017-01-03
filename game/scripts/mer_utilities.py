@@ -33,6 +33,15 @@ def roll(value, max_):
         return False
     return True
 
+def change_needs(person, satisfy, tense, result):
+    if result < 0:
+        return
+    for i in tense:
+        getattr(person, i).set_tension()
+    if result > 0:
+        for i in satisfy:
+            getattr(person, i).set_satisfaction(result)
+
 
 class Observable(object):
 
