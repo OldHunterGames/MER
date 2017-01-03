@@ -22,7 +22,7 @@ class ModifiersStorage(object):
     def get_modifier_separate(self, attribute):
         values = []
         slotted = collections.defaultdict(list)
-        for mod in self._list:
+        for mod in self.get_all_modifiers():
             if attribute == mod.attribute:
                 if mod.slot is None:
                     values.append(mod)
@@ -47,14 +47,14 @@ class ModifiersStorage(object):
 
     def remove_modifier(self, source):
         to_remove = []
-        for mod in self._list:
+        for mod in self.get_all_modifiers():
             if mod.source == source:
                 to_remove.append(mod)
         for mod in to_remove:
             self._list.remove(mod)
 
     def get_all(self):
-        return [mod.description for mod in self._list]
+        return [mod.description for mod in self.get_all_modifiers()]
 
     def add_modifier(self, name, stats_dict, source, slot=None):
         for key in stats_dict:

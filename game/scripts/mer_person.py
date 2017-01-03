@@ -102,6 +102,7 @@ def trait_chance(fetish_value, taboo_value):
 class Attributed(Modifiable):
 
     def init_attributed(self):
+        self.init_modifiable()
         self.attributes = {
             'physique': 3,
             'mind': 3,
@@ -109,11 +110,10 @@ class Attributed(Modifiable):
             'agility': 3,
             'sensitivity': 3
         }
-        self.init_modifiable()
 
     def _get_modified_attribute(self, attr):
         value = self.attributes[attr]
-        value += self.count_modifiers(attr)
+        value += self.modifiers.count_modifiers(attr)
         return max(0, min(5, value))
 
     @property
@@ -150,6 +150,43 @@ class Attributed(Modifiable):
     @sensitivity.setter
     def sensitivity(self, value):
         self.attributes['sensitivity'] = value
+
+    def vitality_info(self):
+        d = {'physique': self.physique, 'shape': self.modifiers.count_modifiers('shape'), 'fitness': self.modifiers.count_modifiers('fitness'),
+             'mood': self.mood, 'therapy': self.modifiers.count_modifiers('therapy')}
+        list_ = self.modifiers.get_modifier_separate('vitality')
+        list_ = [(value.name, value.value) for value in list_]
+        return d, list_
+    @property
+    def vitality(self):
+        list_ = [self.physique, self.modifiers.count_modifiers('shape'), self.modifiers.count_modifiers('fitness'), self.mood,
+                 self.modifiers.count_modifiers('therapy')]
+        vitality_mods = self.modifiers.get_modifier_separate('vitality')
+        list_.extend([modifier.value for modifier in vitality_mods])
+        list_ = [i for i in list_ if i != 0]
+        lgood = []
+        lbad = []
+        for i in list_:
+            if i > 0:
+                lgood.append(i)
+            elif i < 0:
+                lbad.append(i)
+        val = 0
+        bad = len(lbad)
+        lgood.sort()
+        try:
+            for i in range(bad):
+                lgood.pop(0)
+        except IndexError:
+            return 0
+        while len(lgood) > 0:
+            num = min(lgood)
+            if num > val:
+                val += 1
+            lgood.remove(num)
+        if val > 5:
+            val = 5
+        return val
 
 def get_random_combatant():
     return choice(store.combatant_data.keys())
@@ -423,7 +460,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
         self.mood = 0
         self.fatigue = 0
-        self._vitality = 0
         self.appetite = 0
         self.calorie_storage = 0
         self.money = 0
@@ -475,6 +511,10 @@ class Person(Skilled, InventoryWielder, Attributed):
                 return i
         return None
     
+    def count_modifiers(self, attribute):
+        value = super(Person, self).count_modifiers(attribute)
+        value += self.inventory.count_modifiers(attribute)
+        return value
 
     def ration_status(self):
         return self.food_system.ration_status()
@@ -918,44 +958,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         if self._anxiety < 0:
             self_anxiety = 0
 
-    def vitality_info(self):
-        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
-             'mood': self.mood, 'therapy': self.count_modifiers('therapy')}
-        list_ = self.modifiers_separate('vitality')
-        list_ = [(value.name, value.value) for value in list_]
-        return d, list_
-
-    @property
-    def vitality(self):
-        list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'), self.mood,
-                 self.count_modifiers('therapy')]
-        vitality_mods = self.modifiers_separate('vitality')
-        list_.extend([modifier.value for modifier in vitality_mods])
-        list_ = [i for i in list_ if i != 0]
-        lgood = []
-        lbad = []
-        for i in list_:
-            if i > 0:
-                lgood.append(i)
-            elif i < 0:
-                lbad.append(i)
-        val = 0
-        bad = len(lbad)
-        lgood.sort()
-        try:
-            for i in range(bad):
-                lgood.pop(0)
-        except IndexError:
-            return 0
-        while len(lgood) > 0:
-            num = min(lgood)
-            if num > val:
-                val += 1
-            lgood.remove(num)
-        val += self._vitality
-        if val > 5:
-            val = 5
-        return val
+    
 
     # person gender relies on feature with slot 'gender'
     @property

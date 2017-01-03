@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 import collections
 from mer_itemsstorage import ItemsStorage
+from modifiers import ModifiersStorage
 
-class Inventory(ItemsStorage):
+class Inventory(ItemsStorage, ModifiersStorage):
 
     def __init__(self):
         super(Inventory, self).__init__()
@@ -13,6 +14,15 @@ class Inventory(ItemsStorage):
         self._main_hand = None
         self._other_hand = None
         self.storage = []
+    
+    def get_all_modifiers(self):
+        list_ = []
+        for i in self.equiped_items():
+            list_.extend(i.get_all_modifiers())
+        return list_
+
+    def remove_modifier(self, source):
+        pass
 
     def equiped_items(self):
         return [i for i in self.storage if i.equiped]
