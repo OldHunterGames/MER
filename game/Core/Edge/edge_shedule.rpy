@@ -155,7 +155,7 @@ label shd_edge_job_simplework(action):
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
-        motivation = action.actor.motivation(skill, tense, satisfy, beneficiar, moral)
+        motivation = action.actor.motivation(skill, tense, statisfy, beneficiar, moral)
 
     call lbl_skillcheck(actor, skill, motivation, difficulty)
 
@@ -186,67 +186,33 @@ label shd_edge_job_clanwork(action):
     '[name] [descr][yeld].'
     return
     
-label shd_edge_job_scmunition(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        moral = None
-        result = core.skillcheck(actor, 'survival', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = edge_yeld[result]
-        core.resources.munition += gain
-        actor.skill('survival').get_expirience(result)
-    '[name] scavenging munition on the gim battlefield. Yelds [gain] munition.'
-    return
     
-label shd_edge_job_dbexctraction(action):
+label job_treasurehunt(action):
     python:
         actor = action.actor
-        name = actor.name
-        moral = None
-        result = core.skillcheck(actor, 'athletics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = edge_yeld[result]
-        core.resources.fuel += gain
-        actor.skill('athletics').get_expirience(result)
-    '[name] extracting demon blood from the crimson pit. Yelds [gain] fuel.'
-    return
-    
-label shd_edge_job_scjunc(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        moral = None
-        result = core.skillcheck(actor, 'survival', difficulty = 2, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = edge_yeld[result]
-        core.resources.hardware += gain
-        actor.skill('survival').get_expirience(result)
-    '[name] scavenging junk. Yelds [gain] hardware.'
-    return
-    
-label shd_edge_job_disassemble(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        moral = None
-        result = core.skillcheck(actor, 'mechanics', difficulty = 1, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, special_motivators=[])        
-        gain = edge_yeld[result]
-        core.resources.hardware += gain
-        actor.skill('mechanics').get_expirience(result)
-    '[name] disasembles old machinery on the ruined factory. Yelds [gain] hardware.'
-    return
-    
-label shd_edge_job_lookforstash(action):
-    python:
-        actor = action.actor
-        place = action.special_values['place']
-        difficulty = 5 - int(action.special_values['quality'])
-        name = actor.name
-        moral = ['chaotic', 'evil']
-        result = core.threshold_skillcheck(actor, 'observation', difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 3, special_motivators=[])        
-        if result[1] < 1:
-            'Fail'
-        else:
-            'Win'
+        skill = 'observation'
+        difficulty = action.special_values['difficulty'] 
 
+        name = actor.name
+        descr = action.special_values['description'] 
+
+        moral = action.special_values['moral']
+        beneficiar = action.special_values['beneficiar']
+        tense = action.special_values['tense']
+        statisfy = action.special_values['statisfy'] 
+        motivation = action.actor.motivation(skill, tense, satisfy, beneficiar, moral)
+
+    call lbl_skillcheck(actor, skill, motivation, difficulty)
+
+    python:
+        result = skillcheck.result
+        if result > 0:
+            trs = edge.gen_treasures
+            yeld = __('Found: [trs].')
+        else:
+            yeld = __('Noting found.')
+
+    '[name] [descr][yeld].'
     return
     
 label shd_edge_overtime_nap(action):

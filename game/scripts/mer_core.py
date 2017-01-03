@@ -86,9 +86,16 @@ class MistsOfEternalRome(object):
         self.characters = persons_list
         self.time = 0
 
-        self.gender_options = ['shemale', 'sexless']
+        self.allow_shemales = True
+        self.allow_sexless = True
         self.self_gender_options = ['male', 'female', 'shemale', 'sexless']
-        self.self_partners_options = ['female', 'male', 'shemale', 'sexless', 'incest', 'lolicon', 'elders', 'furry', 'animals', 'monsters', 'corpses']
+        self.orientation = {
+           'male': ['female', 'incest', 'furry', 'corpses'],
+           'female': ['female', 'male', 'shemale', 'incest', 'elders', 'furry', 'animals', 'monsters'],
+           'shemale': ['female', 'male', 'shemale', 'sexless', 'incest', 'elders', 'furry', 'animals', 'monsters', 'corpses'],
+           'sexless': ['male', 'shemale', 'incest', 'elders', 'furry', 'animals', 'monsters'],
+        }
+        ## all partner options: ['female', 'male', 'shemale', 'sexless', 'related', 'underage', 'elders', 'furry', 'animals', 'monsters', 'corpses']
 
     @property
     def factions(self):
