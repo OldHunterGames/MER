@@ -198,7 +198,7 @@ class EdgeEngine(object):
         self.locations_tick()
         self.resources.tick_time()
         self.core.new_turn()
-        for i in self.active_stashes:
+        for i in self.active_stashes():
             self.increase_stash_quality(i)
 
     
