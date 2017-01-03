@@ -158,6 +158,7 @@ class Skilled(object):
         return l
 
     def calc_focus(self):
+        self.used_inner_resources = []
         if self.focused_skill:
             if self.focused_skill in self.get_used_skills():
                 self.focused_skill.focus += 1
@@ -181,7 +182,6 @@ class Skilled(object):
             self.skill(choice(result)).set_focus()
         else:
             self.focused_skill = None
-        self.used_inner_resources = []
         self.skills_used = []
 
     def use_inner_resource(self, resource):

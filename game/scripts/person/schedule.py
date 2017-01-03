@@ -90,7 +90,7 @@ class Schedule(object):
         self.actions.remove(action)
     def remove_action(self, action):
         for a in self.actions:
-            if a.store_name == action:
+            if a.store_name == self._world + "_%s"%action:
                 self.remove_by_handle(a)
     def remove_by_slot(self, slot):
         for a in self.actions:
