@@ -33,6 +33,15 @@ screen sc_character_info_screen(person, return_l=False):
                                     action NullAction()
                                     hovered Show('sc_weapon_info', weapon=i)
                                     unhovered Hide('sc_weapon_info')
+                    frame:
+                        vbox:
+                            text 'Allure: %s'%person.allure()
+                            text 'Hardiness: %s'%person.hardiness()
+                            text 'Succulence: %s'%person.succulence()
+                            text 'Purity: %s'%person.purity()
+                            text "Exotic: %s"%person.exotic()
+                            text 'Style: %s'%person.style()
+                            text 'Menace: %s'%person.menace()
             hbox:
                 xalign 0.32
                 frame:

@@ -1830,20 +1830,31 @@ class Person(Skilled, InventoryWielder, Attributed):
         return False
 
     #rating methods
-    def alure(self):
-        return self.count_modifiers('alure')
+    def allure(self):
+        value = self.sensitivity
+        value += (self.skill('expression').level-3)
+        value += (self.vitality-2)
+        return value + self.count_modifiers('alure')
 
     def hardiness(self):
-        return self.count_modifiers('hardiness')
+        value = self.physique
+        value += (self.skill('athletics').level-3)
+        value += (self.vitality-2)
+        return value + self.count_modifiers('hardiness')
 
     def succulence(self):
-        return self.count_modifiers('succulence')
+        return 3 + self.count_modifiers('succulence')
 
     def exotic(self):
         return self.count_modifiers('exotic')
 
     def style(self):
-        return self.count_modifiers('style')
+        value = self.agility
+        value += (self.skill('charisma').level - 3)
+        return value + self.count_modifiers('style')
+
+    def purity(self):
+        return self.count_modifiers('purity')
 
     def menace(self):
         value = self.physique
