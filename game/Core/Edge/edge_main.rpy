@@ -101,7 +101,7 @@ label lbl_edge_manage:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
         
-        'Opportunities (1 AP)' if ap > 0:
+        'Opportunities (1 AP)' if player.ap > 0:
             call lbl_edge_opportunities     
         '[major_house] outpost':
             call lbl_edge_outpost

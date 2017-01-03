@@ -8,7 +8,7 @@ init python:
         'junk_yard': __('junk yard ({0})'),
         'ruined_factory': __('ruined factory ({0})'),
         'dying_grove': __('dying grove'),
-        'hazy_marsh': __('hazy marsh'),
+        'hazy_marshes': __('hazy marshes'),
         'echoing_hills': __('echoing hills'),
         'squatted_slums': __('squatted slums ({0})'),
         #'charity_mission': __('House {0} charity mission'),
@@ -131,4 +131,6 @@ init python:
     'idle': {'name': 'Idle', 'description': 'Descriptext'},
     'beg': {'name': 'Beggar', 'description': 'Descriptext'},
     'simplework': {'name': 'Hard work', 'description': 'Descriptext'},
+    'treasurehunt': {'name': 'Treasure hunt', 'description': 'Descriptext'},
+    'bukake': {'name': 'Bukake slut feeding', 'description': 'Descriptext'},    
         }        

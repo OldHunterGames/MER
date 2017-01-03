@@ -203,7 +203,7 @@ label shd_edge_job_treasurehunt(action):
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
-        motivation = action.actor.motivation(skill, tense, satisfy, beneficiar, moral)
+        motivation = action.actor.motivation(skill, tense, statisfy, beneficiar, moral)
 
     call lbl_skillcheck(actor, skill, motivation, difficulty)
 

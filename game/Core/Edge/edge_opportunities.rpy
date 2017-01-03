@@ -3,7 +3,7 @@
 label lbl_edge_opportunities:
     menu:
         'Interesting observation' if edge_exploration:
-            $ ap -= 1
+            $ player.ap -= 1
             call lbl_edge_observations
         'Not yet':
             pass
