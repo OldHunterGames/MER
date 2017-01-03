@@ -190,7 +190,7 @@ label shd_edge_job_clanwork(action):
     return
     
     
-label shd_job_treasurehunt(action):
+label shd_edge_job_treasurehunt(action):
     python:
         actor = action.actor
         skill = 'observation'
