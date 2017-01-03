@@ -130,9 +130,9 @@ label lbl_edge_slums_work_special:
             $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('dying_grove'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
             $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
 
-        'Trasure hunt in Hazy Marsh (observation)' if 'treasure_hunt_hazy_marsh' in edge.options:
-            $ description = _('seek treasures in Echoing Hills.')
-            $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('hazy_marsh'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
+        'Trasure hunt in Hazy Marsh (observation)' if 'treasure_hunt_hazy_marshes' in edge.options:
+            $ description = _('seek treasures in Hazy Marshes.')
+            $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('hazy_marshes'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
             $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
 
         'Trasure hunt in Echoing Hills (observation)' if 'treasure_hunt_echoing_hills' in edge.options:

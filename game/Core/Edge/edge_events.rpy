@@ -13,7 +13,7 @@ label edge_init_events:
     $ register_event('evn_edge_bukake')
     $ register_event('evn_edge_echoing_hills')
     $ register_event('evn_edge_dying_grove')
-    $ register_event('evn_edge_hazy_marsh')        
+    $ register_event('evn_edge_hazy_marshes')        
     
     return True
     
@@ -111,15 +111,15 @@ label evn_edge_dying_grove(event):
 label evn_edge_hazy_marsh(event):
     
     if not event.skipcheck:
-        if 'hazy_marsh' not in edge_exploration:
+        if 'hazy_marshes' not in edge_exploration:
             $ event.skipcheck = True
         else:
-            $ edge_exploration.remove('hazy_marsh')
+            $ edge_exploration.remove('hazy_marshes')
     if not event.skipcheck:
         return False
         
-    "You found a Hazy Marsh location. Here you can make a hidden stash or look for other's stashes"
-    $ edge.explore_stash('hazy_marsh')
+    "You found a Hazy Marshes location. Here you can make a hidden stash or look for other's stashes"
+    $ edge.explore_stash('hazy_marshes')
     return True
    
       
