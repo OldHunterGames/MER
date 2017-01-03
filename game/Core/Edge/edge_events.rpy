@@ -10,7 +10,8 @@ label edge_init_events:
     $ register_event('evn_edge_mistadvance')
     $ register_event('evn_edge_slaver')
     $ register_event('evn_edge_recruiter')
-    $ register_event('evn_edge_hazy_marsh')
+    $ register_event('evn_edge_bukake')
+    $ register_event('evn_edge_echoing_hills')
     $ register_event('evn_edge_dying_grove')
     $ register_event('evn_edge_hazy_marsh')        
     
@@ -79,6 +80,20 @@ label evn_edge_recruiter(event):
     $ player.relations(edge_recruiter)
     return True
       
+label evn_edge_bukake(event):
+    
+    if not event.skipcheck:
+        if 'bukake' not in edge_exploration and 'male' in core.orientation[target.gender]:
+            $ event.skipcheck = True
+        else:
+            $ edge_exploration.remove('bukake')
+    if not event.skipcheck:
+        return False
+       
+    'You can be a bukake slut now'
+    $ edge.options.append('bukake')
+    return True
+          
 label evn_edge_dying_grove(event):
     
     if not event.skipcheck:

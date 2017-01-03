@@ -45,7 +45,7 @@ label shd_edge_feed_catering(action):
     python:
         action.actor.comfort.satisfaction = 1
         name = action.actor.name
-        actor.eat(action.special_values['amount'], action.special_values['qiality'])
+        actor.eat(action.special_values['amount'], action.special_values['quality'])
     '[name] eats served food.'    
     return  
     
@@ -164,7 +164,7 @@ label shd_edge_job_simplework(action):
         result = skillcheck.result
         if result > 0:
             actor.moral_action(moral)
-        change_needs(actor, tense, satisfy, result)
+        change_needs(actor, tense, statisfy, result)
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
         actor.skill(skill).get_expirience(result)
