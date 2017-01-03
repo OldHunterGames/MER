@@ -45,19 +45,14 @@ label evn_edge_template(event):
       
 label evn_edge_slaver(event):
     
-    #Проверка для турн энда
     if not event.skipcheck:
         if 'slaver' not in edge_exploration:
             $ event.skipcheck = True
         else:
             $ edge_exploration.remove('slaver')
-    
-    # Отсечка
     if not event.skipcheck:
         return False
        
-        
-    #тело эвента
     edge_slaver 'Hey! Now you know me!'
     'You found a slaver, new options in Outpost'
     $ edge.options.append('slaver')
@@ -66,25 +61,64 @@ label evn_edge_slaver(event):
       
 label evn_edge_recruiter(event):
     
-    #Проверка для турн энда
     if not event.skipcheck:
         if 'recruiter' not in edge_exploration:
             $ event.skipcheck = True
         else:
             $ edge_exploration.remove('recruiter')
-    
-    # Отсечка
     if not event.skipcheck:
         return False
        
         
-    #тело эвента
     edge_recruiter 'Hey! Do you wanna be a Noble House servant?!'
     'You found a recruiter, new options in Outpost'
     $ edge.options.append('recruiter')
     $ player.relations(edge_recruiter)
     return True
+      
+label evn_edge_dying_grove(event):
+    
+    if not event.skipcheck:
+        if 'dying_grove' not in edge_exploration:
+            $ event.skipcheck = True
+        else:
+            $ edge_exploration.remove('dying_grove')
+    if not event.skipcheck:
+        return False
         
+    "You found a Dying Grove location. Here you can make a hidden stash or look for other's stashes"
+    edge.options.append('dying_grove')
+    return True
+      
+label evn_edge_hazy_marsh(event):
+    
+    if not event.skipcheck:
+        if 'hazy_marsh' not in edge_exploration:
+            $ event.skipcheck = True
+        else:
+            $ edge_exploration.remove('hazy_marsh')
+    if not event.skipcheck:
+        return False
+        
+    "You found a Hazy Marsh location. Here you can make a hidden stash or look for other's stashes"
+    edge.options.append('hazy_marsh')
+    return True
+   
+      
+label evn_edge_echoing_hills(event):
+    
+    if not event.skipcheck:
+        if 'echoing_hills' not in edge_exploration:
+            $ event.skipcheck = True
+        else:
+            $ edge_exploration.remove('echoing_hills')
+    if not event.skipcheck:
+        return False
+        
+    "You found a Echoing Hills location. Here you can make a hidden stash or look for other's stashes"
+    edge.options.append('echoing_hills')
+    return True
+                
 ############## NO CHARACTER EVENTS ##################
 
 label evn_edge_uneventful(event):    
