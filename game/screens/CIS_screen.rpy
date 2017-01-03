@@ -35,13 +35,11 @@ screen sc_character_info_screen(person, return_l=False):
                                     unhovered Hide('sc_weapon_info')
                     frame:
                         vbox:
-                            text 'Allure: %s'%person.allure()
-                            text 'Hardiness: %s'%person.hardiness()
-                            text 'Succulence: %s'%person.succulence()
-                            text 'Purity: %s'%person.purity()
-                            text "Exotic: %s"%person.exotic()
-                            text 'Style: %s'%person.style()
-                            text 'Menace: %s'%person.menace()
+                            text encolor_text(__('Allure'), person.allure())
+                            text encolor_text(__('Hardiness'), person.hardiness())
+                            text encolor_text(__('Exotic'), person.exotic())
+                            text encolor_text(__('Style'), person.style())
+                            text encolor_text(__('Menace'), person.menace())
             hbox:
                 xalign 0.32
                 frame:
@@ -71,12 +69,13 @@ screen sc_character_info_screen(person, return_l=False):
                     vbox:
                         text '{b}Skills{/b}'
                         for i in person.get_all_skills():
-                            textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
-                                style 'hoverable_text'
-                                text_style 'hoverable_text'
-                                hovered Show('sc_skill_info', skill=i)
-                                unhovered Hide('sc_skill_info')
-                                action NullAction()
+                            if i.level != 1:
+                                textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+                                    style 'hoverable_text'
+                                    text_style 'hoverable_text'
+                                    hovered Show('sc_skill_info', skill=i)
+                                    unhovered Hide('sc_skill_info')
+                                    action NullAction()
                         if person.focused_skill is not None:
                             $ i = person.focused_skill
                             text '{b}Focus:{/b}'
