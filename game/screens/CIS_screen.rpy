@@ -37,6 +37,8 @@ screen sc_character_info_screen(person, return_l=False):
                         vbox:
                             text encolor_text(__('Allure'), person.allure())
                             text encolor_text(__('Hardiness'), person.hardiness())
+                            text encolor_text(__('Succulence'), person.succulence())
+                            text encolor_text(__('Purity'), person.purity())
                             text encolor_text(__('Exotic'), person.exotic())
                             text encolor_text(__('Style'), person.style())
                             text encolor_text(__('Menace'), person.menace())
