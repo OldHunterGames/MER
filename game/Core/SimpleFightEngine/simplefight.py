@@ -177,6 +177,9 @@ class SimpleFight(object):
                     except IndexError:
                         self.ended = True
 
+    def get_enemies(self):
+        return [i.person for i in self.enemies]
+
     def refresh_enemies(self):
         for i in self.enemies:
             i.enemies = self.active_allies()
@@ -193,7 +196,24 @@ class SimpleFight(object):
         else:
             return None
 
+    def get_loot(self):
+        try:
+            loot = self.loot
+        except AttributeError:
+            enemies = self.get_enemies()
+            loot = []
+            for i in enemies:
+                for item in i.get_items('all'):
+                    loot.append(i.remove_item(item, 'all'))
+            self.loot = loot
+        return loot
 
+    def get_corpses(self):
+        return [i for i in self.get_enemies() if i.has_feature('dead')]
+
+    def end(self):
+        self.loot = self.get_loot()
+        self.corpses = self.get_corpses()
             
 
 
@@ -209,7 +229,7 @@ class SimpleCombatant(object):
         self.selected_maneuver = None
         self.active_maneuver = None
         self.protections = []
-        self.hp = self.max_hp()
+        self._hp = self.max_hp()
         self._defence = self.max_defence()
         self._disabled = False
         self.enemies = []
@@ -219,6 +239,19 @@ class SimpleCombatant(object):
         self.skill_difference = 0
         self.power_up = 0
         self._target = None
+
+    @property
+    def hp(self):
+        return self._hp
+
+    @hp.setter
+    def hp(self, value):
+        self._hp = value
+        if not self.person.has_buff('wound'):
+            self.person.add_buff('wound', 1)
+        if not self.person.player_controlled:
+            if self._hp < 0:
+                self.person.die()
 
     @property
     def target(self):

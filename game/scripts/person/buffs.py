@@ -9,6 +9,8 @@ class Buff(object):
         self.id = id_
         self.owner = owner_person
         self.storage = owner_person.get_buff_storage()
+        if self.slot is not None:
+            self.owner.remove_buff_by_slot(self.slot)
         self.time = time
         self.storage.append(self)
         self.owner.add_modifier(self.id, self.modifiers, self, self.slot)
@@ -18,7 +20,12 @@ class Buff(object):
         return self.data['name']
     @property
     def slot(self):
-        return self.data['slot']
+        try:
+            slot = self.data['slot']
+        except KeyError:
+            slot = None
+        return slot
+        
     @property
     def modifiers(self):
         return self.data['modifiers']

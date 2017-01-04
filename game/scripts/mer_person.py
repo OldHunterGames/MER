@@ -854,9 +854,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def get_buff_storage(self):
         return self._buffs
 
-    def add_buff(self, id_, time=1, slot=None):
-        if slot is not None:
-            self.remove_buff(slot)
+    def add_buff(self, id_, time=1):
         Buff(self, id_, time)
 
     def remove_buff(self, id_):
@@ -879,6 +877,9 @@ class Person(Skilled, InventoryWielder, Attributed):
     def tick_buffs_time(self):
         for buff in self._buffs:
             buff.tick_time()
+
+    def get_buffs(self):
+        return [i for i in self._buffs]
 
 
     @property
@@ -1197,7 +1198,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return motiv
 
     # adds features to person, if mutually exclusive removes old feature
-    def add_feature(self, id_):
+    def add_feature(self, id_, time=None):
         Feature(self, id_)
 
     def add_phobia(self, id_):
@@ -1779,7 +1780,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         except ValueError:
             pass
 
-    def die(self, destroy=True):
+    def die(self, destroy=False):
         self.remove_relations()
         if destroy:
             self.destroy()

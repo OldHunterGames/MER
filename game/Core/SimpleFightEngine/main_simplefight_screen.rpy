@@ -7,7 +7,7 @@ screen sc_simple_fight(fight):
         textbutton 'end_turn':
             yalign 0.5
             action [Function(fight.end_turn), Hide('sc_chose_maneuver'), 
-                SensitiveIf(all([i.active_maneuver is not None for i in fight.allies]))]
+                SensitiveIf(all([i.active_maneuver is not None for i in fight.active_allies()]))]
     else:
         timer 0.01:
             action Return()
@@ -130,8 +130,58 @@ label lbl_simple_fight(allies, enemies):
 
 label lbl_postfight(fight):
     $ winner = fight.get_winner()
+    $ fight.end()
     if winner != 'fleed':
         'fight winner is [winner]'
+        if winner == 'allies':
+            call screen sc_postfight_win(fight)
     else:
         'you fleed from fight'
     return
+
+screen sc_postfight_win(fight):
+    python:
+        def take_all_items(player, items):
+            to_remove = []
+            for i in items:
+                player.add_item(i)
+                to_remove.append(item)
+            for i in to_remove:
+                items.remove(i)
+
+        def take_all_corpses(player, corpses):
+            to_remove = []
+            for i in corpses:
+                player.add_corpse(i)
+                to_remove.append(i)
+            for i in to_remove:
+                corpses.remove(i)
+    window:
+        xfill True
+        yfill True
+
+        hbox:
+            vbox:
+                frame:
+                    xsize 200
+
+                    vbox:
+                        text 'Loot'
+                        for item in fight.loot:
+                                textbutton item.name:
+                                    action Function(player.add_item, item), Function(fight.loot.remove, item)
+                textbutton 'Take all' action Function(take_all_items, player, fight.loot):
+                    xsize 200
+            vbox:
+                frame:
+                    xsize 200
+                    vbox:
+                        text 'Corpses'
+                        for i in fight.corpses:
+                            textbutton i.name:
+                                action Function(player.add_corpse, i), Function(fight.corpses.remove, i)
+                textbutton 'Take all' action Function(take_all_corpses, player, fight.corpses):
+                    xsize 200
+
+        textbutton 'Leave' action Return():
+            yalign 1.0

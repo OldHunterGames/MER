@@ -220,6 +220,16 @@ class InventoryWielder(object):
 
     def init_inventorywielder(self):
         self.inventory = Inventory()
+        self.corpse_storage = []
+
+    def add_corpse(self, person):
+        self.corpse_storage.append(person)
+
+    def remove_corpse(self, person):
+        self.corpse_storage.remove(person)
+
+    def get_corpses(self):
+        return [i for i in self.corpse_storage]
 
     def equiped_items(self):
         return self.inventory.equiped_items()
