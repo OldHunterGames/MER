@@ -214,6 +214,10 @@ class SimpleFight(object):
     def end(self):
         self.loot = self.get_loot()
         self.corpses = self.get_corpses()
+        self.captives = self.get_captives()
+
+    def get_captives(self):
+        return [i for i in self.get_enemies() if not i.has_feature('dead')]
             
 
 

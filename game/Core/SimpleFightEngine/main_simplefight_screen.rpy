@@ -145,7 +145,7 @@ screen sc_postfight_win(fight):
             to_remove = []
             for i in items:
                 player.add_item(i)
-                to_remove.append(item)
+                to_remove.append(i)
             for i in to_remove:
                 items.remove(i)
 
@@ -156,6 +156,14 @@ screen sc_postfight_win(fight):
                 to_remove.append(i)
             for i in to_remove:
                 corpses.remove(i)
+
+        def take_all_captives(player, captives):
+            to_remove = []
+            for i in captives:
+                player.add_captive(i)
+                to_remove.append(i)
+            for i in to_remove:
+                captives.remove(i)
     window:
         xfill True
         yfill True
@@ -182,6 +190,15 @@ screen sc_postfight_win(fight):
                                 action Function(player.add_corpse, i), Function(fight.corpses.remove, i)
                 textbutton 'Take all' action Function(take_all_corpses, player, fight.corpses):
                     xsize 200
+            vbox:
+                frame:
+                    xsize 200
+                    vbox:
+                        text 'Captives'
+                        for i in fight.captives:
+                            textbutton i.name:
+                                action Function(player.add_captive, i), Function(fight.captives.remove, i)
+                textbutton 'Take all' action Function(take_all_captives, player, fight.captives)
 
         textbutton 'Leave' action Return():
             yalign 1.0
