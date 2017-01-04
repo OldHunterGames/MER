@@ -22,7 +22,10 @@ screen sc_character_info_screen(person, return_l=False):
                             image im.Grayscale(im.Scale(person.avatar_path, 150, 150))
                         else:  
                             image im.Scale(person.avatar_path, 150, 150)
-                        textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
+                        vbox:
+                            if person != player:
+                                textbutton 'Communicate' action Function(renpy.call_in_new_context, 'lbl_communicate', person)
+                            textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
                         vbox:
