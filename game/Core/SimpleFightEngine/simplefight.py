@@ -802,7 +802,6 @@ class Flee(RuledManeuver):
     def can_be_applied(self, person):
         if person.type == 'npc':
             return False
-        return True
         armor = person.armor_rate
         armor = armor is None
         enemies_armor = all([i.armor_rate is not None for i in person.enemies])
