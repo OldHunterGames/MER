@@ -287,7 +287,7 @@ screen sc_relations():
                             
                             imagebutton:
                                 idle im.Scale(i.avatar_path, 100, 100)
-                                action Show('sc_character_info_screen', person=i)
+                                action Show('sc_character_info_screen', person=i, communicate=True)
                                 hovered Show('sc_info_popup', person=i)
                                 unhovered Hide('sc_info_popup')
                             text i.name[0:8]

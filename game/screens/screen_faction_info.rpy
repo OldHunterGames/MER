@@ -17,7 +17,7 @@ screen sc_faction_info(faction):
                 if player.know_person(faction.owner):
                     imagebutton:
                         idle im.Scale(faction.owner.avatar_path, 50, 50)
-                        action Show('sc_character_info_screen', person=faction.owner)
+                        action Show('sc_character_info_screen', person=faction.owner, communicate=True)
                         hovered Show('sc_info_popup', person=faction.owner)
                         unhovered Hide('sc_info_popup')
                     text ' ' 
@@ -74,7 +74,7 @@ screen sc_faction_info(faction):
                             if player.know_person(person):
                                 imagebutton:
                                     idle im.Scale(person.avatar_path, 100, 100)
-                                    action Show('sc_character_info_screen', person=person)
+                                    action Show('sc_character_info_screen', person=person, communicate=True)
                                     hovered Show('sc_info_popup', person=person)
                                     unhovered Hide('sc_info_popup')
                                 text person.name[0:8]
