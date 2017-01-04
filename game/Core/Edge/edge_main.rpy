@@ -33,8 +33,7 @@ label lbl_edge_main:
         
         
         ## Houses & Persons
-        edge_sovereign = core.get_faction_by_id('serpis')
-        major_house = major_names[id]
+        edge_sovereign = core.get_faction('serpis')
         
         slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
         slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
@@ -102,7 +101,7 @@ label lbl_edge_manage:
         
         'Opportunities (1 AP)' if player.ap > 0:
             call lbl_edge_opportunities     
-        '[major_house] outpost':
+        'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
         'Marketplace':
             call lbl_edge_slums_marketplace

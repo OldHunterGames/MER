@@ -98,7 +98,7 @@ init python:
         'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
         'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
         
-        'virgin': {'name': __('Virgin'), 'slot': None, {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
+        'virgin': {'name': __('Virgin'), 'slot': None, 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
 
         # needs
         'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True},
@@ -128,7 +128,7 @@ init python:
         'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'succulence': +1}, 'visible': True, 'value': -1},
         'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1, 'menace': -2}, 'visible': True},
-        'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1} 'visible': True},
+        'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1}, 'visible': True},
         'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
 
         # fitness

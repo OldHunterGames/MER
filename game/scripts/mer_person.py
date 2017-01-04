@@ -505,6 +505,13 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.renpy_character = store.Character(self.firstname)
 
+    def check_your_privilege(self, victim):
+        privilege = self.menace - victim.menace
+        if privilege > 2:
+            return True
+
+        return False
+
     def owned_faction(self):
         for i in self.factions:
             if faction.owner == self:

@@ -18,9 +18,12 @@ label lbl_edge_randenc_errant:
     '[player.name] meets a confused Mist wanderer.'
     stranger "Where am I? What is this place? Can you help me, please?!"
     menu:
-        'Engage': 
-            $ player.moral_action('ardent', stranger)   
-            call lbl_simple_fight([player], [stranger]) 
+        'Engage':
+            $ player.moral_action('ardent', stranger) 
+            if player.check_your_privilege(stranger):
+                call lbl_edge_dominate(stranger)
+            else:
+                call lbl_edge_errant_fight([player], [stranger]) 
         'Decieve': 
             $ player.moral_action('evil', stranger)  
             $ motivation = player.motivation('charisma', ['order'], ['communication'], player, ['chaotic'])
