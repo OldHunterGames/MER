@@ -1,41 +1,40 @@
 init python:
     person_features = {
         # base
-        'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'sensitivity': +1}, 'visible': True},
-        'adolescent': {'name': __('adolescent'), 'slot': 'age', 'modifiers': {}, 'visible': True},
-        'mature': {'name': __('mature'), 'slot': 'age', 'modifiers': {'spirit': +1}, 'visible': True},
-        'elder': {'name': __('elder'), 'slot': 'age', 'modifiers': {'agility': -1, 'mind': +1}, 'visible': True},
+        'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'sensitivity': +1, 'succulence': +1}, 'visible': True},
+        'adolescent': {'name': __('adolescent'), 'slot': 'age', 'modifiers': {'allure': +1}, 'visible': True},
+        'mature': {'name': __('mature'), 'slot': 'age', 'modifiers': {'spirit': +1, 'hardiness': +1, 'succulence': -1, 'menace': +1}, 'visible': True},
+        'elder': {'name': __('elder'), 'slot': 'age', 'modifiers': {'agility': -1, 'mind': +1, 'allure': -1, 'hardiness': -1, 'succulence': -2}, 'visible': True},
 
         'sexless': {'name': __('sexless'), 'slot': 'gender', 'modifiers': {}, 'visible': True},
-        'male': {'name': __('male'), 'slot': 'gender', 'modifiers': {'physique': +1, 'sensitivity': -1}, 'visible': True},
-        'female': {'name': __('female'), 'slot': 'gender', 'modifiers': {'physique': -1, 'sensitivity': +1}, 'visible': True},
-        'shemale': {'name': __('shemale'), 'slot': 'gender', 'modifiers': {}, 'visible': True},
+        'male': {'name': __('male'), 'slot': 'gender', 'modifiers': {'physique': +1, 'sensitivity': -1, 'succulence': -1}, 'visible': True},
+        'female': {'name': __('female'), 'slot': 'gender', 'modifiers': {'physique': -1, 'sensitivity': +1, 'succulence': +1}, 'visible': True},
+        'shemale': {'name': __('shemale'), 'slot': 'gender', 'modifiers': {'allure': +1}, 'visible': True},
 
         'brawny': {'name': __('brawny'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': +1}, 'visible': True},
-        'large': {'name': __('large'), 'slot': 'constitution', 'modifiers': {'physique': +1}, 'visible': True},
+        'large': {'name': __('large'), 'slot': 'constitution', 'modifiers': {'physique': +1, 'succulence': +1}, 'visible': True},
         'athletic': {'name': __('athletic'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': +1}, 'visible': True},
         'small': {'name': __('small'), 'slot': 'constitution', 'modifiers': {'physique': -1}, 'visible': True},
-        'lean': {'name': __('lean'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': -1}, 'visible': True},
-        'crooked': {'name': __('crooked'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': -1}, 'visible': True},
+        'lean': {'name': __('lean'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': -1, 'succulence': -1}, 'visible': True},
+        'crooked': {'name': __('crooked'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': -1, 'allure': -1}, 'visible': True},
         'clumsy': {'name': __('clumsy'), 'slot': 'constitution', 'modifiers': {'agility': -1}, 'visible': True},
 
-        'brave': {'name': __('brave'), 'slot': 'spirit_feat', 'modifiers': {'spirit': +1}, 'visible': True},
-        'shy': {'name': __('shy'), 'slot': 'spirit_feat', 'modifiers': {'spirit': -1}, 'visible': True},
+        'brave': {'name': __('brave'), 'slot': 'spirit_feat', 'modifiers': {'spirit': +1, 'menace': +1}, 'visible': True},
+        'shy': {'name': __('shy'), 'slot': 'spirit_feat', 'modifiers': {'spirit': -1, 'menace': -1}, 'visible': True},
         'smart': {'name': __('smart'), 'slot': 'mind_feat', 'modifiers': {'mind': +1}, 'visible': True},
         'dumb': {'name': __('dumb'), 'slot': 'mind_feat', 'modifiers': {'mind': -1}, 'visible': True},
-        'sensitive': {'name': __('sensitive'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': +1}, 'visible': True},
-        'cool': {'name': __('cool'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': -1}, 'visible': True},
+        'sensitive': {'name': __('sensitive'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': +1, 'menace': -1}, 'visible': True},
+        'cool': {'name': __('cool'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': -1, 'menace': +1}, 'visible': True},
         
         # look
-        'innocent_appearance': {'name': __('innocent appearance'), 'slot': 'look', 'visible': True},        
-        'bold_appearance': {'name': __('bold appearance'), 'slot': 'look', 'visible': True},    
-        'foxy_appearance': {'name': __('foxy appearance'), 'slot': 'look', 'visible': True},    
-        'gentle_appearance': {'name': __('gentle appearence'), 'slot': 'look', 'visible': True},        
-        'calm_appearance': {'name': __('calm appearance'), 'slot': 'look', 'visible': True},    
-        'exotic_appearance': {'name': __('exotic appearance'), 'slot': 'look', 'visible': True},                    
-        'straight_appearance': {'name': __('straight appearance'), 'slot': 'look', 'visible': True},        
-        'sleasy_appearance': {'name': __('sleasy appearance'), 'slot': 'look', 'visible': True},    
-        'wild_appearance': {'name': __('wild appearance'), 'slot': 'look', 'visible': True},    
+        'innocent_appearance': {'name': __('Innocent look'), 'slot': 'look', 'modifiers': {'hardiness': -1, 'exotic': -1, 'purity': +1, 'succulence': +1, 'menace': -1}, 'visible': True},        
+        'bold_appearance': {'name': __('Bold appearance'), 'slot': 'look', 'modifiers': {'hardiness': +1, 'succulence': -1, 'menace': +1}, 'visible': True},    
+        'foxy_appearance': {'name': __('Foxy appearance'), 'slot': 'look', 'modifiers': {'allure': +1}, 'visible': True},    
+        'gentle_appearance': {'name': __('Gentle appearence'), 'slot': 'look', 'modifiers': {'hardiness': -1, 'succulence': +1, 'menace': -1}, 'visible': True},        
+        'calm_appearance': {'name': __('Calm appearance'), 'slot': 'look', 'modifiers': {}, 'visible': True},    
+        'exotic_appearance': {'name': __('Unusual look'), 'slot': 'look', 'modifiers': {'exotic': +1, 'purity': -1}, 'visible': True},                    
+        'sleasy_appearance': {'name': __('sleasy appearance'), 'slot': 'look', 'modifiers': {'allure': +1, 'purity': -1, 'menace': -1}, 'visible': True},    
+        'wild_appearance': {'name': __('wild appearance'), 'slot': 'look', 'modifiers': {'hardiness': +1, 'purity': -1, 'menace': +1}, 'visible': True},    
         
         'voice_sweet': {'name': __('Sweet voice'), 'slot': 'voice', 'modifiers': {'allure': +1, 'menace': -1}, 'visible': True},               
         'voice_clear': {'name': __('Clear voice'), 'slot': 'voice', 'modifiers': {'allure': +1, 'menace': +1}, 'visible': True},         
@@ -86,8 +85,8 @@ init python:
         'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True},
         'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True},
         'large_breast': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True},
-        'huge_breast': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4},  'visible': True},
-        'enormous_breast': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5},  'visible': True},
+        'huge_breast': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4, 'succulence': +1},  'visible': True},
+        'enormous_breast': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5, 'succulence': +2},  'visible': True},
 
         'micropenis': {'name': __('tiny willy'), 'slot': 'penis_size', 'visible': True},
         'small_penis': {'name': __('small cock'), 'slot': 'penis_size', 'visible': True},
@@ -98,6 +97,8 @@ init python:
 
         'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
         'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
+        
+        'virgin': {'name': __('Virgin'), 'slot': None, {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
 
         # needs
         'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True},
@@ -122,21 +123,21 @@ init python:
         'frigid': {'name': __('frigid'), 'slot': 'eros_feat', 'modifiers': {'eros': -1}, 'visible': True},
 
         # nutrition
-        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'nutrition': 1}, 'visible': True, 'value': 1},
-        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2, 'vitality': -1}, 'visible': True, 'value': 2},
-        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'nutrition': -1}, 'visible': True, 'value': -1},
-        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'vitality': -1}, 'visible': True, 'value': -1},
-        'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1}, 'visible': True},
-        'dyspnoea': {'name': __('dyspnoea'), 'visible': True},
+        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'nutrition': 1, 'succulence': -1}, 'visible': True, 'value': 1},
+        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2, 'vitality': -1, 'succulence': -1, 'menace': -1}, 'visible': True, 'value': 2},
+        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'succulence': +1}, 'visible': True, 'value': -1},
+        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
+        'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1, 'menace': -2}, 'visible': True},
+        'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1} 'visible': True},
         'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
 
         # fitness
-        'tender': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': -1, 'physique': -1}, 'visible': True},
-        'fit': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'agility': +1, 'vitality': +1}, 'visible': True},
-        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1}, 'visible': True},
-        'muscular': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': +1, 'physique': +1}, 'visible': True},
+        'tender': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': -1, 'physique': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
+        'fit': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'agility': +1, 'vitality': +1, 'menace': +1}, 'visible': True},
+        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
+        'muscular': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': +1, 'physique': +1, 'menace': +2}, 'visible': True},
 
-        'dead': {'name': __('dead'), 'visible': True},
+        'dead': {'name': __('dead'), 'modifiers': {'succulence': -1}, 'visible': True},
     }
 
     item_features = {

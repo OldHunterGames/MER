@@ -3,6 +3,15 @@
 #
 # Random encounters on the edge
 
+label lbl_edge_errant_fight(allies, enemies):
+    
+    call lbl_simple_fight(allies, enemies) 
+    
+    $ enemies = fight.get_enemies()
+    $ loot = fight.get_loot()
+    
+    return
+
 label lbl_edge_randenc_errant:
     python:
         stranger = gen_random_person('human')    
