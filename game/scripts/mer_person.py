@@ -1601,6 +1601,9 @@ class Person(Skilled, InventoryWielder, Attributed):
                     morality = arg
                 if arg in order.keys():
                     orderliness = arg
+        action_tones['activity'] = act.get(activity)
+        action_tones['morality'] = moral.get(morality)
+        action_tones['orderliness'] = order.get(orderliness)
         for k, v in action_tones.items():
             if v:
                 valself = getattr(self.alignment, k)

@@ -223,7 +223,11 @@ class SimpleCombatant(object):
     @property
     def target(self):
         if self._target is None:
-            return self.enemies[0]
+            try:
+                target = self.enemies[0]
+            except IndexError:
+                target = None
+            return target
         return self._target
     
     def set_target(self, target):
@@ -776,8 +780,9 @@ class PinDown(RuledManeuver):
         enemy = person.enemies[0]
         amount = len(person.enemies) < 2
         physique = enemy.physique < person.physique
+        weapon = len(person.enemies[0].weapons()) < 1
         skill = enemy.combat_level <= person.combat_level
-        return amount and skill and physique
+        return amount and skill and physique and weapon
 
 
 class Flee(RuledManeuver):
