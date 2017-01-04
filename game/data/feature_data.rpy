@@ -153,8 +153,8 @@ init python:
         'elemental': {'name': __('elemental'), 'slot': 'wpn_dmg', 'visible': True},  
         'silvered': {'name': __('silvered'), 'slot': 'wpn_dmg', 'visible': True},       
 
-        'light_armor': {'name': __('light armor'), 'slot': 'armor_rate', 'visible': True},
-        'heavy_armor': {'name': __('heavy armor'), 'slot': 'armor_rate', 'visible': True},  
+        'light_armor': {'name': __('light armor'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 1}},
+        'heavy_armor': {'name': __('heavy armor'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 2}},  
 
         }
     

@@ -505,6 +505,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.renpy_character = store.Character(self.firstname)
 
+    def armor_heavier_than(self, person):
+        return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
+
     def check_your_privilege(self, victim):
         privilege = self.menace - victim.menace
         if privilege > 2:
@@ -1848,20 +1851,33 @@ class Person(Skilled, InventoryWielder, Attributed):
     #rating methods
     def allure(self):
         value = self.sensitivity
-        value += (self.skill('expression').level-3)
-        value += (self.vitality-2)
         value += self.count_modifiers('alure')
+        if self.skill('expression').level > value:
+            value += 1
+        if self.vitality > value:
+            value += 1
+        
         return max(0, min(value, 5))
 
     def hardiness(self):
         value = self.physique
-        value += (self.skill('athletics').level-3)
-        value += (self.vitality-2)
         value += self.count_modifiers('hardiness')
+        if self.skill('athletics').level > value:
+            value += 1
+        if self.vitality > value:
+            value += 1
+        elif self.vitality < value:
+            value -= 1
+        
         return max(0, min(value, 5))
 
     def succulence(self):
         value = 3 + self.count_modifiers('succulence')
+        if self.vitality > value:
+            value += 1
+        elif self.vitality < value:
+            value -= 1
+
         return max(0, min(value, 5))
 
     def exotic(self):
@@ -1870,8 +1886,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def style(self):
         value = self.agility
-        value += (self.skill('charisma').level - 3)
         value += self.count_modifiers('style')
+        if self.skill('charisma').level > value:
+            value += 1
         return max(0, min(value, 5))
 
     def purity(self):
@@ -1880,6 +1897,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def menace(self):
         value = self.physique
+        value += 3-self.skill('combat').level
         weapons = self.weapon_slots()
         if (weapons['harness'] is None and
             weapons['belt1'] is None and
@@ -1894,9 +1912,5 @@ class Person(Skilled, InventoryWielder, Attributed):
             value -= 1
         elif self.armor.armor_rate == 'heavy_armor':
             value += 1
-
-        if self.skill('combat').expirience:
-            value += 1
-
         value += self.count_modifiers('menace')
         return max(0, min(value, 5))

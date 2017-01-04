@@ -37,6 +37,26 @@ screen sc_person_equipment(person):
             text ' '
             textbutton 'leave':
                 action Hide('sc_person_equipment'), Hide('sc_equip_item')
+        frame:
+            xalign 1.0
+            viewport:
+                scrollbars 'vertical'
+                draggable True
+                mousewheel True
+                xsize 300
+                ysize 500
+                hbox:
+                    spacing 3
+                    xsize 300
+                    ysize 500
+                    box_wrap True
+                    for i in player.get_corpses():
+                        imagebutton:
+                            idle im.Scale(i.avatar_path, 100, 100)
+                            action Show('sc_character_info_screen', person=i)
+                            hovered Show('sc_info_popup', person=i)
+                            unhovered Hide('sc_info_popup') 
+
     on 'hide':
         action Hide('sc_item_namer'), Hide('sc_equip_item'), Hide('sc_item_description')
 

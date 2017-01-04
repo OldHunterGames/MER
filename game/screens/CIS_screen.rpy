@@ -17,8 +17,11 @@ screen sc_character_info_screen(person, return_l=False):
             frame:
                 vbox:
                     
-                    hbox:  
-                        image im.Scale(person.avatar_path, 150, 150)
+                    hbox:
+                        if person.has_feature('dead'):
+                            image im.Grayscale(im.Scale(person.avatar_path, 150, 150))
+                        else:  
+                            image im.Scale(person.avatar_path, 150, 150)
                         textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
@@ -87,10 +90,11 @@ screen sc_character_info_screen(person, return_l=False):
                                 $ i = person.focused_skill
                                 text '{b}Focus:{/b}'
                                 text encolor_text(i.name, i.focus) + '(%s)'%i.focus
-                frame:
-                    vbox:
-                        for i in person.get_buffs():
-                            text i.name
+                if any([person.get_buffs()]):
+                    frame:
+                        vbox:
+                            for i in person.get_buffs():
+                                text i.name
 
 screen sc_skill_info(skill):
     frame:
