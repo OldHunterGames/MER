@@ -19,5 +19,9 @@ init python:
             'name': __('beauty sleep'),
             'modifiers': {'vitality': 2},
             'slot': 'sleep'
+        },
+        'wound': {
+            'name': __('wound'),
+            'modifiers': {'vitality': -1, 'wellness': -1},
         }
     }

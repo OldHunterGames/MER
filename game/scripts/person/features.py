@@ -38,6 +38,9 @@ class Feature(object):
     def name(self):
         return self.stats['name']
 
+    def set_time(self, time):
+        self._time = time
+
     @property
     def slot(self):
         try:

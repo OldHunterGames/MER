@@ -42,50 +42,55 @@ screen sc_character_info_screen(person, return_l=False):
                             text encolor_text(__('Exotic'), person.exotic())
                             text encolor_text(__('Style'), person.style())
                             text encolor_text(__('Menace'), person.menace())
-            hbox:
-                xalign 0.32
-                frame:
-                    
-                    vbox:
-                        text person.full_name():
-                            size 25
-                        text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-                        if person.selfesteem < 0:
-                            text encolor_text(__('Faithless'), 'red')
-                        elif person.selfesteem > 0:
-                            text encolor_text('Faithful', person.selfesteem)
-                        hbox:
-                            text "{0} {1} {2} ".format(*person.alignment.description())
-                            textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
-                                style 'hoverable_text'
-                                text_style 'hoverable_text'
-                                hovered Show('sc_mood_info', person=person)
-                                unhovered Hide('sc_mood_info')
-                                action NullAction()
-                        if person != core.player:
-                            text (person.stance(player).show_type() + ' ' +
-                                '{0} {1} {2}'.format(*person.relations(player).description()))
-                        textbutton 'Vitality: %s'%person.vitality:
-                            style 'hoverable_text'
-                            text_style 'hoverable_text'
-                            hovered Show('sc_vitality_info', person=person)
-                            unhovered Hide('sc_vitality_info')
-                            action NullAction()
-                frame:
-                    vbox:
-                        text '{b}Skills{/b}'
-                        for i in person.get_all_skills():
-                            if i.level != 1:
-                                textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+            vbox:
+                hbox:
+                    xalign 0.32
+                    frame:
+                        
+                        vbox:
+                            text person.full_name():
+                                size 25
+                            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
+                            if person.selfesteem < 0:
+                                text encolor_text(__('Faithless'), 'red')
+                            elif person.selfesteem > 0:
+                                text encolor_text('Faithful', person.selfesteem)
+                            hbox:
+                                text "{0} {1} {2} ".format(*person.alignment.description())
+                                textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
                                     style 'hoverable_text'
                                     text_style 'hoverable_text'
-                                    hovered Show('sc_skill_info', skill=i)
-                                    unhovered Hide('sc_skill_info')
+                                    hovered Show('sc_mood_info', person=person)
+                                    unhovered Hide('sc_mood_info')
                                     action NullAction()
-                        if person.focused_skill is not None:
-                            $ i = person.focused_skill
-                            text '{b}Focus:{/b}'
-                            text encolor_text(i.name, i.focus) + '(%s)'%i.focus
+                            if person != core.player:
+                                text (person.stance(player).show_type() + ' ' +
+                                    '{0} {1} {2}'.format(*person.relations(player).description()))
+                            textbutton 'Vitality: %s'%person.vitality:
+                                style 'hoverable_text'
+                                text_style 'hoverable_text'
+                                hovered Show('sc_vitality_info', person=person)
+                                unhovered Hide('sc_vitality_info')
+                                action NullAction()
+                    frame:
+                        vbox:
+                            text '{b}Skills{/b}'
+                            for i in person.get_all_skills():
+                                if i.level != 1:
+                                    textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
+                                        style 'hoverable_text'
+                                        text_style 'hoverable_text'
+                                        hovered Show('sc_skill_info', skill=i)
+                                        unhovered Hide('sc_skill_info')
+                                        action NullAction()
+                            if person.focused_skill is not None:
+                                $ i = person.focused_skill
+                                text '{b}Focus:{/b}'
+                                text encolor_text(i.name, i.focus) + '(%s)'%i.focus
+                frame:
+                    vbox:
+                        for i in person.get_buffs():
+                            text i.name
 
 screen sc_skill_info(skill):
     frame:
