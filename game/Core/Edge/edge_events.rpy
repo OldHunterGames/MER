@@ -52,8 +52,6 @@ label evn_edge_slaver(event):
     if not event.skipcheck:
         if 'slaver' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('slaver')
     if not event.skipcheck:
         return False
        
@@ -61,6 +59,7 @@ label evn_edge_slaver(event):
     'You found a slaver, new options in Outpost'
     $ edge.options.append('slaver')
     $ player.relations(edge_slaver)
+    $ edge_exploration.remove('slaver')
     return True
       
 label evn_edge_recruiter(event):
@@ -68,16 +67,14 @@ label evn_edge_recruiter(event):
     if not event.skipcheck:
         if 'recruiter' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('recruiter')
     if not event.skipcheck:
         return False
        
-        
     edge_recruiter 'Hey! Do you wanna be a Noble House servant?!'
     'You found a recruiter, new options in Outpost'
     $ edge.options.append('recruiter')
     $ player.relations(edge_recruiter)
+    $ edge_exploration.remove('recruiter')
     return True
       
 label evn_edge_bukake(event):
@@ -85,16 +82,15 @@ label evn_edge_bukake(event):
     if not event.skipcheck:
         if 'bukake' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('bukake')
     if not event.skipcheck:
         return False
     
-    if 'male' in core.orientation[target.gender]:
+    if 'male' in core.orientation[player.gender]:
         'Some bukake slut sucks. Work not for you'
     else:
         'You can be a bukake slut now'
         $ edge.options.append('bukake')
+    $ edge_exploration.remove('bukake')
     return True
           
 label evn_edge_dying_grove(event):
@@ -102,13 +98,13 @@ label evn_edge_dying_grove(event):
     if not event.skipcheck:
         if 'dying_grove' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('dying_grove')
+
     if not event.skipcheck:
         return False
         
     "You found a Dying Grove location. Here you can make a hidden stash or look for other's stashes"
     $ edge.explore_stash('dying_grove')
+    $ edge_exploration.remove('dying_grove')
     return True
       
 label evn_edge_hazy_marshes(event):
@@ -116,13 +112,13 @@ label evn_edge_hazy_marshes(event):
     if not event.skipcheck:
         if 'hazy_marshes' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('hazy_marshes')
+            
     if not event.skipcheck:
         return False
         
     "You found a Hazy Marshes location. Here you can make a hidden stash or look for other's stashes"
     $ edge.explore_stash('hazy_marshes')
+    $ edge_exploration.remove('hazy_marshes')
     return True
    
       
@@ -131,13 +127,13 @@ label evn_edge_echoing_hills(event):
     if not event.skipcheck:
         if 'echoing_hills' not in edge_exploration:
             $ event.skipcheck = True
-        else:
-            $ edge_exploration.remove('echoing_hills')
+
     if not event.skipcheck:
         return False
         
     "You found a Echoing Hills location. Here you can make a hidden stash or look for other's stashes"
     $ edge.explore_stash('echoing_hills')
+    $ edge_exploration.remove('echoing_hills')
     return True
                 
 ############## NO CHARACTER EVENTS ##################

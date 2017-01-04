@@ -127,17 +127,20 @@ label lbl_edge_slums_work_special:
     menu:
         'Trasure hunt in Dying Grove (observation)' if 'treasure_hunt_dying_grove' in edge.options:
             $ description = _('seek treasures in Dying Grove.')
-            $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('dying_grove'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
+            $ dif = 5 - edge.stash_quality('dying_grove')
+            $ special_values = {'description': description,  'difficulty' : dif, 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
             $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
 
         'Trasure hunt in Hazy Marsh (observation)' if 'treasure_hunt_hazy_marshes' in edge.options:
             $ description = _('seek treasures in Hazy Marshes.')
-            $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('hazy_marshes'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
+            $ dif = 5 - edge.stash_quality('hazy_marshes')
+            $ special_values = {'description': description,  'difficulty' : dif, 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
             $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
 
         'Trasure hunt in Echoing Hills (observation)' if 'treasure_hunt_echoing_hills' in edge.options:
             $ description = _('seek treasures in Echoing Hills.')
-            $ special_values = {'description': description,  'difficulty' : 5 - edge.stash_quality('echoing_hills'), 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
+            $ dif = 5 - edge.stash_quality('echoing_hills')            
+            $ special_values = {'description': description,  'difficulty' : dif, 'moral': ['chaotic', 'evil'], 'tense': ['communication', 'comfort', 'altruism'], 'statisfy': ['prosperity', 'activity', 'trill'], 'beneficiar': player,}
             $ target.schedule.add_action('job_treasurehunt', single=True, special_values=special_values)  
                                                           
         'Newermind':
