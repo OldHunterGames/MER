@@ -1255,11 +1255,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.favor_income()
         if not self.calculatable:
             return
+        self.reduce_esteem()
         self.food_system.fatness_change()
         self.recalculate_mood()
         self.reset_needs()
         self.calc_focus()
-        self.reduce_esteem()
+        
         self.ap = 1
     def tick_time(self):
         if not self.calculatable:
