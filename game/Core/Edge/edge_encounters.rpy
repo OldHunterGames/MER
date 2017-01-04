@@ -9,10 +9,20 @@ label lbl_edge_randenc_errant:
     '[player.name] meets a confused Mist wanderer.'
     stranger "Where am I? What is this place? Can you help me, please?!"
     menu:
-        'Fight':
-            call lbl_simple_fight([player], [stranger])
-        'Flee':
-            pass        
+        'Engage': 
+            $ player.moral_action('ardent', stranger)   
+            call lbl_simple_fight([player], [stranger]) 
+        'Decieve': 
+            $ player.moral_action('evil', stranger)  
+            call lbl_edge_errant_decive 
+        'Hide & stalk': 
+            $ player.moral_action('timid', stranger)  
+            call lbl_edge_errant_stalk 
+        'Talk': 
+            call lbl_edge_errant_talk 
+        'Flee': 
+            pass         
+            $ player.moral_action('timid', stranger)          
 
     return
     
