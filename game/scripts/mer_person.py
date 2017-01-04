@@ -1897,7 +1897,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def menace(self):
         value = self.physique
-        value += 3-self.skill('combat').level
+        value += self.skill('combat').level-3
         weapons = self.weapon_slots()
         if (weapons['harness'] is None and
             weapons['belt1'] is None and
