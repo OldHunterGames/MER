@@ -128,7 +128,7 @@ screen choice(items):
     
                     else:
                         text cap style "menu_caption"
-    use sc_player_hud
+    
 
 init -2:
     $ config.narrator_menu = True

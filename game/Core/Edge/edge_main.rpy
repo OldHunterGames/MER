@@ -73,6 +73,7 @@ label lbl_edge_main:
     
 label lbl_edge_manage:
     show expression "interface/bg_base.jpg" as bg
+    show screen sc_player_hud
     python:
         target = player
         food_info = player.ration_status()
