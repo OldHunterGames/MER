@@ -11,7 +11,7 @@ class Alignment(object):
     _orderliness = {-1: "chaotic", 0: "conformal", 1: "lawful"}
     _activity = {-1: "timid", 0: "reasonable", 1: "ardent"}
     _morality = {-1: "evil", 0: "selfish", 1: "good"}
-    _relation_binding = {'activity': 'fervor',
+    relation_binding = {'activity': 'fervor',
                          'morality': 'congruence', 'orderliness': 'distance'}
 
     def __init__(self):
@@ -111,3 +111,4 @@ class Alignment(object):
                 for val in n[k].values():
                     default.append(val)
         return needs, zero_needs, default
+
