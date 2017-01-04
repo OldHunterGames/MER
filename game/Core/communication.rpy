@@ -1,8 +1,8 @@
 ##############################################################################
-# The Edge of Mists non-related NPC communication
+# Communication with NPCs
 #
 
-label lbl_edge_communicate(target):
+label lbl_communicate(target):
     target "I'm here"
     
     return
