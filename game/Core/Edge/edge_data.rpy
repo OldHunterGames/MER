@@ -132,6 +132,7 @@ init python:
     'beg': {'name': 'Beggar', 'description': 'Descriptext'},
     'simplework': {'name': 'Simple work', 'description': 'Descriptext'},
     'hardwork': {'name': 'Hard work', 'description': 'Descriptext'},
+    'range': {'name': 'Range the Edge', 'description': 'Descriptext'},
     'treasurehunt': {'name': 'Treasure hunt', 'description': 'Descriptext'},
     'bukake': {'name': 'Bukake slut feeding', 'description': 'Descriptext'},    
         }        

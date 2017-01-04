@@ -13,7 +13,6 @@ init -8 python:
 label lbl_edge_main:    
     'The Mist gives you a way...'  
     python:
-        edge.loc_max = 7
         core.set_world(edge)
         edge.go_to_mist()
         player.schedule.add_action('accommodation_makeshift', False)
@@ -59,7 +58,7 @@ label lbl_edge_main:
         slavers.add_member(edge_recruiter)
         
         ## Exploration variatns
-        edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills',]
+        edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
         
                
     
@@ -249,6 +248,28 @@ label lbl_edge_outpost:
     call lbl_edge_outpost
     return
 
+label lbl_edge_stashes:
+    python:
+        stashes = edge.active_stashes()
+        stashes = [(edge_locations[i], i) for i in stashes]
+        stashes.append((__("leave"), 'leave'))
+        stash = renpy.display_menu(stashes)
+        if not stash == 'leave':
+            stash = edge.get_stash(stash)
+    if stash == 'leave':
+        return
+    call screen sc_manage_stash(stash)
+    jump lbl_edge_stashes
+
+label lbl_edge_turn:
+    $ edge.new_turn()
+    if edge.faction_mode:
+        call lbl_edge_faction_livein
+    if edge.slums_mode:
+        call lbl_edge_manage
+    else:
+        call lbl_edge_manage        
+    return
 
 
 
@@ -272,107 +293,6 @@ label lbl_edge_schedule:
     
     jump lbl_edge_schedule
     return
-
-label lbl_edge_locations_menu:
-    $ edge.make_locations_menu()
-            
-    call lbl_edge_locations_menu    
-    return
-
-label lbl_edge_shedule_job:
-    menu:
-        'Idle':
-            $ target.schedule.add_action('job_idle', False)  
-        'Explore viscinity' if len(edge.locations) < edge.loc_max:
-            $ target.schedule.add_action('job_explore', 1)               
-        'Look for hidden stashes' if edge.has_location('hazy_marsh') or edge.has_location('echoing_hills') or edge.has_location('dying_grove'):
-            jump lbl_edge_locations_menu
-        'Scavenge munition' if edge.has_location('grim_battlefield'):
-            $ target.schedule.add_action('job_scmunition', 1)  
-        'Extract demonblood' if edge.has_location('crimson_pit'):
-            $ target.schedule.add_action('job_dbexctraction', 1)  
-        'Scavenge tools & scrap' if edge.has_location('junk_yard'):
-            $ target.schedule.add_action('job_scjunc', 1)              
-        'Disassemble machinery' if edge.has_location('ruined_factory'):
-            $ target.schedule.add_action('job_disassemble', 1)     
-        'Nevermind':
-            $ pass
-    
-    jump lbl_edge_schedule
-    return
-
-label lbl_edge_shedule_overtime:
-    menu:
-        'Rest':
-            $ target.schedule.add_action('overtime_nap', False)          
-        'Scout new location' if len(edge.locations) < edge.loc_max:
-            $ target.schedule.add_action('overtime_scout', 1)    
-        'Found a camp (outworld ruines)' if 'outworld ruines' in edge.locations and not camp.founded:
-            $ target.schedule.add_action('overtime_foundcamp', 1)  
-        'Nevermind':
-            $ pass
-    
-    jump lbl_edge_schedule
-    return
-
-label lbl_edge_craft:
-    menu:
-        'Camp improvements' if camp.founded:    
-            call lbl_edge_craft_camp
-        'Basic stuff':
-            call lbl_edge_craft_basic
-        'Advanced stuff' if 'workbench' not in camp.improvements:
-            call lbl_edge_craft_workbench
-        'Done':
-            jump lbl_edge_manage
-            
-    jump lbl_edge_craft
-    return
-
-label lbl_edge_craft_camp:
-    menu:
-        'Stove (3 hardware)' if core.resources.hardware >= 3 and 'stove' not in camp.improvements:
-            $ core.resources.hardware -= 3
-            $ camp.improvements.append('stove')
-            'You get a stove. Camp will consume 1 fuel/decade to increase comfort. Corpses can be processed to provision now, for a fuel cost.'
-        'Done':
-            jump lbl_edge_craft        
-    
-    jump lbl_edge_craft_camp
-    return
-
-label lbl_edge_info_base:
-    python:
-        job  = edge_denotation[target.job]
-        overtime = edge_denotation[target.overtime]        
-        focus = encolor_text(target.show_focus(), target.focus)
-        recalc_result_target=target
-        vitality_info_target = target
-        txt = "Mood: " + encolor_text(target.show_mood(), target.mood) + ' {a=lb_recalc_result_glue}[?]{/a}'
-        txt += " | Vitality: %s "%(target.vitality) + '{a=lbl_vitality_info}[?]{/a}'
-        txt += ' | Ration: %s'%(target.food_info())
-        txt += "\nOccupation: %s | Overtime: %s"% (job, overtime)
-        txt += " | Accommodation: %s  \n"%target.accommodation
-        txt += "Skill focus: %s\n"%(focus)
-        txt += "Atributes: %s\n"%(target.show_attributes())     
-        txt += "Features: %s\n"%(target.show_features())
-        
-
-    "[txt]"        
-    if edge.faction_mode:
-        jump lbl_edge_faction_livein
-    call lbl_edge_manage
-    return
-
-label lbl_edge_turn:
-    $ edge.new_turn()
-    if edge.faction_mode:
-        call lbl_edge_faction_livein
-    if edge.slums_mode:
-        call lbl_edge_manage
-    else:
-        call lbl_edge_manage        
-    return
     
 label lbl_edge_noloc:
     'Carry on, there is noting to see here...'
@@ -380,15 +300,3 @@ label lbl_edge_noloc:
     return
     
 
-label lbl_edge_stashes:
-    python:
-        stashes = edge.active_stashes()
-        stashes = [(edge_locations[i], i) for i in stashes]
-        stashes.append((__("leave"), 'leave'))
-        stash = renpy.display_menu(stashes)
-        if not stash == 'leave':
-            stash = edge.get_stash(stash)
-    if stash == 'leave':
-        return
-    call screen sc_manage_stash(stash)
-    jump lbl_edge_stashes

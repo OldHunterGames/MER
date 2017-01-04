@@ -91,32 +91,57 @@ label lbl_edge_slums_work_food:
 
 label lbl_edge_slums_work_res:
     menu:
-        'Check your skill':
-            call lbl_skillcheck(player, 'sex', 1)
-            $ resl = skillcheck.result
-            'Результат: [resl]'
         
-        'Manual labor (athletics, sui)':
-            $ title = __('Some manual labor (athletics, simple).')
+        'Manual labor (athletics, simple)':
             $ skill_id = 'athletics'
             $ description = _('doing manual labor at the slums and gains fixed ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['activity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
             
         'Household services (housekeeping, simple)':
-            $ title = __('Some labor (housekeeping).')
             $ skill_id = 'housekeeping'
             $ description = _('providing household services at the slums and gains fixed ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['order'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
         
-        'Repair stuff (craft, hard)':
-            $ title = __('Some repairs (craft).')
+        'Repair stuff (craft, hard)' if 'repair_job' in edge.options:
             $ skill_id = 'craft'
             $ description = _('repairing various stuff for a price. ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
             $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
-                                                          
+        
+        'Scavenger (survival, hard)' if 'scavenge' in edge.options:
+            $ skill_id = 'survival'
+            $ description = _('repairing various stuff for a price. ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+        
+        'Entertainer (expression, hard)' if 'entertain_job' in edge.options:
+            $ skill_id = 'expression'
+            $ description = _('repairing various stuff for a price. ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+        
+        'Brew alchohol (alchemy, hard)' if 'brewery' in edge.options:
+            $ skill_id = 'alchemy'
+            $ description = _('repairing various stuff for a price. ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+        
+        'Disassembly old machinery (any tech skill, hard)' if 'machinery' in edge.options:
+            python:
+                skills = {'mechanics': target.skill('mechanics').level, 'electronics': target.skill('electronics').level, 'scholarship': target.skill('scholarship').level}
+                skill = 'mechanics'
+                level = skills['mechanics']
+                for key, value in skills.items():
+                    if value > level:
+                        skill = key
+                        level = value
+                skill_id = skill
+                description = _('repairing various stuff for a price. ')
+                special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
+                target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+                                                                                                          
         'Newermind':
             call lbl_edge_slums_jobs
             
@@ -125,6 +150,9 @@ label lbl_edge_slums_work_res:
 
 label lbl_edge_slums_work_special:
     menu:
+        'Range the Edge':
+            $ target.schedule.add_action('job_range', single = False, )
+            
         'Trasure hunt in Dying Grove (observation)' if 'treasure_hunt_dying_grove' in edge.options:
             $ description = _('seek treasures in Dying Grove.')
             $ dif = 5 - edge.stash_quality('dying_grove')

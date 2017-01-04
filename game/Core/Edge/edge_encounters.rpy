@@ -5,12 +5,14 @@
 
 label lbl_edge_randenc_errant:
     python:
-        # enemy_weapon = Weapon('twohand', 'subdual', quality=1)
-        # enemy_armor = Armor('heavy_armor', quality=1)
-        # enemy.main_hand = enemy_weapon
-        # enemy.armor = enemy_armor
-        enemy = gen_random_person('human')
-        enemy1 = DuelCombatant(enemy)
+        stranger = gen_random_person('human')    
+    '[player.name] meets a confused Mist wanderer.'
+    stranger "Where am I? What is this place? Can you help me, please?!"
+    menu:
+        'Fight':
+            call lbl_simple_fight([player], [stranger])
+        'Flee':
+            pass        
 
     return
     

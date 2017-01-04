@@ -92,7 +92,72 @@ label evn_edge_bukake(event):
         $ edge.options.append('bukake')
     $ edge_exploration.remove('bukake')
     return True
-          
+      
+label evn_edge_repair_job(event):
+    
+    if not event.skipcheck:
+        if 'repair_job' in edge_exploration:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    
+    slums_leader 'There are many broken stuff found at the Edge of Mists. It can be repaired for a price - excellent job opportunuty for anyone with a craft skills.'
+    $ edge.options.append('repair_job')
+    $ edge_exploration.remove('repair_job')
+    return True
+      
+label evn_edge_scavenge(event):
+    
+    if not event.skipcheck:
+        if 'scavenge' in edge_exploration:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    
+    'Scavenge job opens.'
+    $ edge.options.append('scavenge')
+    $ edge_exploration.remove('scavenge')
+    return True
+      
+label evn_edge_entertain_job(event):
+    
+    if not event.skipcheck:
+        if 'entertain_job' in edge_exploration:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    
+    slums_entertainer "I need someone to help me entertain our guests. Can you dance, sing or tall tails mayhaps? Patrons will give you some tips for a good one!"
+    $ edge.options.append('entertain_job')
+    $ edge_exploration.remove('entertain_job')
+    return True
+      
+label evn_edge_brewery(event):
+    
+    if not event.skipcheck:
+        if 'brewery' in edge_exploration:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    
+    slums_entertainer "My patrons need booze! If only some alschemist could brew some... Any drug or funny herb goes actualy!"
+    $ edge.options.append('brewery')
+    $ edge_exploration.remove('brewery')
+    return True
+      
+label evn_edge_machinery(event):
+    
+    if not event.skipcheck:
+        if 'machinery' in edge_exploration:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    
+    slums_leader 'The tide of Mists often brings some ruined factories, spacehulks and steamshipwrecks here to the Edge. Engeneer, hacker or scientist can disassemble some machinery to gain useful resources!'
+    $ edge.options.append('machinery')
+    $ edge_exploration.remove('machinery')
+    return True
+                              
 label evn_edge_dying_grove(event):
     
     if not event.skipcheck:

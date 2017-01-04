@@ -54,7 +54,12 @@ label shd_edge_job_idle(action):
         pass
     'idling...'
     return
-        
+
+label shd_edge_job_range(action):
+    '[action.actor.name] patroling the Edge of Mists.'
+    call lbl_edge_randenc_errant
+    return
+            
 label shd_edge_job_servitor(action):
     python:
         actor = action.actor
