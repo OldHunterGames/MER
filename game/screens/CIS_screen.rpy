@@ -50,6 +50,10 @@ screen sc_character_info_screen(person, return_l=False):
                         text person.full_name():
                             size 25
                         text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
+                        if person.selfesteem < 0:
+                            text encolor_text(__('Faithless'), 'red')
+                        elif person.selfesteem > 0:
+                            text encolor_text('Faithful', person.selfesteem)
                         hbox:
                             text "{0} {1} {2} ".format(*person.alignment.description())
                             textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
