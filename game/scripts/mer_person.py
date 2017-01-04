@@ -1151,7 +1151,10 @@ class Person(Skilled, InventoryWielder, Attributed):
     # needs should be a list of tuples[(need, shift)]
     def motivation(self, skill=None, tense_needs=[], satisfy_needs=[], beneficiar=None, morality=0, special=[]):
         motiv = 0
-        motiv += morality
+        if not isinstance(morality, int):
+            motiv += self.check_moral(morality)
+        else:
+            motiv += morality
         for i in special:
             motiv += i
         if skill:
