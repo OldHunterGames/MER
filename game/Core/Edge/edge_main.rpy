@@ -33,8 +33,8 @@ label lbl_edge_main:
         
         
         ## Houses & Persons
-        edge_sovereign = 'serpis'
-        major_house = major_names[edge_sovereign]
+        edge_sovereign = core.get_faction_by_id('serpis')
+        major_house = major_names[id]
         
         slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
         slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')

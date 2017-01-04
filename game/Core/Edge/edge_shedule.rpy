@@ -122,7 +122,7 @@ label shd_edge_job_simplework(action):
         beneficiar = action.special_values['beneficiar']
         tense = action.special_values['tense']
         statisfy = action.special_values['statisfy'] 
-        motivation = action.actor.motivation(skill, tense, statisfy, beneficiar, moral)
+        motivation = action.actor.motivation(skill, statisfy, tense, beneficiar, moral)
 
     call lbl_skillcheck(actor, skill, motivation, difficulty)
 
@@ -130,7 +130,7 @@ label shd_edge_job_simplework(action):
         result = skillcheck.result
          
         actor.moral_action(moral)
-        change_needs(actor, tense, statisfy, result)
+        change_needs(actor, statisfy, tense, result)
     if result > 0:
         $ salary = encolor_text(__('salary'), 2)
         $ edge.resources.income(2)  
