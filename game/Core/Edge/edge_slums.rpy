@@ -55,13 +55,13 @@ label lbl_edge_slums_ration:
 label lbl_edge_slums_jobs:
     menu:
         'You can work for food (easy but no gains) or find a way to earn some valueables (hard work). Or maybe you have a special plan? Anyways, more you know about people and places around you, more opportunities you have!'
-        'Earn some food':
+        'Miserable sunsistence':
             call lbl_edge_slums_work_food
-        'Gain resources':
+        'Proper work':
             call lbl_edge_slums_work_res
         'Special plan':
             call lbl_edge_slums_work_special   
-        'Relax':
+        'Just relax':
             $ target.schedule.add_action('job_idle', single=False)  
     return
     
@@ -96,27 +96,27 @@ label lbl_edge_slums_work_res:
             $ resl = skillcheck.result
             'Результат: [resl]'
         
-        'Manual labor (athletics)':
-            $ title = __('Some manual labor (athletics).')
+        'Manual labor (athletics, sui)':
+            $ title = __('Some manual labor (athletics, simple).')
             $ skill_id = 'athletics'
-            $ description = _('doing manual labor at the slums. Yelds ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+            $ description = _('doing manual labor at the slums and gains fixed ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['activity'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
             
-        'Household services (housekeeping)':
+        'Household services (housekeeping, simple)':
             $ title = __('Some labor (housekeeping).')
             $ skill_id = 'housekeeping'
-            $ description = _('providing household services at the slums. Yelds ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
+            $ description = _('providing household services at the slums and gains fixed ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['order'], 'beneficiar': player,}
             $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
-                                    
-        'Sexual services (sex)':
-            $ title = __('Some labor (sex).')
-            $ skill_id = 'sex'
-            $ description = _('doing sexual services at the slums. Yelds ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['prosperity'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
-                                                
+        
+        'Repair stuff (craft, hard)':
+            $ title = __('Some repairs (craft).')
+            $ skill_id = 'craft'
+            $ description = _('repairing various stuff for a price. ')
+            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
+            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+                                                          
         'Newermind':
             call lbl_edge_slums_jobs
             

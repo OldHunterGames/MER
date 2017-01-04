@@ -55,45 +55,21 @@ label shd_edge_job_idle(action):
     'idling...'
     return
         
-label shd_edge_job_moneywork(action):
+label shd_edge_job_servitor(action):
     python:
         actor = action.actor
         name = actor.name
-        moral = action.special_values['moral']
-        skill = action.special_values['skill']
-        beneficiar = action.special_values['beneficiar']
-        tense = action.special_values['tense']
-        statisfy = action.special_values['statisfy'] 
-        descr = action.special_values['description'] 
-        resname = action.special_values['resource_name'] 
-        difficulty = action.special_values['difficulty'] 
-        result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
-        edge.resources.income(result)
-        yeld = encolor_text(__('resources'), result)
-        actor.skill(skill).get_expirience(result)
-    '[name] [descr] [yeld].'
-    return
-    
-label shd_edge_job_foodwork(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        beneficiar = action.special_values['beneficiar']
-        difficulty = action.special_values['difficulty']
-        skill = action.special_values['skill']
-        mrl = action.special_values['moral']
-        moral = target.check_moral(mrl, target = beneficiar)
-        result = core.threshold_skillcheck(actor, skill, difficulty = difficulty, tense_needs=['amusement', 'comfort'], satisfy_needs=['prosperity'], beneficiar=actor, morality=moral, success_threshold = 1, special_motivators=[])        
-
-        if result[0]:
-            text = action.special_values['succes_text']    
-            actor.eat(1, 0)
-        else:
-            text = action.special_values['fail_text'] 
-        
+        beneficiar = actor
+        actor.moral_action('timid') 
+        actor.authority.set_tension()
+        actor.comfort.set_tension()
+        actor.ambition.set_tension()        
+        actor.independence.set_tension()
+        text = __(' ministering gang members.')
+        target.supervisor.gain_favor(1)
     '[name] [text]'
     return
-    
+   
 label shd_edge_job_beg(action):
     python:
         actor = action.actor
@@ -126,23 +102,41 @@ label shd_edge_job_bukake(action):
         text = __('humbly sucks stangers diks and consume their semen for nutrition.')
     '[name] [text]'
     return
-        
-label shd_edge_job_servitor(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        beneficiar = actor
-        actor.moral_action('timid') 
-        actor.authority.set_tension()
-        actor.comfort.set_tension()
-        actor.ambition.set_tension()        
-        actor.independence.set_tension()
-        text = __(' ministering gang members.')
-        target.supervisor.gain_favor(1)
-    '[name] [text]'
-    return
     
 label shd_edge_job_simplework(action):
+    python:
+        actor = action.actor
+        skill = action.special_values['skill']
+        difficulty = action.special_values['difficulty'] 
+
+        name = actor.name
+        descr = action.special_values['description'] 
+
+        moral = action.special_values['moral']
+        moral = actor.check_moral(*moral)
+        beneficiar = action.special_values['beneficiar']
+        tense = action.special_values['tense']
+        statisfy = action.special_values['statisfy'] 
+        motivation = action.actor.motivation(skill, tense, statisfy, beneficiar, moral)
+
+    call lbl_skillcheck(actor, skill, motivation, difficulty)
+
+    python:
+        result = skillcheck.result
+         
+        actor.moral_action(moral)
+        change_needs(actor, tense, statisfy, result)
+    if result > 0:
+        $ salary = encolor_text(__('salary'), 2)
+        $ edge.resources.income(2)  
+        '[name][descr][salary].'
+    else:
+        $ actor.ambition.set_tension()
+        '[name] fails to deliver.'    
+   
+    return
+    
+label shd_edge_job_hardwork(action):
     python:
         actor = action.actor
         skill = action.special_values['skill']
@@ -168,27 +162,9 @@ label shd_edge_job_simplework(action):
         yeld = encolor_text(__('resources'), result)
         edge.resources.income(result)
         actor.skill(skill).get_expirience(result)
-    '[name] [descr][yeld].'
+    '[name][descr][yeld].'
     return
-    
-label shd_edge_job_clanwork(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        moral = action.special_values['moral']
-        skill = action.special_values['skill']
-        beneficiar = action.special_values['beneficiar']
-        tense = action.special_values['tense']
-        statisfy = action.special_values['statisfy'] 
-        descr = action.special_values['description'] 
-        difficulty = action.special_values['difficulty'] 
-        result = core.skillcheck(actor, skill, difficulty = difficulty, tense_needs=tense, satisfy_needs=statisfy, beneficiar=beneficiar, morality=moral, special_motivators=[])        
-        yeld = encolor_text(__('favor'), result)
-        target.supervisor.gain_favor(result)
-        actor.skill(skill).get_expirience(result)
-    '[name] [descr][yeld].'
-    return
-    
+     
     
 label shd_edge_job_treasurehunt(action):
     python:

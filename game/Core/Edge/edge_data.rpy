@@ -130,7 +130,8 @@ init python:
     edge_jobs = {
     'idle': {'name': 'Idle', 'description': 'Descriptext'},
     'beg': {'name': 'Beggar', 'description': 'Descriptext'},
-    'simplework': {'name': 'Hard work', 'description': 'Descriptext'},
+    'simplework': {'name': 'Simple work', 'description': 'Descriptext'},
+    'hardwork': {'name': 'Hard work', 'description': 'Descriptext'},
     'treasurehunt': {'name': 'Treasure hunt', 'description': 'Descriptext'},
     'bukake': {'name': 'Bukake slut feeding', 'description': 'Descriptext'},    
         }        
