@@ -169,8 +169,7 @@ class MistsOfEternalRome(object):
             check -= 1
         if target.mood < 0:
             check -= 1
-        check += (3 - get_max_need(target, *args)[0])
-        check -= target.stance(self.player).value
+        check -= get_max_need(target, *args)[0]
         harmony = target.relations(self.player).harmony()[0]
         if harmony > 0:
             check -= harmony
