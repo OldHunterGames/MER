@@ -241,7 +241,7 @@ class MistsOfEternalRome(object):
 
 
     def gain_ctoken(self, actor, target, token, skill, morality, tense=None, satisfy=None):
-        morality = actor.check_moral(morality)
+        morality = actor.check_moral(morality, target=target)
         stability = target.player_relations().stability
         motivation = actor.motivation(skill, beneficiar=self.player, morality=morality)
         try:
@@ -261,6 +261,8 @@ class MistsOfEternalRome(object):
             return False
         token = self.token_difficulty(target, token, *needs)
         skillcheck = renpy.call_in_new_context('lbl_skillcheck',actor, skill, motivation, token)
+        if skillcheck >= 0:
+            actor.moral_action(morality)
         if skillcheck > stability:
             target.add_token(token)
             for need in needs:
