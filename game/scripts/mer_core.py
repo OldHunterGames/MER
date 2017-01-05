@@ -261,6 +261,7 @@ class MistsOfEternalRome(object):
             return False
         token_value = self.token_difficulty(target, token, *needs)
         skillcheck = renpy.call_in_new_context('lbl_skillcheck',actor, skill, motivation, token_value)
+        skillcheck = skillcheck.result
         if skillcheck >= 0:
             actor.moral_action(morality)
         if skillcheck > stability:
