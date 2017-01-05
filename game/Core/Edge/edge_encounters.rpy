@@ -21,7 +21,10 @@ label lbl_edge_randenc_errant:
         'Engage':
             $ player.moral_action('ardent', stranger) 
             if player.check_your_privilege(stranger):
-                call lbl_edge_dominate(stranger)
+                if stranger.armor_heavier_than(player):
+                    call lbl_edge_dominate(stranger)
+                else:
+                    'Wanderer runs away.'
             else:
                 call lbl_edge_errant_fight([player], [stranger]) 
         'Decieve': 

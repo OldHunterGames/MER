@@ -509,7 +509,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
 
     def check_your_privilege(self, victim):
-        privilege = self.menace - victim.menace
+        privilege = self.menace() - victim.menace()
         if privilege > 2:
             return True
 
