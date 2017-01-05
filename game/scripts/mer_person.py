@@ -1558,14 +1558,10 @@ class Person(Skilled, InventoryWielder, Attributed):
             renpy.call_in_new_context('lbl_notify', self, token)
 
     def player_relations(self):
-        for rel in self._relations:
-            if rel.is_player_relations():
-                return rel
+        return self.relations(self.game_ref.player)
 
     def player_stance(self):
-        for i in self._stance:
-            if i.is_player_stance():
-                return i
+        return self.relations(self.game_ref.player)
 
     def moral_action(self, *args, **kwargs):
         # checks moral like person.check_moral, but instantly affect selfesteem

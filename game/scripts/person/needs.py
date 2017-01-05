@@ -24,6 +24,13 @@ class Need(object):
         self._level = _default_need['level']
         self._satisfaction = 0
         self._tension = False
+        self.tokens = []
+
+    def use_token(self, token):
+        self.tokens.append(token)
+
+    def token_used(self, token):
+        return token in self.tokens
 
     @property
     def satisfaction(self):

@@ -21,35 +21,6 @@ remembered_needs = collections.defaultdict(list)
 def set_event_game_ref(game):
     Event.set_game_ref(game)
 
-
-class UsedNeeds(object):
-
-
-    def __init__(self, needs, owner):
-        self.needs = copy(needs)
-        self.owner = owner
-
-    def is_used(self, needs, target):
-        if target != self.owner:
-            return True
-        for need in needs:
-            if need not in self.needs:
-                return False
-        return True
-
-
-def remember_needs(target, token, needs):
-    if not is_needs_used(target, token, needs):
-        remembered_needs[token].append(UsedNeeds(needs, target))
-
-
-def is_needs_used(target, token, needs):
-    for used in remembered_needs[token]:
-        if used.is_used(needs, target):
-            return True
-    return False
-
-
 def get_max_need(target, *args):
     maxn_name = None
     maxn = 0
@@ -61,7 +32,6 @@ def get_max_need(target, *args):
                 maxn = level
                 maxn_name = arg
     return maxn, maxn_name
-
 
 class MistsOfEternalRome(object):
     """
@@ -270,6 +240,39 @@ class MistsOfEternalRome(object):
         return choice(worlds)().point_of_arrival
 
 
+    def gain_ctoken(self, actor, target, token, skill, morality, tense=None, satisfy=None):
+        morality = actor.check_moral(morality)
+        stability = target.player_relations().stability
+        motivation = actor.motivation(skill, beneficiar=self.player, morality=morality)
+        try:
+            needs = [i for i in tense]
+        except TypeError:
+            needs = []
+        try:
+            needs.extend([i for i in satisfy])
+        except TypeError:
+            pass
+        for i in [i for i in needs]:
+            need = getattr(target, i)
+            if need.token_used(token):
+                needs.remove(i)
+        if len(needs) < 1:
+            target.add_token('antagonism')
+            return False
+        token = self.token_difficulty(target, token, *needs)
+        skillcheck = renpy.call_in_new_context('lbl_skillcheck',actor, skill, motivation, token)
+        if skillcheck > stability:
+            target.add_token(token)
+            for need in needs:
+                getattr(target, need).use_token(token)
+            return True
+        else:
+            target.add_token('antagonism')
+            return False
+
+
+
+
 #Alternate Skillcheck
 
 class Skillcheck(object):
@@ -335,6 +338,7 @@ class Skillcheck(object):
             for i in self.cons:
                 if i[1] == remove:
                     self.cons.remove(i)
+                    break
         else:
             if value > self.skill_level:
                 self.skill_level += 1
@@ -375,5 +379,7 @@ class Skillcheck(object):
                         if value == v:
                             self.use_resource(key)
                             used = True
+
+
 
 
