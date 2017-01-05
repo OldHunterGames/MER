@@ -112,3 +112,5 @@ label game_over:
     "To be continued in next build. Please support us."
     $ renpy.full_restart()
 
+label lbl_notify(person, token):
+    '[person.name] get token [token]'
