@@ -31,7 +31,11 @@ label lbl_gratify(target):
     menu:
         'Compliment (charisma)':
             python:
-                result = core.gain_ctoken(player, target, 'contribution', 'charisma', ['altruism'], tense=None, satisfy=['communication'])
+                morality = ['good']
+                difficulty = core.token_difficulty(target, 'contribution', 'communication')
+                skillcheck = core.skillcheck(player, 'charisma', morality, difficulty, beneficiar=player)
+                skillcheck = skillcheck.result
+                result = core.gain_ctoken(skillcheck, target, 'contribution', tense=None, satisfy=['communication'])
             
             if result:
                 'Bingo'

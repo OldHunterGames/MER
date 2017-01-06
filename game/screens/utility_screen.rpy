@@ -482,14 +482,8 @@ screen sc_generate_player:
         action Function(gen_player, core)
 
 
-label lbl_skillcheck(person, skill, motivation, difficulty=0):
-    $ skillcheck = Skillcheck(person, skill, motivation, difficulty)
-    if person.player_controlled:
-        call screen sc_skillcheck(skillcheck)
-    else:
-        $ skillcheck.npc_check()
-    if skillcheck.result >= 0:
-        $ person.use_skill(skill)
+label lbl_skillcheck(skillcheck):
+    call screen sc_skillcheck(skillcheck)
     return skillcheck
 
 
@@ -530,7 +524,7 @@ screen sc_skillcheck(skillcheck):
         xalign 0.5
         text skillcheck_quality[skillcheck.result]
         textbutton 'End check':
-            action Return()
+            action Return(), Function(skillcheck.end)
         textbutton 'Sabotage':
             action Function(skillcheck.sabotage), Return()
 

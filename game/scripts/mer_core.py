@@ -188,69 +188,21 @@ class MistsOfEternalRome(object):
             threshold_result = False
         return threshold_result, result
 
-    def skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
-                   morality=0, special_motivators=[], threshold=None):
-        skill = actor.skill(skill)
-        motivation = actor.motivation(
-            skill.name, tense_needs, satisfy_needs, beneficiar)
-        # factors['attraction'] and equipment bonuses not implemented yet
-        factors = {'level': skill.level,
-                   skill.attribute: skill.attribute_value(),
-                   'focus': skill.focus,
-                   'mood': actor.mood,
-                   'motivation': motivation,
-                   'vitality': actor.vitality,
-                   'bonus': actor.count_modifiers(skill.name)}
-        result = skill.level
-        used = []
-        found = False
-        while result != 0:
-            difficulty_check = 1
-            used = []
-            for k, v in factors.items():
-                if difficulty < difficulty_check:
-                    found = True
-                elif k != 'level' and v >= result:
-                    difficulty_check += 1
-                    used.append(k)
-            if difficulty < difficulty_check:
-                found = True
-            if not found:
-                result -= 1
-            else:
-                break
-        if motivation < 1:
-            result = -1
-        renpy.call_in_new_context(
-            'lbl_skillcheck_info', result, factors, skill, used, threshold, difficulty)
-        if result >= 0:
-            for need in tense_needs:
-                getattr(actor, need).set_tension()
-            for need in satisfy_needs:
-                getattr(actor, need).satisfaction = result
-            actor.use_skill(skill)
-            if actor == self.player and beneficiar == actor.master:
-                if result > actor.merit:
-                    actor.merit = result
-            actor.moral_action(morality)
-        return result
+
+    def skillcheck(self, person, skill, morality=None, difficulty=0, tense=None, satisfy=None, beneficiar=None, delayed=False):
+        return Skillcheck(person, skill, morality, difficulty, tense, satisfy, beneficiar, delayed)
 
     def discover_world(self, worlds):
         return choice(worlds)().point_of_arrival
 
 
-    def gain_ctoken(self, actor, target, token, skill, morality, tense=None, satisfy=None):
-        morality = actor.check_moral(morality, target=target)
-        stability = target.player_relations().stability
-        motivation = actor.motivation(skill, beneficiar=self.player, morality=morality)
-        try:
-            needs = [i for i in tense]
-        except TypeError:
-            needs = []
-        try:
-            needs.extend([i for i in satisfy])
-        except TypeError:
-            pass
+    def gain_ctoken(self, skillcheck, target, token, tense=None, satisfy=None):
+        stability = target.relations(self.player).stability
+        tense = tense if tense is not None else []
+        satisfy = satisfy if satisfy is not None else []
+        needs = [i for i in tense]
+        needs.extend([i for i in satisfy])
+
         for i in [i for i in needs]:
             need = getattr(target, i)
             if need.token_used(token):
@@ -258,11 +210,11 @@ class MistsOfEternalRome(object):
         if len(needs) < 1:
             target.add_token('antagonism')
             return False
-        token_value = self.token_difficulty(target, token, *needs)
-        skillcheck = renpy.call_in_new_context('lbl_skillcheck',actor, skill, motivation, token_value)
-        skillcheck = skillcheck.result
         if skillcheck >= 0:
-            actor.moral_action(morality)
+            for i in tense:
+                getattr(target, i).set_tension()
+            for i in satisfy:
+                getattr(target, i).set_satisfaction(skillcheck)
         if skillcheck > stability:
             target.add_token(token)
             for need in needs:
@@ -280,19 +232,23 @@ class MistsOfEternalRome(object):
 class Skillcheck(object):
 
 
-    def __init__(self, person, skill, motivation, difficulty=0):
+    def __init__(self, person, skill, morality=None, difficulty=0, tense=None, satisfy=None, beneficiar=None, delayed=False):
         self.skill = person.skill(skill)
         self.person = person
         self.skill_level = self.skill.level
         self.difficulty = difficulty
-        self.motivation = motivation
+        self.morality = morality if morality is not None else []
         self.resources = {}
         self.cons = []
-        self.init_resources()
-        self.init_cons()
+        self.beneficiar = beneficiar
         self.sabotaged = False
+        self.satisfy = satisfy if satisfy is not None else []
+        self.tense = tense if tense is not None else []
+        if not delayed:
+            self.activate()
 
     def init_cons(self):
+        self.cons = []
         for i in range(1, self.difficulty+1):
             self.cons.append(('difficulty', 5-self.skill_level))
         if self.person.anxiety > 0:
@@ -304,6 +260,7 @@ class Skillcheck(object):
         self.sabotaged = True
 
     def init_resources(self):
+        self.resources = {}
         skill = self.skill
         person = self.person
         attribute = skill.attribute
@@ -357,6 +314,25 @@ class Skillcheck(object):
         else:
             return self.skill_level
 
+    def activate(self):
+        self.morality = self.person.check_moral(self.morality)
+        self.motivation = self.person.motivation(
+            self.skill, self.tense, self.satisfy, self.beneficiar, self.morality)
+        self.init_resources()
+        self.init_cons()
+        if self.person.player_controlled:
+            renpy.call_in_new_context('lbl_skillcheck', self)
+        else:
+            self.npc_check()
+
+    def end(self):
+        if self.result >= 0:
+            for i in self.satisfy:
+                getattr(self.person, i).set_satisfaction(self.result)
+            for i in self.tense:
+                getattr(self.person, i).set_tension()
+            self.person.moral_action(self.morality)
+
     def has_cons(self):
         return len(self.cons) > 0
 
@@ -368,6 +344,7 @@ class Skillcheck(object):
             self.sabotaged = True
             return
         elif self.motivation == 0:
+            self.end()
             return
         
         for v in self.resources.values():
@@ -381,6 +358,7 @@ class Skillcheck(object):
                         if value == v:
                             self.use_resource(key)
                             used = True
+        self.end()
 
 
 

@@ -1168,10 +1168,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             motiv += morality
         for i in special:
             motiv += i
-        if skill:
-            if self.skill(skill).talent:
+        if skill is not None:
+            if isinstance(skill, str):
+                skill = self.skill(skill)
+            if skill.talent:
                 motiv += 1
-            elif self.skill(skill).inability:
+            elif skill.inability:
                 motiv -= 1
 
         intense = []
