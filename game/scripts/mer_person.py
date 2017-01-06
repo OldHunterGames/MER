@@ -1563,7 +1563,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self.relations(self.game_ref.player)
 
     def player_stance(self):
-        return self.relations(self.game_ref.player)
+        return self.stance(self.game_ref.player)
 
     def moral_action(self, *args, **kwargs):
         # checks moral like person.check_moral, but instantly affect selfesteem
