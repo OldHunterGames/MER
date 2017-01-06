@@ -315,7 +315,7 @@ class Skillcheck(object):
             return self.skill_level
 
     def activate(self):
-        self.morality = self.person.check_moral(self.morality)
+        self.morality = self.person.check_moral(*self.morality)
         self.motivation = self.person.motivation(
             self.skill, self.tense, self.satisfy, self.beneficiar, self.morality)
         self.init_resources()
