@@ -22,8 +22,6 @@ class Need(object):
         self.owner = owner
         self.name = name
         self._level = _default_need['level']
-        self._satisfaction = 0
-        self._tension = False
         self.tokens = []
 
     def use_token(self, token):
@@ -32,37 +30,12 @@ class Need(object):
     def token_used(self, token):
         return token in self.tokens
 
-    @property
-    def satisfaction(self):
-        return self._satisfaction
-
-    @satisfaction.setter
-    def satisfaction(self, value):
-        levels = [0, self.owner.sensitivity, 5, 5]
-        if value < 0:
-            value = 0
-        if value > levels[self.level]:
-            value = levels[self.level]
-        if value < self._satisfaction:
-            return
-        self._satisfaction = value
-
-    @property
-    def tension(self):
-        return self._tension or self.owner.count_modifiers(self.name) < 0
-
     def set_satisfaction(self, value):
-        levels = [0, self.owner.sensitivity, 5, 5]
-        if value < 0:
-            value = 0
-        if value > levels[self.level]:
-            value = levels[self.level]
-        if value < self._satisfaction:
-            return
-        self._satisfaction = value
+        self.owner.life_quality += value*self.level
 
     def set_tension(self):
-        self._tension = True
+        values = {1: -3, 2: -6, 3: -15, 0: 0}
+        self.owner.life_quality + values[self.level]
 
     @property
     def level(self):

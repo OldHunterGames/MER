@@ -456,6 +456,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.factors = []
         self.restrictions = []
         self._needs = init_needs(self)
+        self.life_quality = 0
+        self.life_level = 0
 
         self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
         self.mood = 0
@@ -497,6 +499,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._favor = BarterSystem()
         self.card_storage = None
         self.decks = []
+        self.selfesteem_buffer = []
 
         self._taboos = []
         self._fetishes = []
@@ -509,6 +512,14 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_skill = None
 
         self._job_productivity = 0
+
+    def calc_life_level(self):
+        if self.life_quality < -5+self.sensitivity:
+            self.life_level = -1
+        elif self.life_quality > 5-self.sensitivity:
+            self.life_level = 1
+        else:
+            self.life_level = 0
 
     def armor_heavier_than(self, person):
         return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
@@ -562,10 +573,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @selfesteem.setter
     def selfesteem(self, value):
-        if self._selfesteem < 0:
-            return
-        else:
-            self._selfesteem = max(-1, min(5, value))
+        self._selfesteem = value
 
 
     @property
@@ -1578,7 +1586,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 self.selfesteem += arg
                 return
         result = self.check_moral(*args, **kwargs)
-        self.selfesteem += result
+        self.selfesteem_buffer.append(result)
         return result
 
     def check_moral(self, *args, **kwargs):
@@ -1641,11 +1649,18 @@ class Person(Skilled, InventoryWielder, Attributed):
         return result
 
     def reduce_esteem(self):
-        if self.selfesteem > 0:
-            self.purpose.set_satisfaction(self.selfesteem)
+        if all([i >= 0 for i in self.selfesteem_buffer]):
+            self._selfesteem = 1
+            
         else:
-            self.purpose.set_tension()
-        self._selfesteem = 0
+            value = 0
+            for i in self.selfesteem_buffer:
+                value += i
+                if value > 0:
+                    self._selfesteem = 0
+                else:
+                    self._selfesteem = -1
+        self.selfesteem_buffer = []
 
             
 

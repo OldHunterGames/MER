@@ -60,7 +60,9 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             if person.selfesteem < 0:
                                 text encolor_text(__('Faithless'), 'red')
                             elif person.selfesteem > 0:
-                                text encolor_text('Faithful', person.selfesteem)
+                                text encolor_text('Faithful', 4)
+                            else:
+                                text encolor_text('Cynial', 2)
                             hbox:
                                 text "{0} {1} {2} ".format(*person.alignment.description())
                                 textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
