@@ -1292,9 +1292,10 @@ class Person(Skilled, InventoryWielder, Attributed):
     def tick_schedule(self):
         if not self.calculatable:
             return
+        self.use_job()
         self.schedule.use_actions()
         if self.schedule.find_by_slot('job') is None:
-            self.schedule.add_action('job_idle')
+            self.set_job('idle')
         if self.schedule.find_by_slot('overtime') is None:
 
             self.schedule.add_action('overtime_nap')
@@ -1740,9 +1741,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self._favor.calculate_consumption(value)
 
     def favor_income(self):
-        relations = self.player_relations()
-        if relations is None:
+        if self.player_controlled:
             return
+        relations = self.player_relations()
         value = 0
         stance = self.player_stance().value
         actual_relations = [relations.fervor_str(), relations.congruence_str(), relations.distance_str()]
@@ -1932,9 +1933,17 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_job(self):
         self.schedule.use_by_slot('job')
+        self.job_buffer = []
 
 
     def set_job(self, job, skill=None, single=True, productivity=True, target=None):
         job = 'job_'+job
+        if self._job_productivity > 0:
+            old_job = 'job_'+self.job
+            self.job_buffer = [old_job, self._job_productivity]
+            self._job_productivity = 0
+        elif len(self.job_buffer) > 0:
+            if job == self.job_buffer[0]:
+                self._job_productivity = self.job_buffer[1]
         self.job_skill = skill
         self.schedule.add_action(job, single)

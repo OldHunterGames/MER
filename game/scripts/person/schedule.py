@@ -121,11 +121,11 @@ class Schedule(object):
         if action.single:
             self.remove_by_handle(action)
 
-    def use_by_slo(self, slot):
+    def use_by_slot(self, slot):
         action = self.find_by_slot(slot)
         action.call()
         if action.single:
-            self.remove_by_handle(actidon)
+            self.remove_by_handle(action)
 
 
     
