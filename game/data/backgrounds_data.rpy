@@ -213,8 +213,7 @@ init python:
             'technical_level': 3,
             'prestige_level': 3,
             'skills': {
-            'scholarship': ['training',],
-            'alchemy': ['training'],
+            'science': ['training'],
             'concentration': ['training',],
             'expression': ['training'],
             'management': ['training'],            
@@ -229,7 +228,6 @@ init python:
             'skills': {
             'athletics': ['training',],
             'combat': ['training',],
-            'observation': ['training',],
             },            
         },
          'aristocratic':{
@@ -242,7 +240,7 @@ init python:
             'charisma': ['training', ('expirience', 2)],
             'management': ['training'],
             'expression': ['training', ('expirience', 1)],         
-            'scholarship': ['training'],
+            'science': ['training'],
             },            
         },
            'artistic':{
@@ -269,7 +267,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'daytaler':{
@@ -278,7 +275,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'lumberjack':{
@@ -287,7 +283,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'miner':{
@@ -296,7 +291,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'mason':{
@@ -305,7 +299,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'porter':{
@@ -314,7 +307,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'rower':{
@@ -323,7 +315,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'peasant':{
@@ -332,7 +323,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'athletics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'mercenary':{
@@ -386,7 +376,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'pirate':{
@@ -458,7 +447,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'carpenter':{
@@ -467,7 +455,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'engraver':{
@@ -476,7 +463,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },      
         'cartwright':{
@@ -485,7 +471,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'cobbler':{
@@ -494,7 +479,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'tanner':{
@@ -503,7 +487,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'potter':{
@@ -512,7 +495,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'plumber':{
@@ -521,7 +503,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'sculptor':{
@@ -530,7 +511,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'glassmaker':{
@@ -539,7 +519,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'artisan':{
@@ -548,7 +527,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'jewler':{
@@ -557,7 +535,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'tinker':{
@@ -566,7 +543,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'craft': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'rethor':{
@@ -575,7 +551,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },      
         'lawyer':{
@@ -584,7 +559,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'lobbist':{
@@ -602,7 +576,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'salesman':{
@@ -611,7 +584,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'emissary':{
@@ -656,7 +628,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'bonvivan':{
@@ -683,7 +654,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },      
         'actor':{
@@ -701,7 +671,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'concentration': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'monk':{
@@ -710,7 +679,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'concentration': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'yogi':{
@@ -719,7 +687,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'concentration': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'hermit':{
@@ -728,7 +695,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'concentration': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'ascetic':{
@@ -737,7 +703,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'concentration': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'manager':{
@@ -746,7 +711,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'merchant':{
@@ -764,7 +728,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'clerk':{
@@ -773,7 +736,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'scribe':{
@@ -782,7 +744,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'administrator':{
@@ -791,7 +752,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },      
         'quartermaster':{
@@ -800,7 +760,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'auditor':{
@@ -809,7 +768,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'secretary':{
@@ -827,7 +785,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'director':{
@@ -836,7 +793,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'outcast':{
@@ -872,7 +828,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'survival': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'explorer':{
@@ -881,7 +836,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'survival': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'shaman':{
@@ -889,17 +843,15 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
-        'alchemy':{
-            'name': __('alchemy'),
+        'alchemic':{
+            'name': __('alchemic'),
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },      
         'medic':{
@@ -907,8 +859,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'herbalist':{
@@ -916,8 +867,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'pharmacist':{
@@ -925,8 +875,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },        
         'apotecary':{
@@ -934,8 +883,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'chemist':{
@@ -943,8 +891,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'surgeon':{
@@ -952,8 +899,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },    
         'anatomist':{
@@ -961,8 +907,8 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
+            'sex': ['training']
             },
         },
         'geneticist':{
@@ -970,8 +916,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'alchemy': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'pusher':{
@@ -1025,7 +970,7 @@ init python:
             'prestige_level': 1,
             'skills': {
             'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'sex': ['training', ('expirience', 4)]
             },
         },
         'academic':{
@@ -1033,8 +978,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },        
         'scientist':{
@@ -1042,8 +986,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'researcher':{
@@ -1051,8 +994,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'bookworm':{
@@ -1060,8 +1002,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },    
         'scholar':{
@@ -1069,8 +1010,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'science': ['profession'],
             },
         },
         'inventor':{
@@ -1078,8 +1018,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'mechanist':{
@@ -1087,8 +1026,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },    
         'engineer':{
@@ -1096,8 +1034,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'architect':{
@@ -1105,8 +1042,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'sapper':{
@@ -1114,8 +1050,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },      
         'sysadmin':{
@@ -1123,8 +1058,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'coder':{
@@ -1132,8 +1066,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'webmaster':{
@@ -1141,8 +1074,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },        
         'hacker':{
@@ -1150,8 +1082,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'mechanics': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'engineering': ['profession'],
             },
         },
         'hooker':{
@@ -1169,7 +1100,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
             },
         },    
         'webcamwhore':{
@@ -1187,7 +1117,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
             },
         },
         'slut':{
@@ -1196,7 +1125,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
             },
         },    
         'concubine':{
@@ -1205,7 +1133,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
             },
         },
         'kunoichi':{
@@ -1214,7 +1141,7 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
+            'expression': ['training', ('expirience', 1)]
             },
         },
         'stripper':{
@@ -1223,7 +1150,7 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
+            'expression': ['training', ('expirience', 1)]
             },
         },      
         'housewife':{
@@ -1241,7 +1168,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'cook':{
@@ -1250,7 +1176,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'butler':{
@@ -1259,7 +1184,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'servant':{
@@ -1286,7 +1210,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'sniper':{
@@ -1294,8 +1217,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'observation': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'combat': ['profession'],
             },
         },
         'marksman':{
@@ -1303,8 +1225,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'observation': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'combat': ['profession'],
             },
         },    
         'cannoneer':{
@@ -1312,8 +1233,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'observation': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'combat': ['profession'],
             },
         },
         'watchman':{
@@ -1321,8 +1241,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
             'skills': {
-            'observation': ['profession'],
-            'sex': ['training', ('expirience', 1)]
+            'combat': ['profession'],
             },
         },
         'artist':{
@@ -1358,7 +1277,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },        
         'musician':{
@@ -1394,7 +1312,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sorcery': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
         'enchanter':{
@@ -1412,7 +1329,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sorcery': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },    
         'fortuneteller':{
@@ -1421,7 +1337,6 @@ init python:
             'prestige_level': 1,
             'skills': {
             'sorcery': ['profession'],
-            'sex': ['training', ('expirience', 1)]
             },
         },
     }

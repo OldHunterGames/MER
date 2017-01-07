@@ -13,7 +13,7 @@ init python:
         'survival': {'name': __('survival'), 'attribute': 'mind'},
         'science': {'name': __('alchemy'), 'attribute': 'mind'},
         'streetwise': {'name': __('streetwise'), 'attribute': 'mind'},
-        'engeneering': {'name': __('electronics'), 'attribute': 'mind'},
+        'engineering': {'name': __('electronics'), 'attribute': 'mind'},
 
 
         'sex': {'name': __('sex'), 'attribute': 'sensitivity'},
