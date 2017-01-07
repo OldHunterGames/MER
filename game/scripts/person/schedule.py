@@ -35,11 +35,13 @@ class ScheduledAction(object):
         self.lbl = lbl
         self.single = single
         self.special_values = dict()
+        self.used = False
         if special_values:
             for key in special_values:
                 self.special_values[key] = special_values[key]
 
     def call(self):
+        self.used = True
         renpy.call_in_new_context(self.lbl, self)
 
 
@@ -77,17 +79,21 @@ class Schedule(object):
             self.actions.append(act)
         else:
             raise Exception("There is no %s action at current world(%s) or at core"%(action, self._world))
+    
     def use_actions(self):
         to_remove = []
         for action in self.actions:
             action.call()
             if action.single:
                 to_remove.append(action)
+            action.used = False
         for a in to_remove:
             self.remove_by_handle(a)
+    
     def remove_by_handle(self, action):
         action.call_on_remove()
         self.actions.remove(action)
+    
     def remove_action(self, action):
         for a in self.actions:
             if a.store_name == self._world + "_%s"%action:
@@ -108,6 +114,18 @@ class Schedule(object):
         for a in self.actions:
             if a.store_name == name:
                 return a
+
+    def use_action(self, name):
+        action = self.find_by_name(name)
+        action.call()
+        if action.single:
+            self.remove_by_handle(action)
+
+    def use_by_slo(self, slot):
+        action = self.find_by_slot(slot)
+        action.call()
+        if action.single:
+            self.remove_by_handle(actidon)
 
 
     

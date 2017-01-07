@@ -505,6 +505,11 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.renpy_character = store.Character(self.firstname)
 
+        self.job_buffer = []
+        self.job_skill = None
+
+        self._job_productivity = 0
+
     def armor_heavier_than(self, person):
         return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
 
@@ -1912,3 +1917,24 @@ class Person(Skilled, InventoryWielder, Attributed):
             value += 1
         value += self.count_modifiers('menace')
         return max(0, min(value, 5))
+
+    def job_productivity(self):
+        if self.job_skill is not None:
+            value = self.skill(self.job_skill)
+        else:
+            return 0
+        value += self._job_productivity
+        return value
+
+    def increase_productivity(self):
+        self.job_buffer = []
+        self._job_productivity += 1
+
+    def use_job(self):
+        self.schedule.use_by_slot('job')
+
+
+    def set_job(self, job, skill=None, single=True, productivity=True, target=None):
+        job = 'job_'+job
+        self.job_skill = skill
+        self.schedule.add_action(job, single)

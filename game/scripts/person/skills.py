@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from random import *
+import collections
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -123,7 +124,28 @@ class Skilled(object):
         self.specialized_skill = None
         self.focused_skill = None
         self.skills_used = []
+        self.inner_resources = []
+        self.focus_dict = collections.defaultdict(int)
         self.used_inner_resources = []
+
+    def add_inner_resource(self, name, attribute, value=1):
+        if attribute == 'focus':
+            self.add_focus(name)
+        else:
+            self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
+
+    def add_focus(self, name):
+        self.focus_dict[name] += 1
+
+    def use_focus(self, name):
+        try:
+            del self.focus_dict[name]
+        except KeyError:
+            pass
+
+    def get_focus(self, name):
+        return self.focus_dict[name]
+
 
     def get_all_skills(self):
         return [i for i in self.skills]
