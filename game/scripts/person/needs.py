@@ -16,13 +16,15 @@ def init_needs(owner):
 
 
 class Need(object):
-
+    _special = {'wellness': 'pain', 'comfort': 'discomfort',
+        'activity': 'deprivation', 'eros': 'lust'}
     def __init__(self, owner, name):
         self.owner = owner
         self.name = name
         self._level = _default_need['level']
         self.tokens = []
         self.spoils = []
+        self.last_satisfaction = 0
         self.tension = False
 
     def add_spoil(self, value):
@@ -45,11 +47,24 @@ class Need(object):
 
     def token_used(self, token):
         return token in self.tokens
-
+    
     def set_satisfaction(self, value):
         self.owner.life_quality += value*self.level
+        self.last_satisfaction = value
         if self.level == 3 and value >= self.owner.sensitivity:
             self.owner.stimul = 1
+        if self.name == 'wellness':
+            if self.owner.physique <= value:
+                self.owner.add_buff('drugs')
+        if self.name == 'comfort':
+            if self.owner.sensitivity <= value:
+                self.owner.add_buff('bliss')
+        if self.name == 'activity':
+            if self.owner.spirit <= value:
+                self.owner.add_buff('adrenaline')
+        if self.name == 'eros':
+            if value == 5:
+                self.owner.add_buff('orgasm')
 
     def set_tension(self):
         if self.tension:
@@ -59,6 +74,8 @@ class Need(object):
         self.owner.life_quality += values[self.level]
         if self.level == 3:
             self.owner.stimul = -1
+        if self.name in self._special.keys():
+            self.owner.add_buff(self._special[self.name])
 
     @property
     def level(self):

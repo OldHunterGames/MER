@@ -2115,4 +2115,3 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def has_energy(self):
         return self._energy > -1
-
