@@ -130,9 +130,11 @@ init python:
             if left is not None:
                 if left['name'] == token['name']:
                     token['value'] += 1
+                    left['value'] += 1
             elif right is not None:
                 if right['name'] == token['name']:
                     token['value'] += 1
+                    right['value'] += 1
             if token['value'] > 5:
                 token['value'] = 5
 

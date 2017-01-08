@@ -29,3 +29,26 @@ init python:
         'motivation': __('motivation'),
         'focus': __('focus')
     }
+
+    discipline_translation = {
+        0: encolor_text(__("Independent mind"), 0),
+        1: encolor_text(__("Subjected"), 2),
+        2: '',
+        3: encolor_text(__("Disciplined"), 4),
+        4: encolor_text(__("Fidelity"), 5)
+    }
+    stance_overseer_translation = {
+        -1: encolor_text(__("Controversy"), 'red'),
+        0: '',
+        1: encolor_text(__("Allegiance"), 'green'),
+        2: encolor_text(__('Loyality'), 5)
+    }
+    motivation_translation = {
+        -1: "!!!CRUSHED!!!",
+        0: "Apatheic",
+        1: "Careless",
+        2: "Content",
+        3: "Motivated",
+        4: "Diligent",
+        5: "Enthusiastic"
+    }

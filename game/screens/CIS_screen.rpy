@@ -6,6 +6,11 @@ style char_info_window is window:
     background Color((0, 0, 0, 255))
 
 screen sc_character_info_screen(person, return_l=False, communicate=False):
+    python:
+        if person.player_controlled:
+            mood = encolor_text(mood_translation[person.mood], person.mood)
+        else:
+            mood = encolor_text(motivation_translation[person.motivation()], person.motivation())
     modal True
     window:
         xfill True
@@ -57,15 +62,10 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             text person.full_name():
                                 size 25
                             text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-                            if person.selfesteem < 0:
-                                text encolor_text(__('Faithless'), 'red')
-                            elif person.selfesteem > 0:
-                                text encolor_text('Faithful', 4)
-                            else:
-                                text encolor_text('Cynial', 2)
+                            
                             hbox:
                                 text "{0} {1} {2} ".format(*person.alignment.description())
-                                textbutton "({mood})".format(mood=encolor_text(person.show_mood(), person.mood)):
+                                textbutton "({mood})".format(mood=mood):
                                     style 'hoverable_text'
                                     text_style 'hoverable_text'
                                     hovered Show('sc_mood_info', person=person)
@@ -131,58 +131,54 @@ screen sc_info_popup(person):
                 text i.name
 
 screen sc_mood_info(person):
-    python:
-        threshold = 5-person.sensitivity
-        try:
-            info = person.mood_memory
-        except AttributeError:
-            info = None
-    if info is None:
         frame:
             xalign 0.5
             yalign 0.5
-            text 'Для этого персонажа инфы нет'
-    else:
-        python:
-            key = 5
-            txt = []
-            txt_bad = []
-            while key > 0:
-                for need in info['satisfy_inf'][key]:
-                    text = encolor_text('%s'%(need.name), key)
-                    txt.append(text)
-                key -= 1
-            for i in info['determination']:
-                text = encolor_text(i, 1)
-                txt.append(text)
-            for need in info['diss_inf']:
-                text = encolor_text('%s(%s)'%(need.name, need.level), 0)
-                txt_bad.append(text)
-            for i in info['anxiety']:
-                text = encolor_text(i, 0)
-                txt_bad.append(text)
-        frame:
-            xalign 0.5
-            yalign 0.5
-            hbox:
-                if len(txt) < 1 and len(txt_bad) < 1:
-                    text 'No mood modifiers for this turn'
+            vbox:
+                spacing 5
+                if person.life_level > 0:
+                    text encolor_text('Life quality', 'green')
+                elif person.life_level < 0:
+                    text encolor_text("Life quality", 'red')
                 else:
-                    vbox:
-                        xalign 0.0
-                        yalign 0.0
-                        for i in txt:
-                            text [i]
+                    text encolor_text("Life quality", 2)
 
-                    vbox:
-                        xalign 0.3
-                        yalign 0.0
-                        for i in txt_bad:
-                            text [i]
-                    vbox:
-                        xalign 0.6
-                        yalign 0.0
-                        text 'Порог: [threshold]'
+                if person.selfesteem is not None:
+                    if person.selfesteem < 0:
+                        text encolor_text(__('Faithless'), 'red')
+                    elif person.selfesteem > 0:
+                        text encolor_text(__('Faithful'), 4)
+                    else:
+                        text encolor_text(__('Cynical'), 2)
+                
+                if not person.player_controlled:
+                
+                    if person.stimul < 0:
+                        text encolor_text(__('Punished'), 2)
+                    elif person.stimul > 0:
+                        text encolor_text(__('Rewarded'), 'green')
+                    else:
+                        text encolor_text(__('Uninterested'), 'red')
+
+                    if person.master is None:
+                        text encolor_text(__("Own choice"), 'green')
+                    else:
+                        if person.discipline != 2:
+                            text discipline_translation[person.discipline]
+
+                    if person.overseer is not None:
+                        if person.discipline != 0:
+                            text stance_overseer_translation[person.overseer_stance().value]
+                else:
+                    if person.joy == 1:
+                        text encolor_text("Joy", 'green')
+                    if person.success == 1:
+                        text encolor_text("Success", 'green')
+                    if person.purporse == 1:
+                        text encolor_text("Purporse", 5)
+
+
+                
 
 screen sc_weapon_info(weapon):
     frame:

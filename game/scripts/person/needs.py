@@ -2,9 +2,8 @@
 from copy import deepcopy
 
 
-needs_names = ["relief", "general", 'purpose',  # basic needs that all character have. "relief" intensity fixed at 1, "general" at 2, "purporse" at 3
-               "nutrition", "wellness", "comfort", "activity", "communication", "amusement", "prosperity", "authority", "ambition", "eros",
-               "order", "independence", "approval", "thrill", "altruism", "power"]
+needs_names = ["nutrition", "wellness", "comfort", "activity", "communication",
+        "amusement", "prosperity", "authority", "ambition", "eros"]
 
 _default_need = {"level": 2}
 
@@ -23,6 +22,23 @@ class Need(object):
         self.name = name
         self._level = _default_need['level']
         self.tokens = []
+        self.spoils = []
+        self.tension = True
+
+    def add_spoil(self, value):
+        self.spoils.append(value)
+
+    def remove_spoil(self, value):
+        self.spoils.remove(value)
+
+    def spoil_level(self):
+        if self.level == 1:
+            value = 4
+        elif self.level == 2:
+            value = 2
+        else:
+            value = 1
+        return len(self.spoils)+value
 
     def use_token(self, token):
         self.tokens.append(token)
@@ -32,29 +48,22 @@ class Need(object):
 
     def set_satisfaction(self, value):
         self.owner.life_quality += value*self.level
+        if self.level == 3 and value >= self.owner.sensitivity:
+            self.owner.stimul = 1
 
     def set_tension(self):
+        if self.tension:
+            return
+        self.tension = True
         values = {1: -3, 2: -6, 3: -15, 0: 0}
         self.owner.life_quality + values[self.level]
+        if self.level == 3:
+            self.owner.stimul = -1
 
     @property
     def level(self):
-        if self.name == 'relief':
-            return 1
-        elif self.name == 'general':
-            return 2
-        elif self.name == 'purpose':
-            return 3
-        n = self.owner.alignment.special_needs()
-        if self.name in n[2]:
-            return 1
-        if self.name in n[0]:
-            return 3
-        elif self.name in n[1]:
-            return 0
         value = self._level + self.owner.count_modifiers(self.name)
         return min(3, max(0, value))
 
     def reset(self):
-        self._satisfaction = 0
-        self._tension = False
+        self.tension = False
