@@ -117,12 +117,16 @@ class Schedule(object):
 
     def use_action(self, name):
         action = self.find_by_name(name)
+        if action is None:
+            return
         action.call()
         if action.single:
             self.remove_by_handle(action)
 
     def use_by_slot(self, slot):
         action = self.find_by_slot(slot)
+        if action is None:
+            return
         action.call()
         if action.single:
             self.remove_by_handle(action)
