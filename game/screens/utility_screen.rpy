@@ -542,9 +542,50 @@ screen edge_sell_screen(person, item_type):
         has vbox
         text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))
 
+
+screen sc_skillcheck_mini(person, skill_name, difficulty, text, job=False):
+    window:
+        text text
+    frame:
+        xalign 0.5
+        yalign 0.5
+        vbox:
+            if attr is not None:
+                textbutton attr:
+                    xsize 200
+                    action [Function(person.use_resource, attr), Return(True),
+                        If(job, Function(person.increase_productivity))]
+            else:
+                textbutton attr_name:
+                    xsize 200
+            if luck > 0:
+                textbutton luck_text:
+                    xsize 200
+                    action [Function(person.use_luck, luck), Return(True),
+                        If(job, Function(person.increase_productivity))]
+            else:   
+                textbutton 'Luck':
+                    xsize 200
+            if focus > 0 and focus >= difficulty:
+                textbutton insight_text:
+                    xsize 200
+                    action [Function(person.use_focus, skill_name), Return(True),
+                        If(job, Function(person.increase_productivity))]
+            else:
+                textbutton 'Insight':
+                    xsize 200
+            if job:
+                textbutton 'Nevermind' action Return():
+                    xsize 200
+            else:
+                textbutton '{color=#f00}Fail{/color}' action Return(False):
+                    xsize 200
+
+
 label lbl_skillcheck_mini(person, skill_name, difficulty):
     python:
         attr = person.get_min_resource_token(skill_name, difficulty)
+        attr_name = tokens_translation[person.get_related_token(skill_name)]
         luck = person.get_min_luck(difficulty)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
@@ -552,7 +593,7 @@ label lbl_skillcheck_mini(person, skill_name, difficulty):
         insight_text = encolor_text(__("Insight"), focus)
         if attr is not None:
             attr = encolor_text(tokens_translation[attr['name']], attr['value'])
-        resqual = 'PLACEHOLDER'
+        resqual = effort_quality[difficulty]
         if difficulty == 0:
             text = '{person.name} uses {skill.name} skill to success'.format(person=person, skill=skill)
         elif difficulty > 5:
@@ -562,19 +603,9 @@ label lbl_skillcheck_mini(person, skill_name, difficulty):
             text = '{person.name} meets {skill.name} challenge. To succeed {person.name} need to spend {resqual} resources'.format(
                 person=person, skill=skill, resqual=resqual)
     if difficulty > 0 and difficulty <= 5:
-        menu:
-            '[text]'
-            '[attr]' if attr is not None:
-                $ person.use_resource(attr)
-                return True
-            '[luck_text]' if luck > 0:
-                $ person.use_luck(luck)
-                return True
-            '[insight_text]' if focus > 0 and focus >= difficulty:
-                $ person.use_focus(skill_name)
-                return True
-            '{color=#f00}Fail{/color}':
-                return False
+        python:
+            result = renpy.call_screen('sc_skillcheck_mini', person, skill_name, difficulty, text)
+        return result
 
     elif difficulty == 0:
         '[text]'
@@ -586,14 +617,14 @@ label lbl_jobcheck(person, skill_name):
     python:
         productivity = person.job_productivity()
         potential = person.skill(skill_name).level
-
+        attr_name = tokens_translation[person.get_related_token(skill_name)]
         attr = person.get_min_resource_token(skill_name, productivity)
         luck = person.get_min_luck(productivity)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
         luck_text = encolor_text(__("Luck"), luck)
         insight_text = encolor_text(__("Insight"), focus)
-        resqual = "PLACEHOLDER"
+        resqual = effort_quality[productivity+1]
         job_description = jobs_data[person.job]['description']
         if productivity < potential:
             if not person.productivity_raised:
@@ -614,28 +645,14 @@ label lbl_jobcheck(person, skill_name):
                     person=person, job_description=job_description,
                     productivity=productivity)
     if productivity < potential and not person.productivity_raised:
-        menu:
-            '[text]'
-            '[attr]' if attr is not None:
-                $ person.increase_productivity()
-                $ person.use_resource(attr)
-                return
-            '[luck_text]' if luck > 0:
-                $ person.increase_productivity()
-                $ person.use_luck(luck)
-                return
-            '[insight_text]' if focus > 0 and focus >= productivity:
-                $ person.increase_productivity()
-                $ person.use_focus(skill_name)
-                return
-            'Nevermind':
-                return 
+        call screen sc_skillcheck_mini(person, skill_name, productivity, text, True)
+        return
     else:
         '[text]'
         return
 
 label lbl_jobcheck_npc(person, skill_name):
-     python:
+    python:
         productivity = person.job_productivity()
         potential = person.skill(skill_name).level
         if productivity < person.motivation():
@@ -665,6 +682,7 @@ label lbl_jobcheck_npc(person, skill_name):
         if productivity < person.real_productivity():
             text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. Productivity is limited due to luck of {factor}, however, it will rise up to {real_productivity} with better {factor}.".format(
                 person=person, job_description=job_description, potential=potential, factor=factor, real_productivity=real_productivity)
+    return
 
         
 

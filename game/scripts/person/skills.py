@@ -118,7 +118,8 @@ class Skill(object):
 
 
 class Skilled(object):
-
+    _tokens_relations = {'physique': 'stamina', 'mind': 'idea', 'spirit': 'willpower',
+        'agility': 'grace', 'sensitivity': 'emotion'}
     def init_skilled(self):
         self.skills = []
         self.specialized_skill = None
@@ -136,6 +137,9 @@ class Skilled(object):
             self.add_luck(value)
         else:
             self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
+
+    def get_related_token(self, skill_name):
+        return self._tokens_relations[self.skill(skill_name).attribute]
 
     def add_luck(self, value):
         self.luck_tokens.append(value)
