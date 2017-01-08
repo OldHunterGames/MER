@@ -634,6 +634,37 @@ label lbl_jobcheck(person, skill_name):
         '[text]'
         return
 
+label lbl_jobcheck_npc(person, skill_name):
+     python:
+        productivity = person.job_productivity()
+        potential = person.skill(skill_name).level
+        if productivity < person.motivation():
+            factor = __("motivation")
+        elif productivity < person.energy:
+            factor = __('energy')
+
+        attr = person.get_min_resource_token(skill_name, productivity)
+        luck = person.get_min_luck(productivity)
+        focus = person.get_focus(skill_name)
+        skill = person.skill(skill_name)
+        luck_text = encolor_text(__("Luck"), luck)
+        insight_text = encolor_text(__("Insight"), focus)
+        resqual = "PLACEHOLDER"
+        job_description = jobs_data[person.job]['description']
+        energy = person.energy
+        motivation = person.motivation()
+        real_productivity = person.real_productivity()
+        if skill.level < 5:
+            text = "{person.name} {job_description} with {productivity} productivity,limited by {skill.name} level".format(
+                person=person, job_description=job_description,
+                productivity=productivity, skill=skill)
+        else:
+            text = "{person.name} {job_description} with {productivity} productivity".format(
+                person=person, job_description=job_description,
+                productivity=productivity)
+        if productivity < person.real_productivity():
+            text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. Productivity is limited due to luck of {factor}, however, it will rise up to {real_productivity} with better {factor}.".format(
+                person=person, job_description=job_description, potential=potential, factor=factor, real_productivity=real_productivity)
 
         
 

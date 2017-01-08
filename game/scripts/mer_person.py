@@ -2045,7 +2045,19 @@ class Person(Skilled, InventoryWielder, Attributed):
         else:
             return 0
         value += self._job_productivity
-        return value
+        if value < 0:
+            value = 0
+        if not self.player_controlled:
+            return min([value, self.skill(self.job_skill).level, self.motivation(), self.energy])
+        return min(value, self.skill(self.job_skill).level)
+
+    def real_productivity(self):
+        if self.job_skill is not None:
+            value = self.skill(self.job_skill).level - self.job_difficulty
+        else:
+            return 0
+        value += self._job_productivity
+        return min(value, self.skill(self.job_skill).level)
 
     def increase_productivity(self):
         self.job_buffer = []
@@ -2054,7 +2066,10 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_job(self):
         if self.use_job_productivity:
-            renpy.call_in_new_context('lbl_jobcheck', person=self, skill_name=self.job_skill)
+            if self.player_controlled:
+                renpy.call_in_new_context('lbl_jobcheck', person=self, skill_name=self.job_skill)
+            else:
+                renpy.call_in_new_context('lbl_jobcheck_npc', person=self, skill_name=self.job_skill)
         self.schedule.use_by_slot('job')
         self.job_buffer = []
 
