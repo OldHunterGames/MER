@@ -100,6 +100,10 @@ label lbl_edge_manage:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
         
+        'Рулеточка':
+            $ TokensGame(player)        
+        'Тест навыка':
+            $ result = core.skillcheck(player, 'athletics', 4) 
         'Opportunities (1 AP)' if player.ap > 0:
             call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
