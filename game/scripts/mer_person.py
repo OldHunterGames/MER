@@ -592,6 +592,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.life_level = 1
         else:
             self.life_level = 0
+        self.life_quality = 0
 
     @property
     def stimul(self):
@@ -1378,7 +1379,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 self.anxiety += 1
 
         if self.energy < 0:
-            self.add_buff('')
+            self.add_buff('exhausted')
         
         self.reduce_esteem()
         self.food_system.fatness_change()

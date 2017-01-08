@@ -65,12 +65,13 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             
                             hbox:
                                 text "{0} {1} {2} ".format(*person.alignment.description())
-                                textbutton "({mood})".format(mood=mood):
-                                    style 'hoverable_text'
-                                    text_style 'hoverable_text'
-                                    hovered Show('sc_mood_info', person=person)
-                                    unhovered Hide('sc_mood_info')
-                                    action NullAction()
+                                if person.player_controlled:
+                                    textbutton "({mood})".format(mood=mood):
+                                        style 'hoverable_text'
+                                        text_style 'hoverable_text'
+                                        hovered Show('sc_mood_info', person=person)
+                                        unhovered Hide('sc_mood_info')
+                                        action NullAction()
                             if person != core.player:
                                 text (person.stance(player).show_type() + ' ' +
                                     '{0} {1} {2}'.format(*person.relations(player).description()))

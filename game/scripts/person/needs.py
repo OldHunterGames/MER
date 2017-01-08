@@ -23,7 +23,7 @@ class Need(object):
         self._level = _default_need['level']
         self.tokens = []
         self.spoils = []
-        self.tension = True
+        self.tension = False
 
     def add_spoil(self, value):
         self.spoils.append(value)
