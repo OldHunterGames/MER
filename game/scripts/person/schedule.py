@@ -41,8 +41,10 @@ class ScheduledAction(object):
                 self.special_values[key] = special_values[key]
 
     def call(self):
-        self.used = True
-        renpy.call_in_new_context(self.lbl, self)
+        if not self.used:
+            renpy.call_in_new_context(self.lbl, self)
+            self.used = True
+
 
 
     def call_on_remove(self):
