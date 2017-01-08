@@ -2074,7 +2074,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_buffer = []
 
 
-    def set_job(self, job, skill, single=True, productivity=True, target=None, difficulty=1):
+    def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
         job = 'job_'+job
         if self._job_productivity > 0:
             old_job = 'job_'+self.job
@@ -2083,7 +2083,10 @@ class Person(Skilled, InventoryWielder, Attributed):
         elif len(self.job_buffer) > 0:
             if job == self.job_buffer[0]:
                 self._job_productivity = self.job_buffer[1]
-        self.use_job_productivity = productivity
+        if skill is None:
+            self.use_job_productivity = False
+        else:
+            self.use_job_productivity = True
         self.job_skill = skill
         self.job_difficulty = difficulty
         if target is not None:
