@@ -13,9 +13,10 @@ screen sc_tokens_game(tokens_game):
             yfill False
             xsize 610
             ysize 150
-            text encolor_text(__("Opportunities"), tokens_game.chances):
-                xalign 0.5
-                yalign 0.0
+            if tokens_game.chances > -1:
+                text encolor_text(__("Energy"), tokens_game.chances):
+                    xalign 0.5
+                    yalign 0.0
             if tokens_game.failed:
                 text encolor_text(__("Procrastination"), 'red')
 
@@ -42,7 +43,7 @@ screen sc_tokens_game(tokens_game):
                                 textbutton 'Take':
                                     xsize 200
                                     ysize 30
-                                    action [Function(player.add_inner_resource, **value), 
+                                    action [Function(tokens_game.apply_token, value), 
                                         Function(tokens_game.clear), Function(tokens_game.stop_rolling)]
     if not tokens_game.roll_phase:
         vbox:
@@ -65,18 +66,20 @@ init python:
         _tokens = {'stamina': 'physique', 'grace': 'agility',
             'willpower': 'spirit', 'idea': 'mind', 'emotion': 'sensitivity'}
         def __init__(self, person):
-            self.chances = person.vitality
             self.roll_phase = False
             self.failed = False
             self.person = person
             self.revolver = {0: None, 1: None, 2: None}
             renpy.call_in_new_context('lbl_tokens_game', self)
 
+        @property
+        def chances(self):
+            return self.person.energy
 
         def start_rolling(self):
-            self.chances -= 1
             self.roll_phase = True
             self.failed = False
+            self.person.drain_energy()
 
         def stop_rolling(self):
             self.roll_phase = False
@@ -111,11 +114,12 @@ init python:
             if focus is None:
                 return
             name = focus.name
-            token_name = __('insight') + '_' + name
+            token_name = 'insight' + '_' + name
             value = self.person.get_focus(focus.id)
             if value == 5:
                 return
-            return {'name': token_name, 'attribute': 'focus', 'value': value+1}
+            return {'name': token_name, 'attribute': 'focus', 'value': value+1, 'id': focus.id}
+        
         def fill_revolver(self, number):
             tokens = self.init_tokens()
             token = choice(tokens)
@@ -128,9 +132,29 @@ init python:
             for i in self.revolver.values():
                 if i is not None:
                     if i['name'] == token['name']:
-                        i['value'] += 1
-                        token['value'] += 1
-            if token['value'] > 5:
-                token['value'] = 5
+                        self.increase_value(i)
+                        self.increase_value(token)
 
             self.revolver[number] = token
+
+        def increase_value(self, token):
+            token['value'] += 1
+            if token['value'] > 5:
+                if token['name'] == 'luck':
+                    renpy.call_in_new_context('lbl_jackpot')
+                else:
+                    token['value'] = 5
+                    token['name'] = 'luck'
+                    token['attribute'] = 'any'
+
+        def apply_token(self, token):
+            if token['attribute'] == 'focus':
+                self.person.add_inner_resource(token['id'], token['attribute'], token['value'])
+            else:
+                self.person.add_inner_resource(**token)
+
+label lbl_jackpot:
+    python:
+        player.anxiety = 0
+        player.add_buff('epic_luck')
+    '!!JACKPOT!!'

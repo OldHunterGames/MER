@@ -99,7 +99,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     frame:
                         vbox:
                             for i in person.get_buffs():
-                                text i.name
+                                text encolor_text(i.name, i.color())
 
 screen sc_skill_info(skill):
     frame:

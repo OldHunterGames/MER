@@ -189,8 +189,19 @@ class MistsOfEternalRome(object):
         return threshold_result, result
 
 
-    def skillcheck(self, person, skill, morality=None, difficulty=0, tense=None, satisfy=None, beneficiar=None, delayed=False):
-        return Skillcheck(person, skill, morality, difficulty, tense, satisfy, beneficiar, delayed)
+    def skillcheck(self, person, skill_name, difficulty):
+        skill = person.skill(skill_name)
+        difficulty -= skill.level
+        if difficulty <= 0:
+            return True
+        elif difficulty >= 6:
+            return False
+        else:
+            if any(person.available_tokens(skill_name, difficulty)):
+                return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, skill=skill_name, difficulty=difficulty)
+            else:
+                return False
+
 
     def discover_world(self, worlds):
         return choice(worlds)().point_of_arrival

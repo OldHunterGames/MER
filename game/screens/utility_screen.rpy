@@ -541,3 +541,19 @@ screen edge_sell_screen(person, item_type):
         xalign 1.0
         has vbox
         text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))
+
+label lbl_skillcheck_mini(person, skill, difficulty):
+    $ value = renpy.call_screen('sc_skillcheck_mini', person=person, skill=skill, difficulty=difficulty)
+
+    return value
+
+screen sc_skillcheck_mini(person, skill, difficulty):
+    modal True
+    window:
+        xalign 0.5
+        yalign 0.5
+        vbox:
+            for i in person.available_tokens(skill, difficulty):
+                textbutton encolor_text(tokens_translation[i['name']], i['value']):
+                    action Function(person.use_resource, i), Return(True)
+            textbutton 'Leave' action Return(False)

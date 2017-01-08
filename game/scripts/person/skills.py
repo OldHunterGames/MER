@@ -134,6 +134,24 @@ class Skilled(object):
         else:
             self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
 
+    def use_resource(self, resource):
+        if resource['name'] == 'insight':
+            self.use_focus(resource['attribute'])
+        else:
+            self.inner_resources.remove(resource)
+
+    def available_tokens(self, skill_name, difficulty):
+        skill = self.skill(skill_name)
+        available = []
+        for i in self.inner_resources:
+            if ((i['attribute'] == skill.attribute or i['attribute'] == 'any') and
+                i['value'] >= difficulty):
+                available.append(i)
+        if self.has_focus(skill_name):
+            if self.get_focus(skill_name) >= difficulty:
+                available.append({'name': 'insight', 'attribute': skill_name, 'value': self.get_focus(skill_name)})
+        return available
+
     def add_focus(self, name):
         self.focus_dict[name] += 1
 
@@ -146,6 +164,8 @@ class Skilled(object):
     def get_focus(self, name):
         return self.focus_dict[name]
 
+    def has_focus(self, name):
+        return name in self.focus_dict.keys()
 
     def get_all_skills(self):
         return [i for i in self.skills]

@@ -15,6 +15,14 @@ class Buff(object):
         self.storage.append(self)
         self.owner.add_modifier(self.id, self.modifiers, self, self.slot)
 
+    def color(self):
+        if all([i > 0 for i in self.modifiers.values()]):
+            return 4
+        elif all([i < 0 for i in self.modifiers.values()]):
+            return 0
+        else:
+            return 2
+
     @property
     def name(self):
         return self.data['name']

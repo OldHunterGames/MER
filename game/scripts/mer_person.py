@@ -520,6 +520,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.success = 0
         self.purporse = 0
 
+        self._energy = 0
+        self.set_energy()
+
+    @property
+    def energy(self):
+        return self._energy
+
     @property
     def spoil_number(self):
         return self._spoil_number
@@ -1194,6 +1201,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 value += 1
             for i in reds:
                 value -= 1
+        value += self.count_modifiers('motivation')
         return max(-1, min(5, value))
 
     @property
@@ -1237,6 +1245,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 value += 1
             for i in reds:
                 value -= 1
+        value += self.count_modifiers('mood')
         return max(-1, min(5, value))
 
 
@@ -1322,11 +1331,15 @@ class Person(Skilled, InventoryWielder, Attributed):
         else:
             if self.motivation() < 0:
                 self.anxiety += 1
+
+        if self.energy < 0:
+            self.add_buff('')
         
         self.reduce_esteem()
         self.food_system.fatness_change()
         self.reset_needs()
         self.calc_focus()
+        self.set_energy()
         
         self.ap = 1
         self._stimul = 0
@@ -2015,3 +2028,14 @@ class Person(Skilled, InventoryWielder, Attributed):
         if value > 0:
             self.joy = 1
         self.spoil(need)
+
+    def set_energy(self):
+        value = 0
+        value += self.count_modifiers('energy')
+        self._energy = max(-1, min(5, value))
+
+    def drain_energy(self, value=1):
+        self._energy -= value
+        if self._energy < -1:
+            self._energy = -1
+

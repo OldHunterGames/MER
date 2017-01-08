@@ -52,3 +52,13 @@ init python:
         4: "Diligent",
         5: "Enthusiastic"
     }
+    tokens_translation = {
+        'insight': __('insight'),
+        'stamina': __('stamina'),
+        'grace': __('grace'),
+        'willpower': __('willpower'),
+        'idea': __('idea'),
+        'emotion': __('emotion'),
+        'luck': __('luck'),
+        'determination': __('determination')
+    }
