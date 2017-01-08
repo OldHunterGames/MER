@@ -96,7 +96,6 @@ label lbl_edge_manage:
             
         if not consumption:
             consumption_text += ". You can't skip turn"
-        player.set_job('beg', 'sex')
     menu:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"
