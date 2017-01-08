@@ -74,12 +74,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             if person != core.player:
                                 text (person.stance(player).show_type() + ' ' +
                                     '{0} {1} {2}'.format(*person.relations(player).description()))
-                            textbutton 'Vitality: %s'%person.vitality:
-                                style 'hoverable_text'
-                                text_style 'hoverable_text'
-                                hovered Show('sc_vitality_info', person=person)
-                                unhovered Hide('sc_vitality_info')
-                                action NullAction()
+                            text "{b}%s{/b}"%encolor_text("Energy", person.energy)
                     frame:
                         vbox:
                             text '{b}Skills{/b}'

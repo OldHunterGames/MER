@@ -56,7 +56,7 @@ class Need(object):
             return
         self.tension = True
         values = {1: -3, 2: -6, 3: -15, 0: 0}
-        self.owner.life_quality + values[self.level]
+        self.owner.life_quality += values[self.level]
         if self.level == 3:
             self.owner.stimul = -1
 
