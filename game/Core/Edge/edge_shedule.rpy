@@ -70,6 +70,11 @@ label shd_edge_job_idle(action):
     "[name] have no job to do and resting. It's conserves energy and gives [txt]"
     return
 
+label shd_edge_job_manual:
+    $ yeld = action.actor.job_productivity()
+    '[action.actor.name] doing manual labour. Yelds: [yeld]'
+    return
+    
 label shd_edge_job_range(action):
     '[action.actor.name] patroling the Edge of Mists.'
     call lbl_edge_randenc_errant

@@ -96,7 +96,8 @@ label lbl_edge_slums_work_res:
             $ skill_id = 'athletics'
             $ description = _('doing manual labor at the slums and gains fixed ')
             $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 1, 'moral': ['lawful', 'timid'], 'tense': ['amusement', 'comfort'], 'statisfy': ['activity'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
+            # $ target.schedule.add_action('job_simplework', single=False, special_values=special_values)  
+            $ player.set_job('manual', skill='athletics', single=False, target=None, difficulty=1)
             
         'Household services (housekeeping, simple)':
             $ skill_id = 'housekeeping'
