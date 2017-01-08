@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 from random import *
 import collections
+from copy import copy
+from copy import deepcopy
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -8,8 +10,7 @@ import renpy.exports as renpy
 from features import Feature, Phobia
 from skills import Skill, Skilled
 from needs import init_needs
-from copy import copy
-from copy import deepcopy
+
 from schedule import *
 from relations import Relations
 from stance import Stance
@@ -187,6 +188,47 @@ class Attributed(Modifiable):
         if val > 5:
             val = 5
         return val
+
+
+
+
+    def init_wealth(self):
+        self.wealth = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+        self.income = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+        self.expense = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+
+    def calc_expense(self):
+        expense = copy(self.expense)
+        for i in expense:
+            try:
+                expense[i+1] += int(expense[i]/2)
+            except KeyError:
+                break
+        for i in reversed(sorted(expense.keys())):
+            if expense[i] > 0:
+                return i
+        return 0
+
+    def make_income(self):
+        for key, value in self.income.items():
+            self.add_wealth(key, value)
+
+    def calc_budget(self):
+        pass
+
+
+
+    def add_wealth(self, quality, value):
+        total = self.wealth[quality] + value
+        self.wealth[quality] = total%2
+        self.add_wealth(quality+1, int(total/2))
+
+    def has_wealth(self, quality, value):
+        return self.wealth[quality] >= value
+
+    def spend_wealth(self, quality, value):
+
+
 
 def get_random_combatant():
     return choice(store.combatant_data.keys())
@@ -2020,7 +2062,11 @@ class Person(Skilled, InventoryWielder, Attributed):
             if job == self.job_buffer[0]:
                 self._job_productivity = self.job_buffer[1]
         self.job_skill = skill
-        self.schedule.add_action(job, single)
+        if target is not None:
+            special_values = {'target': target}
+        else:
+            special_values = None
+        self.schedule.add_action(job, single, special_values = special_values)
 
     def joy(self, need, value):
         need = getattr(self, need)

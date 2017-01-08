@@ -107,7 +107,7 @@ init python:
 
         def gen_determination_token(self):
             value = self.person.mood
-            return {'name': 'determination', 'attribute': 'any', 'value': value}
+            return {'name': 'determination', 'attribute': 'special', 'value': value}
 
         def gen_focus_token(self):
             focus = self.person.focused_skill
