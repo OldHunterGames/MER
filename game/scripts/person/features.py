@@ -75,8 +75,6 @@ class Feature(object):
     def remove(self):
         if self.modifiers is not None:
             self.owner.modifiers.remove_modifier(self)
-        for i in self.dependencies:
-            i.remove()
         self.owner.features.remove(self)
 
     def reveal(self):

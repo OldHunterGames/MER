@@ -472,7 +472,11 @@ label lbl_gen_player:
 init python:
     def gen_player(core):
         person = gen_random_person(genus='human')
+        old = core.player
         core.set_player(person)
+        if old is not None:
+            old.destroy()
+        
 screen sc_generate_player:
     if core.player is not None:
         use sc_character_info_screen(core.player, True)
