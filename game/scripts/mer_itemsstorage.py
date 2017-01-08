@@ -4,6 +4,20 @@ class ItemsStorage(object):
     
     def __init__(self):
         self.storage = []
+        self.money = 0
+
+    def add_money(self, value):
+        self.money += value
+
+    def remove_money(self, value):
+        self.money -= value
+
+    def has_money(self, value):
+        return self.money >= value
+
+    def transfer_money(self, storage, value):
+        self.remove_money(value)
+        storage.add_money(value)
 
     def get_items(self, item_type):
         if item_type == 'all':

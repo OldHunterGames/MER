@@ -1897,7 +1897,11 @@ class Person(Skilled, InventoryWielder, Attributed):
     # end of favor methods
     
     def can_tick(self):
-        return self._favor.can_tick()
+        return self._favor.can_tick() and self.has_money(self.decade_bill)
+
+    @property
+    def decade_bill(self):
+        return sum([action.spends for action in self.schedule.actions])
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):

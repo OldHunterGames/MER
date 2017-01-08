@@ -36,6 +36,7 @@ class ScheduledAction(object):
         self.single = single
         self.special_values = dict()
         self.used = False
+        self.spends = 0
         if special_values:
             for key in special_values:
                 self.special_values[key] = special_values[key]
@@ -64,7 +65,7 @@ class Schedule(object):
     @classmethod
     def set_world(cls, world):
         cls._world = world
-    def add_action(self, action, single=True, special_values=None):
+    def add_action(self, action, single=True, special_values=None, spends=0):
         world = Schedule._world
         action_ = Schedule._world + '_' + action
         if not renpy.has_label('shd_%s'%(action_)):
@@ -79,7 +80,7 @@ class Schedule(object):
                 for a in self.actions:
                     if a.slot == act.slot:
                         self.remove_by_handle(a)
-            
+            act.spends = spends
             self.actions.append(act)
         else:
             raise Exception("There is no %s action at current world(%s) or at core"%(action, self._world))

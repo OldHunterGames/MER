@@ -223,6 +223,26 @@ class InventoryWielder(object):
         self.corpse_storage = []
         self.captives = []
 
+    @property
+    def money(self):
+        return self.inventory.money
+
+    @money.setter
+    def money(self, value):
+        self.inventory.money = value
+
+    def add_money(self, value):
+        self.inventory.add_money(value)
+
+    def remove_money(self, value):
+        self.inventory.remove_money(value)
+
+    def has_money(self, value):
+        return self.inventory.has_money(value)
+
+    def transfer_money(self, storage, value):
+        self.inventory.transfer_money(storage, value)
+
     def add_captive(self, person):
         self.captives.append(person)
 
