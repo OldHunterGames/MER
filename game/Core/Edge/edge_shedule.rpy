@@ -7,24 +7,33 @@ label shd_edge_None_template(action):
     $ d = action.actor.description()
     '[d] TOASTED!'
     return
-    
+ 
+ 
+## OVERTIME SLOT
+label shd_edge_overtime_nap(action):
+    python:
+        name = action.actor.name
+    '[name] resting...'
+    return      
+   
+
+## ACCOMODATION SLOT    
 label shd_edge_accommodation_makeshift(action):
     python:
+        name = action.actor.name
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
         action.actor.wellness.set_tension()   
-        action.actor.add_buff('bad_sleep')  
         name = action.actor.name
-    'Sleeps on a rocky cold ground.'
+    "[name] sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
 label shd_edge_accommodation_mat(action):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
-        action.actor.wellness.set_tension()    
         name = action.actor.name
-    '[name] sleeps on a tiny mat.'          
+    "[name] sleeps on a tiny mat. It's uncomfortable and reminds of poverty."          
     return 
 
 label shd_edge_accommodation_cot(action):
@@ -41,6 +50,8 @@ label shd_edge_accommodation_appartment(action):
     '[name] sleeps in apartments.'    
     return  
 
+
+## FEED SLOT    
 label shd_edge_feed_catering(action):
     python:
         action.actor.comfort.satisfaction = 1
@@ -48,11 +59,15 @@ label shd_edge_feed_catering(action):
         actor.eat(action.special_values['amount'], action.special_values['quality'])
     '[name] eats served food.'    
     return  
-    
+
+
+## JOB SLOT        
 label shd_edge_job_idle(action):
     python:
-        pass
-    'idling...'
+        name = action.actor.name
+        action.actor.add_buff('rested')
+        txt = encolor_text('some comfort', 2)
+    "[name] have no job to do and resting. It's conserves energy and gives [txt]"
     return
 
 label shd_edge_job_range(action):
@@ -198,31 +213,7 @@ label shd_edge_job_treasurehunt(action):
 
     '[name] [descr][yeld].'
     return
-    
-label shd_edge_overtime_nap(action):
-    python:
-        pass
-    'resting...'
-    return      
-    
-label shd_edge_overtime_scout(action):
-    python:
-        if not edge.maximum_scouted():
-            scouted = edge.explore_location()
-            message = 'Found %s location.'% scouted.name
-        else:
-            message = 'Already exlored'
-        
-    '[message]'
-    return        
-    
-label shd_edge_overtime_foundcamp(action):
-    python:
-        edge.locations.remove('outworld ruines')
-        edge.locations.append('your base camp')
-        camp.found()
-    'Encamped in outworld ruines.'
-    return       
-    
+       
+
     
     
