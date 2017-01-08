@@ -192,15 +192,7 @@ class MistsOfEternalRome(object):
     def skillcheck(self, person, skill_name, difficulty):
         skill = person.skill(skill_name)
         difficulty -= skill.level
-        if difficulty <= 0:
-            return True
-        elif difficulty >= 6:
-            return False
-        else:
-            if any(person.available_tokens(skill_name, difficulty)):
-                return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, skill=skill_name, difficulty=difficulty)
-            else:
-                return False
+        return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, skill_name=skill_name, difficulty=difficulty)
 
 
     def discover_world(self, worlds):

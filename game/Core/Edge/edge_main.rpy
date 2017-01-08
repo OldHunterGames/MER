@@ -90,12 +90,13 @@ label lbl_edge_manage:
         bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)    
         consumption = edge.resources.can_tick()
         if player.job == 'idle': 
-            job = encolor_text(edge_jobs[player.job]['name'], 0)
+            job = encolor_text(jobs_data[player.job]['name'], 0)
         else:
-            job = encolor_text(edge_jobs[player.job]['name'], 4)
+            job = encolor_text(jobs_data[player.job]['name'], 4)
             
         if not consumption:
             consumption_text += ". You can't skip turn"
+        player.set_job('beg', 'sex')
     menu:
         "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
         "[consumption_text]"

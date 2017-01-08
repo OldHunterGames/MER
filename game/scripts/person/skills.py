@@ -125,14 +125,23 @@ class Skilled(object):
         self.focused_skill = None
         self.skills_used = []
         self.inner_resources = []
+        self.luck_tokens = []
         self.focus_dict = collections.defaultdict(int)
         self.used_inner_resources = []
 
     def add_inner_resource(self, name, attribute, value=1):
         if attribute == 'focus':
             self.add_focus(name)
+        elif name == 'luck':
+            self.add_luck(value)
         else:
             self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
+
+    def add_luck(self, value):
+        self.luck_tokens.append(value)
+
+    def has_resources(self):
+        return any(self.inner_resources) or any([i > 0 for i in self.focus_dict.values()])
 
     def use_resource(self, resource):
         if resource['name'] == 'insight':
@@ -140,17 +149,40 @@ class Skilled(object):
         else:
             self.inner_resources.remove(resource)
 
-    def available_tokens(self, skill_name, difficulty):
-        skill = self.skill(skill_name)
-        available = []
+    def get_min_resource_token(self, skill_name, difficulty):
+        token = None
         for i in self.inner_resources:
-            if ((i['attribute'] == skill.attribute or i['attribute'] == 'any') and
-                i['value'] >= difficulty):
-                available.append(i)
-        if self.has_focus(skill_name):
-            if self.get_focus(skill_name) >= difficulty:
-                available.append({'name': 'insight', 'attribute': skill_name, 'value': self.get_focus(skill_name)})
-        return available
+            if i['attribute'] == self.skill(skill_name).attribute and i['value'] >= difficulty:
+                difficulty = i['value']
+                token = i
+        return token
+
+    def get_min_luck(self, difficulty):
+        value = 0
+        try:
+            value = min([i for i in self.luck_tokens if i >= difficulty])
+        except ValueError:
+            return value
+        return value
+
+    def use_luck(self, value):
+        self.luck_tokens.remove(value)
+
+    def apply_determination(self, resource, determination):
+        resource['value'] += 1
+        self.use_resource(determination)
+
+    def can_upgrade_resource(self, resource, determination):
+        if determination is None:
+            return
+        return resource['value'] < determination['value']
+
+    def unite_determinations(self, determination1, determination2):
+        value = max(determination1['value'], determination2['value'])
+        value += 1
+        self.add_inner_resource('determination', 'any', value)
+        self.use_resource(determination1)
+        self.use_resource(determination2)
 
     def add_focus(self, name):
         self.focus_dict[name] += 1
@@ -163,9 +195,6 @@ class Skilled(object):
 
     def get_focus(self, name):
         return self.focus_dict[name]
-
-    def has_focus(self, name):
-        return name in self.focus_dict.keys()
 
     def get_all_skills(self):
         return [i for i in self.skills]

@@ -126,13 +126,4 @@ init python:
         'integrator': __('You become an electrinics system integrator at the Major House of Eternal Rome. Game of career developement ecpected...'),   
         'mistmarine': __('You become a mistmarine at the Major House of Eternal Rome. Game of epic warfare and violence in Outer Worlds is ecpected...'),   
     }
-    
-    edge_jobs = {
-    'idle': {'name': 'Idle', 'description': 'Descriptext'},
-    'beg': {'name': 'Beggar', 'description': 'Descriptext'},
-    'simplework': {'name': 'Simple work', 'description': 'Descriptext'},
-    'hardwork': {'name': 'Hard work', 'description': 'Descriptext'},
-    'range': {'name': 'Range the Edge', 'description': 'Descriptext'},
-    'treasurehunt': {'name': 'Treasure hunt', 'description': 'Descriptext'},
-    'bukake': {'name': 'Bukake slut feeding', 'description': 'Descriptext'},    
-        }        
+     

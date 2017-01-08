@@ -74,7 +74,7 @@ init python:
 
         @property
         def chances(self):
-            return self.person.energy
+            return 5
 
         def start_rolling(self):
             self.roll_phase = True

@@ -63,13 +63,15 @@ class Schedule(object):
     def set_world(cls, world):
         cls._world = world
     def add_action(self, action, single=True, special_values=None):
+        world = Schedule._world
         action_ = Schedule._world + '_' + action
         if not renpy.has_label('shd_%s'%(action_)):
             action_ = Schedule._default_world + '_' + action
+            world = Schedule._default_world
 
         if action_ in actions.keys():
 
-            act = ScheduledAction(self.owner, actions[action_][2], actions[action_][0], actions[action_][1], action_, single, special_values)
+            act = ScheduledAction(self.owner, world + '_' +actions[action_][2], actions[action_][0], actions[action_][1], action_, single, special_values)
             
             if act.slot is not None:
                 for a in self.actions:

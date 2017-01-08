@@ -100,6 +100,72 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         vbox:
                             for i in person.get_buffs():
                                 text encolor_text(i.name, i.color())
+        if person.has_resources():
+            frame:
+                xalign 1.0
+                yalign 1.0
+                vbox:
+                    textbutton 'Tokens' action Show('sc_tokens', person=person)
+
+init python:
+    active_determination = None
+
+screen sc_tokens(person):
+    $ tokens = person.inner_resources
+    modal True
+    window:
+        xfill True
+        yfill True
+        xalign 0.0
+        yalign 0.0
+        style 'char_info_window'
+        hbox:
+            frame:
+                xsize 200
+
+                vbox:
+                    text 'Attributes'
+                    for i in tokens:
+                        if i['name'] != 'luck' and i['name'] != 'determination':
+                            textbutton encolor_text(tokens_translation[i['name']], i['value']):
+                                action [SensitiveIf(person.can_upgrade_resource(i, active_determination)),
+                                    Function(person.apply_determination, i, active_determination),
+                                    SetVariable('active_determination', None)]
+                                
+            frame:
+                xsize 250
+                vbox:
+                    text 'Determination'
+                    for i in tokens:
+                        if i['name'] == 'determination':
+                                textbutton encolor_text(tokens_translation[i['name']], i['value']):
+                                    action [If(active_determination is None, SetVariable('active_determination', i)),
+                                        If(active_determination == i, SetVariable('active_determination', None)),
+                                        If(active_determination is not None and i != active_determination,
+                                            Function(person.unite_determinations, i, active_determination)),
+                                        If(active_determination is not None and i != active_determination,
+                                            SetVariable('active_determination', None))]
+                                    selected active_determination == i
+                                    if active_determination is not None:
+                                        if active_determination != i:
+                                            sensitive active_determination['value'] < 5
+            frame:
+                xsize 200
+                vbox:
+                    text "Focus"
+                    for key, value in person.focus_dict.items():
+                        if value > 0:
+                            text encolor_text(key + ' ' + __('insight'), value)
+            frame:
+                xsize 200
+                vbox:
+                    text 'Luck'
+                    for i in person.luck_tokens:
+                            text encolor_text(tokens_translation['luck'], i)
+        textbutton 'Leave' action Hide('sc_tokens'):
+            xalign 0.5
+            yalign 1.0
+            xsize 200
 
 screen sc_skill_info(skill):
     frame:

@@ -542,18 +542,98 @@ screen edge_sell_screen(person, item_type):
         has vbox
         text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))
 
-label lbl_skillcheck_mini(person, skill, difficulty):
-    $ value = renpy.call_screen('sc_skillcheck_mini', person=person, skill=skill, difficulty=difficulty)
+label lbl_skillcheck_mini(person, skill_name, difficulty):
+    python:
+        attr = person.get_min_resource_token(skill_name, difficulty)
+        luck = person.get_min_luck(difficulty)
+        focus = person.get_focus(skill_name)
+        skill = person.skill(skill_name)
+        luck_text = encolor_text(__("Luck"), luck)
+        insight_text = encolor_text(__("Insight"), focus)
+        if attr is not None:
+            attr = encolor_text(tokens_translation[attr['name']], attr['value'])
+        resqual = 'PLACEHOLDER'
+        if difficulty == 0:
+            text = '{person.name} uses {skill.name} skill to success'.format(person=person, skill=skill)
+        elif difficulty > 5:
+            text = '{person.name} needs higher {skill.name} skill to success. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
+                person=person, skill=skill)
+        else:
+            text = '{person.name} meets {skill.name} challenge. To succeed {person.name} need to spend {resqual} resources'.format(
+                person=person, skill=skill, resqual=resqual)
+    if difficulty > 0 and difficulty <= 5:
+        menu:
+            '[text]'
+            '[attr]' if attr is not None:
+                $ person.use_resource(attr)
+                return True
+            '[luck_text]' if luck > 0:
+                $ person.use_luck(luck)
+                return True
+            '[insight_text]' if focus > 0 and focus >= difficulty:
+                $ person.use_focus(skill_name)
+                return True
+            '{color=#f00}Fail{/color}':
+                return False
 
-    return value
+    elif difficulty == 0:
+        '[text]'
+        return True
+    else:
+        '[text]'
+        return False
+label lbl_jobcheck(person, skill_name):
+    python:
+        productivity = person.job_productivity()
+        potential = person.skill(skill_name).level
 
-screen sc_skillcheck_mini(person, skill, difficulty):
-    modal True
-    window:
-        xalign 0.5
-        yalign 0.5
-        vbox:
-            for i in person.available_tokens(skill, difficulty):
-                textbutton encolor_text(tokens_translation[i['name']], i['value']):
-                    action Function(person.use_resource, i), Return(True)
-            textbutton 'Leave' action Return(False)
+        attr = person.get_min_resource_token(skill_name, productivity)
+        luck = person.get_min_luck(productivity)
+        focus = person.get_focus(skill_name)
+        skill = person.skill(skill_name)
+        luck_text = encolor_text(__("Luck"), luck)
+        insight_text = encolor_text(__("Insight"), focus)
+        resqual = "PLACEHOLDER"
+        job_description = jobs_data[person.job]['description']
+        if productivity < potential:
+            if not person.productivity_raised:
+                text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. To rise the productivity level {person.name} need to spend {resqual} resources".format(
+                        person=person, job_description=job_description, productivity=productivity,
+                        potential=potential, resqual=resqual)
+            elif person.productivity_raised:
+                text = "{person.name} {job_description} with {productivity} productivity and {potential} potential.There has been some progress.".format(
+                        person=person, productivity=productivity, potential=potential,
+                        job_description=job_description)
+        else:
+            if productivity < 5:
+                text = "{person.name} {job_description} with {productivity} productivity,limited by {skill.name} level".format(
+                    person=person, job_description=job_description,
+                    productivity=productivity, skill=skill)
+            else:
+                text = "{person.name} {job_description} with {productivity} productivity".format(
+                    person=person, job_description=job_description,
+                    productivity=productivity)
+    if productivity < potential and not person.productivity_raised:
+        menu:
+            '[text]'
+            '[attr]' if attr is not None:
+                $ person.increase_productivity()
+                $ person.use_resource(attr)
+                return
+            '[luck_text]' if luck > 0:
+                $ person.increase_productivity()
+                $ person.use_luck(luck)
+                return
+            '[insight_text]' if focus > 0 and focus >= productivity:
+                $ person.increase_productivity()
+                $ person.use_focus(skill_name)
+                return
+            'Nevermind':
+                return 
+    else:
+        '[text]'
+        return
+
+
+        
+

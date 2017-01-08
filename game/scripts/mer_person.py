@@ -556,8 +556,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.job_buffer = []
         self.job_skill = None
-
+        self.use_job_productivity = False
         self._job_productivity = 0
+        self.productivity_raised = False
 
         self.joy = 0
         self._spoil_number = 1
@@ -1369,7 +1370,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.calc_life_level()
 
         if self.player_controlled:
-            if self.mood() < 0:
+            if self.mood < 0:
                 self.anxiety += 1
         
         else:
@@ -1391,6 +1392,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.success = 0
         self.purporse = 0
         self.joy = 0
+        self.productivity_raised = False
 
     def tick_time(self):
         if not self.calculatable:
@@ -2039,7 +2041,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def job_productivity(self):
         if self.job_skill is not None:
-            value = self.skill(self.job_skill)
+            value = self.skill(self.job_skill).level - self.job_difficulty
         else:
             return 0
         value += self._job_productivity
@@ -2048,13 +2050,16 @@ class Person(Skilled, InventoryWielder, Attributed):
     def increase_productivity(self):
         self.job_buffer = []
         self._job_productivity += 1
+        self.productivity_raised = True
 
     def use_job(self):
+        if self.use_job_productivity:
+            renpy.call_in_new_context('lbl_jobcheck', person=self, skill_name=self.job_skill)
         self.schedule.use_by_slot('job')
         self.job_buffer = []
 
 
-    def set_job(self, job, skill=None, single=True, productivity=True, target=None):
+    def set_job(self, job, skill, single=True, productivity=True, target=None, difficulty=1):
         job = 'job_'+job
         if self._job_productivity > 0:
             old_job = 'job_'+self.job
@@ -2063,7 +2068,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         elif len(self.job_buffer) > 0:
             if job == self.job_buffer[0]:
                 self._job_productivity = self.job_buffer[1]
+        self.use_job_productivity = productivity
         self.job_skill = skill
+        self.job_difficulty = difficulty
         if target is not None:
             special_values = {'target': target}
         else:
