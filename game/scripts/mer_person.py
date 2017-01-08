@@ -190,6 +190,7 @@ class Attributed(Modifiable):
         return val
 
 
+"""class Wealth(object):
 
 
     def init_wealth(self):
@@ -227,6 +228,7 @@ class Attributed(Modifiable):
         return self.wealth[quality] >= value
 
     def spend_wealth(self, quality, value):
+        self.wealth[quality] -= value"""
 
 
 
