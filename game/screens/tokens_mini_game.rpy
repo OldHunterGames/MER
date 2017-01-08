@@ -125,16 +125,11 @@ init python:
                     self.stop_rolling()
                     self.failed = True
                     return
-            left = self.revolver.get(number-1)
-            right = self.revolver.get(number+1)
-            if left is not None:
-                if left['name'] == token['name']:
-                    token['value'] += 1
-                    left['value'] += 1
-            elif right is not None:
-                if right['name'] == token['name']:
-                    token['value'] += 1
-                    right['value'] += 1
+            for i in self.revolver.values():
+                if i is not None:
+                    if i['name'] == token['name']:
+                        i['value'] += 1
+                        token['value'] += 1
             if token['value'] > 5:
                 token['value'] = 5
 
