@@ -1383,9 +1383,10 @@ class Person(Skilled, InventoryWielder, Attributed):
         
         self.reduce_esteem()
         self.food_system.fatness_change()
-        self.reset_needs()
+        
         self.calc_focus()
         self.set_energy()
+        self.reset_needs()
         
         self.ap = 1
         self._stimul = 0
@@ -2083,11 +2084,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         job = 'job_'+job
         if self._job_productivity > 0:
             old_job = 'job_'+self.job
-            self.job_buffer = [old_job, self._job_productivity]
+            self.job_buffer = [old_job, self._job_productivity, self.productivity_raised]
             self._job_productivity = 0
         elif len(self.job_buffer) > 0:
             if job == self.job_buffer[0]:
                 self._job_productivity = self.job_buffer[1]
+                self.productivity_raised = self.job_buffer[2]
         if skill is None:
             self.use_job_productivity = False
         else:
