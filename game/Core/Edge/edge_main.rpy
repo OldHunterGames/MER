@@ -77,34 +77,32 @@ label lbl_edge_manage:
     python:
         target = player
         food_info = player.ration_status()
-        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-        consumption_text = show_consumption_level()
-        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-        free = encolor_text('free', 5)
-        cost_1 = encolor_resource_text(1)
-        cost_2 = encolor_resource_text(2)
-        cost_3 = encolor_resource_text(3)
-        cost_4 = encolor_resource_text(4)
-        cost_5 = encolor_resource_text(5)    
-        consumption_level = edge.resources.consumption_level()
-        bill = encolor_text(spending_rate[5-consumption_level], 5-consumption_level)    
         consumption = edge.resources.can_tick()
-        if player.job == 'idle': 
+        consumption_text = ''
+        money = player.money
+        bill = player.decade_bill
+        enrgy_txt = encolor_text('energy', player.energy)
+        if bill == 0:
+            bill_txt = ''
+        else:
+            bill_txt = "Decade bill is %s brs." % (bill) 
+            
+        if player.job == 'edge_idle': 
             job = encolor_text(jobs_data[player.job]['name'], 0)
         else:
             job = encolor_text(jobs_data[player.job]['name'], 4)
             
-        if not consumption:
-            consumption_text += ". You can't skip turn"
+        if not core.can_skip_turn():
+            consumption_text += ". You can't skip turn - not enough brs."
     menu:
-        "Job: [job] \nNutrition: [food_info] \nYou have [resources]."
+        "Job: [job] \nNutrition: [food_info] \nYou have [money] brs. [bill_txt]"
         "[consumption_text]"
         
-        'Рулеточка':
+        'Take a chance ([enrgy_txt])' if player.energy >= 0:
             $ TokensGame(player)        
         'Тест навыка':
             $ result = core.skillcheck(player, 'athletics', 4) 
-        'Opportunities (1 AP)' if player.ap > 0:
+        'Opportunities ([enrgy_txt])' if player.energy >= 0:
             call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost

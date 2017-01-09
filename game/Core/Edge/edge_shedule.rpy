@@ -13,7 +13,7 @@ label shd_edge_None_template(action):
 label shd_edge_overtime_nap(action):
     python:
         name = action.actor.name
-    '[name] resting...'
+    '[name]resting...'
     return      
    
 
@@ -25,7 +25,7 @@ label shd_edge_accommodation_makeshift(action):
         action.actor.prosperity.set_tension()
         action.actor.wellness.set_tension()   
         name = action.actor.name
-    "[name] sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
+    "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
 label shd_edge_accommodation_mat(action):
@@ -33,13 +33,13 @@ label shd_edge_accommodation_mat(action):
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
         name = action.actor.name
-    "[name] sleeps on a tiny mat. It's uncomfortable and reminds of poverty."          
+    "[name]sleeps on a tiny mat. It's uncomfortable and reminds of poverty."          
     return 
 
 label shd_edge_accommodation_cot(action):
     $ action.actor.comfort.satisfaction = 1
     $ name = action.actor.name
-    '[name] sleeps on a rough cot.'    
+    '[name]sleeps on a rough cot.'    
     return 
 
 label shd_edge_accommodation_appartment(action):
@@ -47,7 +47,7 @@ label shd_edge_accommodation_appartment(action):
         action.actor.comfort.satisfaction = 3
         action.actor.add_buff('beauty_sleep')        
         name = action.actor.name
-    '[name] sleeps in apartments.'    
+    '[name]sleeps in apartments.'    
     return  
 
 
@@ -57,7 +57,7 @@ label shd_edge_feed_catering(action):
         action.actor.comfort.satisfaction = 1
         name = action.actor.name
         actor.eat(action.special_values['amount'], action.special_values['quality'])
-    '[name] eats served food.'    
+    '[name]eats served food.'    
     return  
 
 
@@ -67,12 +67,15 @@ label shd_edge_job_idle(action):
         name = action.actor.name
         action.actor.add_buff('rested')
         txt = encolor_text('some comfort', 2)
-    "[name] have no job to do and resting. It's conserves energy and gives [txt]"
+    "[name]have no job to do and resting. It's conserves energy and gives [txt]"
     return
 
-label shd_edge_job_manual:
-    $ yeld = action.actor.job_productivity()
-    '[action.actor.name] doing manual labour. Yelds: [yeld]'
+label shd_edge_job_manual(action):
+    $ result = action.actor.job_productivity()
+    if result > 0:
+        '[action.actor.name] yelds: 10 brs for manual labor'
+        $ player.add_money(10)
+
     return
     
 label shd_edge_job_range(action):

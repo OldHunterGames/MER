@@ -4,22 +4,25 @@
 # Slums menu
 
 label lbl_edge_slums_accomodation:
+    python:
+        cost_mat = 5
+        cost_cot = 10
+        cost_apps = 25
 
     menu:
-        'Tiny mat in common room ([cost_1])':
-            $ target.schedule.add_action('accommodation_mat', single=False) 
-            $ cost = 1
-        'Cot & bkanket ([cost_2])':
-            $ target.schedule.add_action('accommodation_cot', single=False) 
-            $ cost = 2
-        'Apartments ([cost_3])':
-            $ target.schedule.add_action('accommodation_appartment', single=False) 
-            $ cost = 3            
-        'Rough ground, out of the walls ([free])':
-            $ target.schedule.add_action('accommodation_makeshift', single=False) 
-            $ cost = 0
+        'Tiny mat in common room ([cost_mat] brs/decade)':
+            $ cost = cost_mat
+            $ target.schedule.add_action('accommodation_mat', single=False, spends = cost) 
+        'Cot & bkanket ([cost_cot] brs/decade)':
+            $ cost = cost_cot
+            $ target.schedule.add_action('accommodation_cot', single=False, spends = cost) 
+        'Apartments ([cost_apps] brs/decade)':
+            $ cost = cost_apps        
+            $ target.schedule.add_action('accommodation_appartment', single=False, spends = cost) 
+ 
+        'Rough ground, out of the walls (free)':
+            $ target.schedule.add_action('accommodation_makeshift', single=False, spends = 0) 
             
-    $ edge.resources.add_consumption(target, 'accomodation fee', cost, 'accomodation', time = None)
     call lbl_edge_manage
     return
 
