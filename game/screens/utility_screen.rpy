@@ -593,19 +593,20 @@ label lbl_skillcheck_mini(person, skill_name, difficulty):
         luck = person.get_min_luck(difficulty)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
+        skill_name_colored = encolor_text(skill.name, skill.level)
         luck_text = encolor_text(__("Luck"), luck)
         insight_text = encolor_text(__("Insight"), focus)
         if attr is not None:
             attr = encolor_text(tokens_translation[attr['name']], attr['value'])
         resqual = effort_quality[difficulty]
         if difficulty == 0:
-            text = '{person.name} uses {skill.name} skill to success'.format(person=person, skill=skill)
+            text = '{person.name} uses {skill} skill to success'.format(person=person, skill=skill_name_colored)
         elif difficulty > 5:
-            text = '{person.name} needs higher {skill.name} skill to success. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
-                person=person, skill=skill)
+            text = '{person.name} needs higher {skill} skill to success. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
+                person=person, skill=skill_name_colored)
         else:
-            text = '{person.name} meets {skill.name} challenge. To succeed {person.name} need {resqual}'.format(
-                person=person, skill=skill, resqual=resqual)
+            text = '{person.name} meets {skill} challenge. To succeed {person.name} need {resqual}'.format(
+                person=person, skill=skill_name_colored, resqual=resqual)
     if difficulty > 0 and difficulty <= 5:
         python:
             result = renpy.call_screen('sc_skillcheck_mini', person, skill_name, difficulty, text)
@@ -628,6 +629,7 @@ label lbl_jobcheck(person, skill_name):
         luck = person.get_min_luck(productivity)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
+        skill_name_colored = encolor_text(skill.name, skill.level)
         luck_text = encolor_text(__("Luck"), luck)
         insight_text = encolor_text(__("Insight"), focus)
         resqual = effort_quality[productivity+1]
@@ -643,9 +645,9 @@ label lbl_jobcheck(person, skill_name):
                         job_description=job_description)
         else:
             if productivity < 5:
-                text = "{person.name} {job_description} with {productivity} productivity,limited by {skill.name} level".format(
+                text = "{person.name} {job_description} with {productivity} productivity,limited by {skill} level".format(
                     person=person, job_description=job_description,
-                    productivity=productivity_str, skill=skill)
+                    productivity=productivity_str, skill=skill_name_colored)
             else:
                 text = "{person.name} {job_description} with {productivity} productivity".format(
                     person=person, job_description=job_description,
@@ -672,6 +674,7 @@ label lbl_jobcheck_npc(person, skill_name):
         luck = person.get_min_luck(productivity)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
+        skill_name_colored = encolor_text(skill.name, skill.level)
         luck_text = encolor_text(__("Luck"), luck)
         insight_text = encolor_text(__("Insight"), focus)
         resqual = "PLACEHOLDER"
@@ -681,9 +684,9 @@ label lbl_jobcheck_npc(person, skill_name):
         real_productivity = person.real_productivity()
         real_prod_str = success_rate[real_productivity]
         if skill.level < 5:
-            text = "{person.name} {job_description} with {productivity} productivity,limited by {skill.name} level".format(
+            text = "{person.name} {job_description} with {productivity} productivity,limited by {skill} level".format(
                 person=person, job_description=job_description,
-                productivity=productivity_str, skill=skill)
+                productivity=productivity_str, skill=skill_name_colored)
         else:
             text = "{person.name} {job_description} with {productivity} productivity".format(
                 person=person, job_description=job_description,
