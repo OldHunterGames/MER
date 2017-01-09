@@ -14,12 +14,18 @@ screen sc_manage_stash(stash):
                         scrollbars 'vertical'
                         draggable True
                         mousewheel True
-                        
+                        xsize 300
+                        ysize 300
                         vbox:
                             text 'Player':
                                 xalign 0.5
                             for i in player.items:
-                                textbutton i.name:
+                                python:
+                                    if i.amount > 1:
+                                        name = "%s(%s)"%(i.name, i.amount)
+                                    else:
+                                        name = i.name
+                                textbutton name:
                                     action Function(player.transfer_item, i, stash)
                 frame:
                     vbox:
@@ -42,12 +48,18 @@ screen sc_manage_stash(stash):
                         scrollbars 'vertical'
                         draggable True
                         mousewheel True
-                        
+                        xsize 300
+                        ysize 300
                         vbox:
                             text 'Stash':
                                 xalign 0.5
                             for i in stash.items:
-                                textbutton i.name:
+                                python:
+                                    if i.amount > 1:
+                                        name = "%s(%s)"%(i.name, i.amount)
+                                    else:
+                                        name = i.name
+                                textbutton name:
                                     action Function(stash.transfer_item, i, player)
                 frame:
                     vbox:
@@ -60,6 +72,70 @@ screen sc_manage_stash(stash):
                             textbutton '100' action Function(stash.transfer_money, player, 100)
                         if stash.money > 0:
                             textbutton 'all' action Function(stash.transfer_money, player, player.money)
+    frame:
+        ypos 501
+        xpos 5
+        textbutton 'Leave' action Return()
+
+screen sc_trade(stash):
+    hbox:
+        vbox:
+            frame:
+                xsize 300
+                ysize 300
+                
+                viewport:
+                    scrollbars 'vertical'
+                    draggable True
+                    mousewheel True
+                    xsize 300
+                    ysize 300
+                    vbox:
+                        text 'Player':
+                            xalign 0.5
+                        for i in player.items:
+                            python:
+                                if i.amount > 1:
+                                    name = "%s(%s)"%(i.name, i.amount)
+                                else:
+                                    name = i.name
+                            if i.amount > 1:
+                                text 'Price for 1: %s'%(i.price)
+                            else:
+                                text 'Price: %s'%(i.price)
+                            textbutton name:
+                                action Function(player.transfer_item, i, stash), Function(player.add_money, i.price)
+            frame:
+                vbox:
+                    text "Nutrition bars(%s)"%player.money
+
+        vbox:
+            frame:
+                xsize 300
+                ysize 300
+               
+                viewport:
+                    scrollbars 'vertical'
+                    draggable True
+                    mousewheel True
+                    xsize 300
+                    ysize 300
+                    vbox:
+                        text 'Trader':
+                            xalign 0.5
+                        for i in stash.items:
+                            python:
+                                if i.amount > 1:
+                                    name = "%s(%s)"%(i.name, i.amount)
+                                else:
+                                    name = i.name
+                            if i.amount > 1:
+                                text 'Price for 1: %s'%(i.price)
+                            else:
+                                text 'Price: %s'%(i.price)
+                            textbutton name:
+                                action [Function(stash.transfer_item, i, player), Function(player.remove_money, i.price),
+                                    SensitiveIf(player.has_money(i.price))]
     frame:
         ypos 501
         xpos 5

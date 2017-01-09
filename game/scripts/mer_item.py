@@ -50,6 +50,10 @@ class Item(object):
         self.new_description = None
         self.new_name = None
 
+    @property
+    def amount(self):
+        return 1
+
     def add_feature(self, id_):
         Feature(self, id_, self.features_data_dict)
 
@@ -143,6 +147,9 @@ class Item(object):
     def price(self, value):
         self._price = value
 
+    def stackable(self):
+        return False
+
        
 
 class Stackable(Item):
@@ -150,12 +157,16 @@ class Stackable(Item):
     _type = 'stackable'
 
     def __init__(self, *args, **kwargs):
-        super(Stackable, self).__init__(*args, **kwargs)
         if 'copy' in kwargs.keys():
             for key, value in kwargs['copy'].__dict__.items():
                 setattr(self, key, value)
             return
+        super(Stackable, self).__init__(*args, **kwargs)
+        
         self._amount = 1
+    
+    def stackable(self):
+        return True
 
     @property
     def amount(self):

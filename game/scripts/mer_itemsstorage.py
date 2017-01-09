@@ -43,7 +43,7 @@ class ItemsStorage(object):
                     get_item = i
                     break
         if get_item is not None:
-            if hasattr(get_item, 'amount'):
+            if get_item.stackable():
                 if value == 'all':
                     values = get_item.amount
                 returned = get_item.decrease_amount(value)
@@ -61,7 +61,7 @@ class ItemsStorage(object):
             raise Exception('value < 0 use remove_item instead')
         if item is None:
             return
-        if hasattr(item, 'amount'):
+        if item.stackable():
             current = self.get_by_id(item.id)
             if current is not None:
                 current.increase_amount(value)
@@ -78,3 +78,9 @@ class ItemsStorage(object):
     def transfer_item(self, item, storage, value=1):
         item = self.remove_item(item, value)
         storage.add_item(item)
+
+
+    def get_by_id(self, id_):
+        for i in self.storage:
+            if i.id == id_:
+                return i

@@ -14,6 +14,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
         self._main_hand = None
         self._other_hand = None
         self.storage = []
+        self.money = 0
     
     def get_all_modifiers(self):
         list_ = []
@@ -188,7 +189,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
                     get_item = i
                     break
         if get_item is not None:
-            if hasattr(get_item, 'amount'):
+            if get_item.stackable():
                 returned = get_item.decrease_amount(value)
                 if get_item.amount <= 0:
                     self.storage.remove(get_item)
@@ -207,11 +208,6 @@ class Inventory(ItemsStorage, ModifiersStorage):
             self.other_hand = None
         if return_item:
             return returned
-
-    def get_by_id(self, id_):
-        for i in self.storage:
-            if i.id == id_:
-                return i
 
     def weapon_slots(self):
         return self.carried_weapons
