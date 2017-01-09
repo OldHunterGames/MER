@@ -2050,9 +2050,10 @@ class Person(Skilled, InventoryWielder, Attributed):
             value = self.skill(self.job_skill).level - self.job_difficulty
         else:
             return 0
-        value += self._job_productivity
         if value < 0:
             value = 0
+        value += self._job_productivity
+        
         if not self.player_controlled:
             return min([value, self.skill(self.job_skill).level, self.motivation(), self.energy])
         return min(value, self.skill(self.job_skill).level)
