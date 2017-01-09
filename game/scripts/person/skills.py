@@ -145,7 +145,8 @@ class Skilled(object):
         self.luck_tokens.append(value)
 
     def has_resources(self):
-        return any(self.inner_resources) or any([i > 0 for i in self.focus_dict.values()])
+        return (any(self.inner_resources) or any([i > 0 for i in self.focus_dict.values()]) or
+            len(self.luck_tokens) > 0)
 
     def use_resource(self, resource):
         if resource['name'] == 'insight':
