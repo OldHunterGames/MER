@@ -1933,27 +1933,27 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.remove_relations()
         self._remove_features()
         self._remove_needs()
-        self.remove_schedule()
         self._remove_foodsystem()
         self.remove_genus()
         self.remove_skills()
+        self.remove_schedule()
         persons_list.remove(self)
 
     def remove_genus(self):
         self.genus.remove()
 
+    def remove_schedule(self):
+        self.schedule.actions = []
+        self.schedule.owner = None
+        self.schedule = None
+
     def _remove_needs(self):
         for i in self._needs:
             i.owner = None
-        self._needs = []
-
-    def remove_schedule(self):
-        self.schedule.actions = []
+        self._needs = []       
 
     def _remove_foodsystem(self):
         self.food_system.owner = None
-
-
 
     def _remove_features(self):
         to_remove = []
@@ -1969,7 +1969,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
 
     def remove_relations(self):
-        characters = self.known_characters
+        characters = [i for i in self.known_characters]
         for i in characters:
             self.forget_person(i)
         

@@ -466,16 +466,21 @@ screen sc_deck_style(deck):
 label lbl_gen_player:
     call screen sc_generate_player
     $ player = core.player
+    python:
+        for i in player_generator_garbage:
+            i.destroy()
+        player_generator_garbage = []
     return 
 
 
 init python:
+    player_generator_garbage = []
     def gen_player(core):
         person = gen_random_person(genus='human')
         old = core.player
         core.set_player(person)
-        if old is not None:
-            old.destroy()
+        player_generator_garbage.append(old)
+
         
 screen sc_generate_player:
     if core.player is not None:
