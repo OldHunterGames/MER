@@ -567,6 +567,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self._energy = 0
         self.set_energy()
+        self._current_job
 
     @property
     def energy(self):
@@ -2083,6 +2084,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
         job = 'job_'+job
+        if self._current_job == job:
+            return
+        self._current_job = job
         if self._job_productivity > 0:
             old_job = 'job_'+self.job
             self.job_buffer = [old_job, self._job_productivity, self.productivity_raised]
