@@ -82,6 +82,7 @@ class Schedule(object):
                         self.remove_by_handle(a)
             act.spends = spends
             self.actions.append(act)
+            return act
         else:
             raise Exception("There is no %s action at current world(%s) or at core"%(action, self._world))
     
