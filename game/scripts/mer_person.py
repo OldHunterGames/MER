@@ -1383,14 +1383,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         
         self.reduce_esteem()
         self.food_system.fatness_change()
-        
+        self.remove_money(self.decade_bill)
         self.calc_focus()
         self.set_energy()
         self.reset_needs()
         
         self.ap = 1
         self._stimul = 0
-
         self.success = 0
         self.purporse = 0
         self.joy = 0
@@ -1756,6 +1755,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def reduce_esteem(self):
         if len(self.selfesteem_buffer) < 1:
             self._selfesteem = None
+            return
         if all([i >= 0 for i in self.selfesteem_buffer]):
             self._selfesteem = 1
             
