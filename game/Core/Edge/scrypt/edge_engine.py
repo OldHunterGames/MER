@@ -78,6 +78,7 @@ class EdgeEngine(object):
         storage = self.stashes[name][1]
         for i in storage.items():
             storage.remove_item(i, 'all')
+        storage.remove_money(storage.money)
 
     def gen_treasures(self):
         chances = [(('gem', 'treasure'), 20), 
