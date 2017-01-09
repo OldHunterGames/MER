@@ -567,6 +567,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self._energy = 0
         self.set_energy()
+        self._current_job = None
 
     @property
     def energy(self):
@@ -2082,26 +2083,32 @@ class Person(Skilled, InventoryWielder, Attributed):
 
 
     def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
+        if target is not None:
+            special_values = {'target': target}
+        else:
+            special_values = None
         job = 'job_'+job
         if self._job_productivity > 0:
-            old_job = 'job_'+self.job
+            old_job = self.job
             self.job_buffer = [old_job, self._job_productivity, self.productivity_raised]
             self._job_productivity = 0
-        elif len(self.job_buffer) > 0:
+        
+        self.schedule.add_action(job, single, special_values = special_values)
+        job = self.job
+        
+        if len(self.job_buffer) > 0:
             if job == self.job_buffer[0]:
                 self._job_productivity = self.job_buffer[1]
                 self.productivity_raised = self.job_buffer[2]
+                self.job_buffer = []
         if skill is None:
             self.use_job_productivity = False
         else:
             self.use_job_productivity = True
         self.job_skill = skill
         self.job_difficulty = difficulty
-        if target is not None:
-            special_values = {'target': target}
-        else:
-            special_values = None
-        self.schedule.add_action(job, single, special_values = special_values)
+        
+        
 
     def joy(self, need, value):
         need = getattr(self, need)
