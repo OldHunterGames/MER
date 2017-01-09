@@ -567,7 +567,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self._energy = 0
         self.set_energy()
-        self._current_job
+        self._current_job = None
 
     @property
     def energy(self):
