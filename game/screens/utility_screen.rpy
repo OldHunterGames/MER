@@ -626,6 +626,8 @@ label lbl_jobcheck(person, skill_name):
         potential_str = encolor_text(success_rate[potential], potential)
         attr_name = tokens_translation[person.get_related_token(skill_name)]
         attr = person.get_min_resource_token(skill_name, productivity)
+        if attr is not None:
+            attr = encolor_text(tokens_translation[attr['name']], attr['value'])
         luck = person.get_min_luck(productivity)
         focus = person.get_focus(skill_name)
         skill = person.skill(skill_name)
