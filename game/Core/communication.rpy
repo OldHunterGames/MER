@@ -45,7 +45,6 @@ label lbl_gratify(target):
         'Compliment (charisma)':
             python:
                 player.moral_action('good', target) 
-                result = core.skillcheck(player, 'charisma', 4) 
                 core.gain_ctoken(target, player, 'contribution', 'charisma')
             
             if result:
