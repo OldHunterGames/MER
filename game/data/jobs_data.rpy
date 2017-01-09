@@ -1,14 +1,15 @@
 init python:
     jobs_data = {
-    'edge_idle': {'name': 'Idle', 'description': 'Descriptext'},
-    'edge_manual': {'name': 'Manual labor', 'description': 'doing manual labor in slums'},
-    'edge_beg': {'name': 'Beggar', 'description': 'Descriptext'},
-    'edge_simplework': {'name': 'Simple work', 'description': 'Descriptext'},
-    'edge_hardwork': {'name': 'Hard work', 'description': 'Descriptext'},
-    'edge_range': {'name': 'Range the Edge', 'description': 'Descriptext'},
-    'edge_treasurehunt': {'name': 'Treasure hunt', 'description': 'Descriptext'},
-    'edge_bukake': {'name': 'Bukake slut feeding', 'description': 'Descriptext'},    
-        }   
+    'edge_idle': {'name': __('Idle'), 'description': 'EROR'},
+    'edge_manual': {'name': __('Manual labor'), 'description': __('doing manual labor in slums')},
+    'edge_houseservice': {'name': __('Simple work'), 'description': __('providing household services in the slums')},
+    'edge_range': {'name': __('Range the Edge'), 'description': 'EROR'},   
+    'edge_beg': {'name': __('Beggar'), 'description': 'EROR'},
+    'edge_bukake': {'name': __('Bukake slut'), 'description': 'EROR'},      
+    
+    'edge_hardwork': {'name': __('Hard work'), 'description': __('Descriptext')},
+    'edge_treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext')},
+    }   
         
     effort_quality = [encolor_text(__('noting'), 0), 
                             encolor_text(__('a tiny effort'), 1),

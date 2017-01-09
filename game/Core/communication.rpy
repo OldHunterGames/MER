@@ -2,7 +2,19 @@
 # Communication with NPCs
 #
 
+label lbl_first_impression:
+    visavis "You have only one chance for a first expression!"
+    
+    jump lbl_edge_manage
+    return
+
 label lbl_communicate(target):
+    $ visavis = target
+    if not player.relations(visavis).first_impression:
+        $ player.relations(visavis).first_impression = True
+        $ player.drain_energy()
+        jump lbl_first_impression
+
     target "I'm here"
     menu:
         'Gratify':

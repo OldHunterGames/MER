@@ -33,31 +33,30 @@ label shd_edge_accommodation_mat(action):
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
         name = action.actor.name
-    "[name]sleeps on a tiny mat. It's uncomfortable and reminds of poverty."          
+    "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
     return 
 
 label shd_edge_accommodation_cot(action):
     $ action.actor.comfort.satisfaction = 1
     $ name = action.actor.name
-    '[name]sleeps on a rough cot.'    
+    '[name]sleeps on a rough cot under the holy blanket. Well, SOME comfort at least...'    
     return 
 
 label shd_edge_accommodation_appartment(action):
     python:
         action.actor.comfort.satisfaction = 3
-        action.actor.add_buff('beauty_sleep')        
+        action.actor.prosperity.satisfaction = 1
         name = action.actor.name
-    '[name]sleeps in apartments.'    
+    '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  
 
 
 ## FEED SLOT    
 label shd_edge_feed_catering(action):
     python:
-        action.actor.comfort.satisfaction = 1
         name = action.actor.name
         actor.eat(action.special_values['amount'], action.special_values['quality'])
-    '[name]eats served food.'    
+    '[name]eats at the common room.'    
     return  
 
 
@@ -69,12 +68,61 @@ label shd_edge_job_idle(action):
         txt = encolor_text('some comfort', 2)
     "[name]have no job to do and resting. It's conserves energy and gives [txt]"
     return
+   
+label shd_edge_job_beg(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        actor.moral_action('timid') 
 
+        actor.wellness.set_tension()        
+        actor.prosperity.set_tension()        
+        actor.authority.set_tension()
+
+        actor.eat(1, -1)
+    '[name]humbly begs for food and gains a few disgustning leftovers. Disracing, lowly and definetly not healthy experience.'
+    return
+    
+label shd_edge_job_bukake(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        actor.wellness.set_tension()    
+        actor.comfort.set_tension()
+        actor.authority.set_tension()        
+        actor.eros.set_tension()    
+        actor.eat(3, -1)
+        text = __('')
+    '[name]humbly sucks stangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
+    return
+    
 label shd_edge_job_manual(action):
-    $ result = action.actor.job_productivity()
+    python:
+        actor = action.actor
+        name = actor.name
+        result = actor.job_productivity()
+        actor.moral_action('lawful') 
     if result > 0:
-        '[action.actor.name] yelds: 10 brs for manual labor'
+        "[name] earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
         $ player.add_money(10)
+        $ action.actor.amusement.set_tension()
+    else: 
+        $ action.actor.ambition.set_tension()
+
+    return
+    
+label shd_edge_job_houseservice(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        result = actor.job_productivity()
+        actor.moral_action('lawful') 
+    if result > 0:
+        "[name] earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
+        $ player.add_money(10)
+        $ action.actor.amusement.set_tension()
+    else: 
+        $ action.actor.ambition.set_tension()
 
     return
     
@@ -82,6 +130,14 @@ label shd_edge_job_range(action):
     '[action.actor.name] patroling the Edge of Mists.'
     call lbl_edge_randenc_errant
     return
+          
+          
+          
+          
+          
+          
+          
+          
             
 label shd_edge_job_servitor(action):
     python:
@@ -97,39 +153,7 @@ label shd_edge_job_servitor(action):
         target.supervisor.gain_favor(1)
     '[name] [text]'
     return
-   
-label shd_edge_job_beg(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        beneficiar = actor
-        actor.moral_action('timid') 
-        actor.authority.set_tension()
-        actor.wellness.set_tension()        
-        actor.comfort.set_tension()
-        actor.prosperity.set_tension()        
-        actor.ambition.set_tension()        
-        actor.independence.set_tension()
-        actor.power.set_tension()
-        actor.approval.set_tension()
-        actor.eat(1, -1)
-        text = __('humbly begs for food and gains a few disgustning leftovers.')
-    '[name] [text]'
-    return
-    
-label shd_edge_job_bukake(action):
-    python:
-        actor = action.actor
-        name = actor.name
-        beneficiar = actor
-        actor.wellness.set_tension()        
-        actor.comfort.set_tension()
-        actor.ambition.set_tension()        
-        actor.independence.set_tension()
-        actor.eat(3, -1)
-        text = __('humbly sucks stangers diks and consume their semen for nutrition.')
-    '[name] [text]'
-    return
+
     
 label shd_edge_job_simplework(action):
     python:

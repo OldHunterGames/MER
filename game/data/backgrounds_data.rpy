@@ -100,6 +100,7 @@ init python:
             'name': __('slave'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
+            'skills': {'housekeeping': ['training']},                    
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -107,6 +108,7 @@ init python:
             'name': __('serf'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
+            'skills': {'housekeeping': ['training']},                    
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -114,6 +116,7 @@ init python:
             'name': __('low-class'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
+            'skills': {'housekeeping': ['training']},            
             'technical_level': 1,
             'prestige_level': 1
         },   
@@ -121,6 +124,7 @@ init python:
             'name': __('middle-class'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
+            'skills': {'housekeeping': ['training']},        
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -203,7 +207,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 2,
             'skills': {
-            'housekeeping': ['training', ('expirience', 1)],
+            'housekeeping': ['training', ('expirience', 3)],
             },            
         },
         'educated':{

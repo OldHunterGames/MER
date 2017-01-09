@@ -7,6 +7,7 @@ init python:
     
     spending_rate = [__('unaffordable'), __('expensive'), __('substantial'), __('minor'), __('negligible'), __('free')]
     favor_rate = [__('disregarded'), __('minor'), __('notable'), __('substantial'), __('pressing'), __('outrageous')]
+    succes_rate = [__('failure'), __('minimum'), __('adequate'), __('good'), __('great'), __('excellent')]
 
     food_quality_dict = {-1: __("disgusting "),
                          0: __('forage '),

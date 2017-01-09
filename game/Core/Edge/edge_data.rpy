@@ -30,7 +30,6 @@ init python:
         'disassemble': __('disassemble machinery'),
         'lookforstash': __('look for hidden stash'),
         'foodwork': __('work for food'),
-        
         }
 
     gang_prefix_names = [__('Black'),

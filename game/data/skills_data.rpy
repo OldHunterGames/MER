@@ -11,9 +11,9 @@ init python:
         'housekeeping': {'name': __('housekeeping'), 'attribute': 'mind'},
         'management': {'name': __('management'), 'attribute': 'mind'},
         'survival': {'name': __('survival'), 'attribute': 'mind'},
-        'science': {'name': __('alchemy'), 'attribute': 'mind'},
+        'science': {'name': __('science'), 'attribute': 'mind'},
         'streetwise': {'name': __('streetwise'), 'attribute': 'mind'},
-        'engineering': {'name': __('electronics'), 'attribute': 'mind'},
+        'engineering': {'name': __('engineering'), 'attribute': 'mind'},
 
 
         'sex': {'name': __('sex'), 'attribute': 'sensitivity'},
