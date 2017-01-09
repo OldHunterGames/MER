@@ -982,7 +982,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return False
 
     def tick_buffs_time(self):
-        for buff in self._buffs:
+        for buff in [i for i in self._buffs]:
             buff.tick_time()
 
     def get_buffs(self):
