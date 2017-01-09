@@ -5,6 +5,10 @@ style hoverable_text is text:
 style char_info_window is window:
     background Color((0, 0, 0, 255))
 
+style gray_button is button:
+    idle_background Frame(im.Grayscale('interface/bg_base.jpg'),0,0)
+    hover_background Frame(im.Grayscale('interface/bg_base.jpg'),0,0)
+
 screen sc_character_info_screen(person, return_l=False, communicate=False):
     python:
         if person.player_controlled:
@@ -29,7 +33,14 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             image im.Scale(person.avatar_path, 150, 150)
                         vbox:
                             if communicate:
-                                textbutton 'Communicate' action Function(renpy.call_in_new_context, 'lbl_communicate', person)
+                                if player.energy > -1:
+                                    textbutton 'Communicate' action Function(renpy.call_in_new_context, 'lbl_communicate', person)
+                                else:
+                                    textbutton 'Communicate':
+                                        style 'gray_button'
+                                        hovered Show('sc_text_popup', text=__("Not enough energy"))
+                                        unhovered Hide('sc_text_popup')
+                                        action NullAction()
                             textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
@@ -280,3 +291,9 @@ screen sc_vitality_info(person):
                     if v == 0:
                         text encolor_text(k, 6)
 
+
+screen sc_text_popup(text):
+    frame:
+        xalign 0.5
+        yalign 0.5
+        text text
