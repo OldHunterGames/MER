@@ -7,7 +7,11 @@ init python:
     'edge_beg': {'name': __('Beggar'), 'description': 'EROR'},
     'edge_bukake': {'name': __('Bukake slut'), 'description': 'EROR'},      
     
-    'edge_hardwork': {'name': __('Hard work'), 'description': __('Descriptext')},
+    'edge_repair': {'name': __('Repairings'), 'description': __('repairs various stuff for slum-dwellers')},
+    'edge_entertain': {'name': __('Entertain patrons'), 'description': __('entertains the slum-dwellers')},
+    'edge_alchemy': {'name': __('Brew booze'), 'description': __('brew booze for a slum-dwellers')},
+    'edge_disassembly': {'name': __('Disassemble wrecks'), 'description': __('disassembles old machinery')},
+
     'edge_treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext')},
     }   
         
@@ -18,3 +22,5 @@ init python:
                             encolor_text(__('significant effort'), 4),
                             encolor_text(__('epic effort'), 5),
                             encolor_text(__('impossible effort'), 6)]
+                            
+    yeld_table = [0, 5, 15, 30, 50, 75]

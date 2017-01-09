@@ -37,17 +37,17 @@ label lbl_edge_slums_ration:
         cost_bbq = 50
                                 
     menu:
-        'Junkfood lunch (cost_sjunk)':
+        'Junkfood lunch ([cost_sjunk])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 0}, spends = cost_sjunk) 
-        'Junkfood 3 time meals (cost_junk)':
+        'Junkfood 3 time meals ([cost_junk])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 0}, spends = cost_junk) 
-        'Cooked lunch (cost_scook)':
+        'Cooked lunch ([cost_scook])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 2}, spends = cost_scook) 
-        'All junkfood you can eat (cost_ljunk)':
+        'All junkfood you can eat ([cost_ljunk])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 0}, spends = cost_ljunk) 
-        'Cooked 3 time meals (cost_cook)':
+        'Cooked 3 time meals ([cost_cook])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 2}, spends = cost_cook) 
-        'Whole roasted girl (cost_bbq)':
+        'Whole roasted girl ([cost_bbq])':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 3}, spends = cost_bbq) 
         'Forage (free)':
             $ target.schedule.remove_action('feed_catering')
@@ -97,49 +97,26 @@ label lbl_edge_slums_work_res:
     menu:
         
         'Manual labor (athletics, +10 brs/decade)':
-            $ target.set_job('manual', skill='athletics', single=False, target=None, difficulty=3)
+            $ target.set_job('manual', skill='athletics', single=False, target=None, difficulty=2)
             
-        'Household services (housekeeping, simple)':
-            $ target.set_job('houseservice', skill='housekeeping', single=False, target=None, difficulty=3)
+        'Household services (housekeeping, +10 brs/decade)':
+            $ target.set_job('houseservice', skill='housekeeping', single=False, target=None, difficulty=2)
         
-        'Repair stuff (craft, hard)' if 'repair_job' in edge.options:
-            $ skill_id = 'craft'
-            $ description = _('repairing various stuff for a price. ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
+        'Repair stuff (craft)' if 'repair_job' in edge.options:
+            $ target.set_job('repair', skill='craft', single=False, target=None, difficulty=3)
         
-        'Scavenger (survival, hard)' if 'scavenge' in edge.options:
-            $ skill_id = 'survival'
-            $ description = _('repairing various stuff for a price. ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
-        
-        'Entertainer (expression, hard)' if 'entertain_job' in edge.options:
-            $ skill_id = 'expression'
-            $ description = _('repairing various stuff for a price. ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
-        
-        'Brew alchohol (alchemy, hard)' if 'brewery' in edge.options:
-            $ skill_id = 'alchemy'
-            $ description = _('repairing various stuff for a price. ')
-            $ special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
-            $ target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
-        
-        'Disassembly old machinery (any tech skill, hard)' if 'machinery' in edge.options:
-            python:
-                skills = {'mechanics': target.skill('mechanics').level, 'electronics': target.skill('electronics').level, 'scholarship': target.skill('scholarship').level}
-                skill = 'mechanics'
-                level = skills['mechanics']
-                for key, value in skills.items():
-                    if value > level:
-                        skill = key
-                        level = value
-                skill_id = skill
-                description = _('repairing various stuff for a price. ')
-                special_values = {'description': description,  'skill': skill_id, 'difficulty' : 2, 'moral': [], 'tense': ['amusement'], 'statisfy': ['prosperity', 'ambition'], 'beneficiar': player,}
-                target.schedule.add_action('job_hardwork', single=False, special_values=special_values)  
-                                                                                                          
+#        'Scavenger (survival)' if 'scavenge' in edge.options:
+#            $ target.set_job('scavenge', skill='survival', single=False, target=None, difficulty=3)
+                    
+        'Entertainer (expression)' if 'entertain_job' in edge.options:
+            $ target.set_job('entertain', skill='expression', single=False, target=None, difficulty=3)
+                    
+        'Alchemy (science)' if 'brewery' in edge.options:
+            $ target.set_job('alchemy', skill='science', single=False, target=None, difficulty=3)
+                    
+        'Disassembly old machinery (engineering)' if 'machinery' in edge.options:
+            $ target.set_job('disassembly', skill='engineering', single=False, target=None, difficulty=3)
+                                                                                                                      
         'Newermind':
             call lbl_edge_slums_jobs
             

@@ -80,7 +80,7 @@ label shd_edge_job_beg(action):
         actor.authority.set_tension()
 
         actor.eat(1, -1)
-    '[name]humbly begs for food and gains a few disgustning leftovers. Disracing, lowly and definetly not healthy experience.'
+    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience.'
     return
     
 label shd_edge_job_bukake(action):
@@ -103,7 +103,7 @@ label shd_edge_job_manual(action):
         result = actor.job_productivity()
         actor.moral_action('lawful') 
     if result > 0:
-        "[name] earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
+        "[name]earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
         $ player.add_money(10)
         $ action.actor.amusement.set_tension()
     else: 
@@ -118,7 +118,7 @@ label shd_edge_job_houseservice(action):
         result = actor.job_productivity()
         actor.moral_action('lawful') 
     if result > 0:
-        "[name] earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
+        "[name]earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
         $ player.add_money(10)
         $ action.actor.amusement.set_tension()
     else: 
@@ -126,8 +126,24 @@ label shd_edge_job_houseservice(action):
 
     return
     
+label shd_edge_job_repair(action):
+    python:
+        actor = action.actor
+        name = actor.name
+        yeld = yeld_table[actor.job_productivity()]        
+    if yeld > 0:
+        "[name]yelds: [yeld] nutrition bars. It's a boring job."
+        $ player.add_money(yeld)
+        $ action.actor.amusement.set_tension()
+    else: 
+        $ action.actor.ambition.set_tension()
+    return
+        
 label shd_edge_job_range(action):
-    '[action.actor.name] patroling the Edge of Mists.'
+    python:
+        actor = action.actor
+        name = actor.name
+    '[name]patroling the Edge of Mists.'
     call lbl_edge_randenc_errant
     return
           
@@ -154,69 +170,6 @@ label shd_edge_job_servitor(action):
     '[name] [text]'
     return
 
-    
-label shd_edge_job_simplework(action):
-    python:
-        actor = action.actor
-        skill = action.special_values['skill']
-        difficulty = action.special_values['difficulty'] 
-
-        name = actor.name
-        descr = action.special_values['description'] 
-
-        moral = action.special_values['moral']
-        moral = actor.check_moral(*moral)
-        beneficiar = action.special_values['beneficiar']
-        tense = action.special_values['tense']
-        statisfy = action.special_values['statisfy'] 
-        motivation = action.actor.motivation(skill, statisfy, tense, beneficiar, moral)
-
-    call lbl_skillcheck(actor, skill, motivation, difficulty)
-
-    python:
-        result = skillcheck.result
-         
-        actor.moral_action(moral)
-        change_needs(actor, statisfy, tense, result)
-    if result > 0:
-        $ salary = encolor_text(__('salary'), 2)
-        $ edge.resources.income(2)  
-        '[name][descr][salary].'
-    else:
-        $ actor.ambition.set_tension()
-        '[name] fails to deliver.'    
-   
-    return
-    
-label shd_edge_job_hardwork(action):
-    python:
-        actor = action.actor
-        skill = action.special_values['skill']
-        difficulty = action.special_values['difficulty'] 
-
-        name = actor.name
-        descr = action.special_values['description'] 
-
-        moral = action.special_values['moral']
-        moral = actor.check_moral(*moral)
-        beneficiar = action.special_values['beneficiar']
-        tense = action.special_values['tense']
-        statisfy = action.special_values['statisfy'] 
-        motivation = action.actor.motivation(skill, tense, statisfy, beneficiar, moral)
-
-    call lbl_skillcheck(actor, skill, motivation, difficulty)
-
-    python:
-        result = skillcheck.result
-        if result > 0:
-            actor.moral_action(moral)
-        change_needs(actor, tense, statisfy, result)
-        yeld = encolor_text(__('resources'), result)
-        edge.resources.income(result)
-        actor.skill(skill).get_expirience(result)
-    '[name][descr][yeld].'
-    return
-     
     
 label shd_edge_job_treasurehunt(action):
     python:
