@@ -620,9 +620,9 @@ label lbl_skillcheck_mini(person, skill_name, difficulty):
 label lbl_jobcheck(person, skill_name):
     python:
         productivity = person.job_productivity()
-        productivity_str = success_rate[productivity]
+        productivity_str = encolor_text(success_rate[productivity], productivity)
         potential = person.skill(skill_name).level
-        potential_str = success_rate[potential]
+        potential_str = encolor_text(success_rate[potential], potential)
         attr_name = tokens_translation[person.get_related_token(skill_name)]
         attr = person.get_min_resource_token(skill_name, productivity)
         luck = person.get_min_luck(productivity)
@@ -660,9 +660,9 @@ label lbl_jobcheck(person, skill_name):
 label lbl_jobcheck_npc(person, skill_name):
     python:
         productivity = person.job_productivity()
-        productivity_str = success_rate[productivity]
+        productivity_str = encolor_text(success_rate[productivity], productivity)
         potential = person.skill(skill_name).level
-        potential_str = success_rate[potential]
+        potential_str = encolor_text(success_rate[potential], potential)
         if productivity < person.motivation():
             factor = __("motivation")
         elif productivity < person.energy:
