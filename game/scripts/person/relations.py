@@ -14,6 +14,7 @@ class Relations(object):
         self._distance = 0
         self._congruence = 0
         self.stability = 0
+        self.first_impression = False
         self.is_player_relations()
 
     def is_player_relations(self):
