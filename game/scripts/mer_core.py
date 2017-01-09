@@ -160,21 +160,14 @@ class MistsOfEternalRome(object):
             return True
         return False
 
-    def token_difficulty(self, target, token, *args):
+    def token_difficulty(self, target, token):
         d = {'conquest': 'spirit', 'convention': 'mind',
              'contribution': 'sensitivity'}
 
         check = getattr(target, d[token])
-        if target.vitality < 1:
-            check -= 1
-        if target.mood < 0:
-            check -= 1
-        check -= get_max_need(target, *args)[0]
-        harmony = target.relations(self.player).harmony()[0]
-        if harmony > 0:
-            check -= harmony
-        if check < 0:
-            check = 0
+        check += target.relations(self.player).stability
+        if target.has_token('antagonism'):
+            check += 1
         return check
 
     def threshold_skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
@@ -199,35 +192,13 @@ class MistsOfEternalRome(object):
         return choice(worlds)().point_of_arrival
 
 
-    def gain_ctoken(self, skillcheck, target, token, tense=None, satisfy=None):
-        stability = target.relations(self.player).stability
-        tense = tense if tense is not None else []
-        satisfy = satisfy if satisfy is not None else []
-        needs = [i for i in tense]
-        needs.extend([i for i in satisfy])
-
-        for i in [i for i in needs]:
-            need = getattr(target, i)
-            if need.token_used(token):
-                needs.remove(i)
-        if len(needs) < 1:
-            target.add_token('antagonism')
-            return False
-        if skillcheck >= 0:
-            for i in tense:
-                getattr(target, i).set_tension()
-            for i in satisfy:
-                getattr(target, i).set_satisfaction(skillcheck)
-        if skillcheck > stability:
+    def gain_ctoken(self, target, actor, token, skill_name):
+        skill = actor.skill(skill_name)
+        difficulty = self.token_difficulty(target, token)
+        result = self.skillcheck(actor, skill_name, difficulty)
+        if result:
             target.add_token(token)
-            for need in needs:
-                getattr(target, need).use_token(token)
-            return True
-        else:
-            target.add_token('antagonism')
-            return False
-
-
+        return result
 
 
 #Alternate Skillcheck
