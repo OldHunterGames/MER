@@ -2110,7 +2110,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def set_energy(self):
         value = 0
         value += self.count_modifiers('energy')
-        self._energy = max(-1, min(5, value))
+        self._energy = max(0, min(5, value))
 
     def drain_energy(self, value=1):
         self._energy -= value
