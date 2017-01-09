@@ -5,6 +5,7 @@
 label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
     
+    call lbl_gratify(visavis)
     jump lbl_edge_manage
     return
 
@@ -43,12 +44,9 @@ label lbl_gratify(target):
     menu:
         'Compliment (charisma)':
             python:
-                morality = ['good', target]
-                difficulty = core.token_difficulty(target, 'contribution', 'communication')
-                skillcheck = core.skillcheck(player, 'charisma', ['power'], ['communication'], morality, difficulty, beneficiar=player)
-                skillcheck = skillcheck.result
-                result = core.gain_ctoken(skillcheck, target, 'contribution', tense=None, satisfy=['communication'])
-                ## person, skill, morality=None, difficulty=0, tense=None, satisfy=None, beneficiar=None
+                player.moral_action('good', target) 
+                result = core.skillcheck(player, 'charisma', 4) 
+                core.gain_ctoken(target, player, 'contribution', 'charisma')
             
             if result:
                 'Bingo'

@@ -37,17 +37,17 @@ label lbl_edge_slums_ration:
         cost_bbq = 50
                                 
     menu:
-        'Junkfood lunch ([cost_sjunk])':
+        'Junkfood lunch ([cost_sjunk] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 0}, spends = cost_sjunk) 
-        'Junkfood 3 time meals ([cost_junk])':
+        'Junkfood 3 time meals ([cost_junk] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 0}, spends = cost_junk) 
-        'Cooked lunch ([cost_scook])':
+        'Cooked lunch ([cost_scook] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 1, 'quality': 2}, spends = cost_scook) 
-        'All junkfood you can eat ([cost_ljunk])':
+        'All junkfood you can eat ([cost_ljunk] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 0}, spends = cost_ljunk) 
-        'Cooked 3 time meals ([cost_cook])':
+        'Cooked 3 time meals ([cost_cook] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 2, 'quality': 2}, spends = cost_cook) 
-        'Whole roasted girl ([cost_bbq])':
+        'Whole roasted girls ([cost_bbq] brs/decade)':
             $ target.schedule.add_action('feed_catering', single=False, special_values={'amount': 3, 'quality': 3}, spends = cost_bbq) 
         'Forage (free)':
             $ target.schedule.remove_action('feed_catering')

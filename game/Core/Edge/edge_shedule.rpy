@@ -13,7 +13,8 @@ label shd_edge_None_template(action):
 label shd_edge_overtime_nap(action):
     python:
         name = action.actor.name
-    '[name]resting...'
+        action.actor.add_buff('rested')
+    '[name]resting.'
     return      
    
 
