@@ -24,7 +24,7 @@ screen sc_tokens_game(tokens_game):
                 if not tokens_game.roll_phase:
                     imagebutton:
                         if tokens_game.free_turn > 0:
-                            idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.brightness(0.5))
+                            idle im.Scale('images/tarot/arcana_judgement.jpg', 300, 480)
                         else:
                             idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.tint(*colors[tokens_game.chances]))
                         insensitive im.Grayscale(im.Scale('images/tarot/card_draw.jpg', 300, 480))
