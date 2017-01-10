@@ -98,7 +98,7 @@ label lbl_edge_manage:
         "Nutrition: [food_info] \nYou have [money] brs. [bill_txt]"
         "[consumption_text]"
         
-        'Take a chance ([enrgy_txt])' if player.energy >= 0:
+        'Divination ([enrgy_txt])' if player.energy >= 0:
             $ TokensGame(player)        
         'Тест навыка':
             $ result = core.skillcheck(player, 'athletics', 4) 
