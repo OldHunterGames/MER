@@ -2054,7 +2054,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         else:
             return 0
         value += self._job_productivity
-        return min(value, self.skill(self.job_skill))
+        return value
 
     def increase_productivity(self):
         self.job_buffer = []

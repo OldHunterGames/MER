@@ -603,7 +603,7 @@ label lbl_jobcheck(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = person.skill(attribute)
+        potential = 5
         potential_str = encolor_text(success_rate[potential], potential)
         attr = person.get_resource
         skill = attributes_translation[attribute]
@@ -620,14 +620,9 @@ label lbl_jobcheck(person, attribute):
                         person=person, productivity=productivity_str, potential=potential_str,
                         job_description=job_description)
         else:
-            if productivity < 5:
-                text = "{person.name} {job_description} with {productivity} productivity,limited by {skill} level".format(
-                    person=person, job_description=job_description,
-                    productivity=productivity_str, skill=skill_name_colored)
-            else:
-                text = "{person.name} {job_description} with {productivity} productivity".format(
-                    person=person, job_description=job_description,
-                    productivity=productivity_str)
+            text = "{person.name} {job_description} with {productivity} productivity".format(
+                person=person, job_description=job_description,
+                productivity=productivity_str)
     if productivity < potential and not person.productivity_raised and not attr is None:
         call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
         return
@@ -639,7 +634,7 @@ label lbl_jobcheck_npc(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = person.skill(attribute)
+        potential = 5
         potential_str = encolor_text(success_rate[potential], potential)
         if productivity < person.motivation():
             factor = __("motivation")
