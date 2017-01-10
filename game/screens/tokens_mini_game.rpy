@@ -10,12 +10,12 @@ screen sc_tokens_game(tokens_game):
         xfill True
         yfill True
         window:
-            image im.Scale('images/tarot/card_table.jpg', 1080, 620)
+            image im.Scale('images/tarot/card_table.jpg', 1280, 720)
             xalign 0.5
             yalign 0.0
             yfill False
-            xsize 1080
-            ysize 620
+            xsize 1280
+            ysize 720
 
             hbox:
                 yalign 0.5
@@ -42,11 +42,13 @@ screen sc_tokens_game(tokens_game):
                             if revealed:
                                 imagebutton:
                                     idle im.Scale(card.image, 300, 480)
+                                    hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
                                     insensitive im.Grayscale(im.Scale(card.image, 300, 480))
                                     action Function(tokens_game.use_card, i), SensitiveIf(not locked)
                             else:
                                 imagebutton:
                                     idle im.Scale('images/tarot/card_back.jpg', 300, 480)
+                                    hover im.MatrixColor(im.Scale('images/tarot/card_back.jpg', 300, 480), im.matrix.brightness(0.05))
                                     insensitive im.Grayscale(im.Scale('images/tarot/card_back.jpg', 300, 480))
                                     action Function(tokens_game.open_card, i), SensitiveIf(not locked)
     if not tokens_game.roll_phase:
