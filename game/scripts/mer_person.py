@@ -564,29 +564,10 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._spoil_number = 1
         self.success = 0
         self.purporse = 0
-        self.services = {}
+
         self._energy = 0
         self.set_energy()
         self._current_job = None
-
-    def add_service(self, name, value):
-        self.services[name] = value
-        for i in value['buffs']:
-            self.add_buff(i, time=None)
-
-    def remove_service(self, name):
-        try:
-            service = self.services[name]
-        except KeyError:
-            return
-        else:
-            for i in service['buffs']:
-                self.remove_buff(i)
-
-            del self.services[name]
-
-    def has_service(self, name):
-        return name in self.services.keys()
 
     @property
     def energy(self):
@@ -1922,8 +1903,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def decade_bill(self):
-        return (sum([action.spends for action in self.schedule.actions]) +
-            sum([service['cost'] for service in self.services.values()]))
+        return sum([action.spends for action in self.schedule.actions])
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
