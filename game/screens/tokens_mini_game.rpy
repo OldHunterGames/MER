@@ -4,55 +4,56 @@ label lbl_tokens_game(tokens_game):
 
 
 screen sc_tokens_game(tokens_game):
+    python:
+        colors = [(1, 0, 0), (1, 0, 1), (0, 1, 1), (0, 0, 1), (0, 1, 0), (0.85, 0.64, 0.12)]
     window:
         xfill True
         yfill True
         window:
+            image im.Scale('images/tarot/card_table.jpg', 1080, 620)
             xalign 0.5
             yalign 0.0
             yfill False
-            xsize 800
-            ysize 380
-            if tokens_game.chances > -1:
-                text encolor_text(__("Energy"), tokens_game.chances):
-                    xalign 0.5
-                    yalign 0.0
+            xsize 1080
+            ysize 620
 
             hbox:
                 yalign 0.5
                 xalign 0.5
-                spacing 3
-                
-                for i in range(0, 3):
-                    $ value = tokens_game.revolver[i]
-                    $ card = value[0]
-                    $ revealed = value[2]
-                    $ locked = tokens_game.is_locked(i)
-                    $ key = i
-                    if tokens_game.roll_phase:
-                        if revealed:
-                            imagebutton:
-                                idle im.Scale(card.image, 200, 300)
-                                insensitive im.Grayscale(im.Scale(card.image, 200, 300))
-                                action Function(tokens_game.use_card, i), SensitiveIf(not locked)
+                spacing 10
+                if not tokens_game.roll_phase:
+                    imagebutton:
+                        if tokens_game.free_turn > 0:
+                            idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.brightness(0.5))
                         else:
-                            imagebutton:
-                                idle im.Scale('images/tarot/card_back.jpg', 200, 300)
-                                insensitive im.Grayscale(im.Scale('images/tarot/card_back.jpg', 200, 300))
-                                action Function(tokens_game.open_card, i), SensitiveIf(not locked)
+                            idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.tint(*colors[tokens_game.chances]))
+                        hover im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.brightness(0.05))
+                        insensitive im.Grayscale(im.Scale('images/tarot/card_draw.jpg', 300, 480))
+                        action [Function(tokens_game.start_rolling),
+                            SensitiveIf(tokens_game.chances > -1 or tokens_game.free_turn > 0)]
+                else:
+                    for i in range(0, 3):
+                        $ value = tokens_game.revolver[i]
+                        $ card = value[0]
+                        $ revealed = value[2]
+                        $ locked = tokens_game.is_locked(i)
+                        $ key = i
+                        if tokens_game.roll_phase:
+                            if revealed:
+                                imagebutton:
+                                    idle im.Scale(card.image, 300, 480)
+                                    insensitive im.Grayscale(im.Scale(card.image, 300, 480))
+                                    action Function(tokens_game.use_card, i), SensitiveIf(not locked)
+                            else:
+                                imagebutton:
+                                    idle im.Scale('images/tarot/card_back.jpg', 300, 480)
+                                    insensitive im.Grayscale(im.Scale('images/tarot/card_back.jpg', 300, 480))
+                                    action Function(tokens_game.open_card, i), SensitiveIf(not locked)
     if not tokens_game.roll_phase:
         vbox:
             xalign 0.5
             yalign 1.0
-            imagebutton:
-                if tokens_game.free_turn > 0:
-                    idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 200, 280), im.matrix.brightness(0.5))
-                else:
-                    idle im.Scale('images/tarot/card_draw.jpg', 200, 280)
-                hover im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 200, 280), im.matrix.brightness(0.05))
-                insensitive im.Grayscale(im.Scale('images/tarot/card_draw.jpg', 200, 280))
-                action [Function(tokens_game.start_rolling),
-                    SensitiveIf(tokens_game.chances > -1 or tokens_game.free_turn > 0)]
+            
             textbutton 'Done':
                 action Return()
                 xsize 200
