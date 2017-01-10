@@ -168,7 +168,10 @@ init python:
 
         def encolor_name(self):
             if self.nature == 'good':
-                return encolor_text(self.display_name(), self.value)
+                value = self.value
+                if value == 0:
+                    value = 4
+                return encolor_text(self.display_name(), value)
             elif self.nature == 'bad':
                 return encolor_text(self.display_name(), 'red')
             else:
