@@ -568,6 +568,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._energy = 0
         self.set_energy()
         self._current_job = None
+        self.services = []
 
     @property
     def energy(self):
@@ -2107,7 +2108,18 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.use_job_productivity = True
         self.job_skill = skill
         self.job_difficulty = difficulty
-        
+
+    def add_service(self, name, spends):
+        service = 'service_'+name
+        self.schedule.add_action(service, spends)
+        self.services.append(name)
+
+    def has_service(self, name):
+        return name in self.services
+
+    def remove_service(self, name):
+        self.services.remove(name)
+        self.schedule.remove_action('service_'+name)
         
 
     def joy(self, need, value):

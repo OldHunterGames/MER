@@ -23,7 +23,23 @@ def register_actions():
         if action[1].lower() == 'none':
             action[1] = None
         if special is None:
-            actions[key] = [z, action[2], action[3]]
+            actions[key] = {'label': z, 'slot': action[2], 'name': action[3], 'world': action[1]}
+
+def check_world(dict_):
+    return dict_['world'] == Schedule._world
+
+def check_availability(slot):
+    act_dict = {}
+    for key, value in actions.items():
+        if check_world(value) and value['slot'] == slot:
+            act_dict[key] = value
+    return act_dict
+
+def available_jobs():
+    return check_availability('job')
+
+def available_services():
+    return check_availability('service')
 
 
 class ScheduledAction(object):
@@ -65,21 +81,21 @@ class Schedule(object):
     @classmethod
     def set_world(cls, world):
         cls._world = world
-    def add_action(self, action, single=True, special_values=None, spends=0):
+    def add_action(self, action, single=False, special_values=None, spends=0):
         world = Schedule._world
         action_ = Schedule._world + '_' + action
         if not renpy.has_label('shd_%s'%(action_)):
             action_ = Schedule._default_world + '_' + action
             world = Schedule._default_world
-
         if action_ in actions.keys():
-
-            act = ScheduledAction(self.owner, world + '_' +actions[action_][2], actions[action_][0], actions[action_][1], action_, single, special_values)
+            action = actions[action_]
+            act = ScheduledAction(self.owner, world + '_' +action['name'], action['label'], action['slot'], action_, single, special_values)
             
             if act.slot is not None:
-                for a in self.actions:
-                    if a.slot == act.slot:
-                        self.remove_by_handle(a)
+                if act.slot != 'service':
+                    for a in self.actions:
+                        if a.slot == act.slot:
+                            self.remove_by_handle(a)
             act.spends = spends
             self.actions.append(act)
             return act
