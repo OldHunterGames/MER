@@ -172,6 +172,7 @@ init python:
         cards = [i for i in person.active_resources]
         for i in cards:
             person.use_resource(res)
+        devil_activate(taro_game)
 
     default_taro_cards = {"swords": 'physique', 'wands': 'spirit', 'pentacles': 'mind', 'cups': 'agility'}
     taro_suffix = [None, 'slave', 'overseer', 'mistress', 'master', 'ace']
