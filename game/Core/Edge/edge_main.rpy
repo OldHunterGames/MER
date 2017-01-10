@@ -100,8 +100,8 @@ label lbl_edge_manage:
         
         'Divination ([enrgy_txt])' if player.energy >= 0:
             $ TokensGame(player)        
-        'Тест навыка':
-            $ result = core.skillcheck(player, 'athletics', 4) 
+        'Нарастить энергию':
+            $ player.gain_energy() 
         'Opportunities ([enrgy_txt])' if player.energy >= 0:
             call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
