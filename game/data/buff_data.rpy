@@ -67,5 +67,9 @@ init python:
         'epic_luck':{
             'name': __('epic luck'),
             'modifiers': {'mood': 1}
+        },
+        'personal_slut':{
+            'name': __('personal slut'),
+            'modifiers': {'mood': 1}
         }
     }
