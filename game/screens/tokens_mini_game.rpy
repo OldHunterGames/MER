@@ -145,7 +145,11 @@ init python:
 
         def active_if(self, taro_game):
             if self.mood is None:
-                return True
+                if self.attribute != 'any':
+                    attr = getattr(taro_game.person, self.attribute)
+                    return attr >= self.value
+                else:
+                    return True
             return taro_game.person.mood >= self.mood
 
     def temperance_activate(taro_game):
