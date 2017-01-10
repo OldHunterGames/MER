@@ -27,7 +27,6 @@ screen sc_tokens_game(tokens_game):
                             idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.brightness(0.5))
                         else:
                             idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.tint(*colors[tokens_game.chances]))
-                        hover im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.brightness(0.05))
                         insensitive im.Grayscale(im.Scale('images/tarot/card_draw.jpg', 300, 480))
                         action [Function(tokens_game.start_rolling),
                             SensitiveIf(tokens_game.chances > -1 or tokens_game.free_turn > 0)]
@@ -60,10 +59,6 @@ screen sc_tokens_game(tokens_game):
                 action Return()
                 xsize 200
 
-    if tokens_game.stop_game:
-        timer 0.01:
-            action Return()
-
 
 
 init python:
@@ -77,7 +72,6 @@ init python:
             self.person = person
             self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
             self.free_turn = 0
-            self.stop_game = False
             renpy.call_in_new_context('lbl_tokens_game', self)
 
 
@@ -110,7 +104,7 @@ init python:
             self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
             self.stop_rolling()
             if self.chances < 0 and self.free_turn <= 0:
-                self.stop_game = True
+                renpy.return_statement()
 
         def is_locked(self, slot):
             return self.revolver[slot][1]
