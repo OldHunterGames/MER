@@ -71,6 +71,9 @@ label lbl_edge_slums_jobs:
     
 label lbl_edge_slums_services:
     menu:
+        'Use bukake slut (semen)' if 'bukake' in edge.options:
+            $ target.schedule.add_action('srvsex_bukake', single=False)  
+                    
         'Back':
             call lbl_edge_manage
 

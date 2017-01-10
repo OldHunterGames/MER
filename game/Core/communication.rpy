@@ -46,11 +46,6 @@ label lbl_gratify(target):
             python:
                 player.moral_action('good', target) 
                 core.gain_ctoken(target, player, 'contribution', 'charisma')
-            
-            if result:
-                'Bingo'
-            else:
-                'No chance'
                         
         'Back':
             call lbl_communicate(target)
