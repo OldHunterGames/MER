@@ -559,7 +559,7 @@ screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
         xalign 0.5
         yalign 0.3
         hbox:
-            
+            spacing 10
             if attr is not None:
                 imagebutton:
                     idle im.Scale(attr.image, 300, 450)
