@@ -60,6 +60,10 @@ screen sc_tokens_game(tokens_game):
                 action Return()
                 xsize 200
 
+    if tokens_game.stop_game:
+        timer 0.01:
+            action Return()
+
 
 
 init python:
@@ -73,6 +77,7 @@ init python:
             self.person = person
             self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
             self.free_turn = 0
+            self.stop_game = False
             renpy.call_in_new_context('lbl_tokens_game', self)
 
 
@@ -104,6 +109,8 @@ init python:
         def clear(self):
             self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
             self.stop_rolling()
+            if self.chances < 0 and self.free_turn <= 0:
+                self.stop_game = True
 
         def is_locked(self, slot):
             return self.revolver[slot][1]
@@ -145,7 +152,7 @@ init python:
         def active_if(self, taro_game):
             if self.mood is None:
                 return True
-            return taro_game.person.mood <= self.mood
+            return taro_game.person.mood >= self.mood
 
     def temperance_activate(taro_game):
         taro_game.person.gain_energy()
