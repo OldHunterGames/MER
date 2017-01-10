@@ -192,7 +192,7 @@ class MistsOfEternalRome(object):
 
         check = getattr(target, d[token])
         check += target.relations(self.player).stability
-        if target.has_token('antagonism'):
+        if target.token != 'power':
             check += 1
         return check
 
@@ -223,7 +223,9 @@ class MistsOfEternalRome(object):
         difficulty = self.token_difficulty(target, token)
         result = self.skillcheck(actor, skill_name, difficulty)
         if result:
-            target.add_token(token)
+            target.set_token(token)
+        else:
+            target.set_token('antagonism')
         return result
 
     def use_token(self):
