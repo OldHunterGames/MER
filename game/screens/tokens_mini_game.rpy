@@ -45,7 +45,8 @@ screen sc_tokens_game(tokens_game):
                                         hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
                                         insensitive im.Grayscale(im.Scale(card.image, 300, 480))
                                         action Function(tokens_game.use_card, i), SensitiveIf(not locked)
-                                    text card.encolor_name()
+                                    text card.encolor_name():
+                                        xalign 0.5
                             else:
                                 imagebutton:
                                     idle im.Scale('images/tarot/card_back.jpg', 300, 480)
