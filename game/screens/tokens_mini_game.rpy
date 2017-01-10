@@ -205,7 +205,7 @@ init python:
         'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg', 'nature': 'neutral'},
         'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
         'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
-        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good'},
+        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': None},
         'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good'},
         'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
         'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg', 'nature': 'good'},

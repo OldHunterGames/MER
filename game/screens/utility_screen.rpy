@@ -564,7 +564,7 @@ screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
                 imagebutton:
                     idle im.Scale(attr.image, 300, 450)
                     action [Function(person.use_resource, attr), Return(True),
-                        If(job, person.increase_productivity()) ]
+                        If(job, Function(person.increase_productivity))]
             else:
                 image im.Scale('images/tarot/card_back.jpg', 300, 450)
 
@@ -603,27 +603,25 @@ label lbl_jobcheck(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = 5
-        potential_str = encolor_text(success_rate[potential], potential)
-        attr = person.get_resource
+        attr = person.get_resource(attribute, productivity)
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
-        resqual = effort_quality[productivity+1]
+        resqual = effort_quality[person.focus()+1]
         job_description = person.job_description()
-        if productivity < potential:
+        if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. To rise the productivity level {person.name} need {resqual}".format(
-                        person=person, job_description=job_description, productivity=productivity_str,
-                        potential=potential_str, resqual=resqual)
+                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. To rise the productivity level {person.name} need {resqual}".format(
+                        person=person, job_description=job_description, focus=person.focus(), resqual=resqual,
+                        productivity=productivity_str)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {potential} potential.There has been some progress.".format(
-                        person=person, productivity=productivity_str, potential=potential_str,
-                        job_description=job_description)
+                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
+                        person=person, productivity=productivity_str, job_description=job_description,
+                        focus = person.focus())
         else:
-            text = "{person.name} {job_description} with {productivity} productivity".format(
+            text = "{person.name} {job_description} with {productivity} productivity and {focus} effor".format(
                 person=person, job_description=job_description,
-                productivity=productivity_str)
-    if productivity < potential and not person.productivity_raised and not attr is None:
+                productivity=productivity_str, focus=person.focus())
+    if person.focus() < 5 and not person.productivity_raised and not attr is None:
         call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
         return
     else:
@@ -634,9 +632,7 @@ label lbl_jobcheck_npc(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = 5
-        potential_str = encolor_text(success_rate[potential], potential)
-        if productivity < person.motivation():
+        if person.focus() <= person.motivation():
             factor = __("motivation")
 
         attr = person.get_resource(attribute, productivity)
@@ -648,18 +644,20 @@ label lbl_jobcheck_npc(person, attribute):
         motivation = person.motivation()
         real_productivity = person.real_productivity()
         real_prod_str = success_rate[real_productivity]
-        if potential < 5:
-            text = "{person.name} {job_description} with {productivity} productivity,limited by {skill} level".format(
-                person=person, job_description=job_description,
-                productivity=productivity_str, skill=skill_name_colored)
+        if person.focus() < 5:
+            if not person.productivity_raised:
+                text = "{person.name} {job_description} with {productivity} productivity and {focus} effor. To rise the productivity level {person.name} need {resqual}".format(
+                        person=person, job_description=job_description, focus=person.focus(), resqual=resqual,
+                        productivity=productivity_str)
+            elif person.productivity_raised:
+                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
+                        person=person, productivity=productivity_str, job_description=job_description,
+                        focus = person.focus())
         else:
-            text = "{person.name} {job_description} with {productivity} productivity".format(
-                person=person, job_description=job_description,
-                productivity=productivity_str)
-        if productivity < person.real_productivity():
-            text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. Productivity is limited due to lack of {factor}, however, it will rise up to {real_productivity} with better {factor}.".format(
-                person=person, job_description=job_description, potential=potential_str,
-                factor=factor, real_productivity=real_prod_str, productivity=productivity_str)
+            text = "{person.name} {job_description} with {productivity} productivity and {focus} effort, limited by {motivation}".format(
+                person=person, job_description=job_description, productivity=productivity_str,
+                focus=person.focus(), motivation=person.motivation())
+    '[text]'
     return
 
         
