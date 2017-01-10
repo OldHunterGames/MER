@@ -76,9 +76,21 @@ class MistsOfEternalRome(object):
 
     def services(self):
         if self.current_world == self:
-            return store.jobs_data
+            return store.services_data
         else:
             return self.current_world.services()
+
+    def accomodations(self):
+        if self.current_world == self:
+            return store.accomodations_data
+        else:
+            return self.current_world.accomodations()
+
+    def overtimes(self):
+        if self.current_world == self:
+            return store.overtimes_data
+        else:
+            return self.current_world.overtimes() 
 
 
     @property

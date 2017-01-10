@@ -146,4 +146,11 @@ init python:
         'personal_slut': {"name": __("Personal slut"), 'description': "Your own slut", 'cost': 5, 'event': 'slut'}
     }
 
+    edge_accomodations_data = {
+        'bad_sleep': {"name": __("Bad sleep"), 'description': "You sleep at street", 'cost': 5, 'event': 'bad_sleep'}
+    }
+
+    edge_overtimes_data = {
+        'test1': {"name": __("test1"), 'description': "No desc", 'cost': 5, 'event': None}
+    }
 

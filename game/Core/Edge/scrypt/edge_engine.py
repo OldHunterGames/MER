@@ -56,6 +56,12 @@ class EdgeEngine(object):
     def services(self):
         return store.edge_services_data
 
+    def accomodations(self):
+        return store.edge_accomodations_data
+
+    def overtimes(self):
+        return store.edge_overtimes_data
+
 
     def unexplore_all_stahses(self):
         for key in self.stashes.keys():

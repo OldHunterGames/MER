@@ -554,6 +554,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._job_productivity = 0
         self.productivity_raised = False
 
+        self._accomodation = dict()
+        self._overtime = dict()
+
         self.services = collections.defaultdict(dict)
 
         self.joy = 0
@@ -1404,9 +1407,9 @@ class Person(Skilled, InventoryWielder, Attributed):
             return
         self.use_job()
         self.use_services()
-        if self.schedule.find_by_slot('overtime') is None:
-
-            self.schedule.add_action('overtime_nap')
+        self.use_accomodation()
+        
+        self.use_overtime()
 
     #testing new food system, food methods are unused for some time
     #and maybe we'll remove them
@@ -2078,37 +2081,42 @@ class Person(Skilled, InventoryWielder, Attributed):
         except KeyError:
             pass
         else:
-            call_event(event, self)
+            if event is not None:
+                call_event(event, self)
         self.job_buffer = []
 
     def world(self):
         return self.game_ref.current_world
 
     def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
+
+        data = self.available_jobs()[job]
+        world = self.world().name
+        if self._job_productivity > 0:
+            old_job = self._job.items()
+            old_job_dict = {}
+            for key, value in old_job:
+                old_job_dict[key] = value
+            self.job_buffer = [old_job_dict, self._job_productivity, self.productivity_raised]
+            self._job_productivity = 0
+        print self.job_buffer
+
         if target is not None:
             special_values = {'target': target}
         else:
             special_values = None
-        data = self.available_jobs()[job]
-        world = self.game_ref.current_world.name
-        job = world + '_' + job
-        if self._job_productivity > 0:
-            old_job = self._job.keys()[0]
-            old_job += '_' + self.job
-            self.job_buffer = [old_job, self._job_productivity, self.productivity_raised]
-            self._job_productivity = 0
-        
+    
         self._job = {}
-        
         self._job[world] = {'id': job}
         for key, value in data.items():
             self._job[world][key] = value
         
         if len(self.job_buffer) > 0:
-            if job == self.job_buffer[0]:
-                self._job_productivity = self.job_buffer[1]
-                self.productivity_raised = self.job_buffer[2]
-                self.job_buffer = []
+            for key, value in self.job_buffer[0].items():
+                if job == value['id'] and world == key:
+                    self._job_productivity = self.job_buffer[1]
+                    self.productivity_raised = self.job_buffer[2]
+                    self.job_buffer = []
         try:
             skill = data['skill']
         except KeyError:
@@ -2124,11 +2132,70 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_skill = skill
         self.job_difficulty = difficulty
 
+    def set_accomodation(self, name):
+        self._accomodation = collections.defaultdict(dict)
+        data = self.available_accomodations()[name]
+        world = self.world().name
+        self._accomodation[world] = {'id': name}
+        for key, value in data.items():
+            self._accomodation[world][key] = value
+
+
+    def use_accomodation(self):
+        accomodation = self._accomodation[self.world().name]
+        print accomodation
+        try:
+            event = accomodation['event']
+        except KeyError:
+            return
+        else:
+            if event is not None:
+                call_event(event, self)
+
+    def set_overtime(self, name):
+        self._overtime = collections.defaultdict(dict)
+        data = self.available_overtimes()[name]
+        world = self.world().name
+        self._overtime[world] = {'id': name}
+        for key, value in data.items():
+            self._overtime[world][key] = value
+
+    @property
+    def overtime(self):
+        return self._overtime[self.world().name]['name']
+
+    def overtime_description(self):
+        return self._overtime[self.world().name]['description']
+
+    def use_overtime(self):
+        overtime = self._overtime[self.world().name]
+        try:
+            event = overtime['event']
+        except KeyError:
+            pass
+        else:
+            if event is not None:
+                call_event(event, self)
+
+
+    @property
+    def accomodation(self):
+        return self._accomodation[self.world().name]['name']
+
+    def accomodation_description(self):
+        return self._accomodation[self.world().name]['description']
+
     def available_jobs(self):
         return self.game_ref.jobs()
 
     def available_services(self):
         return self.game_ref.services()
+
+    def available_accomodations(self):
+        return self.game_ref.accomodations()
+
+    def available_overtimes(self):
+        return self.game_ref.overtimes()
 
     def add_service(self, name):
         data = self.available_services()[name]
@@ -2165,7 +2232,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             except KeyError:
                 pass
             else:
-                call_event(event, self)
+                if event is not None:
+                    call_event(event, self)
         
 
     def joy(self, need, value):
