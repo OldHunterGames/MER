@@ -7,7 +7,7 @@ import renpy.exports as renpy
 
 from mer_utilities import encolor_text
 
-class Skill(object):
+"""class Skill(object):
 
     def __init__(self, owner, id_):
         self.owner = owner
@@ -114,32 +114,26 @@ class Skill(object):
         return getattr(self.owner, self.attribute)
 
     def is_focused(self):
-        return self == self.owner.focused_skill
+        return self == self.owner.focused_skill"""
 
 
 class Skilled(object):
     _tokens_relations = {'physique': 'stamina', 'mind': 'idea', 'spirit': 'willpower',
-        'agility': 'grace', 'sensitivity': 'emotion'}
+        'agility': 'grace'}
     def init_skilled(self):
-        self.skills = []
-        self.specialized_skill = None
-        self.focused_skill = None
-        self.skills_used = []
         self.inner_resources = []
         self.luck_tokens = []
         self.focus_dict = collections.defaultdict(int)
         self.used_inner_resources = []
 
     def add_inner_resource(self, name, attribute, value=1):
-        if attribute == 'focus':
-            self.add_focus(name)
-        elif name == 'luck':
+        if name == 'luck':
             self.add_luck(value)
         else:
             self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
 
-    def get_related_token(self, skill_name):
-        return self._tokens_relations[self.skill(skill_name).attribute]
+    def get_related_token(self, attribute):
+        return self._tokens_relations[attribute]
 
     def add_luck(self, value):
         self.luck_tokens.append(value)
@@ -154,12 +148,19 @@ class Skilled(object):
         else:
             self.inner_resources.remove(resource)
 
-    def get_min_resource_token(self, skill_name, difficulty):
+    def get_min_resource_token(self, attribute, difficulty):
         token = None
+        values = [i['value'] for i in self.inner_resources if i['attribute'] == attribute]
+        values = [i for i in values if i >= difficulty]
+        try:
+            min_value = min(values)
+        except ValueError:
+            return token
         for i in self.inner_resources:
-            if i['attribute'] == self.skill(skill_name).attribute and i['value'] >= difficulty:
+            if i['attribute'] == attribute and i['value'] == min_value:
                 difficulty = i['value']
                 token = i
+                break
         return token
 
     def get_min_luck(self, difficulty):
@@ -188,7 +189,8 @@ class Skilled(object):
         self.add_inner_resource('determination', 'any', value)
         self.use_resource(determination1)
         self.use_resource(determination2)
-
+    
+    """
     def add_focus(self, name):
         self.focus_dict[name] += 1
 
@@ -200,65 +202,13 @@ class Skilled(object):
 
     def get_focus(self, name):
         return self.focus_dict[name]
-
+    """
+    
     def get_all_skills(self):
         return [i for i in self.skills]
 
-    def skill(self, skill_id):
-        skill = None
-        for i in self.skills:
-            if i.id == skill_id:
-                skill = i
-                return skill
-
-        if skill_id in store.skills_data:
-            skill = Skill(self, skill_id)
-            self.skills.append(skill)
-            return skill
-        else:
-            raise Exception("No skill named %s in skills_data" % (skill_id))
-
-    def use_skill(self, id_):
-        if isinstance(id_, Skill):
-            self.skills_used.append(id_)
-        else:
-            self.skills_used.append(self.skill(id_))
-
-    def get_used_skills(self):
-        l = []
-        for skill in self.skills_used:
-            if isinstance(skill, Skill):
-                l.append(skill)
-            else:
-                l.append(self.skill(skill))
-        return l
-
-    def calc_focus(self):
-        self.used_inner_resources = []
-        if self.focused_skill:
-            if self.focused_skill in self.get_used_skills():
-                self.focused_skill.focus += 1
-                self.skills_used = []
-                return
-        try:
-            self.focused_skill.focus = 0
-        except AttributeError:
-            pass
-
-        if len(self.skills_used) > 0:
-            from collections import Counter
-            counted = Counter()
-            for skill in self.get_used_skills():
-                counted[skill.id] += 1
-            maximum = max(counted.values())
-            result = []
-            for skill in counted:
-                if counted[skill] == maximum:
-                    result.append(skill)
-            self.skill(choice(result)).set_focus()
-        else:
-            self.focused_skill = None
-        self.skills_used = []
+    def skill(self, attribute):
+        return self.count_modifiers(attribute+'_skill')
 
     def use_inner_resource(self, resource):
         self.used_inner_resources.append(resource)

@@ -15,9 +15,9 @@ label lbl_edge_main:
     python:
         core.set_world(edge)
         edge.go_to_mist()
-        player.schedule.add_action('accommodation_makeshift', False)
-        player.schedule.add_action('overtime_nap', False)  
-        player.schedule.add_action('job_idle', False)
+        player.set_accomodation('bad_sleep')
+        player.set_job('idle')
+        player.set_overtime('test1')
         spendings_text = __("Decade bill: ")
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)
@@ -88,14 +88,14 @@ label lbl_edge_manage:
             bill_txt = "Decade bill is %s brs." % (bill) 
             
         if player.job == 'edge_idle': 
-            job = encolor_text(jobs_data[player.job]['name'], 0)
+            job = encolor_text(player.job, 0)
         else:
-            job = encolor_text(jobs_data[player.job]['name'], 4)
+            job = encolor_text(player.job, 4)
             
         if not core.can_skip_turn():
             consumption_text += ". You can't skip turn - not enough brs."
     menu:
-        "Job: [job] \nNutrition: [food_info] \nYou have [money] brs. [bill_txt]"
+        "Nutrition: [food_info] \nYou have [money] brs. [bill_txt]"
         "[consumption_text]"
         
         'Take a chance ([enrgy_txt])' if player.energy >= 0:
@@ -131,9 +131,6 @@ label lbl_edge_manage:
         #    call screen sc_person_equipment(player)
         #'Deck':
         #    call screen deck_creator
-        
-        'Carry on' if edge.resources.can_tick() and core.can_skip_turn():
-            call lbl_edge_turn
     
     jump lbl_edge_manage
     return

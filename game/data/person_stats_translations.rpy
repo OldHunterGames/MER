@@ -17,11 +17,10 @@ init python:
         2: 'Content', 3: 'Serene', 4: 'Jouful', 5: 'Enthusiastic'}
 
     attributes_translation = {
-        'physique': __('physique'),
-        'agility': __('agility'),
-        'mind': __('mind'),
-        'spirit': __('spirit'),
-        'sensitivity': __('sensitivity'),
+        'physique': __('Might'),
+        'agility': __('Finesse'),
+        'mind': __('Wisdom'),
+        'spirit': __('Spirit'),
         'anxiety': __('anxiety'),
         'determination': __('determination'),
         'mood': __('mood'),
@@ -29,6 +28,7 @@ init python:
         'motivation': __('motivation'),
         'focus': __('focus')
     }
+
 
     discipline_translation = {
         0: encolor_text(__("Independent mind"), 0),

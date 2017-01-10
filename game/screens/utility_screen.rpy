@@ -552,7 +552,7 @@ screen edge_sell_screen(person, item_type):
         text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))
 
 
-screen sc_skillcheck_mini(person, skill_name, difficulty, text, job=False):
+screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
     window:
         text text
     frame:
@@ -575,14 +575,6 @@ screen sc_skillcheck_mini(person, skill_name, difficulty, text, job=False):
             else:   
                 textbutton 'Luck':
                     xsize 200
-            if focus > 0 and focus >= difficulty:
-                textbutton insight_text:
-                    xsize 200
-                    action [Function(person.use_focus, skill_name), Return(True),
-                        If(job, Function(person.increase_productivity))]
-            else:
-                textbutton 'Insight':
-                    xsize 200
             if job:
                 textbutton 'Nevermind' action Return():
                     xsize 200
@@ -591,30 +583,28 @@ screen sc_skillcheck_mini(person, skill_name, difficulty, text, job=False):
                     xsize 200
 
 
-label lbl_skillcheck_mini(person, skill_name, difficulty):
+label lbl_skillcheck_mini(person, attribute, difficulty):
     python:
-        attr = person.get_min_resource_token(skill_name, difficulty)
-        attr_name = tokens_translation[person.get_related_token(skill_name)]
+        attr = person.get_min_resource_token(attribute, difficulty)
+        attr_name = tokens_translation[person.get_related_token(attribute)]
         luck = person.get_min_luck(difficulty)
-        focus = person.get_focus(skill_name)
-        skill = person.skill(skill_name)
-        skill_name_colored = encolor_text(skill.name, skill.level)
+        skill = attributes_translation[attribute]
+        skill_name_colored = encolor_text(skill, person.skill(attribute))
         luck_text = encolor_text(__("Luck"), luck)
-        insight_text = encolor_text(__("Insight"), focus)
         if attr is not None:
             attr = encolor_text(tokens_translation[attr['name']], attr['value'])
         resqual = effort_quality[difficulty]
         if difficulty == 0:
-            text = '{person.name} uses {skill} skill to success'.format(person=person, skill=skill_name_colored)
+            text = '{person.name} uses {skill} expirience to success'.format(person=person, skill=skill_name_colored)
         elif difficulty > 5:
-            text = '{person.name} needs higher {skill} skill to success. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
+            text = '{person.name} needs higher {skill} expirience to even hope for a luck. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
                 person=person, skill=skill_name_colored)
         else:
             text = '{person.name} meets {skill} challenge. To succeed {person.name} need {resqual}'.format(
                 person=person, skill=skill_name_colored, resqual=resqual)
     if difficulty > 0 and difficulty <= 5:
         python:
-            result = renpy.call_screen('sc_skillcheck_mini', person, skill_name, difficulty, text)
+            result = renpy.call_screen('sc_skillcheck_mini', person, attribute, difficulty, text)
         return result
 
     elif difficulty == 0:
@@ -623,24 +613,22 @@ label lbl_skillcheck_mini(person, skill_name, difficulty):
     else:
         '[text]'
         return False
-label lbl_jobcheck(person, skill_name):
+label lbl_jobcheck(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = person.skill(skill_name).level
+        potential = person.skill(attribute)
         potential_str = encolor_text(success_rate[potential], potential)
-        attr_name = tokens_translation[person.get_related_token(skill_name)]
-        attr = person.get_min_resource_token(skill_name, productivity)
+        attr_name = tokens_translation[person.get_related_token(attribute)]
+        attr = person.get_min_resource_token(attribute, productivity)
         if attr is not None:
             attr = encolor_text(tokens_translation[attr['name']], attr['value'])
         luck = person.get_min_luck(productivity)
-        focus = person.get_focus(skill_name)
-        skill = person.skill(skill_name)
-        skill_name_colored = encolor_text(skill.name, skill.level)
+        skill = attributes_translation[attribute]
+        skill_name_colored = encolor_text(skill, person.skill(attribute))
         luck_text = encolor_text(__("Luck"), luck)
-        insight_text = encolor_text(__("Insight"), focus)
         resqual = effort_quality[productivity+1]
-        job_description = jobs_data[person.job]['description']
+        job_description = person.job_description()
         if productivity < potential:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. To rise the productivity level {person.name} need {resqual}".format(
@@ -660,37 +648,33 @@ label lbl_jobcheck(person, skill_name):
                     person=person, job_description=job_description,
                     productivity=productivity_str)
     if productivity < potential and not person.productivity_raised:
-        call screen sc_skillcheck_mini(person, skill_name, productivity, text, True)
+        call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
         return
     else:
         '[text]'
         return
 
-label lbl_jobcheck_npc(person, skill_name):
+label lbl_jobcheck_npc(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        potential = person.skill(skill_name).level
+        potential = person.skill(attribute)
         potential_str = encolor_text(success_rate[potential], potential)
         if productivity < person.motivation():
             factor = __("motivation")
-        elif productivity < person.energy:
-            factor = __('energy')
 
-        attr = person.get_min_resource_token(skill_name, productivity)
+        attr = person.get_min_resource_token(attribute, productivity)
         luck = person.get_min_luck(productivity)
-        focus = person.get_focus(skill_name)
-        skill = person.skill(skill_name)
-        skill_name_colored = encolor_text(skill.name, skill.level)
+        skill = attributes_translation[attribute]
+        skill_name_colored = encolor_text(skill, person.skill(attribute))
         luck_text = encolor_text(__("Luck"), luck)
-        insight_text = encolor_text(__("Insight"), focus)
         resqual = "PLACEHOLDER"
-        job_description = jobs_data[person.job]['description']
+        job_description = person.job_description()
         energy = person.energy
         motivation = person.motivation()
         real_productivity = person.real_productivity()
         real_prod_str = success_rate[real_productivity]
-        if skill.level < 5:
+        if potential < 5:
             text = "{person.name} {job_description} with {productivity} productivity,limited by {skill} level".format(
                 person=person, job_description=job_description,
                 productivity=productivity_str, skill=skill_name_colored)

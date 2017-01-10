@@ -90,18 +90,6 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     frame:
                         vbox:
                             text '{b}Skills{/b}'
-                            for i in person.get_all_skills():
-                                if i.level != 1:
-                                    textbutton encolor_text(i.name, i.level) + '(%s)'%i.level:
-                                        style 'hoverable_text'
-                                        text_style 'hoverable_text'
-                                        hovered Show('sc_skill_info', skill=i)
-                                        unhovered Hide('sc_skill_info')
-                                        action NullAction()
-                            if person.focused_skill is not None:
-                                $ i = person.focused_skill
-                                text '{b}Focus:{/b}'
-                                text encolor_text(i.name, i.focus) + '(%s)'%i.focus
                 if any([person.get_buffs()]):
                     frame:
                         vbox:

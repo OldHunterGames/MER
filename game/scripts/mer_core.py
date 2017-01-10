@@ -67,6 +67,32 @@ class MistsOfEternalRome(object):
         }
         ## all partner options: ['female', 'male', 'shemale', 'sexless', 'related', 'underage', 'elders', 'furry', 'animals', 'monsters', 'corpses']
 
+
+    def jobs(self):
+        if self.current_world == self:
+            return store.jobs_data
+        else:
+            return self.current_world.jobs()
+
+    def services(self):
+        if self.current_world == self:
+            return store.services_data
+        else:
+            return self.current_world.services()
+
+    def accomodations(self):
+        if self.current_world == self:
+            return store.accomodations_data
+        else:
+            return self.current_world.accomodations()
+
+    def overtimes(self):
+        if self.current_world == self:
+            return store.overtimes_data
+        else:
+            return self.current_world.overtimes() 
+
+
     @property
     def factions(self):
         return [i for i in self._factions]
@@ -132,7 +158,7 @@ class MistsOfEternalRome(object):
             study = False
 
         return study
-
+    
     def can_skip_turn(self):
         return all([i.can_tick() for i in self.characters])
 
@@ -182,10 +208,10 @@ class MistsOfEternalRome(object):
         return threshold_result, result
 
 
-    def skillcheck(self, person, skill_name, difficulty):
-        skill = person.skill(skill_name)
-        difficulty -= skill.level
-        return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, skill_name=skill_name, difficulty=difficulty)
+    def skillcheck(self, person, attribute, difficulty):
+        skill = person.skill(attribute)
+        difficulty -= skill
+        return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, attribute=attribute, difficulty=difficulty)
 
 
     def discover_world(self, worlds):

@@ -20,6 +20,8 @@ def register_event(location, *args, **kwargs):
 
 def get_event(name):
     try:
+        name = 'evn_{world}_{name}'.format(world=Event._game_ref.current_world.name,
+            name=name)
         event = events_dict[name]
     except KeyError:
         raise Exception('No event named "%s" registered'%name)

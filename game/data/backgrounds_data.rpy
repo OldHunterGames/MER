@@ -161,103 +161,62 @@ init python:
             'available_prestige_levels': [2],
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': [('expirience', 1)],
-            'athletics': [('expirience', 2)],
-            'stealth': [('expirience', 3)],
-            'streetwise': ['training', ('expirience', 4)],
-            },
         },
         'natural':{
             'name': __('natural'),
             'available_technical_levels': [1],
             'available_prestige_levels': [1],
             'technical_level': 1,
-            'prestige_level': 1,
-            'skills': {
-            'athletics': [('expirience', 1)],
-            'stealth': ['training', ('expirience', 2)],
-            'survival': ['training', ('expirience', 3)],
-            },            
+            'prestige_level': 1,          
         },
         'forced_labor':{
             'name': __('forced labor'),
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [1],
             'technical_level': 2,
-            'prestige_level': 1,
-            'skills': {
-            'athletics': ['training', ('expirience', 1)],
-            },            
+            'prestige_level': 1,           
         },
         'apprentice':{
             'name': __('apprentice'),
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [2, 3],
             'technical_level': 2,
-            'prestige_level': 2,
-            'skills': {
-            'craft': ['training', ('expirience', 1)],
-            },            
+            'prestige_level': 2,         
         },
         'domestic':{
             'name': __('domestic'),
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [1, 2, 3, 4],
             'technical_level': 2,
-            'prestige_level': 2,
-            'skills': {
-            'housekeeping': ['training', ('expirience', 3)],
-            },            
+            'prestige_level': 2,           
         },
         'educated':{
             'name': __('educated'),
             'available_technical_levels': [3, 4, 5],
             'available_prestige_levels': [3, 4],
             'technical_level': 3,
-            'prestige_level': 3,
-            'skills': {
-            'science': ['training'],
-            'concentration': ['training',],
-            'expression': ['training'],
-            'management': ['training'],            
-            },            
+            'prestige_level': 3,          
         },
         'martial':{
             'name': __('martial'),
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4, 5],
             'technical_level': 2,
-            'prestige_level': 2,
-            'skills': {
-            'athletics': ['training',],
-            'combat': ['training',],
-            },            
+            'prestige_level': 2,           
         },
          'aristocratic':{
             'name': __('aristocratic'),
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [4, 5],
             'technical_level': 2,
-            'prestige_level': 5,
-            'skills': {
-            'charisma': ['training', ('expirience', 2)],
-            'management': ['training'],
-            'expression': ['training', ('expirience', 1)],         
-            'science': ['training'],
-            },            
+            'prestige_level': 5,            
         },
            'artistic':{
             'name': __('artistic'),
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4],
             'technical_level': 2,
-            'prestige_level': 2,
-            'skills': {
-            'sex': ['training',],
-            'charisma': ['training', ('expirience', 1)],            
-            'expression': ['training', ('expirience', 2)],
-            },            
+            'prestige_level': 2,          
         },     
     }
     
@@ -269,1079 +228,646 @@ init python:
             'name': __('athlete'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'daytaler':{
             'name': __('daytaler'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'lumberjack':{
             'name': __('lumberjack'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },        
         'miner':{
             'name': __('miner'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'mason':{
             'name': __('mason'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'porter':{
             'name': __('porter'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },    
         'rower':{
             'name': __('rower'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'peasant':{
             'name': __('peasant'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'athletics': ['profession'],
-            },
         },
         'mercenary':{
             'name': __('mercenary'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'sellsword':{
             'name': __('sellsword'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'gladiator':{
             'name': __('gladiator'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'thug':{
             'name': __('thug'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'raider':{
             'name': __('raider'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'soldier':{
             'name': __('soldier'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            },
         },
         'pirate':{
             'name': __('pirate'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },        
         'officer':{
             'name': __('officer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'knight':{
             'name': __('knight'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'assasin':{
             'name': __('assasin'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'stealth': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'thief':{
             'name': __('thief'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'stealth': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'scout':{
             'name': __('scout'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'stealth': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'spy':{
             'name': __('spy'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'stealth': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'smith':{
             'name': __('smith'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'carpenter':{
             'name': __('carpenter'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'engraver':{
             'name': __('engraver'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },      
         'cartwright':{
             'name': __('cartwright'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'cobbler':{
             'name': __('cobbler'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'tanner':{
             'name': __('tanner'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },        
         'potter':{
             'name': __('potter'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'plumber':{
             'name': __('plumber'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'sculptor':{
             'name': __('sculptor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },    
         'glassmaker':{
             'name': __('glassmaker'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'artisan':{
             'name': __('artisan'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'jewler':{
             'name': __('jewler'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },    
         'tinker':{
             'name': __('tinker'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'craft': ['profession'],
-            },
         },
         'rethor':{
             'name': __('rethor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },      
         'lawyer':{
             'name': __('lawyer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },
         'lobbist':{
             'name': __('lobbist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'phylosopher':{
             'name': __('phylosopher'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },        
         'salesman':{
             'name': __('salesman'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },
         'emissary':{
             'name': __('emissary'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'entrepreneur':{
             'name': __('entrepreneur'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'entertainer':{
             'name': __('entertainer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'escort':{
             'name': __('escort'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'storyteller':{
             'name': __('storyteller'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },    
         'bonvivan':{
             'name': __('bonvivan'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'impostor':{
             'name': __('impostor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'preacher':{
             'name': __('preacher'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            },
         },      
         'actor':{
             'name': __('actor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'charisma': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'psychic':{
             'name': __('psychic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'concentration': ['profession'],
-            },
         },
         'monk':{
             'name': __('monk'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'concentration': ['profession'],
-            },
         },        
         'yogi':{
             'name': __('yogi'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'concentration': ['profession'],
-            },
         },
         'hermit':{
             'name': __('hermit'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'concentration': ['profession'],
-            },
         },
         'ascetic':{
             'name': __('ascetic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'concentration': ['profession'],
-            },
         },    
         'manager':{
             'name': __('manager'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'merchant':{
             'name': __('merchant'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'accountant':{
             'name': __('accountant'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },    
         'clerk':{
             'name': __('clerk'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'scribe':{
             'name': __('scribe'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'administrator':{
             'name': __('administrator'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },      
         'quartermaster':{
             'name': __('quartermaster'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'auditor':{
             'name': __('auditor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'secretary':{
             'name': __('secretary'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },        
         'teacher':{
             'name': __('teacher'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'director':{
             'name': __('director'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'management': ['profession'],
-            },
         },
         'outcast':{
             'name': __('outcast'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'survival': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'pathfinder':{
             'name': __('pathfinder'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'survival': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'hunter':{
             'name': __('hunter'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'survival': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'guide':{
             'name': __('guide'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'survival': ['profession'],
-            },
         },    
         'explorer':{
             'name': __('explorer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'survival': ['profession'],
-            },
         },
         'shaman':{
             'name': __('shaman'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'alchemic':{
             'name': __('alchemic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },      
         'medic':{
             'name': __('medic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'herbalist':{
             'name': __('herbalist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'pharmacist':{
             'name': __('pharmacist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },        
         'apotecary':{
             'name': __('apotecary'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'chemist':{
             'name': __('chemist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'surgeon':{
             'name': __('surgeon'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },    
         'anatomist':{
             'name': __('anatomist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            'sex': ['training']
-            },
         },
         'geneticist':{
             'name': __('geneticist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'pusher':{
             'name': __('pusher'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'biker':{
             'name': __('biker'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'hippie':{
             'name': __('hippie'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'investigator':{
             'name': __('investigator'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },      
         'detective':{
             'name': __('detective'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'pimp':{
             'name': __('pimp'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'streetwise': ['profession'],
-            'sex': ['training', ('expirience', 4)]
-            },
         },
         'academic':{
             'name': __('academic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },        
         'scientist':{
             'name': __('scientist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'researcher':{
             'name': __('researcher'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'bookworm':{
             'name': __('bookworm'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },    
         'scholar':{
             'name': __('scholar'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'science': ['profession'],
-            },
         },
         'inventor':{
             'name': __('inventor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'mechanist':{
             'name': __('mechanist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },    
         'engineer':{
             'name': __('engineer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'architect':{
             'name': __('architect'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'sapper':{
             'name': __('sapper'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },      
         'sysadmin':{
             'name': __('sysadmin'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'coder':{
             'name': __('coder'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'webmaster':{
             'name': __('webmaster'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },        
         'hacker':{
             'name': __('hacker'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'engineering': ['profession'],
-            },
         },
         'hooker':{
             'name': __('hooker'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
-            },
         },
         'pornoactor':{
             'name': __('pornoactor'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            },
         },    
         'webcamwhore':{
             'name': __('webcamwhore'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            'housekeeping': ['training', ('expirience', 1)]
-            },
         },
         'paramour':{
             'name': __('paramour'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            },
         },
         'slut':{
             'name': __('slut'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            },
         },    
         'concubine':{
             'name': __('concubine'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            },
         },
         'kunoichi':{
             'name': __('kunoichi'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            'expression': ['training', ('expirience', 1)]
-            },
         },
         'stripper':{
             'name': __('stripper'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sex': ['profession'],
-            'expression': ['training', ('expirience', 1)]
-            },
         },      
         'housewife':{
             'name': __('housewife'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'laundress':{
             'name': __('laundress'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            },
         },
         'cook':{
             'name': __('cook'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            },
         },        
         'butler':{
             'name': __('butler'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            },
         },
         'servant':{
             'name': __('servant'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'maid':{
             'name': __('maid'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'chief':{
             'name': __('chief'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'housekeeping': ['profession'],
-            },
         },
         'sniper':{
             'name': __('sniper'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            },
         },
         'marksman':{
             'name': __('marksman'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            },
         },    
         'cannoneer':{
             'name': __('cannoneer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            },
         },
         'watchman':{
             'name': __('watchman'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'combat': ['profession'],
-            },
         },
         'artist':{
             'name': __('artist'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },      
         'dancer':{
             'name': __('dancer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'gypsy':{
             'name': __('gypsy'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'faquir':{
             'name': __('faquir'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            },
         },        
         'musician':{
             'name': __('musician'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'singer':{
             'name': __('singer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'bard':{
             'name': __('bard'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'expression': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },    
         'sorcerer':{
             'name': __('sorcerer'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sorcery': ['profession'],
-            },
         },
         'enchanter':{
             'name': __('enchanter'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sorcery': ['profession'],
-            'sex': ['training', ('expirience', 1)]
-            },
         },
         'mystic':{
             'name': __('mystic'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sorcery': ['profession'],
-            },
         },    
         'fortuneteller':{
             'name': __('fortuneteller'),
             'technical_level': 1,
             'prestige_level': 1,
-            'skills': {
-            'sorcery': ['profession'],
-            },
         },
     }
     

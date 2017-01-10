@@ -1,19 +1,4 @@
 init python:
-    jobs_data = {
-    'edge_idle': {'name': __('Idle'), 'description': 'EROR'},
-    'edge_manual': {'name': __('Manual labor'), 'description': __('doing manual labor in slums')},
-    'edge_houseservice': {'name': __('Simple work'), 'description': __('providing household services in the slums')},
-    'edge_range': {'name': __('Range the Edge'), 'description': 'EROR'},   
-    'edge_beg': {'name': __('Beggar'), 'description': 'EROR'},
-    'edge_bukake': {'name': __('Bukake slut'), 'description': 'EROR'},      
-    
-    'edge_repair': {'name': __('Repairings'), 'description': __('repairs various stuff for slum-dwellers')},
-    'edge_entertain': {'name': __('Entertain patrons'), 'description': __('entertains the slum-dwellers')},
-    'edge_alchemy': {'name': __('Brew booze'), 'description': __('brew booze for a slum-dwellers')},
-    'edge_disassembly': {'name': __('Disassemble wrecks'), 'description': __('disassembles old machinery')},
-
-    'edge_treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext')},
-    }   
         
     effort_quality = [encolor_text(__('noting'), 0), 
                             encolor_text(__('a tiny effort'), 1),
