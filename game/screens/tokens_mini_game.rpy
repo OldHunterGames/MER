@@ -39,11 +39,13 @@ screen sc_tokens_game(tokens_game):
                         $ key = i
                         if tokens_game.roll_phase:
                             if revealed:
-                                imagebutton:
-                                    idle im.Scale(card.image, 300, 480)
-                                    hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
-                                    insensitive im.Grayscale(im.Scale(card.image, 300, 480))
-                                    action Function(tokens_game.use_card, i), SensitiveIf(not locked)
+                                vbox:
+                                    imagebutton:
+                                        idle im.Scale(card.image, 300, 480)
+                                        hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
+                                        insensitive im.Grayscale(im.Scale(card.image, 300, 480))
+                                        action Function(tokens_game.use_card, i), SensitiveIf(not locked)
+                                    text card.encolor_name()
                             else:
                                 imagebutton:
                                     idle im.Scale('images/tarot/card_back.jpg', 300, 480)
@@ -55,9 +57,10 @@ screen sc_tokens_game(tokens_game):
             xalign 0.5
             yalign 1.0
             
-            textbutton 'Done':
-                action Return()
-                xsize 200
+            if tokens_game.free_turn <= 0:
+                textbutton 'Done':
+                    action Return()
+                    xsize 200
 
 
 
@@ -127,7 +130,8 @@ init python:
     class TaroCard(object):
 
 
-        def __init__(self, name='', image=None, attribute='any', value=0, mood=None, activate=None, locker=False, sensitive=True):
+        def __init__(self, name='', image=None, attribute='any', value=0, mood=None, activate=None,
+                locker=False, sensitive=True, nature='good'):
             self.name = name
             self.image = image
             self.attribute = attribute
@@ -135,7 +139,9 @@ init python:
             self._activate = activate
             self.mood = mood
             self.locker = locker
-            self.sensitive=sensitive
+            self.sensitive = sensitive
+            self.type = 'common'
+            self.nature = nature
 
         def activate(self, taro_game):
             if self._activate is None:
@@ -153,6 +159,20 @@ init python:
                 else:
                     return True
             return taro_game.person.mood >= self.mood
+
+        def display_name(self):
+            if self.type == 'common':
+                return taro_common[self.name][self.value]['name']
+            else:
+                return taro_arcanas[self.name]['name']
+
+        def encolor_name(self):
+            if self.nature == 'good':
+                return encolor_text(self.display_name(), self.value)
+            elif self.nature == 'bad':
+                return encolor_text(self.display_name(), 'red')
+            else:
+                return self.display_name()
 
     def temperance_activate(taro_game):
         taro_game.person.gain_energy()
@@ -178,17 +198,17 @@ init python:
     taro_suffix = [None, 'slave', 'overseer', 'mistress', 'master', 'ace']
 
     special_taro_cards = {
-        'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg'},
-        'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True},
-        'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg'},
-        'fortune': {'image': 'images/tarot/arcana_fortune.jpg'},
-        'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg'},
-        'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg'},
-        'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg'},
-        'empress': {'value': 3, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_empress.jpg'},
-        'hangman': {'locker': True, 'activate': hangman_activate, 'image': 'images/tarot/arcana_hangman.jpg'},
-        'devil': {'mood': 0, 'activate': devil_activate, 'image': 'images/tarot/arcana_devil.jpg', 'locker': True},
-        'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg'}
+        'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg', 'nature': 'neutral'},
+        'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
+        'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
+        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good'},
+        'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good'},
+        'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
+        'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg', 'nature': 'good'},
+        'empress': {'value': 3, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_empress.jpg', 'nature': 'good'},
+        'hangman': {'locker': True, 'activate': hangman_activate, 'image': 'images/tarot/arcana_hangman.jpg', 'nature': 'bad'},
+        'devil': {'mood': 0, 'activate': devil_activate, 'image': 'images/tarot/arcana_devil.jpg', 'locker': True, 'nature': 'bad'},
+        'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg', 'nature': 'bad'}
 
     }
 
@@ -198,6 +218,7 @@ init python:
                 player.resources_deck.append(TaroCard(key, 'images/tarot/%s_%s.jpg'%(key, taro_suffix[i]), value, i))
         for key, value in special_taro_cards.items():
             card = TaroCard(key, **value)
+            card.type = 'arcana'
             player.resources_deck.append(card)
 
 label lbl_jackpot:

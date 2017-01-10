@@ -557,18 +557,20 @@ screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
         text text
     frame:
         xalign 0.5
-        yalign 0.5
+        yalign 0.3
         hbox:
-            imagebutton:
-                idle im.Scale('images/tarot/arcana_tower.jpg', 200, 300)
-                action Return(False)
+            
             if attr is not None:
                 imagebutton:
-                    idle im.Scale(attr.image, 200, 300)
+                    idle im.Scale(attr.image, 300, 450)
                     action [Function(person.use_resource, attr), Return(True),
                         If(job, person.increase_productivity()) ]
             else:
-                image im.Scale('images/tarot/card_back.jpg', 200, 300)
+                image im.Scale('images/tarot/card_back.jpg', 300, 450)
+
+            imagebutton:
+                idle im.Scale('images/tarot/arcana_tower.jpg', 300, 450)
+                action Return(False)
 
 
 
@@ -576,7 +578,7 @@ label lbl_skillcheck_mini(person, attribute, difficulty):
     python:
         attr = person.get_resource(attribute, difficulty)
         skill = attributes_translation[attribute]
-        skill_name_colored = encolor_text(skill, person.skill(attribute))
+        skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[difficulty]
         if difficulty == 0:
             text = '{person.name} uses {skill} expirience to success'.format(person=person, skill=skill_name_colored)
@@ -586,7 +588,7 @@ label lbl_skillcheck_mini(person, attribute, difficulty):
         else:
             text = '{person.name} meets {skill} challenge. To succeed {person.name} need {resqual}'.format(
                 person=person, skill=skill_name_colored, resqual=resqual)
-    if difficulty > 0 and difficulty <= 5:
+    if difficulty > 0 and difficulty <= 5 and attr is not None:
         python:
             result = renpy.call_screen('sc_skillcheck_mini', person, attribute, difficulty, text)
         return result
@@ -605,7 +607,7 @@ label lbl_jobcheck(person, attribute):
         potential_str = encolor_text(success_rate[potential], potential)
         attr = person.get_resource
         skill = attributes_translation[attribute]
-        skill_name_colored = encolor_text(skill, person.skill(attribute))
+        skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[productivity+1]
         job_description = person.job_description()
         if productivity < potential:
@@ -626,7 +628,7 @@ label lbl_jobcheck(person, attribute):
                 text = "{person.name} {job_description} with {productivity} productivity".format(
                     person=person, job_description=job_description,
                     productivity=productivity_str)
-    if productivity < potential and not person.productivity_raised:
+    if productivity < potential and not person.productivity_raised and not attr is None:
         call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
         return
     else:
@@ -644,7 +646,7 @@ label lbl_jobcheck_npc(person, attribute):
 
         attr = person.get_resource(attribute, productivity)
         skill = attributes_translation[attribute]
-        skill_name_colored = encolor_text(skill, person.skill(attribute))
+        skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[productivity+1]
         job_description = person.job_description()
         energy = person.energy
