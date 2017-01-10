@@ -136,88 +136,26 @@ class Skilled(object):
         self.resources_deck.append(res)
 
     def get_resource(self, attribute, difficulty):
-        pass
-
-    def add_inner_resource(self, name, attribute, value=1):
-        if name == 'luck':
-            self.add_luck(value)
-        else:
-            self.inner_resources.append({'name': name, 'attribute': attribute, 'value': value})
-
-    def get_related_token(self, attribute):
-        return self._tokens_relations[attribute]
-
-    def add_luck(self, value):
-        self.luck_tokens.append(value)
-
-    def has_resources(self):
-        return (any(self.inner_resources) or any([i > 0 for i in self.focus_dict.values()]) or
-            len(self.luck_tokens) > 0)
-
-    def use_resource(self, resource):
-        if resource['name'] == 'insight':
-            self.use_focus(resource['attribute'])
-        else:
-            self.inner_resources.remove(resource)
-
-    def get_min_resource_token(self, attribute, difficulty):
-        token = None
-        values = [i['value'] for i in self.inner_resources if i['attribute'] == attribute]
+        values = [i.value for i in self.active_resources if i.attribute==attribute]
         values = [i for i in values if i >= difficulty]
         try:
             min_value = min(values)
         except ValueError:
-            return token
-        for i in self.inner_resources:
-            if i['attribute'] == attribute and i['value'] == min_value:
-                difficulty = i['value']
-                token = i
-                break
-        return token
-
-    def get_min_luck(self, difficulty):
-        value = 0
-        try:
-            value = min([i for i in self.luck_tokens if i >= difficulty])
-        except ValueError:
-            return value
-        return value
-
-    def use_luck(self, value):
-        self.luck_tokens.remove(value)
-
-    def apply_determination(self, resource, determination):
-        resource['value'] += 1
-        self.use_resource(determination)
-
-    def can_upgrade_resource(self, resource, determination):
-        if determination is None:
-            return
-        return resource['value'] < determination['value']
-
-    def unite_determinations(self, determination1, determination2):
-        value = max(determination1['value'], determination2['value'])
-        value += 1
-        self.add_inner_resource('determination', 'any', value)
-        self.use_resource(determination1)
-        self.use_resource(determination2)
+            values = [i.value for i in self.active_resources if i.attribute == 'any']
+            values = [i for i in values if i >= difficulty]
+            try:
+                min_value = min(values)
+            except ValueError:
+                return None
+            else:
+                for i in self.active_resources:
+                    if i.attribute == 'any' and i.value == min_value:
+                        return i
+        else:
+            for i in self.active_resources:
+                if i.attribute == attribute and i.value == min_value:
+                    return i
     
-    """
-    def add_focus(self, name):
-        self.focus_dict[name] += 1
-
-    def use_focus(self, name):
-        try:
-            del self.focus_dict[name]
-        except KeyError:
-            pass
-
-    def get_focus(self, name):
-        return self.focus_dict[name]
-    """
-    
-    def get_all_skills(self):
-        return [i for i in self.skills]
 
     def skill(self, attribute):
         return self.count_modifiers(attribute+'_skill')

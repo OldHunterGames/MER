@@ -95,12 +95,6 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         vbox:
                             for i in person.get_buffs():
                                 text encolor_text(i.name, i.color())
-        if person.has_resources():
-            frame:
-                xalign 1.0
-                yalign 1.0
-                vbox:
-                    textbutton 'Tokens' action Show('sc_tokens', person=person)
 
 init python:
     active_determination = None

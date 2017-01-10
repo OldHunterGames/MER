@@ -2099,7 +2099,6 @@ class Person(Skilled, InventoryWielder, Attributed):
                 old_job_dict[key] = value
             self.job_buffer = [old_job_dict, self._job_productivity, self.productivity_raised]
             self._job_productivity = 0
-        print self.job_buffer
 
         if target is not None:
             special_values = {'target': target}
