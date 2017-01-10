@@ -124,7 +124,19 @@ class Skilled(object):
         self.inner_resources = []
         self.luck_tokens = []
         self.focus_dict = collections.defaultdict(int)
-        self.used_inner_resources = []
+        self.resources_deck = []
+        self.active_resources = []
+
+    def activate_resource(self, res):
+        self.resources_deck.remove(res)
+        self.active_resources.append(res)
+
+    def use_resource(self, res):
+        self.active_resources.remove(res)
+        self.resources_deck.append(res)
+
+    def get_resource(self, attribute, difficulty):
+        pass
 
     def add_inner_resource(self, name, attribute, value=1):
         if name == 'luck':

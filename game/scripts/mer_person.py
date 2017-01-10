@@ -2253,5 +2253,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         if self._energy < -1:
             self._energy = -1
 
+    def gain_energy(self, value=1):
+        self._energy += value
+
     def has_energy(self):
         return self._energy > -1
