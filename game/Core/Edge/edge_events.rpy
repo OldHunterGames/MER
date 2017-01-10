@@ -19,7 +19,8 @@ label edge_init_events:
         register_event('evn_edge_scavenge')    
         register_event('evn_edge_entertain_job')        
         register_event('evn_edge_brewery')    
-        register_event('evn_edge_machinery')             
+        register_event('evn_edge_machinery')
+        register_event('evn_edge_slut')             
     
     return True
     
@@ -28,6 +29,18 @@ label edge_init_events:
 label evn_edge_blank:
    $pass   
    return True
+
+label evn_edge_slut(event):
+    if not event.skipcheck:
+        if True:
+            $ event.skipcheck = True
+
+    if not event.skipcheck:
+        return False
+    
+    $ player.eros.set_satisfaction(5)
+    '[event.target.name] fucks with slut'
+    return True
   
 label evn_edge_template(event):
     

@@ -88,9 +88,9 @@ label lbl_edge_manage:
             bill_txt = "Decade bill is %s brs." % (bill) 
             
         if player.job == 'edge_idle': 
-            job = encolor_text(jobs_data[player.job]['name'], 0)
+            job = encolor_text(player.job, 0)
         else:
-            job = encolor_text(jobs_data[player.job]['name'], 4)
+            job = encolor_text(player.job, 4)
             
         if not core.can_skip_turn():
             consumption_text += ". You can't skip turn - not enough brs."
@@ -131,9 +131,6 @@ label lbl_edge_manage:
         #    call screen sc_person_equipment(player)
         #'Deck':
         #    call screen deck_creator
-        
-        'Carry on' if edge.resources.can_tick() and core.can_skip_turn():
-            call lbl_edge_turn
     
     jump lbl_edge_manage
     return

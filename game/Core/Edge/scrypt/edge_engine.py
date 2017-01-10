@@ -50,6 +50,11 @@ class EdgeEngine(object):
         except ValueError:
             pass
 
+    def jobs(self):
+        return store.edge_jobs_data
+
+    def services(self):
+        return store.edge_services_data
 
 
     def unexplore_all_stahses(self):

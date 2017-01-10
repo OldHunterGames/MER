@@ -70,19 +70,6 @@ class Education(BackgroundBase):
         except KeyError:
             self.skills = None
 
-    def apply_other(self, owner):
-        if self.skills is None:
-            return
-        for key in self.skills:
-            skill = owner.skill(key)
-            for value in self.skills[key]:
-                if isinstance(value, tuple):
-                    if value[0] == 'expirience':
-                        skill.get_expirience(value[1])
-                elif value == 'profession' or value == 'expert':
-                    getattr(skill, value)()
-                else:
-                    setattr(skill, value, True)
 
 
 class Occupation(BackgroundBase):
@@ -93,20 +80,6 @@ class Occupation(BackgroundBase):
             self.skills = self.data_dict[id_]['skills']
         except KeyError:
             self.skills = None
-
-    def apply_other(self, owner):
-        if self.skills is None:
-            return
-        for key in self.skills:
-            skill = owner.skill(key)
-            for value in self.skills[key]:
-                if isinstance(value, tuple):
-                    if value[0] == 'expirience':
-                        skill.get_expirience(value[1])
-                elif value == 'profession' or value == 'expert':
-                    getattr(skill, value)()
-                else:
-                    setattr(skill, value, True)
 
 
 class Culture(BackgroundBase):

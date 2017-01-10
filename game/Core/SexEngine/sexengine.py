@@ -169,7 +169,7 @@ class SexParticipant(object):
     
     @property
     def sex_level(self):
-        return self.person.skill('sex').level
+        return 0
 
     def anatomy(self):
         return [i for i in self.person.anatomy()]
@@ -192,10 +192,6 @@ class SexParticipant(object):
     @property
     def spirit(self):
         return self.person.spirit
-    
-    @property
-    def sensitivity(self):
-        return self.person.sensitivity
 
     @property
     def gender(self):
