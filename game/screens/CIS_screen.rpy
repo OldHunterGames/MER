@@ -34,7 +34,11 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         vbox:
                             if communicate:
                                 if player.energy > -1:
-                                    textbutton 'Communicate' action Function(renpy.call_in_new_context, 'lbl_communicate', person)
+                                    imagebutton:
+                                        idle im.Scale(person.get_token_image(), 90, 120)
+                                        hover im.MatrixColor(im.Scale(person.get_token_image(), 90, 120), im.matrix.brightness(0.05))
+                                        action If(person.token == 'power', Function(renpy.call_in_new_context,
+                                            'lbl_communicate', person), false=Function(core.use_token, person)) 
                                 else:
                                     textbutton 'Communicate':
                                         style 'gray_button'
@@ -95,12 +99,6 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         vbox:
                             for i in person.get_buffs():
                                 text encolor_text(i.name, i.color())
-        if person.has_resources():
-            frame:
-                xalign 1.0
-                yalign 1.0
-                vbox:
-                    textbutton 'Tokens' action Show('sc_tokens', person=person)
 
 init python:
     active_determination = None

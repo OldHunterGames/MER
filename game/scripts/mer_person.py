@@ -558,7 +558,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._overtime = dict()
 
         self.services = collections.defaultdict(dict)
-
+        self.token = 'power'
         self.joy = 0
         self._spoil_number = 1
         self.success = 0
@@ -1651,30 +1651,21 @@ class Person(Skilled, InventoryWielder, Attributed):
             stance._type = 'neutral'
         return stance
 
-    def use_token(self, token):
-        if self.has_token(token):
-            self.tokens.remove(token)
-        else:
-            return "%s has no token named %s" % (self.name(), token)
+    def use_token(self):
+        self.tokens.remove(token)
+        self.player_relations().stability += 1
+        self.relations_tendency[token] += 1
+        self.token = 'power'
 
-    def has_token(self, token):
-        if token in self.tokens:
-            return True
-        return False
+    def set_token(self, token, free=False):
+        sekf.token = token      
+        renpy.call_in_new_context('lbl_notify', self, token)
 
-    def has_any_token(self):
-        if len(self.tokens) > 0:
-            return True
-        return False
-
-    def add_token(self, token, free=False):
-        if not self.has_token(token):
-            self.tokens.append(token)
-            if token not in ('accordance', 'antagonism'):
-                if not free:
-                    self.player_relations().stability += 1
-                self.relations_tendency[token] += 1
-            renpy.call_in_new_context('lbl_notify', self, token)
+    def get_token_image(self):
+        return {'power': 'images/tarot/arcana_lust.jpg',
+            'conquest': 'images/tarot/arcana_charriot.jpg',
+            'convention': 'images/tarot/arcana_justice.jpg',
+            'contribution': 'images/tarot/arcana_lovers.jpg'}[self.token]
 
     def player_relations(self):
         return self.relations(self.game_ref.player)
@@ -2099,7 +2090,6 @@ class Person(Skilled, InventoryWielder, Attributed):
                 old_job_dict[key] = value
             self.job_buffer = [old_job_dict, self._job_productivity, self.productivity_raised]
             self._job_productivity = 0
-        print self.job_buffer
 
         if target is not None:
             special_values = {'target': target}

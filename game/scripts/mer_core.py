@@ -226,6 +226,8 @@ class MistsOfEternalRome(object):
             target.add_token(token)
         return result
 
+    def use_token(self):
+        pass
 
 #Alternate Skillcheck
 

@@ -558,41 +558,25 @@ screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
     frame:
         xalign 0.5
         yalign 0.5
-        vbox:
+        hbox:
+            imagebutton:
+                idle im.Scale('images/tarot/arcana_tower.jpg', 200, 300)
+                action Return(False)
             if attr is not None:
-                textbutton attr:
-                    xsize 200
+                imagebutton:
+                    idle im.Scale(attr.image, 200, 300)
                     action [Function(person.use_resource, attr), Return(True),
-                        If(job, Function(person.increase_productivity))]
+                        If(job, person.increase_productivity()) ]
             else:
-                textbutton attr_name:
-                    xsize 200
-            if luck > 0:
-                textbutton luck_text:
-                    xsize 200
-                    action [Function(person.use_luck, luck), Return(True),
-                        If(job, Function(person.increase_productivity))]
-            else:   
-                textbutton 'Luck':
-                    xsize 200
-            if job:
-                textbutton 'Nevermind' action Return():
-                    xsize 200
-            else:
-                textbutton '{color=#f00}Fail{/color}' action Return(False):
-                    xsize 200
+                image im.Scale('images/tarot/card_back.jpg', 200, 300)
+
 
 
 label lbl_skillcheck_mini(person, attribute, difficulty):
     python:
-        attr = person.get_min_resource_token(attribute, difficulty)
-        attr_name = tokens_translation[person.get_related_token(attribute)]
-        luck = person.get_min_luck(difficulty)
+        attr = person.get_resource(attribute, difficulty)
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, person.skill(attribute))
-        luck_text = encolor_text(__("Luck"), luck)
-        if attr is not None:
-            attr = encolor_text(tokens_translation[attr['name']], attr['value'])
         resqual = effort_quality[difficulty]
         if difficulty == 0:
             text = '{person.name} uses {skill} expirience to success'.format(person=person, skill=skill_name_colored)
@@ -619,14 +603,9 @@ label lbl_jobcheck(person, attribute):
         productivity_str = encolor_text(success_rate[productivity], productivity)
         potential = person.skill(attribute)
         potential_str = encolor_text(success_rate[potential], potential)
-        attr_name = tokens_translation[person.get_related_token(attribute)]
-        attr = person.get_min_resource_token(attribute, productivity)
-        if attr is not None:
-            attr = encolor_text(tokens_translation[attr['name']], attr['value'])
-        luck = person.get_min_luck(productivity)
+        attr = person.get_resource
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, person.skill(attribute))
-        luck_text = encolor_text(__("Luck"), luck)
         resqual = effort_quality[productivity+1]
         job_description = person.job_description()
         if productivity < potential:
@@ -663,12 +642,10 @@ label lbl_jobcheck_npc(person, attribute):
         if productivity < person.motivation():
             factor = __("motivation")
 
-        attr = person.get_min_resource_token(attribute, productivity)
-        luck = person.get_min_luck(productivity)
+        attr = person.get_resource(attribute, productivity)
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, person.skill(attribute))
-        luck_text = encolor_text(__("Luck"), luck)
-        resqual = "PLACEHOLDER"
+        resqual = effort_quality[productivity+1]
         job_description = person.job_description()
         energy = person.energy
         motivation = person.motivation()
@@ -683,7 +660,7 @@ label lbl_jobcheck_npc(person, attribute):
                 person=person, job_description=job_description,
                 productivity=productivity_str)
         if productivity < person.real_productivity():
-            text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. Productivity is limited due to luck of {factor}, however, it will rise up to {real_productivity} with better {factor}.".format(
+            text = "{person.name} {job_description} with {productivity} productivity and {potential} potential. Productivity is limited due to lack of {factor}, however, it will rise up to {real_productivity} with better {factor}.".format(
                 person=person, job_description=job_description, potential=potential_str,
                 factor=factor, real_productivity=real_prod_str, productivity=productivity_str)
     return
