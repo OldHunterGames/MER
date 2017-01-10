@@ -144,6 +144,8 @@ init python:
                 self._activate(taro_game)
 
         def active_if(self, taro_game):
+            if self.name == 'death':
+                return taro_game.person.anxiety > 0
             if self.mood is None:
                 if self.attribute != 'any':
                     attr = getattr(taro_game.person, self.attribute)
@@ -185,7 +187,7 @@ init python:
         'empress': {'value': 3, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_empress.jpg'},
         'hangman': {'locker': True, 'activate': hangman_activate, 'image': 'images/tarot/arcana_hangman.jpg'},
         'devil': {'mood': 0, 'activate': devil_activate, 'image': 'images/tarot/arcana_devil.jpg', 'locker': True},
-        'death': {'mood': -1, 'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg'}
+        'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg'}
 
     }
 
