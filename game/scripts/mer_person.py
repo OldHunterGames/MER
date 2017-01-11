@@ -586,13 +586,16 @@ class Person(Skilled, InventoryWielder, Attributed):
         need.add_spoil(self._spoil_number)
 
     def calc_life_level(self):
-        if self.life_quality < -5+self.sensitivity:
+        if self.life_quality < -self.emotional_stability():
             self.life_level = -1
-        elif self.life_quality > 5-self.sensitivity:
+        elif self.life_quality > self.emotional_stability():
             self.life_level = 1
         else:
             self.life_level = 0
         self.life_quality = 0
+
+    def emotional_stability(self):
+        return 3+self.count_modifiers('emotional_stability')
 
     @property
     def stimul(self):
