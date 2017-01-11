@@ -2125,7 +2125,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
 
     def use_accommodation(self):
-        accomnodation = self._accomnodation[self.world().name]
+        accommodation = self._accommodation[self.world().name]
         lbl = self.world().name+'_accommodation'+'_%s'%accomodation['id']
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, self)

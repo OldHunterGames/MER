@@ -32,19 +32,6 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         else:  
                             image im.Scale(person.avatar_path, 150, 150)
                         vbox:
-                            if communicate:
-                                if player.energy > -1:
-                                    imagebutton:
-                                        idle im.Scale(person.get_token_image(), 90, 120)
-                                        hover im.MatrixColor(im.Scale(person.get_token_image(), 90, 120), im.matrix.brightness(0.05))
-                                        action If(person.token == 'power', Function(renpy.call_in_new_context,
-                                            'lbl_communicate', person), false=Function(core.use_token, person)) 
-                                else:
-                                    textbutton 'Communicate':
-                                        style 'gray_button'
-                                        hovered Show('sc_text_popup', text=__("Not enough energy"))
-                                        unhovered Hide('sc_text_popup')
-                                        action NullAction()
                             textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
@@ -102,9 +89,22 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
         frame:
             xalign 1.0
             yalign 1.0
-            imagebutton:  
-                idle im.Scale('images/tarot/card_deck.jpg', 200, 350)
-                action Show('sc_tokens', person=player)
+            if person==player:
+                imagebutton:  
+                    idle im.Scale('images/tarot/card_deck.jpg', 200, 350)
+                    action Show('sc_tokens', person=player)
+            elif communicate:
+                if player.energy > -1:
+                    imagebutton:
+                        idle im.Scale(person.get_token_image(), 200, 350)
+                        hover im.MatrixColor(im.Scale(person.get_token_image(), 200, 350), im.matrix.brightness(0.05))
+                        action If(person.token == 'power', Function(renpy.call_in_new_context,
+                            'lbl_communicate', person), false=Function(core.use_token, person)) 
+                else:
+                    imagebutton:
+                        idle im.Grayscale(im.Scale(person.get_token_image(), 200, 350))
+                        hovered Show('sc_text_popup', text=__("Not enough energy"))
+                        action NullAction()
 
 init python:
     active_determination = None
