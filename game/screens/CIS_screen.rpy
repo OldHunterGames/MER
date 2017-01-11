@@ -86,7 +86,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                     skill = skills[person.skill(i)]
                                     txt = encolor_text(attributes_translation[i], getattr(person, i))
                                     if skill is not None:
-                                        txt += '(%s)'%encolor_text(skill, person.skill(i))
+                                        txt += '(%s)'%encolor_text(skill, person.skill(i)+2)
                                 text txt
                                 
                 if any([person.get_buffs()]):
