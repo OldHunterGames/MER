@@ -1,4 +1,4 @@
-screen sc_services():
+screen sc_schedule_organaizer():
     modal True
     window:
         xfill True

@@ -7,7 +7,7 @@ screen sc_player_hud:
         textbutton 'contacts':
             action Show('sc_player_contacts')
         textbutton "schedule":
-            action Show('sc_services')
+            action Show('sc_schedule_organaizer')
     if core.can_skip_turn():
         textbutton 'Skip Turn' action Function(core.current_world.new_turn):
             xalign 0.5
