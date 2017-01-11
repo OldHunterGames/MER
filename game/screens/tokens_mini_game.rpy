@@ -154,7 +154,7 @@ init python:
             if self.name == 'death':
                 return taro_game.person.anxiety > 0
             if self.mood is None:
-                if self.attribute != 'any':
+                if self.attribute != 'any' and self.attribute is not None:
                     attr = getattr(taro_game.person, self.attribute)
                     return attr >= self.value
                 else:
