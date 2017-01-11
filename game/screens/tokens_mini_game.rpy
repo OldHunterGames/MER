@@ -45,7 +45,8 @@ screen sc_tokens_game(tokens_game):
                                         hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
                                         insensitive im.Grayscale(im.Scale(card.image, 300, 480))
                                         action Function(tokens_game.use_card, i), SensitiveIf(not locked)
-                                    text card.encolor_name()
+                                    text card.encolor_name():
+                                        xalign 0.5
                             else:
                                 imagebutton:
                                     idle im.Scale('images/tarot/card_back.jpg', 300, 480)
@@ -204,7 +205,7 @@ init python:
         'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg', 'nature': 'neutral'},
         'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
         'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
-        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good'},
+        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': None},
         'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good'},
         'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
         'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg', 'nature': 'good'},

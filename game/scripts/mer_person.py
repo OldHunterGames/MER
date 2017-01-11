@@ -2045,16 +2045,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         value += self._job_productivity
         
         if not self.player_controlled:
-            return min([value, self.skill(self.job_skill), self.motivation()])
-        return min(value, self.skill(self.job_skill))
-
-    def real_productivity(self):
-        if self.job_skill is not None:
-            value = self.skill(self.job_skill) - self.job_difficulty
-        else:
-            return 0
-        value += self._job_productivity
+            return min(value, self.motivation())
         return value
+
+    def focus(self):
+        return abs(self.skill(self.job_skill) - self.job_difficulty)+self._job_productivity
 
     def increase_productivity(self):
         self.job_buffer = []
@@ -2075,6 +2070,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             if event is not None:
                 call_event(event, self)
         self.job_buffer = []
+        self.productivity_raised = False
 
     def world(self):
         return self.game_ref.current_world
