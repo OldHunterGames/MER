@@ -1,7 +1,7 @@
 init python:
     person_features = {
         # base
-        'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'sensitivity': +1, 'succulence': +1}, 'visible': True},
+        'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'agility': +1, 'succulence': +1}, 'visible': True},
         'adolescent': {'name': __('adolescent'), 'slot': 'age', 'modifiers': {'allure': +1}, 'visible': True},
         'mature': {'name': __('mature'), 'slot': 'age', 'modifiers': {'spirit': +1, 'hardiness': +1, 'succulence': -1, 'menace': +1}, 'visible': True},
         'elder': {'name': __('elder'), 'slot': 'age', 'modifiers': {'agility': -1, 'mind': +1, 'allure': -1, 'hardiness': -1, 'succulence': -2}, 'visible': True},
@@ -13,9 +13,9 @@ init python:
 
         'brawny': {'name': __('brawny'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': +1}, 'visible': True},
         'large': {'name': __('large'), 'slot': 'constitution', 'modifiers': {'physique': +1, 'succulence': +1}, 'visible': True},
-        'athletic': {'name': __('athletic'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': +1}, 'visible': True},
-        'small': {'name': __('small'), 'slot': 'constitution', 'modifiers': {'physique': -1}, 'visible': True},
-        'lean': {'name': __('lean'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': -1, 'succulence': -1}, 'visible': True},
+        'athletic': {'name': __('athletic'), 'slot': 'constitution', 'modifiers': {'physique': +1}, 'visible': True},
+        'small': {'name': __('small'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'physique': -1}, 'visible': True},
+        'lean': {'name': __('lean'), 'slot': 'constitution', 'modifiers': {'agility': +1, 'succulence': -1}, 'visible': True},
         'crooked': {'name': __('crooked'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': -1, 'allure': -1}, 'visible': True},
         'clumsy': {'name': __('clumsy'), 'slot': 'constitution', 'modifiers': {'agility': -1}, 'visible': True},
 
@@ -23,8 +23,6 @@ init python:
         'shy': {'name': __('shy'), 'slot': 'spirit_feat', 'modifiers': {'spirit': -1, 'menace': -1}, 'visible': True},
         'smart': {'name': __('smart'), 'slot': 'mind_feat', 'modifiers': {'mind': +1}, 'visible': True},
         'dumb': {'name': __('dumb'), 'slot': 'mind_feat', 'modifiers': {'mind': -1}, 'visible': True},
-        'sensitive': {'name': __('sensitive'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': +1, 'menace': -1}, 'visible': True},
-        'cool': {'name': __('cool'), 'slot': 'sensitivity_feat', 'modifiers': {'sensitivity': -1, 'menace': +1}, 'visible': True},
         
         # look
         'innocent_appearance': {'name': __('Innocent look'), 'slot': 'look', 'modifiers': {'hardiness': -1, 'exotic': -1, 'purity': +1, 'succulence': +1, 'menace': -1}, 'visible': True},        

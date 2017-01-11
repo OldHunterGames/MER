@@ -918,8 +918,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.add_feature(const)
 
         # soul
-        soul = choice(('brave', 'shy', 'smart', 'dumb',
-                       'sensitive', 'cool', None))
+        soul = choice(('brave', 'shy', 'smart', 'dumb', None))
         if soul:
             self.add_feature(soul)
 
