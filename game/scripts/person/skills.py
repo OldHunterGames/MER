@@ -159,8 +159,9 @@ class Skilled(object):
 
     def skill(self, attribute):
         attr = self._tokens_relations[attribute]
+        print attr+'_skill'
         value = self.count_modifiers(attr+'_skill')
-        return min(0, max(3, value))
+        return max(0, min(3, value))
 
     def use_inner_resource(self, resource):
         self.used_inner_resources.append(resource)

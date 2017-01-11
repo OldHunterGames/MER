@@ -44,8 +44,14 @@ class BackgroundBase(object):
         for feature_paires in self.features:
             feature = mer_utilities.weighted_random(feature_pairs)
             owner.add_feature(feature)
-        if self.id in store.person_features.keys():
-             owner.add_feature(self.id)
+        dice = mer_utilities.roll(1, 10)
+
+        if dice:
+            feature = 'talanted_%s'%self.id
+            if feature not in store.person_features.keys():
+                feature = self.id
+            if feature in store.person_features.keys():
+                owner.add_feature(feature)
         self.apply_other(owner)
 
     def apply_other(self, owner):
