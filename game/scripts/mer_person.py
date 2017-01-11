@@ -1010,6 +1010,17 @@ class Person(Skilled, InventoryWielder, Attributed):
         try:
             values = self._job.values()
             if len(values) > 0:
+                name = self._job.values()[0]['id']
+            else:
+                name = 'idle'
+        except KeyError:
+            name = 'idle'
+        return name
+    
+    def job_name(self):
+        try:
+            values = self._job.values()
+            if len(values) > 0:
                 name = self._job.values()[0]['name']
             else:
                 name = 'idle'
@@ -2075,6 +2086,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def world(self):
         return self.game_ref.current_world
 
+    @utilities.Observable
     def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
 
         data = self.available_jobs()[job]
@@ -2261,6 +2273,12 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def allow(self, type_, name):
         self.allowed[type_].append(name)
+
+    def disallow(self, type_, name):
+        try:
+            self.allowed[type_].remove(name)
+        except ValueError:
+            return
 
     def add_service(self, name):
         data = self.available_services()[name]

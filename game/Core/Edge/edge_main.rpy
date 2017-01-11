@@ -9,6 +9,12 @@ init -8 python:
     from edge_camp import *
     edge = EdgeEngine()
     pass
+    def canibalism_unlocker(person):
+        person.allow('feed', 'canibalism')
+
+    def canibalism_locker(person):
+        if len(person.corpse_storage) < 1:
+            person.disallow('feed', 'canibalism')
 
 label lbl_edge_main:    
     'The Mist gives you a way...'  
@@ -19,6 +25,8 @@ label lbl_edge_main:
         player.set_job('idle')
         player.set_overtime('rest')
         player.set_feed('forage')
+        player.add_corpse.add_callback(canibalism_unlocker)
+        player.remove_corpse.add_callback(canibalism_locker)
         spendings_text = __("Decade bill: ")
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)

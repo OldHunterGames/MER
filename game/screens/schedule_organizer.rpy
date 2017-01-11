@@ -35,7 +35,7 @@ screen sc_schedule_organaizer():
                             text ' '
                             text 'Bill: %s'%value['cost']
         textbutton player.job:
-            action Show('sc_job_picker')
+            action ShowTransient('sc_job_picker')
             hovered Show('sc_text_popup', text=player.job_description())
             unhovered Hide('sc_text_popup')
             xsize 200
@@ -43,7 +43,7 @@ screen sc_schedule_organaizer():
             xpos 355
 
         textbutton player.accommodation:
-            action Show('sc_accomodation_picker')
+            action ShowTransient('sc_accomodation_picker')
             hovered Show('sc_text_popup', text=player.accommodation_description())
             unhovered Hide('sc_text_popup')
             xsize 200
@@ -51,14 +51,14 @@ screen sc_schedule_organaizer():
             xpos 555
 
         textbutton player.overtime:
-            action Show('sc_overtime_picker')
+            action ShowTransient('sc_overtime_picker')
             hovered Show('sc_text_popup', text=player.overtime_description())
             unhovered Hide('sc_text_popup')
             xsize 200
             yminimum 30
             xpos 755
         textbutton player.feed:
-            action Show('sc_feed_picker')
+            action ShowTransient('sc_feed_picker')
             hovered Show('sc_text_popup', text=player.feed_description())
             unhovered Hide('sc_text_popup')
             xsize 200

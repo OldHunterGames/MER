@@ -159,7 +159,7 @@ init python:
         'dry_high': {"name": __("Eat many bars"), 'description': __("Starve. No cost."), 'cost': 0},
         'cooked_low': {"name": __("Cooked food"), 'description': __("Starve. No cost."), 'cost': 0},
         'cooked': {"name": __("Grilled girl"), 'description': __("Starve. No cost."), 'cost': 0},
-        'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0},                                                
+        'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True},                                                
     }
 
     edge_overtimes_data = {

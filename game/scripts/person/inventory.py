@@ -2,6 +2,7 @@
 import collections
 from mer_itemsstorage import ItemsStorage
 from modifiers import ModifiersStorage
+import mer_utilities as utilities
 
 class Inventory(ItemsStorage, ModifiersStorage):
 
@@ -247,10 +248,12 @@ class InventoryWielder(object):
 
     def get_captives(self):
         return [i for i in self.captives]
-
+    
+    @utilities.Observable
     def add_corpse(self, person):
         self.corpse_storage.append(person)
 
+    @utilities.Observable
     def remove_corpse(self, person):
         self.corpse_storage.remove(person)
 

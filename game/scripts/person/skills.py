@@ -159,7 +159,6 @@ class Skilled(object):
 
     def skill(self, attribute):
         attr = self._tokens_relations[attribute]
-        print attr+'_skill'
         value = self.count_modifiers(attr+'_skill')
         return max(0, min(3, value))
 
