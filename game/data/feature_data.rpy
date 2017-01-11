@@ -142,7 +142,7 @@ init python:
 
         # fitness
         'tender': {'name': __('Tender'), 'slot': 'fitness', 'modifiers': {'might_skill': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
-        'fit': {'name': __('Fit'), 'slot': 'fitness', 'modifiers': {'finesse_skill': +1, 'might_skill': +1,, 'menace': +1}, 'visible': True},
+        'fit': {'name': __('Fit'), 'slot': 'fitness', 'modifiers': {'finesse_skill': +1, 'might_skill': +1, 'menace': +1}, 'visible': True},
         'beefy': {'name': __('Beefy'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
         'muscular': {'name': __('Muscular'), 'slot': 'fitness', 'modifiers': {'might_skill': +1, 'physique': +1, 'menace': +2}, 'visible': True},
 

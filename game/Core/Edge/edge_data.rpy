@@ -143,11 +143,11 @@ init python:
     }   
     
     edge_services_data = {
-        'personal_slut': {"name": __("Personal slut"), 'description': __("Your own slut"), 'cost': 5}
+        'personal_slut': {"name": __("Personal slut"), 'description': __("Your own slut"), 'cost': 10}
     }
 
     edge_accomodations_data = {
-        'bad_sleep': {"name": __("Bad sleep"), 'description': __("You sleep at street"), 'cost': 5}
+        'makeshift': {"name": __("Homeless"), 'description': __("You sleep at the street"), 'cost': 0}
     }
 
     edge_overtimes_data = {
