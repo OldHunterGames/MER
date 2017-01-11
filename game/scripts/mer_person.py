@@ -1899,7 +1899,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def decade_bill(self):
-        return sum([i['cost'] for i in self.get_services()])
+        return sum([i['cost'] for i in self.get_services().values()])
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
