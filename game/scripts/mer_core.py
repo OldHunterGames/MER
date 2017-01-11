@@ -80,11 +80,11 @@ class MistsOfEternalRome(object):
         else:
             return self.current_world.services()
 
-    def accomodations(self):
+    def accommodations(self):
         if self.current_world == self:
             return store.accomodations_data
         else:
-            return self.current_world.accomodations()
+            return self.current_world.accommodations()
 
     def overtimes(self):
         if self.current_world == self:

@@ -1021,22 +1021,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             description = 'No description'
         return description
 
-    @property
-    def accommodation(self):
-        accomodation = self.schedule.find_by_slot('accommodation')
-        if accomodation is None:
-            raise Exception(
-                'Person %s do not have accommodation' % (self.name))
-        return accomodation.name
-
-    @property
-    def overtime(self):
-        overtime = self.schedule.find_by_slot('overtime')
-        if overtime is None:
-            return 'idle'
-        else:
-            return overtime.name
-
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):
             try:
@@ -2065,7 +2049,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_buffer = []
         self.productivity_raised = False
         job = self._job[self.world().name]
-        lbl = self.world().name+'_accomodation'+'_%s'%job['id']
+        lbl = self.world().name+'_accommodation'+'_%s'%job['id']
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, self)
 
@@ -2117,7 +2101,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def set_accommodation(self, name):
         self._accommodation = collections.defaultdict(dict)
-        data = self.available_accomodations()[name]
+        data = self.available_accommodations()[name]
         world = self.world().name
         self._accommodation[world] = {'id': name}
         for key, value in data.items():
@@ -2126,7 +2110,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_accommodation(self):
         accommodation = self._accommodation[self.world().name]
-        lbl = self.world().name+'_accommodation'+'_%s'%accomodation['id']
+        lbl = self.world().name+'_accommodation'+'_%s'%accommodation['id']
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, self)
 
@@ -2152,10 +2136,10 @@ class Person(Skilled, InventoryWielder, Attributed):
             renpy.call_in_new_context(lbl, self)
 
     @property
-    def accomodation(self):
+    def accommodation(self):
         return self._accommodation[self.world().name]['name']
 
-    def accomodation_description(self):
+    def accommodation_description(self):
         return self._accommodation[self.world().name]['description']
 
     def available_jobs(self):
@@ -2190,9 +2174,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         return dict_
 
-    def available_accomodations(self):
+    def available_accommodations(self):
         dict_ = {}
-        for key, value in self.game_ref.accomodations().items():
+        for key, value in self.game_ref.accommodations().items():
             try:
                 hidden = value['hidden']
             except KeyError:

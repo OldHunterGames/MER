@@ -42,9 +42,9 @@ screen sc_schedule_organaizer():
             yminimum 30
             xpos 355
 
-        textbutton player.accomodation:
+        textbutton player.accommodation:
             action Show('sc_accomodation_picker')
-            hovered Show('sc_text_popup', text=player.accomodation_description())
+            hovered Show('sc_text_popup', text=player.accommodation_description())
             unhovered Hide('sc_text_popup')
             xsize 200
             yminimum 30
@@ -101,7 +101,7 @@ screen sc_accomodation_picker():
             xsize 200
             ysize 350
             vbox:
-                for key, value in player.available_accomodations().items():
+                for key, value in player.available_accommodations().items():
                     textbutton value['name']:
                         xsize 180
                         action [Function(player.set_accommodation, key), Hide('sc_accomodation_picker')]

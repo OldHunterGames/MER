@@ -56,7 +56,7 @@ class EdgeEngine(object):
     def services(self):
         return store.edge_services_data
 
-    def accomodations(self):
+    def accommodations(self):
         return store.edge_accomodations_data
 
     def overtimes(self):
