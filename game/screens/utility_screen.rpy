@@ -608,19 +608,21 @@ label lbl_jobcheck(person, attribute):
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[person.focus()+1]
         job_description = person.job_description()
+        focus = person.focus()
+        focus_desc = encolor_text(focus_description[focus], focus)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. To rise the productivity level {person.name} need {resqual}".format(
-                        person=person, job_description=job_description, focus=person.focus(), resqual=resqual,
+                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
-                        focus = person.focus())
+                        focus=focus_desc)
         else:
             text = "{person.name} {job_description} with {productivity} productivity and {focus} effor".format(
                 person=person, job_description=job_description,
-                productivity=productivity_str, focus=person.focus())
+                productivity=productivity_str, focus=focus_desc)
     if person.focus() < 5 and not person.productivity_raised and not attr is None:
         call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
         return
@@ -644,19 +646,21 @@ label lbl_jobcheck_npc(person, attribute):
         motivation = person.motivation()
         real_productivity = person.real_productivity()
         real_prod_str = success_rate[real_productivity]
+        focus = person.focus()
+        focus_desc = encolor_text(focus_description[focus], focus)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effor. To rise the productivity level {person.name} need {resqual}".format(
-                        person=person, job_description=job_description, focus=person.focus(), resqual=resqual,
+                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
-                        focus = person.focus())
+                        focus=focus_desc)
         else:
             text = "{person.name} {job_description} with {productivity} productivity and {focus} effort, limited by {motivation}".format(
                 person=person, job_description=job_description, productivity=productivity_str,
-                focus=person.focus(), motivation=person.motivation())
+                focus=focus_desc, motivation=person.motivation())
     '[text]'
     return
 
