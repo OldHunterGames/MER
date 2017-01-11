@@ -41,21 +41,11 @@ class BackgroundBase(object):
                 and background.prestige_level in self.available_prestige_levels)
 
     def apply(self, owner):
-        for feature in self.features:
+        for feature_paires in self.features:
+            feature = mer_utilities.weighted_random(feature_pairs)
             owner.add_feature(feature)
-        dice = mer_utilities.roll(1, 10)
-        if dice:
-            name = 'talanted_%s'%self.id
-            if name in store.person_features.keys():
-                owner.add_feature(name)
-            else:
-                name = self.id
-                if name in store.person_features.keys():
-                    owner.add_feature(name)
-        else:
-            name = self.id
-            if name in store.person_features.keys():
-                owner.add_feature(name)
+        if self.id in store.person_features.keys():
+             owner.add_feature(self.id)
         self.apply_other(owner)
 
     def apply_other(self, owner):
