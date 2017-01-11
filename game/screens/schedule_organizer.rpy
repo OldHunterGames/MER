@@ -57,29 +57,24 @@ screen sc_schedule_organaizer():
             xsize 200
             yminimum 30
             xpos 755
+        textbutton player.feed:
+            action Show('sc_feed_picker')
+            hovered Show('sc_text_popup', text=player.feed_description())
+            unhovered Hide('sc_text_popup')
+            xsize 200
+            yminimum 30
+            xpos 955
         
         frame:
             xsize 200
-            ysize 140
-            yalign 0.8
+            ysize 220
+            yalign 0.75
             vbox:
-                text 'Allowance: %s'%player.pocket_money
-                hbox:
-                    spacing 5
-                    vbox:
-                        textbutton '1':
-                            action Function(player.add_pocket_money, 1)
-                        textbutton '10':
-                            action Function(player.add_pocket_money, 10)
-                        textbutton '100':
-                            action Function(player.add_pocket_money, 100)
-                    vbox:
-                        textbutton '1':
-                            action Function(player.remove_pocket_money, 1)
-                        textbutton '10':
-                            action Function(player.remove_pocket_money, 10)
-                        textbutton '100':
-                            action Function(player.remove_pocket_money, 100)
+                text 'Allowance'
+                for i in range(0, 6):
+                    textbutton str(i):
+                        action [Function(player.set_pocket_money, i), SensitiveIf(player.pocket_money != i),
+                            SelectedIf(player.pocket_money == i)]
 
         text 'Total: %s'%player.decade_bill:
             yalign 0.95    
@@ -150,6 +145,28 @@ screen sc_overtime_picker():
                     textbutton value['name']:
                         xsize 180
                         action [Function(player.set_overtime, key), Hide('sc_overtime_picker')]
+                        hovered Show('sc_text_popup', text=value['description'])
+                        unhovered Hide('sc_text_popup')
+    on 'hide':
+        action Hide('sc_text_popup')
+
+screen sc_feed_picker():
+    tag picker
+    frame:
+        ypos 45
+        xpos 960
+        xsize 200
+        viewport:
+            scrollbars 'vertical'
+            draggable True
+            mousewheel True
+            xsize 200
+            ysize 350
+            vbox:
+                for key, value in player.available_feeds().items():
+                    textbutton value['name']:
+                        xsize 180
+                        action [Function(player.set_feed, key), Hide('sc_feed_picker')]
                         hovered Show('sc_text_popup', text=value['description'])
                         unhovered Hide('sc_text_popup')
     on 'hide':

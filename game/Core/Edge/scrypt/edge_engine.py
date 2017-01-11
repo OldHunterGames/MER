@@ -62,6 +62,9 @@ class EdgeEngine(object):
     def overtimes(self):
         return store.edge_overtimes_data
 
+    def feeds(self):
+        return store.edge_feeds_data
+
 
     def unexplore_all_stahses(self):
         for key in self.stashes.keys():

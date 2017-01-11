@@ -90,7 +90,13 @@ class MistsOfEternalRome(object):
         if self.current_world == self:
             return store.overtimes_data
         else:
-            return self.current_world.overtimes() 
+            return self.current_world.overtimes()
+
+    def feeds(self):
+        if self.current_world == self:
+            return store.feeds_data
+        else:
+            return self.current_world.feeds() 
 
 
     @property

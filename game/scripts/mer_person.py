@@ -557,6 +557,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self._accommodation = dict()
         self._overtime = dict()
+        self._feed = dict()
 
         self.services = collections.defaultdict(dict)
 
@@ -564,7 +565,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             'job': [],
             'service': [],
             'accommodation': [],
-            'overtime': []
+            'overtime': [],
+            'feed': []
         }
         self.token = 'power'
         self.joy = 0
@@ -576,14 +578,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.set_energy()
         self._current_job = None
 
-    def add_pocket_money(self, value):
-        self.pocket_money += value
+    def set_pocket_money(self, level):
+        self.pocket_money = level
 
-    def remove_pocket_money(self, value):
-        self.pocket_money -= value
-        if self.pocket_money < 0:
-            self.pocket_money = 0
-    
 
     @property
     def energy(self):
@@ -1409,7 +1406,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.use_job()
         self.use_services()
         self.use_accommodation()
-        
+        self.use_feed()
         self.use_overtime()
 
     #testing new food system, food methods are unused for some time
@@ -2129,10 +2126,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
 
     def use_accommodation(self):
-        accommodation = self._accommodation[self.world().name]
-        lbl = self.world().name+'_accommodation'+'_%s'%accommodation['id']
-        if renpy.has_label(lbl):
-            renpy.call_in_new_context(lbl, self)
+        self.use_schedule_part('_accommodation')
 
     def set_overtime(self, name):
         self._overtime = collections.defaultdict(dict)
@@ -2142,6 +2136,30 @@ class Person(Skilled, InventoryWielder, Attributed):
         for key, value in data.items():
             self._overtime[world][key] = value
 
+    def set_feed(self, name):
+        self._feed = collections.defaultdict(dict)
+        data = self.available_feeds()[name]
+        world = self.world().name
+        self._feed[world] = {'id': name}
+        for key, value in data.items():
+            self._feed[world][key] = value
+
+    def use_feed(self):
+        data = self.use_schedule_part('_feed')
+        self.eat(data['amount'], data['quality'])
+
+    def use_schedule_part(self, name):
+        data = getattr(self, name)[self.world().name]
+        lbl = self.world().name+'%s'%name+'_%s'%data['id']
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, self)
+        return data
+    @property
+    def feed(self):
+        return self._feed[self.world().name]['name']
+    def feed_description(self):
+        return self._feed[self.world().name]['description']
+
     @property
     def overtime(self):
         return self._overtime[self.world().name]['name']
@@ -2150,10 +2168,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self._overtime[self.world().name]['description']
 
     def use_overtime(self):
-        overtime = self._overtime[self.world().name]
-        lbl = self.world().name+'_overtime'+'_%s'%overtime['id']
-        if renpy.has_label(lbl):
-            renpy.call_in_new_context(lbl, self)
+        self.use_schedule_part('_overtime')
 
     @property
     def accommodation(self):
@@ -2220,6 +2235,22 @@ class Person(Skilled, InventoryWielder, Attributed):
 
             if hidden:
                 if key in self.allowed['overtime']:
+                    dict_[key] = value
+            else:
+                dict_[key] = value
+
+        return dict_
+
+    def available_feeds(self):
+        dict_ = {}
+        for key, value in self.game_ref.feeds().items():
+            try:
+                hidden = value['hidden']
+            except KeyError:
+                hidden = False
+
+            if hidden:
+                if key in self.allowed['feed']:
                     dict_[key] = value
             else:
                 dict_[key] = value

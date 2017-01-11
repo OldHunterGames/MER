@@ -80,7 +80,15 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             text "{b}%s{/b}"%encolor_text("Energy", person.energy)
                     frame:
                         vbox:
-                            text '{b}Skills{/b}'
+                            $ skills = [None, __("able"), __("veteran"), __("expert")]
+                            for i in ['physique', 'mind', 'spirit', 'agility']:
+                                python:
+                                    skill = skills[person.skill(i)]
+                                    txt = encolor_text(attributes_translation[i], getattr(person, i))
+                                    if skill is not None:
+                                        txt += '(%s)'%encolor_text(skill, person.skill(i))
+                                text txt
+                                
                 if any([person.get_buffs()]):
                     frame:
                         vbox:
