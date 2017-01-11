@@ -16,6 +16,14 @@ label edge_overtime_nap(action):
         action.actor.add_buff('rested')
     '[name]resting.'
     return      
+
+## FEED SLOT    
+label edge_feed_catering(action):
+    python:
+        name = action.actor.name
+        actor.eat(action.special_values['amount'], action.special_values['quality'])
+    '[name]eats at the common room.'    
+    return  
    
 
 ## ACCOMODATION SLOT    
@@ -50,16 +58,6 @@ label edge_accommodation_appartment(action):
         name = action.actor.name
     '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  
-
-
-## FEED SLOT    
-label edge_feed_catering(action):
-    python:
-        name = action.actor.name
-        actor.eat(action.special_values['amount'], action.special_values['quality'])
-    '[name]eats at the common room.'    
-    return  
-
 
 ## JOB SLOT        
 label edge_job_idle(action):

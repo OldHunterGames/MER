@@ -127,7 +127,7 @@ init python:
     }
 
     edge_jobs_data = {
-    'idle': {'name': __('Idle'), 'description': 'EROR', 'skill': None, 'difficulty': 0},
+    'idle': {'name': __('Idle'), 'description': 'Just rest and relax.', 'skill': None, 'difficulty': 0},
     'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 1},
     'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 1},
     'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0},   
@@ -154,6 +154,12 @@ init python:
 
     edge_feeds_data = {
         'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0},
+        'dry_low': {"name": __("Eat some bars"), 'description': __("Starve. No cost."), 'cost': 0},
+        'dry': {"name": __("Eat bars"), 'description': __("Starve. No cost."), 'cost': 0},
+        'dry_high': {"name": __("Eat many bars"), 'description': __("Starve. No cost."), 'cost': 0},
+        'cooked_low': {"name": __("Cooked food"), 'description': __("Starve. No cost."), 'cost': 0},
+        'cooked': {"name": __("Grilled girl"), 'description': __("Starve. No cost."), 'cost': 0},
+        'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0},                                                
     }
 
     edge_overtimes_data = {
