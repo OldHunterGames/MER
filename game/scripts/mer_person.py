@@ -2069,15 +2069,12 @@ class Person(Skilled, InventoryWielder, Attributed):
                 renpy.call_in_new_context('lbl_jobcheck', person=self, attribute=self.job_skill)
             else:
                 renpy.call_in_new_context('lbl_jobcheck_npc', person=self, attribute=self.job_skill)
-        try:
-            event = self._job['event']
-        except KeyError:
-            pass
-        else:
-            if event is not None:
-                call_event(event, self)
         self.job_buffer = []
         self.productivity_raised = False
+        job = self._job[self.world().name]
+        lbl = self.world().name+'_accomodation'+'_%s'%job['id']
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, self)
 
     def world(self):
         return self.game_ref.current_world
@@ -2136,13 +2133,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_accomodation(self):
         accomodation = self._accomodation[self.world().name]
-        try:
-            event = accomodation['event']
-        except KeyError:
-            return
-        else:
-            if event is not None:
-                call_event(event, self)
+        lbl = self.world().name+'_accomodation'+'_%s'%accomodation['id']
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, self)
 
     def set_overtime(self, name):
         self._overtime = collections.defaultdict(dict)
@@ -2161,14 +2154,9 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_overtime(self):
         overtime = self._overtime[self.world().name]
-        try:
-            event = overtime['event']
-        except KeyError:
-            pass
-        else:
-            if event is not None:
-                call_event(event, self)
-
+        lbl = self.world().name+'_overtime'+'_%s'%overtime['id']
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, self)
 
     @property
     def accomodation(self):
@@ -2270,17 +2258,14 @@ class Person(Skilled, InventoryWielder, Attributed):
         except KeyError:
             return {}
         else:
-            return services.values()
+            return services
 
     def use_services(self):
         for i in self.get_services():
-            try:
-                event = i['event']
-            except KeyError:
-                pass
-            else:
-                if event is not None:
-                    call_event(event, self)
+            lbl = self.world().name+'_service'+'_%s'%i
+            if renpy.has_label(lbl):
+                renpy.call_in_new_context(lbl, self)
+
         
 
     def joy(self, need, value):
