@@ -5,6 +5,7 @@ screen sc_schedule_organaizer():
         yfill True
         xalign 0.0
         yalign 0.0
+        style 'char_info_window'
         frame:
             xsize 350
             ysize 350
