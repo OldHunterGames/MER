@@ -62,7 +62,7 @@ screen sc_schedule_organaizer():
             yalign 0.95    
         textbutton 'Leave':
             yalign 1.0
-            action Hide('sc_services')
+            action Hide('sc_schedule_organaizer')
     on 'hide':
         action Hide('sc_text_popup'), Hide('sc_job_picker')
 
