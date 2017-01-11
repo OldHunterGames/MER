@@ -48,6 +48,10 @@ class BackgroundBase(object):
             name = 'talanted_%s'%self.id
             if name in store.person_features.keys():
                 owner.add_feature(name)
+            else:
+                name = self.id
+                if name in store.person_features.keys():
+                    owner.add_feature(name)
         else:
             name = self.id
             if name in store.person_features.keys():
