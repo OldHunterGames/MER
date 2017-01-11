@@ -104,7 +104,7 @@ screen sc_accomodation_picker():
                 for key, value in player.available_accomodations().items():
                     textbutton value['name']:
                         xsize 180
-                        action [Function(player.set_accomodation, key), Hide('sc_accomodation_picker')]
+                        action [Function(player.set_accommodation, key), Hide('sc_accomodation_picker')]
                         hovered Show('sc_text_popup', text=value['description'])
                         unhovered Hide('sc_text_popup')
     on 'hide':

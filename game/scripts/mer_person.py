@@ -554,7 +554,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._job_productivity = 0
         self.productivity_raised = False
 
-        self._accomodation = dict()
+        self._accommodation = dict()
         self._overtime = dict()
 
         self.services = collections.defaultdict(dict)
@@ -562,7 +562,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.allowed = {
             'job': [],
             'service': [],
-            'accomodation': [],
+            'accommodation': [],
             'overtime': []
         }
         self.token = 'power'
@@ -1414,7 +1414,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             return
         self.use_job()
         self.use_services()
-        self.use_accomodation()
+        self.use_accommodation()
         
         self.use_overtime()
 
@@ -1931,7 +1931,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._remove_needs()
         self._remove_foodsystem()
         self.remove_genus()
-        self.remove_skills()
         self.remove_schedule()
         persons_list.remove(self)
 
@@ -1957,12 +1956,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             to_remove.append(i)
         for i in to_remove:
             i.remove()
-
-    def remove_skills(self):
-        for i in self.skills:
-            i.owner = None
-        self.skills = []
-
 
     def remove_relations(self):
         characters = [i for i in self.known_characters]
@@ -2122,18 +2115,18 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_skill = skill
         self.job_difficulty = difficulty
 
-    def set_accomodation(self, name):
-        self._accomodation = collections.defaultdict(dict)
+    def set_accommodation(self, name):
+        self._accommodation = collections.defaultdict(dict)
         data = self.available_accomodations()[name]
         world = self.world().name
-        self._accomodation[world] = {'id': name}
+        self._accommodation[world] = {'id': name}
         for key, value in data.items():
-            self._accomodation[world][key] = value
+            self._accommodation[world][key] = value
 
 
-    def use_accomodation(self):
-        accomodation = self._accomodation[self.world().name]
-        lbl = self.world().name+'_accomodation'+'_%s'%accomodation['id']
+    def use_accommodation(self):
+        accomnodation = self._accomnodation[self.world().name]
+        lbl = self.world().name+'_accommodation'+'_%s'%accomodation['id']
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, self)
 
@@ -2160,10 +2153,10 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def accomodation(self):
-        return self._accomodation[self.world().name]['name']
+        return self._accommodation[self.world().name]['name']
 
     def accomodation_description(self):
-        return self._accomodation[self.world().name]['description']
+        return self._accommodation[self.world().name]['description']
 
     def available_jobs(self):
         dict_ = {}
@@ -2206,7 +2199,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 hidden = False
 
             if hidden:
-                if key in self.allowed['accomodation']:
+                if key in self.allowed['accommodation']:
                     dict_[key] = value
             else:
                 dict_[key] = value

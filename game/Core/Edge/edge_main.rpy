@@ -15,7 +15,7 @@ label lbl_edge_main:
     python:
         core.set_world(edge)
         edge.go_to_mist()
-        player.set_accomodation('makeshift')
+        player.set_accommodation('makeshift')
         player.set_job('idle')
         player.set_overtime('rest')
         spendings_text = __("Decade bill: ")
