@@ -227,7 +227,7 @@ init python:
         'athlete':{
             'name': __('athlete'),
             'technical_level': 1,
-            'prestige_level': 1,
+            'prestige_level': 1,        
         },
         'daytaler':{
             'name': __('daytaler'),

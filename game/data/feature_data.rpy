@@ -58,7 +58,18 @@ init python:
         'hair_shiny': {'name': __('Shiny hair'), 'slot': 'hair', 'modifiers': {'allure': +1, 'exotic': +0, 'purity': +0}, 'visible': True},                              
         'hair_colorful': {'name': __('Colorful hair'), 'slot': 'hair', 'modifiers': {'allure': +0, 'exotic': +1, 'purity': -1}, 'visible': True},      
         'hair_bald': {'name': __('Bald'), 'slot': 'hair', 'modifiers': {'allure': +0, 'exotic': +0, 'purity': +0}, 'visible': True},  
-
+        
+        # experiences
+        'educated': {'name': __('Educated'), 'slot': 'bx_mind', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'ignorant': {'name': __('Ignorant'), 'slot': 'bx_mind', 'modifiers': {'wisdom_skill': -1}, 'visible': True},  
+        'confident': {'name': __('Confident'), 'slot': 'bx_spirit', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'miserable': {'name': __('Miserable'), 'slot': 'bx_spirit', 'modifiers': {'spirit_skill': -1}, 'visible': True},  
+            
+        # backgrounds
+        'nurse': {'name': __('Nurse'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'talanted_nurse': {'name': __('Talanted nurse'), 'slot': 'profession', 'modifiers': {'wisdom_skill': -1}, 'visible': True},  
+        
+            
         # anatomy
         'polymorphous': {'name': __('Polymorphous'), 'slot': None, 'visible': True, 'anatomy': True},
         'body': {'name': __('Corporeal'), 'slot': None, 'visible': True, 'anatomy': True},
@@ -121,19 +132,19 @@ init python:
         'frigid': {'name': __('frigid'), 'slot': 'eros_feat', 'modifiers': {'eros': -1}, 'visible': True},
 
         # nutrition
-        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'nutrition': 1, 'succulence': -1}, 'visible': True, 'value': 1},
+        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True, 'value': 1},
         'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2, 'vitality': -1, 'succulence': -1, 'menace': -1}, 'visible': True, 'value': 2},
-        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'succulence': +1}, 'visible': True, 'value': -1},
-        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
+        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'finesse_skill': -1, 'nutrition': -1, 'succulence': +1}, 'visible': True, 'value': -1},
+        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'agility': -1, 'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1, 'menace': -2}, 'visible': True},
         'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1}, 'visible': True},
-        'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': False},
+        'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': True},
 
         # fitness
-        'tender': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': -1, 'physique': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
-        'fit': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'agility': +1, 'vitality': +1, 'menace': +1}, 'visible': True},
-        'beefy': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'agility': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
-        'muscular': {'name': __('brawny'), 'slot': 'fitness', 'modifiers': {'vitality': +1, 'physique': +1, 'menace': +2}, 'visible': True},
+        'tender': {'name': __('Tender'), 'slot': 'fitness', 'modifiers': {'might_skill': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
+        'fit': {'name': __('Fit'), 'slot': 'fitness', 'modifiers': {'finesse_skill': +1, 'might_skill': +1,, 'menace': +1}, 'visible': True},
+        'beefy': {'name': __('Beefy'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
+        'muscular': {'name': __('Muscular'), 'slot': 'fitness', 'modifiers': {'might_skill': +1, 'physique': +1, 'menace': +2}, 'visible': True},
 
         'dead': {'name': __('dead'), 'modifiers': {'succulence': -1}, 'visible': True},
     }

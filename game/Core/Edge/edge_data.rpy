@@ -128,29 +128,29 @@ init python:
 
     edge_jobs_data = {
     'idle': {'name': __('Idle'), 'description': 'EROR', 'skill': None, 'difficulty': 0},
-    'manual': {'name': __('Manual labor'), 'description': __('doing manual labor in slums'), 'skill': 'physique', 'difficulty': 2},
-    'houseservice': {'name': __('Simple work'), 'description': __('providing household services in the slums'), 'skill': 'physique', 'difficulty': 2},
+    'manual': {'name': __('Manual labor'), 'description': __('doing manual labor in slums'), 'skill': 'physique', 'difficulty': 1},
+    'houseservice': {'name': __('Simple work'), 'description': __('providing household services in the slums'), 'skill': 'physique', 'difficulty': 1},
     'range': {'name': __('Range the Edge'), 'description': 'EROR', 'skill': None, 'difficulty': 0},   
     'beg': {'name': __('Beggar'), 'description': 'EROR', 'skill': None, 'difficulty': 0},
-    'bukake': {'name': __('Bukake slut'), 'description': 'EROR', 'skill': None, 'difficulty': 0},      
+    'bukake': {'name': __('Bukake slut'), 'description': 'EROR', 'skill': None, 'difficulty': 0, 'hidden' : True},      
     
-    'repair': {'name': __('Repairings'), 'description': __('repairs various stuff for slum-dwellers'), 'skill': None, 'difficulty': 0},
-    'entertain': {'name': __('Entertain patrons'), 'description': __('entertains the slum-dwellers'), 'skill': None, 'difficulty': 0},
-    'alchemy': {'name': __('Brew booze'), 'description': __('brew booze for a slum-dwellers'), 'skill': None, 'difficulty': 0},
-    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('disassembles old machinery'), 'skill': None, 'difficulty': 0},
+    'repair': {'name': __('Repairings'), 'description': __('repairs various stuff for slum-dwellers'), 'skill': 'mind', 'difficulty': 2},
+    'entertain': {'name': __('Entertain patrons'), 'description': __('entertains the slum-dwellers'), 'skill': 'spirit', 'difficulty': 2},
+    'alchemy': {'name': __('Brew booze'), 'description': __('brew booze for a slum-dwellers'), 'skill': 'mind', 'difficulty': 2},
+    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('disassembles old machinery'), 'skill': 'mind', 'difficulty': 2},
 
-    'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2},
+    'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2, 'hidden' : True},
     }   
     
     edge_services_data = {
-        'personal_slut': {"name": __("Personal slut"), 'description': __("Your own slut"), 'cost': 5, 'event': 'slut'}
+        'personal_slut': {"name": __("Personal slut"), 'description': __("Your own slut"), 'cost': 5}
     }
 
     edge_accomodations_data = {
-        'bad_sleep': {"name": __("Bad sleep"), 'description': __("You sleep at street"), 'cost': 5, 'event': 'bad_sleep'}
+        'bad_sleep': {"name": __("Bad sleep"), 'description': __("You sleep at street"), 'cost': 5}
     }
 
     edge_overtimes_data = {
-        'test1': {"name": __("test1"), 'description': __("Description"), 'cost': 5, 'event': None}
+        'rest': {"name": __("Nap"), 'description': __("Overtime nap"), 'cost': 0}
     }
 
