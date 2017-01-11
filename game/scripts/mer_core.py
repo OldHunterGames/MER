@@ -171,6 +171,7 @@ class MistsOfEternalRome(object):
             person.rest()
         self.time += 1
         self.player.ap = 1
+        renpy.restart_interaction()
 
     def end_turn_event(self, skipcheck=False):
         events = self.events_dict.values()

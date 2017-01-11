@@ -2129,7 +2129,6 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_accomodation(self):
         accomodation = self._accomodation[self.world().name]
-        print accomodation
         try:
             event = accomodation['event']
         except KeyError:
