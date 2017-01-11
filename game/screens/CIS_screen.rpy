@@ -95,6 +95,8 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             for i in person.get_buffs():
                                 text encolor_text(i.name, i.color())
         frame:
+            xsize 200
+            ysize 350
             xalign 1.0
             yalign 1.0
             if person==player:

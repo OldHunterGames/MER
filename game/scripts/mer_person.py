@@ -1387,6 +1387,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.remove_money(self.decade_bill)
         self.set_energy()
         self.reset_needs()
+        if self.pocket_money > 0:
+            self.prosperity.set_satisfaction(self.pocket_money)
         
         self.ap = 1
         self._stimul = 0
