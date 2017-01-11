@@ -195,7 +195,7 @@ init python:
         person = taro_game.person
         cards = [i for i in person.active_resources]
         for i in cards:
-            person.use_resource(res)
+            person.use_resource(i)
         devil_activate(taro_game)
 
     default_taro_cards = {"swords": 'physique', 'wands': 'spirit', 'pentacles': 'mind', 'cups': 'agility'}
