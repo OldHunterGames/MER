@@ -558,6 +558,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._overtime = dict()
 
         self.services = collections.defaultdict(dict)
+
+        self.allowed = {
+            'job': [],
+            'service': [],
+            'accomodation': [],
+            'overtime': []
+        }
         self.token = 'power'
         self.joy = 0
         self._spoil_number = 1
@@ -2129,7 +2136,6 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_accomodation(self):
         accomodation = self._accomodation[self.world().name]
-        print accomodation
         try:
             event = accomodation['event']
         except KeyError:
@@ -2172,16 +2178,71 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self._accomodation[self.world().name]['description']
 
     def available_jobs(self):
-        return self.game_ref.jobs()
+        dict_ = {}
+        for key, value in self.game_ref.jobs().items():
+            try:
+                hidden = value['hidden']
+            except KeyError:
+                hidden = False
+
+            if hidden:
+                if key in self.allowed['job']:
+                    dict_[key] = value
+            else:
+                dict_[key] = value
+
+        return dict_
 
     def available_services(self):
-        return self.game_ref.services()
+        dict_ = {}
+        for key, value in self.game_ref.services().items():
+            try:
+                hidden = value['hidden']
+            except KeyError:
+                hidden = False
+
+            if hidden:
+                if key in self.allowed['service']:
+                    dict_[key] = value
+            else:
+                dict_[key] = value
+
+        return dict_
 
     def available_accomodations(self):
-        return self.game_ref.accomodations()
+        dict_ = {}
+        for key, value in self.game_ref.accomodations().items():
+            try:
+                hidden = value['hidden']
+            except KeyError:
+                hidden = False
+
+            if hidden:
+                if key in self.allowed['accomodation']:
+                    dict_[key] = value
+            else:
+                dict_[key] = value
+
+        return dict_
 
     def available_overtimes(self):
-        return self.game_ref.overtimes()
+        dict_ = {}
+        for key, value in self.game_ref.overtimes().items():
+            try:
+                hidden = value['hidden']
+            except KeyError:
+                hidden = False
+
+            if hidden:
+                if key in self.allowed['overtime']:
+                    dict_[key] = value
+            else:
+                dict_[key] = value
+
+        return dict_
+
+    def allow(self, type_, name):
+        self.allowed[type_].append(name)
 
     def add_service(self, name):
         data = self.available_services()[name]

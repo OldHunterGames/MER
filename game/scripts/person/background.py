@@ -5,6 +5,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_item import make_weapon_from_dict, make_armor_from_dict
+import mer_utilities
 
 class BackgroundBase(object):
 
@@ -40,8 +41,11 @@ class BackgroundBase(object):
                 and background.prestige_level in self.available_prestige_levels)
 
     def apply(self, owner):
-        for feature in self.features:
+        for feature_paires in self.features:
+            feature = mer_utilities.weighted_random(feature_pairs)
             owner.add_feature(feature)
+        if self.id in store.person_features.keys():
+             owner.add_feature(self.id)
         self.apply_other(owner)
 
     def apply_other(self, owner):
