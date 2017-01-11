@@ -1387,7 +1387,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.reduce_esteem()
         self.food_system.fatness_change()
         self.remove_money(self.decade_bill)
-        self.calc_focus()
         self.set_energy()
         self.reset_needs()
         
@@ -1396,7 +1395,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.success = 0
         self.purporse = 0
         self.joy = 0
-        self.productivity_raised = False
 
     def tick_time(self):
         if not self.calculatable:
