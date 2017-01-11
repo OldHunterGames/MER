@@ -9,3 +9,5 @@ init python:
                             encolor_text(__('impossible effort'), 6)]
                             
     yeld_table = [0, 5, 15, 30, 50, 75]
+    
+    focus_description = ['no', 'little', 'adequate', 'considerable', 'great', 'outstanding']

@@ -100,7 +100,7 @@ label lbl_edge_slums_work_res:
     menu:
         
         'Manual labor (athletics, +10 brs/decade)':
-            $ target.set_job('manual', skill='athletics', single=False, target=None, difficulty=2)
+            $ target.set_job('manual')
             
         'Household services (housekeeping, +10 brs/decade)':
             $ target.set_job('houseservice', skill='housekeeping', single=False, target=None, difficulty=2)
