@@ -128,16 +128,15 @@ init python:
 
     edge_jobs_data = {
     'idle': {'name': __('Idle'), 'description': 'EROR', 'skill': None, 'difficulty': 0},
-    'manual': {'name': __('Manual labor'), 'description': __('doing manual labor in slums'), 'skill': 'physique', 'difficulty': 1},
-    'houseservice': {'name': __('Simple work'), 'description': __('providing household services in the slums'), 'skill': 'physique', 'difficulty': 1},
-    'range': {'name': __('Range the Edge'), 'description': 'EROR', 'skill': None, 'difficulty': 0},   
-    'beg': {'name': __('Beggar'), 'description': 'EROR', 'skill': None, 'difficulty': 0},
-    'bukake': {'name': __('Bukake slut'), 'description': 'EROR', 'skill': None, 'difficulty': 0, 'hidden' : True},      
+    'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 1},
+    'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 1},
+    'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0},   
+    'beg': {'name': __('Beggar'), 'description': 'Humbly beg for a food.', 'skill': None, 'difficulty': 0},
+    'bukake': {'name': __('Bukake slut'), 'description': 'Suck your dinner out of the slum-scum cocks.', 'skill': None, 'difficulty': 0, 'hidden' : True},      
     
-    'repair': {'name': __('Repairings'), 'description': __('repairs various stuff for slum-dwellers'), 'skill': 'mind', 'difficulty': 2},
-    'entertain': {'name': __('Entertain patrons'), 'description': __('entertains the slum-dwellers'), 'skill': 'spirit', 'difficulty': 2},
-    'alchemy': {'name': __('Brew booze'), 'description': __('brew booze for a slum-dwellers'), 'skill': 'mind', 'difficulty': 2},
-    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('disassembles old machinery'), 'skill': 'mind', 'difficulty': 2},
+    'construction': {'name': __('Construction'), 'description': __('Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 2},
+    'entertain': {'name': __('Entertain patrons'), 'description': __('Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 2},
+    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 2},
 
     'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2, 'hidden' : True},
     }   
@@ -151,6 +150,10 @@ init python:
         'mat': {"name": __("Common room"), 'description': __("Thin rag mat "), 'cost': 5},
         'cot': {"name": __("Huble cot"), 'description': __("Cot and blanket"), 'cost': 10},
         'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet"), 'cost': 25},                        
+    }
+
+    edge_feeds_data = {
+        'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0},
     }
 
     edge_overtimes_data = {

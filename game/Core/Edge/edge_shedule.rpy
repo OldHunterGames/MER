@@ -10,7 +10,7 @@ label shd_edge_None_template(action):
  
  
 ## OVERTIME SLOT
-label shd_edge_overtime_nap(action):
+label edge_overtime_nap(action):
     python:
         name = action.actor.name
         action.actor.add_buff('rested')
@@ -53,7 +53,7 @@ label edge_accommodation_appartment(action):
 
 
 ## FEED SLOT    
-label shd_edge_feed_catering(action):
+label edge_feed_catering(action):
     python:
         name = action.actor.name
         actor.eat(action.special_values['amount'], action.special_values['quality'])
@@ -62,7 +62,7 @@ label shd_edge_feed_catering(action):
 
 
 ## JOB SLOT        
-label shd_edge_job_idle(action):
+label edge_job_idle(action):
     python:
         name = action.actor.name
         action.actor.add_buff('rested')
@@ -70,7 +70,7 @@ label shd_edge_job_idle(action):
     "[name]have no job to do and resting. It's conserves energy and gives [txt]"
     return
    
-label shd_edge_job_beg(action):
+label edge_job_beg(action):
     python:
         actor = action.actor
         name = actor.name
@@ -84,7 +84,7 @@ label shd_edge_job_beg(action):
     '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience.'
     return
     
-label shd_edge_job_bukake(action):
+label edge_job_bukake(action):
     python:
         actor = action.actor
         name = actor.name
@@ -97,7 +97,7 @@ label shd_edge_job_bukake(action):
     '[name]humbly sucks stangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
     return
     
-label shd_edge_job_manual(action):
+label edge_job_manual(action):
     python:
         actor = action.actor
         name = actor.name
@@ -112,7 +112,7 @@ label shd_edge_job_manual(action):
 
     return
     
-label shd_edge_job_houseservice(action):
+label edge_job_houseservice(action):
     python:
         actor = action.actor
         name = actor.name
@@ -127,7 +127,7 @@ label shd_edge_job_houseservice(action):
 
     return
     
-label shd_edge_job_repair(action):
+label edge_job_repair(action):
     python:
         actor = action.actor
         name = actor.name
@@ -140,7 +140,7 @@ label shd_edge_job_repair(action):
         $ action.actor.ambition.set_tension()
     return
         
-label shd_edge_job_range(action):
+label edge_job_range(action):
     python:
         actor = action.actor
         name = actor.name

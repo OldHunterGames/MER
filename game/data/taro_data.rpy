@@ -15,18 +15,18 @@ init python:
             5:{'name': __('Ace of Elegance')},  
         },
         'pentacles':{
-            1:{'name': __('Smart Slave')},
-            2:{'name': __('Smart Overseer')},
-            3:{'name': __('Smart Dominatrix')},
-            4:{'name': __('Smart Master')},
-            5:{'name': __('Ace of Smarts')},                                               
+            1:{'name': __('Wise Slave')},
+            2:{'name': __('Wise Overseer')},
+            3:{'name': __('Wise Dominatrix')},
+            4:{'name': __('Wise Master')},
+            5:{'name': __('Ace of Wisdom')},                                               
         },
         'wands':{
-            1:{'name': __('Passionate Slave')},
-            2:{'name': __('Passionate Overseer')},
-            3:{'name': __('Passionate Dominatrix')},
-            4:{'name': __('Passionate Master')},
-            5:{'name': __('Ace of Passion')},                     
+            1:{'name': __('Willed Slave')},
+            2:{'name': __('Willed Overseer')},
+            3:{'name': __('Willed Dominatrix')},
+            4:{'name': __('Willed Master')},
+            5:{'name': __('Ace of Will')},                     
         }
     }
     

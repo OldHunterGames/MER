@@ -18,6 +18,7 @@ label lbl_edge_main:
         player.set_accommodation('makeshift')
         player.set_job('idle')
         player.set_overtime('rest')
+        player.set_feed('forage')
         spendings_text = __("Decade bill: ")
         def encolor_resource_text(value):
             new_value = edge.resources.calculate_consumption(value)
