@@ -98,30 +98,28 @@ label lbl_edge_manage:
         "Nutrition: [food_info] \nYou have [money] brs. [bill_txt]"
         "[consumption_text]"
  
-        'Нарастить энергию':
-            $ player.gain_energy() 
-        'Test your MIGHT':
-            $ core.skillcheck(player, 'physique', 3)
-        'Divination ([enrgy_txt])' if player.energy >= 0:
-            $ TokensGame(player)      
+#        'Нарастить энергию':
+#            $ player.gain_energy() 
+#        'Test your MIGHT':
+#            $ core.skillcheck(player, 'physique', 3)
+#        'Divination ([enrgy_txt])' if player.energy >= 0:
+#            $ TokensGame(player)      
         'Opportunities ([enrgy_txt])' if player.energy >= 0:
             call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
         'Marketplace':
             call lbl_edge_slums_marketplace
-        'Dwellings':
-            call lbl_edge_slums_accomodation            
-        'Eatery':
-            call lbl_edge_slums_ration
-        'Services':
-            call lbl_edge_slums_services
-        'Jobs' if not edge.faction_mode:
-            call lbl_edge_slums_jobs
+#        'Dwellings':
+#            call lbl_edge_slums_accomodation            
+#        'Eatery':
+#            call lbl_edge_slums_ration
+#        'Services':
+#            call lbl_edge_slums_services
+#        'Jobs' if not edge.faction_mode:
+#            call lbl_edge_slums_jobs
         'Stashes' if edge.any_stash_found():
             call lbl_edge_stashes    
-        'People':
-            pass
 
         'Faction' if edge.faction_mode:
             $ pass
