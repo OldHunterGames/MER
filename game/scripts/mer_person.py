@@ -547,6 +547,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         self.renpy_character = store.Character(self.firstname)
 
+        self.pocket_money = 0
         self._job = dict()
         self.job_buffer = []
         self.job_skill = None
@@ -574,6 +575,15 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._energy = 0
         self.set_energy()
         self._current_job = None
+
+    def add_pocket_money(self, value):
+        self.pocket_money += value
+
+    def remove_pocket_money(self, value):
+        self.pocket_money -= value
+        if self.pocket_money < 0:
+            self.pocket_money = 0
+    
 
     @property
     def energy(self):
@@ -1883,7 +1893,17 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def decade_bill(self):
-        return sum([i['cost'] for i in self.get_services().values()])
+        try:
+            accommodation = self._accommodation[self.world().name]['cost']
+        except KeyError:
+            accommodation = 0
+        try:
+            overtime = self._overtime[self.world().name]['cost']
+        except KeyError:
+            overtime = 0
+
+        return (sum([i['cost'] for i in self.get_services().values()]) +
+            accommodation + overtime + self.pocket_money)
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):

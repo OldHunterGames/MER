@@ -58,6 +58,29 @@ screen sc_schedule_organaizer():
             yminimum 30
             xpos 755
         
+        frame:
+            xsize 200
+            ysize 140
+            yalign 0.8
+            vbox:
+                text 'Allowance: %s'%player.pocket_money
+                hbox:
+                    spacing 5
+                    vbox:
+                        textbutton '1':
+                            action Function(player.add_pocket_money, 1)
+                        textbutton '10':
+                            action Function(player.add_pocket_money, 10)
+                        textbutton '100':
+                            action Function(player.add_pocket_money, 100)
+                    vbox:
+                        textbutton '1':
+                            action Function(player.remove_pocket_money, 1)
+                        textbutton '10':
+                            action Function(player.remove_pocket_money, 10)
+                        textbutton '100':
+                            action Function(player.remove_pocket_money, 100)
+
         text 'Total: %s'%player.decade_bill:
             yalign 0.95    
         textbutton 'Leave':
