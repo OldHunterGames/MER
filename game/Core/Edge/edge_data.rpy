@@ -143,14 +143,14 @@ init python:
     }   
     
     edge_services_data = {
-        'whores': {"name": __("Whores"), 'description': __("WTF? WHR!"), 'cost': 10},
+        'whores': {"name": __("Whores"), 'description': __("Use prostitutes services"), 'cost': 10},
     }
 
     edge_accomodations_data = {
-        'makeshift': {"name": __("Homeless"), 'description': __("You sleep at the street"), 'cost': 0},
-        'mat': {"name": __("Common room"), 'description': __("You sleep at the street"), 'cost': 0},
-        'cot': {"name": __("Huble cot"), 'description': __("You sleep at the street"), 'cost': 0},
-        'appartment': {"name": __("Appartments"), 'description': __("You sleep at the street"), 'cost': 0},                        
+        'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground"), 'cost': 0},
+        'mat': {"name": __("Common room"), 'description': __("Thin rag mat "), 'cost': 5},
+        'cot': {"name": __("Huble cot"), 'description': __("Cot and blanket"), 'cost': 10},
+        'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet"), 'cost': 25},                        
     }
 
     edge_overtimes_data = {

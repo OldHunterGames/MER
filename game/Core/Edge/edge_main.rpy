@@ -76,61 +76,34 @@ label lbl_edge_manage:
     show screen sc_player_hud
     python:
         target = player
-        food_info = player.ration_status()
-        consumption = edge.resources.can_tick()
-        consumption_text = ''
         money = player.money
         bill = player.decade_bill
         enrgy_txt = encolor_text('energy', player.energy)
-        if bill == 0:
-            bill_txt = ''
-        else:
-            bill_txt = "Decade bill is %s brs." % (bill) 
-            
-        if player.job == 'edge_idle': 
-            job = encolor_text(player.job, 0)
-        else:
-            job = encolor_text(player.job, 4)
-            
-        if not core.can_skip_turn():
-            consumption_text += ". You can't skip turn - not enough brs."
+           
     menu:
-        "Nutrition: [food_info] \nYou have [money] brs. [bill_txt]"
-        "[consumption_text]"
- 
+
 #        'Нарастить энергию':
 #            $ player.gain_energy() 
 #        'Test your MIGHT':
 #            $ core.skillcheck(player, 'physique', 3)
 #        'Divination ([enrgy_txt])' if player.energy >= 0:
 #            $ TokensGame(player)      
-        'Opportunities ([enrgy_txt])' if player.energy >= 0:
-            call lbl_edge_opportunities     
+        'Opportunities':
+            if player.energy >= 0:
+                'No energy'
+            else:
+                call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
         'Marketplace':
             call lbl_edge_slums_marketplace
-#        'Dwellings':
-#            call lbl_edge_slums_accomodation            
-#        'Eatery':
-#            call lbl_edge_slums_ration
-#        'Services':
-#            call lbl_edge_slums_services
-#        'Jobs' if not edge.faction_mode:
-#            call lbl_edge_slums_jobs
         'Stashes' if edge.any_stash_found():
             call lbl_edge_stashes    
 
         'Faction' if edge.faction_mode:
             $ pass
-        #'Locations':
-        #    call lbl_edge_locations_menu  
-        #'Information':
-        #    call lbl_edge_info_base
-        #'Equipment':
-        #    call screen sc_person_equipment(player)
-        #'Deck':
-        #    call screen deck_creator
+        'Equipment':
+            call screen sc_person_equipment(player)
     
     jump lbl_edge_manage
     return

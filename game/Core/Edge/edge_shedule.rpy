@@ -19,7 +19,7 @@ label shd_edge_overtime_nap(action):
    
 
 ## ACCOMODATION SLOT    
-label shd_edge_accommodation_makeshift(action):
+label edge_accommodation_makeshift(action):
     python:
         name = action.actor.name
         action.actor.comfort.set_tension()
@@ -29,7 +29,7 @@ label shd_edge_accommodation_makeshift(action):
     "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
-label shd_edge_accommodation_mat(action):
+label edge_accommodation_mat(action):
     python:
         action.actor.comfort.set_tension()
         action.actor.prosperity.set_tension()
@@ -37,13 +37,13 @@ label shd_edge_accommodation_mat(action):
     "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
     return 
 
-label shd_edge_accommodation_cot(action):
+label edge_accommodation_cot(action):
     $ action.actor.comfort.satisfaction = 1
     $ name = action.actor.name
     '[name]sleeps on a rough cot under the holy blanket. Well, SOME comfort at least...'    
     return 
 
-label shd_edge_accommodation_appartment(action):
+label edge_accommodation_appartment(action):
     python:
         action.actor.comfort.satisfaction = 3
         action.actor.prosperity.satisfaction = 1
