@@ -7,35 +7,21 @@ label lbl_edge_hiring:
         'Mistmarine':
             $ fate = 'mistmarine'
             call lbl_edge_mistmarine
-            
         'Concubine': 
             $ fate = 'concubine'
-            call lbl_edge_sexy_exam('charisma') 
-        'Stripper': 
-            $ fate = 'stripper'
-            call lbl_edge_sexy_exam('expression') 
-        'Sexy maid': 
-            $ fate = 'maid'
-            call lbl_edge_sexy_exam('housekeeping') 
-        'Sexy secretary': 
-            $ fate = 'secretaty'
-            call lbl_edge_sexy_exam('management')
-        'Sexy nurse': 
-            $ fate = 'nurse'
-            call lbl_edge_sexy_exam('alchemy')
-            
-        'Scholar': 
-            $ fate = 'scholar'
-            call lbl_edge_skill_exam('scholarship')
-        'Artisan': 
-            $ fate = 'artisan'
-            call lbl_edge_skill_exam('craft')   
-        'Repairperson': 
-            $ fate = 'repairperson'
-            call lbl_edge_skill_exam('mechanics')
-        'System integrator': 
-            $ fate = 'integrator'
-            call lbl_edge_skill_exam('electronics')                                                            
+            call lbl_edge_sexy_exam            
+        'Clerk': 
+            $ fate = 'clerk'
+            call lbl_edge_skill_exam('mind')
+        'Builder': 
+            $ fate = 'builder'
+            call lbl_edge_skill_exam('physique')   
+        'Servant': 
+            $ fate = 'servant'
+            call lbl_edge_skill_exam('agility')
+        'Host': 
+            $ fate = 'host'
+            call lbl_edge_skill_exam('spirit')                                                            
         'Not today':
             pass
 
@@ -61,7 +47,7 @@ label lbl_edge_mistmarine:
     jump game_over
     return
 
-label lbl_edge_sexy_exam(skill):
+label lbl_edge_sexy_exam:
     'Skillcheck [skill]'
     python:
         moral = target.check_moral(['timid', 'lawful'], player)
@@ -88,10 +74,11 @@ label lbl_edge_fuck_challenge(skill):
     return
 
 label lbl_edge_skill_exam(skill):
-    $ chel = gen_random_person(genus='human')
-    chel 'I will test your skills'
-    $ moral = target.check_moral(['timid', 'lawful'], player)
-    $ result = core.threshold_skillcheck(player, skill, difficulty = 2, tense_needs=['authority', 'independence'], satisfy_needs=['ambition', 'order'], beneficiar=player, morality=moral, success_threshold = 1, special_motivators=[])        
+    edge_recruiter 'I will test your skills'
+    $ actor.moral_action('timid', 'lawful') 
+    $ result = core.skillcheck(player, skill, 5)
+    
+    player '[result]'
 
     if result[0]:
         'scuccess'    

@@ -99,9 +99,10 @@ label lbl_edge_manage:
 #            $ TokensGame(player)      
         'Opportunities':
             if player.energy >= 0:
-                'No energy'
+                call lbl_edge_opportunities 
             else:
-                call lbl_edge_opportunities     
+                'No energy'
+                    
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
         'Stashes' if edge.any_stash_found():
@@ -158,51 +159,6 @@ label lbl_edge_slums_marketplace:
     
     call lbl_edge_slums_marketplace
     return
-        
-label lbl_info_new(target):
-    python:
-        alignment = target.alignment.description() 
-        job = target.show_job()
-        desu = target.description()
-        # taboos = child.show_taboos()
-        features = target.show_features()
-        tokens = target.tokens
-        focus = encolor_text(target.show_focus(), target.focus)
-        rel = target.relations(player).description() if target!=player else None
-        stance = target.stance(player).level if target!=player else None
-        skills = target.show_skills()
-        tendency = target.attitude_tendency()
-        needs = target.get_needs()
-        recalc_result_target = target
-        vitality_info_target = target
-        txt = "Настроение: " + encolor_text(target.show_mood(), target.mood) + '{a=lb_recalc_result_glue}?{/a}'
-        if stance:
-            txt += " | Поза: " + str(stance)
-        txt += " | Здоровье: %s "%(target.vitality) + '{a=lbl_vitality_info}?{/a}' + '\n'
-        txt += "Характер: %s, %s, %s\n"%(target.alignment.description())
-        if rel:
-            txt += "Отношение: %s, %s, %s\n"%(rel)
-            txt += "Гармония: %s, %s\n"%(target.relations(player).harmony()[0], target.relations(player).harmony()[1])
-        txt += "Запреты: %s \n "%(target.restrictions)
-        txt += "Условия сна: %s  |  %s       \n"%(target.accommodation, job)
-        txt += "Фокус: %s\n"%(focus)
-        txt += "Особенности: %s\n"%(features)
-        txt += "Аттрибуты: %s\n"%(target.show_attributes())
-        if tendency:
-            txt += "Тенденция: %s\n"%(tendency)
-        if skills:
-            txt += "Навыки: %s\n"%(skills)
-        if tokens:
-            txt += "Токены: %s\n"%(tokens)
-        txt += 'Потребности: '
-        # for need in needs:
-        #    txt += '%s: [%s, %s, %s], '%(need, needs[need].level, needs[need].satisfaction, needs[need].tension)
-        # txt += '\n'
-        txt += "Ангст: %s, Решимость: %s\n"%(target.anxiety, target.determination)
-        txt += target.food_info()
-    "[txt]"
-
-    return
 
 label lbl_all_gangs:
     python:
@@ -249,33 +205,3 @@ label lbl_edge_turn:
     else:
         call lbl_edge_manage        
     return
-
-
-
-
-
-############## ARCHIVE ########################
-
-label lbl_edge_schedule:
-    $ schedule_major = edge_denotation[target.job]
-    $ schedule_minor = edge_denotation[target.overtime]
-    
-    menu:
-        "Occupation: [schedule_major]":
-            call lbl_edge_shedule_job
-        "Overtime: [schedule_minor]":
-            call lbl_edge_shedule_overtime
-        "Socialisation: [shedule_socialisation]" if False:
-            call lbl_universal_interaction from _call_lbl_universal_interaction
-        'Done':
-            jump lbl_edge_manage   
-    
-    jump lbl_edge_schedule
-    return
-    
-label lbl_edge_noloc:
-    'Carry on, there is noting to see here...'
-    
-    return
-    
-

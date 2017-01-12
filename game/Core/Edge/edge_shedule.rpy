@@ -22,10 +22,50 @@ label edge_overtime_nap(actor):
 label edge_feed_starve(actor):
     python:
         name = actor.name
-        ration = person.food_info()    
-    '[name]is a eating [ration].'    
+        ration = actor.food_info()    
+    '[name]ration is [ration].'    
     return  
 
+label edge_feed_dry_low(actor):
+    python:
+        name = actor.name
+        ration = actor.food_info()    
+        actor.eat(1, 1)        
+    'Eating some nutrition bars. [name]ration is [ration].'    
+    return  
+
+label edge_feed_dry(actor):
+    python:
+        name = actor.name
+        ration = actor.food_info()    
+        actor.eat(2, 0)        
+    'Eating nutrition bars. [name]ration is [ration].'    
+    return  
+
+label edge_feed_dry_high(actor):
+    python:
+        name = actor.name
+        ration = actor.food_info()    
+        actor.eat(3, 0)        
+    'Eating nutrition bars greedily. [name]ration is [ration].'    
+    return  
+
+label edge_feed_cooked(actor):
+    python:
+        name = actor.name
+        ration = actor.food_info()    
+        actor.eat(2, 4)        
+    'Eating cooked food in a slums pub. [name]ration is [ration].'    
+    return  
+
+label edge_feed_cooked_high(actor):
+    python:
+        name = actor.name
+        ration = actor.food_info()    
+        actor.eat(3, 4)        
+    'Feasting on a whole grilled girl. [name]ration is [ration].'    
+    return  
+                    
 label edge_feed_canibalism(actor):
     python:
         name = actor.name
@@ -85,7 +125,9 @@ label edge_job_beg(actor):
         actor.authority.set_tension()
 
         actor.eat(1, -1)
-    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience.'
+        ration = actor.food_info()    
+      
+    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience. [ration]'
     return
     
 label edge_job_bukake(actor):
@@ -96,8 +138,10 @@ label edge_job_bukake(actor):
         actor.authority.set_tension()        
         actor.eros.set_tension()    
         actor.eat(3, -1)
+        ration = actor.food_info()    
         text = __('')
     '[name]humbly sucks stangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
+    'Ration: [ration]'
     return
     
 label edge_job_manual(actor):

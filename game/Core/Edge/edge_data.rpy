@@ -1,5 +1,4 @@
 init python:
-    edge_yeld = [0, 1, 3, 6, 10, 15]
     
     edge_locations = {
         'outpost': __('House {0} outpost'),
@@ -157,11 +156,11 @@ init python:
 
     edge_feeds_data = {
         'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0, 'quality': 0, 'amount': 0},
-        'dry_low': {"name": __("Eat some bars"), 'description': __("Eat 5 nutrition bars."), 'cost': 5, 'quality': 0, 'amount': 1},
-        'dry': {"name": __("Eat bars"), 'description': __("Eat 10 nutrition bars."), 'cost': 10, 'quality': 0, 'amount': 2},
-        'dry_high': {"name": __("Eat many bars"), 'description': __("Eat 15 nutrition bars."), 'cost': 15, 'quality': 0, 'amount': 3},
-        'cooked': {"name": __("Cooked food"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'quality': 4, 'amount': 2},
-        'cooked_high': {"name": __("Grilled girl"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'quality': 4, 'amount': 3},
+        'dry_low': {"name": __("5 bars"), 'description': __("Eat 5 nutrition bars."), 'cost': 5},
+        'dry': {"name": __("10 bars"), 'description': __("Eat 10 nutrition bars."), 'cost': 10},
+        'dry_high': {"name": __("15 bars"), 'description': __("Eat 15 nutrition bars."), 'cost': 15},
+        'cooked': {"name": __("Cooked food (20)"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20},
+        'cooked_high': {"name": __("Grilled girl (30)"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30},
         'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True},                                                
     }
 
