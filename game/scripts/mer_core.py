@@ -194,7 +194,7 @@ class MistsOfEternalRome(object):
 
     def token_difficulty(self, target, token):
         d = {'conquest': 'spirit', 'convention': 'mind',
-             'contribution': 'sensitivity'}
+             'contribution': 'agility'}
 
         check = getattr(target, d[token])
         check += target.relations(self.player).stability
