@@ -413,10 +413,10 @@ class FoodSystem(object):
         elif self.quality < 0:
             total = 0 
         else:
-            total = max(0, min(5, self.quality + amount_value))
+            total = max(-1, min(5, self.quality + amount_value))
         if total > 0:
             self.owner.nutrition.set_satisfaction(total)
-        else:
+        elif total < 0:
             self.owner.nutrition.set_tension()
         if self.amount == 3:
             self.satiety += self.amount - 2
@@ -1143,24 +1143,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             if feature.visible:
                 s += "{feature.name}, ".format(feature=feature)
         return s
-
-    def show_focus(self):
-        if isinstance(self.focused_skill, Skill):
-            return self.focused_skill.name
-        else:
-            return "No focused skill"
-
-    def show_skills(self):
-        s = ""
-        for skill in self.skills:
-            s += "{name}({skill.level}, {skill.attribute}({value}))".format(
-                name=skill.name, skill=skill, value=skill.attribute_value())
-            if skill != self.skills[len(self.skills) - 1]:
-                s += ', '
-        return s
-
-    def show_mood(self):
-        return store.mood_translation[self.mood]
 
     def show_attributes(self):
         s = ""
