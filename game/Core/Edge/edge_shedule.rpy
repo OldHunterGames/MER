@@ -24,6 +24,12 @@ label edge_feed_catering(action):
         actor.eat(action.special_values['amount'], action.special_values['quality'])
     '[name]eats at the common room.'    
     return  
+
+label edge_feed_canibalism(action):
+    python:
+        name = action.actor.name
+    '[name]is a canibal.'    
+    return  
    
 
 ## ACCOMODATION SLOT    

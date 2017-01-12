@@ -20,8 +20,7 @@ label edge_init_events:
         register_event('evn_edge_entertain_job')        
         register_event('evn_edge_brewery')    
         register_event('evn_edge_machinery')
-        register_event('evn_edge_slut')
-        register_event('evn_edge_bad_sleep')             
+         
     
     return True
     
@@ -30,28 +29,6 @@ label edge_init_events:
 label evn_edge_blank:
    $pass   
    return True
-
-label evn_edge_slut(event):
-    if not event.skipcheck:
-        if True:
-            $ event.skipcheck = True
-
-    if not event.skipcheck:
-        return False
-    
-    $ player.eros.set_satisfaction(5)
-    '[event.target.name] fucks with slut'
-    return True
-
-label evn_edge_bad_sleep(event):
-    if not event.skipcheck:
-        $ event.skipcheck = False
-
-    if not event.skipcheck:
-        return False
-    $ player.wellness.set_tension()
-    '[event.target.name] sleeps on the ground'
-    return True
   
 label evn_edge_template(event):
     

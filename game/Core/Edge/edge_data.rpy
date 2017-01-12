@@ -142,7 +142,10 @@ init python:
     }   
     
     edge_services_data = {
-        'whores': {"name": __("Whores"), 'description': __("Use prostitutes services"), 'cost': 10},
+        'bukake': {"name": __("Bukake sluts"), 'description': __("Feed bukake sluts with your cum."), 'cost': 0, 'hidden' : True},
+        'whores': {"name": __("Whores"), 'description': __("Use prostitutes services"), 'cost': 5},
+        'booze': {"name": __("Booze"), 'description': __("The nutrition bars brew called a Mystshine."), 'cost': 5},        
+        'maid': {"name": __("Attendant"), 'description': __("Get someone to serve you."), 'cost': 5},       
     }
 
     edge_accomodations_data = {
@@ -153,16 +156,19 @@ init python:
     }
 
     edge_feeds_data = {
-        'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0},
-        'dry_low': {"name": __("Eat some bars"), 'description': __("Starve. No cost."), 'cost': 0},
-        'dry': {"name": __("Eat bars"), 'description': __("Starve. No cost."), 'cost': 0},
-        'dry_high': {"name": __("Eat many bars"), 'description': __("Starve. No cost."), 'cost': 0},
-        'cooked_low': {"name": __("Cooked food"), 'description': __("Starve. No cost."), 'cost': 0},
-        'cooked': {"name": __("Grilled girl"), 'description': __("Starve. No cost."), 'cost': 0},
+        'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0, 'quality': 0, 'amount': 0},
+        'dry_low': {"name": __("Eat some bars"), 'description': __("Starve. No cost."), 'cost': 5, 'quality': 0, 'amount': 1},
+        'dry': {"name": __("Eat bars"), 'description': __("Starve. No cost."), 'cost': 10, 'quality': 0, 'amount': 2},
+        'dry_high': {"name": __("Eat many bars"), 'description': __("Starve. No cost."), 'cost': 15, 'quality': 0, 'amount': 3},
+        'cooked': {"name": __("Cooked food"), 'description': __("Starve. No cost."), 'cost': 20, 'quality': 4, 'amount': 2},
+        'cooked_high': {"name": __("Grilled girl"), 'description': __("Starve. No cost."), 'cost': 30, 'quality': 4, 'amount': 3},
         'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True},                                                
     }
 
     edge_overtimes_data = {
-        'rest': {"name": __("Nap"), 'description': __("Overtime nap"), 'cost': 0},
+        'rest': {"name": __("Nap"), 'description': __("Overtime nap"), 'cost': 0},  
+        'sports': {"name": __("Sports"), 'description': __("Free time is a workout time!"), 'cost': 0},  
+        'bar': {"name": __("Pub"), 'description': __("Hung in a pub."), 'cost': 5},  
+        'healing': {"name": __("Healing"), 'description': __("Get some medical attention."), 'cost': 5},          
     }
 
