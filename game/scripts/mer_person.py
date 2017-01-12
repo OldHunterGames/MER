@@ -413,7 +413,7 @@ class FoodSystem(object):
         elif self.quality < 0:
             total = 0 
         else:
-            total = max(0, min(5, self.quality + self.amount_value))
+            total = max(0, min(5, self.quality + amount_value))
         if total > 0:
             self.owner.nutrition.set_satisfaction(total)
         else:
