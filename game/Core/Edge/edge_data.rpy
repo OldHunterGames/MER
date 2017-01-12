@@ -134,9 +134,9 @@ init python:
     'beg': {'name': __('Beggar'), 'description': 'Humbly beg for a food.', 'skill': None, 'difficulty': 0},
     'bukake': {'name': __('Bukake slut'), 'description': 'Suck your dinner out of the slum-scum cocks.', 'skill': None, 'difficulty': 0, 'hidden' : True},      
     
-    'construction': {'name': __('Construction'), 'description': __('Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 2},
-    'entertain': {'name': __('Entertain patrons'), 'description': __('Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 2},
-    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 2},
+    'construction': {'name': __('Construction'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 2},
+    'entertain': {'name': __('Entertain patrons'), 'description': __('Finesse challenge. Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 2},
+    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Wisdom challenge. Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 2},
 
     'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2, 'hidden' : True},
     }   
@@ -149,19 +149,19 @@ init python:
     }
 
     edge_accomodations_data = {
-        'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground"), 'cost': 0},
-        'mat': {"name": __("Common room"), 'description': __("Thin rag mat "), 'cost': 5},
-        'cot': {"name": __("Huble cot"), 'description': __("Cot and blanket"), 'cost': 10},
-        'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet"), 'cost': 25},                        
+        'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground. No cost."), 'cost': 0},
+        'mat': {"name": __("Barracks (5)"), 'description': __("Thin rag mat in a barracks. 5 bars/decade"), 'cost': 5},
+        'cot': {"name": __("Humble cot (10)"), 'description': __("Cot and blanket in a common room. 10 bars/decade"), 'cost': 10},
+        'appartment': {"name": __("Appartments (25)"), 'description': __("Rent a flatlet. 25 bars/decade"), 'cost': 25},                        
     }
 
     edge_feeds_data = {
         'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0, 'quality': 0, 'amount': 0},
-        'dry_low': {"name": __("Eat some bars"), 'description': __("Starve. No cost."), 'cost': 5, 'quality': 0, 'amount': 1},
-        'dry': {"name": __("Eat bars"), 'description': __("Starve. No cost."), 'cost': 10, 'quality': 0, 'amount': 2},
-        'dry_high': {"name": __("Eat many bars"), 'description': __("Starve. No cost."), 'cost': 15, 'quality': 0, 'amount': 3},
-        'cooked': {"name": __("Cooked food"), 'description': __("Starve. No cost."), 'cost': 20, 'quality': 4, 'amount': 2},
-        'cooked_high': {"name": __("Grilled girl"), 'description': __("Starve. No cost."), 'cost': 30, 'quality': 4, 'amount': 3},
+        'dry_low': {"name": __("Eat some bars"), 'description': __("Eat 5 nutrition bars."), 'cost': 5, 'quality': 0, 'amount': 1},
+        'dry': {"name": __("Eat bars"), 'description': __("Eat 10 nutrition bars."), 'cost': 10, 'quality': 0, 'amount': 2},
+        'dry_high': {"name": __("Eat many bars"), 'description': __("Eat 15 nutrition bars."), 'cost': 15, 'quality': 0, 'amount': 3},
+        'cooked': {"name": __("Cooked food"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'quality': 4, 'amount': 2},
+        'cooked_high': {"name": __("Grilled girl"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'quality': 4, 'amount': 3},
         'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True},                                                
     }
 

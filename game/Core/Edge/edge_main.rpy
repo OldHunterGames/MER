@@ -104,8 +104,6 @@ label lbl_edge_manage:
                 call lbl_edge_opportunities     
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
-        'Marketplace':
-            call lbl_edge_slums_marketplace
         'Stashes' if edge.any_stash_found():
             call lbl_edge_stashes    
 

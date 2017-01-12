@@ -18,6 +18,14 @@ label edge_overtime_nap(actor):
     return      
 
 ## FEED SLOT    
+
+label edge_feed_starve(actor):
+    python:
+        name = actor.name
+        ration = person.food_info()    
+    '[name]is a eating [ration].'    
+    return  
+
 label edge_feed_canibalism(actor):
     python:
         name = actor.name
@@ -120,7 +128,31 @@ label edge_job_houseservice(actor):
 
     return
     
-label edge_job_repair(actor):
+label edge_job_construction(actor):
+    python:
+        name = actor.name
+        yeld = yeld_table[actor.job_productivity()]        
+    if yeld > 0:
+        "[name]yelds: [yeld] nutrition bars. It's a tiresome job."
+        $ player.add_money(yeld)
+        $ actor.comfort.set_tension()
+    else: 
+        $ actor.ambition.set_tension()
+    return
+    
+label edge_job_entertain(actor):
+    python:
+        name = actor.name
+        yeld = yeld_table[actor.job_productivity()]        
+    if yeld > 0:
+        "[name]yelds: [yeld] nutrition bars. It's a humiliating job."
+        $ player.add_money(yeld)
+        $ actor.authority.set_tension()
+    else: 
+        $ actor.ambition.set_tension()
+    return
+    
+label edge_job_disassembly(actor):
     python:
         name = actor.name
         yeld = yeld_table[actor.job_productivity()]        
@@ -131,7 +163,7 @@ label edge_job_repair(actor):
     else: 
         $ actor.ambition.set_tension()
     return
-        
+                
 label edge_job_range(actor):
     python:
         name = actor.name
