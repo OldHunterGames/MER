@@ -137,12 +137,12 @@ class Skilled(object):
 
     def get_resource(self, attribute, difficulty):
         values = [i.value for i in self.active_resources if i.attribute==attribute]
-        values = [i for i in values if i >= difficulty]
+        values = [i for i in values if i > difficulty]
         try:
             min_value = min(values)
         except ValueError:
             values = [i.value for i in self.active_resources if i.attribute == 'any']
-            values = [i for i in values if i >= difficulty]
+            values = [i for i in values if i > difficulty]
             try:
                 min_value = min(values)
             except ValueError:
