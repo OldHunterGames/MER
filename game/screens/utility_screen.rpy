@@ -603,13 +603,14 @@ label lbl_jobcheck(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        attr = person.get_resource(attribute, productivity)
+        
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[person.focus()+1]
         job_description = person.job_description()
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
+        attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. To rise the productivity level {person.name} need {resqual}".format(
@@ -624,7 +625,7 @@ label lbl_jobcheck(person, attribute):
                 person=person, job_description=job_description,
                 productivity=productivity_str, focus=focus_desc)
     if person.focus() < 5 and not person.productivity_raised and not attr is None:
-        call screen sc_skillcheck_mini(person, attribute, productivity, text, True)
+        call screen sc_skillcheck_mini(person, attribute, focus, text, True)
         return
     else:
         '[text]'
@@ -637,7 +638,7 @@ label lbl_jobcheck_npc(person, attribute):
         if person.focus() <= person.motivation():
             factor = __("motivation")
 
-        attr = person.get_resource(attribute, productivity)
+        
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[productivity+1]
@@ -648,6 +649,7 @@ label lbl_jobcheck_npc(person, attribute):
         real_prod_str = success_rate[real_productivity]
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
+        attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {productivity} productivity and {focus} effor. To rise the productivity level {person.name} need {resqual}".format(

@@ -40,7 +40,7 @@ screen sc_schedule_organaizer():
                             if has_service:
                                 text ' '
                                 text 'Bill: %s'%value['cost']
-        textbutton player.job:
+        textbutton player.job_name():
             action ShowTransient('sc_job_picker')
             hovered Show('sc_text_popup', text=player.job_description())
             unhovered Hide('sc_text_popup')
