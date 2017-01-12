@@ -2084,7 +2084,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.job_buffer = []
         self.productivity_raised = False
         job = self._job[self.world().name]
-        lbl = self.world().name+'_accommodation'+'_%s'%job['id']
+        lbl = self.world().name+'_job'+'_%s'%job['id']
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, self)
 
