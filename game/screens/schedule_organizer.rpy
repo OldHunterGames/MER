@@ -82,7 +82,10 @@ screen sc_schedule_organaizer():
                         action [Function(player.set_pocket_money, i), SensitiveIf(player.pocket_money != i),
                             SelectedIf(player.pocket_money == i)]
 
-        text 'Total: %s'%player.decade_bill:
+
+        text 'Player money: %s'%player.money:
+            yalign 0.90
+        text 'Decade bill: %s'%player.decade_bill:
             yalign 0.95    
         textbutton 'Leave':
             yalign 1.0
