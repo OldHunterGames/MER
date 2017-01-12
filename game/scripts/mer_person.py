@@ -1350,8 +1350,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.favor_income()
         if not self.calculatable:
             return
-        self.calc_life_level()
-
         if self.player_controlled:
             if self.mood < 0:
                 self.anxiety += 1
@@ -1362,9 +1360,10 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         if self.energy < 0:
             self.add_buff('exhausted')
+        self.food_system.fatness_change()
         
         self.reduce_esteem()
-        self.food_system.fatness_change()
+        self.calc_life_level()
         self.remove_money(self.decade_bill)
         self.set_energy()
         self.reset_needs()
