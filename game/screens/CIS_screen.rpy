@@ -15,6 +15,12 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
             mood = encolor_text(mood_translation[person.mood], person.mood)
         else:
             mood = encolor_text(motivation_translation[person.motivation()], person.motivation())
+            if player.know_person(person):
+                relations = player.relations(person)
+                stance = player.stance(person)
+            else:
+                relations = None
+                stance = None
     modal True
     window:
         xfill True
@@ -32,6 +38,9 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         else:  
                             image im.Scale(person.avatar_path, 150, 150)
                         vbox:
+                            if person.has_feature('dead'):
+                                textbutton 'Eat':
+                                    action Function(player.eat_corpse, person), If(return_l, Return(), false=Hide('sc_character_info_screen'))
                             textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
                     hbox:
                         spacing 10
@@ -74,9 +83,9 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                         hovered Show('sc_mood_info', person=person)
                                         unhovered Hide('sc_mood_info')
                                         action NullAction()
-                            if person != core.player:
-                                text (person.stance(player).show_type() + ' ' +
-                                    '{0} {1} {2}'.format(*person.relations(player).description()))
+                            if person != core.player and stance is not None:
+                                text (stance.show_type() + ' ' +
+                                    '{0} {1} {2}'.format(*relations.description()))
                             text "{b}%s{/b}"%encolor_text("Energy", person.energy)
                     frame:
                         vbox:
@@ -149,6 +158,13 @@ screen sc_skill_info(skill):
         
 
 screen sc_info_popup(person):
+    python:
+        if player.know_person(person):
+            relations = player.relations(person)
+            stance = player.stance(person)
+        else:
+            relations = None
+            stance = None
     window:  
         xfill False
         xalign 0.5
@@ -160,9 +176,9 @@ screen sc_info_popup(person):
             text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
             text "{0} {1} {2} ({mood})".format(*person.alignment.description(),
                 mood=encolor_text(person.show_mood(), person.mood))
-            if person != player:
-                text (person.stance(player).show_type() + ' ' +
-                    '{0} {1} {2}'.format(*person.relations(player).description()))
+            if person != player and relations is not None:
+                text (stance.show_type() + ' ' +
+                    '{0} {1} {2}'.format(*relations.description()))
             for i in person.visible_features():
                 text i.name
             for i in person.equiped_items():

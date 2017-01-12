@@ -1,3 +1,7 @@
+init python:
+    def withou_faction(player):
+        return [i for i in player.known_characters if not i.has_faction()]
+
 screen sc_player_contacts():
     modal True
     window:
@@ -20,7 +24,7 @@ screen sc_player_contacts():
                 if any([i.type == 'minor_house' for i in player.known_factions()]):
                     textbutton 'Minor houses':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('minor_house'))
-                if any([i.type == 'unbound' for i in player.known_factions()]):
+                if any([i.type == 'unbound' for i in player.known_factions()]) or any(without_faction(player)):
                     textbutton 'Unbound':
                         action Show('sc_list_factions', factions=core.get_factions_by_type('unbound'), show_others=True)
                 textbutton 'Leave':

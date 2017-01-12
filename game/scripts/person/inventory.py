@@ -218,6 +218,7 @@ class InventoryWielder(object):
     def init_inventorywielder(self):
         self.inventory = Inventory()
         self.corpse_storage = []
+        self.corpse_buffer = None
         self.captives = []
 
     @property
@@ -257,8 +258,28 @@ class InventoryWielder(object):
     def remove_corpse(self, person):
         self.corpse_storage.remove(person)
 
+    def get_best_corpse(self):
+        if len(self.get_corpses()) < 1:
+            return -1
+        else:
+            return max([i.succulence() for i in self.get_corpses()])
+
     def get_corpses(self):
-        return [i for i in self.corpse_storage]
+        corpses = [i for i in self.corpse_storage]
+        if self.corpse_buffer is not None:
+            corpses.append(self.corpse_buffer)
+        return corpses
+
+    def eat_corpse(self, corpse):
+        self.joy('nutrition', corpse.succulence())
+        self.set_feed('canibalism')
+        self.corpse_buffer = corpse
+        self.remove_corpse(corpse)
+
+    def decay_corpses(self):
+        self.corpse_buffer = None
+        for i in [c for c in self.corpse_storage]:
+            self.remove_corpse(i)
 
     def equiped_items(self):
         return self.inventory.equiped_items()

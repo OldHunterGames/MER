@@ -568,8 +568,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             'overtime': [],
             'feed': []
         }
+        self._default_schedule = {'job': 'idle',
+            'accommodation': 'makeshift',
+            'overtime': 'rest',
+            'feed': 'forage'}
         self.token = 'power'
-        self.joy = 0
+        self._joy = 0
         self._spoil_number = 1
         self.success = 0
         self.purporse = 0
@@ -1284,7 +1288,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         elif self.selfesteem == -1:
             reds.append(1)
 
-        if self.joy == 1:
+        if self._joy == 1:
             greens.append(1)
 
         if self.success == 1:
@@ -1398,6 +1402,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.remove_money(self.decade_bill)
         self.set_energy()
         self.reset_needs()
+        self.decay_corpses()
         if self.pocket_money > 0:
             self.prosperity.set_satisfaction(self.pocket_money)
         
@@ -1405,7 +1410,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._stimul = 0
         self.success = 0
         self.purporse = 0
-        self.joy = 0
+        self._joy = 0
 
     def tick_time(self):
         if not self.calculatable:
@@ -2191,6 +2196,9 @@ class Person(Skilled, InventoryWielder, Attributed):
     def accommodation_description(self):
         return self._accommodation[self.world().name]['description']
 
+    def get_schedule_value(self, name):
+        return getattr(self, '_%s'%name).values()[0]
+
     def available_jobs(self):
         dict_ = {}
         for key, value in self.game_ref.jobs().items():
@@ -2279,6 +2287,15 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.allowed[type_].remove(name)
         except ValueError:
             return
+        else:
+            if type_ == 'service':
+                if self.has_service(name):
+                    self.remove_service(name)
+            else:
+                value = self.get_schedule_value(type_)
+                print value
+                if value['id'] == name:
+                    getattr(self, 'set_%s'%type_)(self._default_schedule[type_])
 
     def add_service(self, name):
         data = self.available_services()[name]
@@ -2320,8 +2337,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         need = getattr(self, need)
         value -= need.spoil_level()
         if value > 0:
-            self.joy = 1
+            self._joy = 1
         self.spoil(need)
+
+    def get_joy(self):
+        return self._joy
 
     def set_energy(self):
         value = 0

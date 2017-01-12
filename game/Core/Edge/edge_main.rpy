@@ -13,7 +13,7 @@ init -8 python:
         person.allow('feed', 'canibalism')
 
     def canibalism_locker(person):
-        if len(person.corpse_storage) < 1:
+        if len(person.get_corpses()) < 1:
             person.disallow('feed', 'canibalism')
 
 label lbl_edge_main:    
