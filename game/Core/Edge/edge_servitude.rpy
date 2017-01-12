@@ -75,12 +75,12 @@ label lbl_edge_fuck_challenge(skill):
 
 label lbl_edge_skill_exam(skill):
     edge_recruiter 'I will test your skills'
-    $ actor.moral_action('timid', 'lawful') 
-    $ result = core.skillcheck(player, skill, 5)
+    $ player.moral_action('timid', 'lawful', edge_recruiter) 
+    $ result = core.skillcheck(player, skill, 0)
     
     player '[result]'
 
-    if result[0]:
+    if result:
         'scuccess'    
         jump lbl_edge_fate
     else:

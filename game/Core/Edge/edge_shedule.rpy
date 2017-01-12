@@ -8,7 +8,29 @@ label edge_None_template(actor):
     '[d] TOASTED!'
     return
  
- 
+
+## SERVICE SLOT    
+label edge_service_whores(actor):
+    python:
+        name = actor.name
+        actor.eros.satisfaction = 3
+    "[name]fucks whores."
+    return
+
+label edge_service_booze(actor):
+    python:
+        name = actor.name
+        actor.wellness.satisfaction = 3
+    "[name]is drunk. Makes him feel better."
+    return
+
+label edge_service_maid(actor):
+    python:
+        name = actor.name
+        actor.authority.satisfaction = 3
+    "[name]have subservient maid."
+    return
+         
 ## OVERTIME SLOT
 label edge_overtime_nap(actor):
     python:
@@ -29,40 +51,40 @@ label edge_feed_starve(actor):
 label edge_feed_dry_low(actor):
     python:
         name = actor.name
-        ration = actor.food_info()    
-        actor.eat(1, 1)        
+        actor.eat(1, 0)        
+        ration = actor.food_info()  
     'Eating some nutrition bars. [name]ration is [ration].'    
     return  
 
 label edge_feed_dry(actor):
     python:
         name = actor.name
-        ration = actor.food_info()    
         actor.eat(2, 0)        
+        ration = actor.food_info()    
     'Eating nutrition bars. [name]ration is [ration].'    
     return  
 
 label edge_feed_dry_high(actor):
     python:
         name = actor.name
-        ration = actor.food_info()    
         actor.eat(3, 0)        
+        ration = actor.food_info()    
     'Eating nutrition bars greedily. [name]ration is [ration].'    
     return  
 
 label edge_feed_cooked(actor):
     python:
         name = actor.name
-        ration = actor.food_info()    
         actor.eat(2, 4)        
+        ration = actor.food_info()    
     'Eating cooked food in a slums pub. [name]ration is [ration].'    
     return  
 
 label edge_feed_cooked_high(actor):
     python:
         name = actor.name
-        ration = actor.food_info()    
         actor.eat(3, 4)        
+        ration = actor.food_info()  
     'Feasting on a whole grilled girl. [name]ration is [ration].'    
     return  
                     

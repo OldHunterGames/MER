@@ -102,7 +102,8 @@ label lbl_edge_manage:
                 call lbl_edge_opportunities 
             else:
                 'No energy'
-                    
+        'Trade':
+            call screen sc_trade(edge_slaver)                    
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
         'Stashes' if edge.any_stash_found():
@@ -114,50 +115,6 @@ label lbl_edge_manage:
             call screen sc_person_equipment(player)
     
     jump lbl_edge_manage
-    return
-
-label lbl_edge_slums_marketplace:
-    python:
-        resources = encolor_text(show_resource[edge.resources.value], edge.resources.value)
-        free = encolor_text('free', 5)
-        cost_1 = encolor_resource_text(1)
-        cost_2 = encolor_resource_text(2)
-        cost_3 = encolor_resource_text(3)
-        cost_4 = encolor_resource_text(4)
-        cost_5 = encolor_resource_text(5) 
-    
-    menu:
-        'Here you can barter some resources for food and equipment. \nYou have [resources].'
-        'Buy food' if edge.resources.value > 0:
-            menu:
-                'Whole roasted girl ([cost_1])':
-                    player 'Munch-munch. Toasty!'
-                    $ edge.resources.spend(1)  
-                    $ player.eat(3,3)
-                'Back':
-                    $ pass
-                
-        'Buy weapon' if edge.resources.value > 0:
-            menu:
-                'knife ([cost_2])' if edge.resources.value >= 2:
-                    player "Nice knife!"
-                    python:
-                        edge.resources.spend(2)
-                        player.add_item(create_weapon(id='knife'))
-                'Back':
-                    pass
-                        
-                    
-        'Buy equipement' if edge.resources.value > 0:
-            pass
-            
-        'Sell weapons':
-            call screen edge_sell_screen(player, 'weapon')
-                
-        'Get out':
-            call lbl_edge_manage
-    
-    call lbl_edge_slums_marketplace
     return
 
 label lbl_all_gangs:

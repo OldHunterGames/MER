@@ -127,15 +127,15 @@ init python:
 
     edge_jobs_data = {
     'idle': {'name': __('Idle'), 'description': 'Just rest and relax.', 'skill': None, 'difficulty': 0},
-    'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 1},
-    'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 1},
+    'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 0},
+    'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 0},
     'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0},   
     'beg': {'name': __('Beggar'), 'description': 'Humbly beg for a food.', 'skill': None, 'difficulty': 0},
     'bukake': {'name': __('Bukake slut'), 'description': 'Suck your dinner out of the slum-scum cocks.', 'skill': None, 'difficulty': 0, 'hidden' : True},      
     
-    'construction': {'name': __('Construction'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 2},
-    'entertain': {'name': __('Entertain patrons'), 'description': __('Finesse challenge. Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 2},
-    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Wisdom challenge. Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 2},
+    'construction': {'name': __('Construction'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 1},
+    'entertain': {'name': __('Entertain patrons'), 'description': __('Finesse challenge. Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 1},
+    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Wisdom challenge. Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 1},
 
     'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2, 'hidden' : True},
     }   

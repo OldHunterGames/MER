@@ -484,8 +484,8 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
         },
-        'ascetic':{
-            'name': __('ascetic'),
+        'ascet':{
+            'name': __('ascet'),
             'technical_level': 1,
             'prestige_level': 1,
         },    
