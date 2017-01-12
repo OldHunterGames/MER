@@ -531,7 +531,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.resources_storage = None
         self.deck = None
         self._calculatable = False
-        self.factions = []
+        self.faction = None
         self.background = None
         self.food_system = FoodSystem(self)
         self._known_factions = []
@@ -637,9 +637,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         return False
 
     def owned_faction(self):
-        for i in self.factions:
-            if faction.owner == self:
-                return i
+        if self.faction is not None:
+            if self.faction.owner == self:
+                return self.faction
         return None
     
     def count_modifiers(self, attribute):
@@ -702,18 +702,18 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.background = background
         background.apply(self)
 
-    def add_faction(self, faction):
-        if not faction in self.factions:
-            self.factions.append(faction)
+    def set_faction(self, faction):
+        if self.faction is not None:
+            self.faction.remove_member(self)
+        self.faction = faction
 
     def has_faction(self):
-        return any(self.factions)
+        return self.faction is not None
 
     def remove_faction(self, faction):
-        try:
-            self.factions.remove(faction)
-        except IndexError:
-            pass
+        if self.faction is not None:
+            self.faction.remove_member(self)
+        self.faction = None
 
     def eat(self, amount, quality):
         self.food_system.set_food(amount, quality)
@@ -1621,8 +1621,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.aknowledge_faction(person)
             return self.relations(person.owner)
         elif isinstance(person, Person):
-            for i in person.factions:
-                self.aknowledge_faction(i)
+            if person.faction is not None:
+                self.aknowledge_faction(person.faction)
         else:
             raise Exception("relations called with not valid arg: %s" % person)
         if not self.know_person(person):
@@ -1646,8 +1646,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.aknowledge_faction(person)
             return self.stance(person.owner)
         elif isinstance(person, Person):
-            for i in person.factions:
-                self.aknowledge_faction(i)
+            if person.faction is not None:
+                self.aknowledge_faction(person.faction)
         else:
             raise Exception("relations called with not valid arg: %s" % person)
         
@@ -2165,7 +2165,6 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def use_feed(self):
         data = self.use_schedule_part('_feed')
-        self.eat(data['amount'], data['quality'])
 
     def use_schedule_part(self, name):
         data = getattr(self, name)[self.world().name]

@@ -52,6 +52,10 @@ class BackgroundBase(object):
                 feature = self.id
             if feature in store.person_features.keys():
                 owner.add_feature(feature)
+        else:
+            feature = self.id
+            if feature in store.person_features.keys():
+                owner.add_feature(feature)
         self.apply_other(owner)
 
     def apply_other(self, owner):

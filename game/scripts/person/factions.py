@@ -31,7 +31,7 @@ class Faction(object):
             return
         if not self.has_member(person):
             self.members.append(person)
-            person.add_faction(self)
+            person.set_faction(self)
 
     def remove_member(self, person):
         for i in self.members:
