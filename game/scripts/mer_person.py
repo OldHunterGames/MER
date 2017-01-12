@@ -413,10 +413,10 @@ class FoodSystem(object):
         elif self.quality < 0:
             total = 0 
         else:
-            total = max(0, min(5, self.quality + amount_value))
+            total = max(-1, min(5, self.quality + amount_value))
         if total > 0:
             self.owner.nutrition.set_satisfaction(total)
-        else:
+        elif total < 0:
             self.owner.nutrition.set_tension()
         if self.amount == 3:
             self.satiety += self.amount - 2
@@ -789,27 +789,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             value += 1
         return max(0, min(5, value))
 
-    def alure(self):
-        value = 0
-        shape = self.feature_by_slot('shape')
-        if self.gender == 'male':
-            value -= 1
-        elif self.gender == 'female':
-            value += 1
-        value += self.sensitivity - 3
-        if shape is not None:
-            if shape.id == 'slim' or shape.id == 'obese':
-                value += 1
-            elif shape.id == 'emaciated':
-                value -= 1
-        if self.age == 'adolescent':
-            value += 1
-        elif self.age == 'elder':
-            value -= 1
-        if self.skill('expression').level > 2:
-            value += 1
-        return max(0, min(5, value))
-
     def set_avatar(self, avatar=None):
         if avatar is not None:
             if avatar in renpy.list_files():
@@ -1143,24 +1122,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             if feature.visible:
                 s += "{feature.name}, ".format(feature=feature)
         return s
-
-    def show_focus(self):
-        if isinstance(self.focused_skill, Skill):
-            return self.focused_skill.name
-        else:
-            return "No focused skill"
-
-    def show_skills(self):
-        s = ""
-        for skill in self.skills:
-            s += "{name}({skill.level}, {skill.attribute}({value}))".format(
-                name=skill.name, skill=skill, value=skill.attribute_value())
-            if skill != self.skills[len(self.skills) - 1]:
-                s += ', '
-        return s
-
-    def show_mood(self):
-        return store.mood_translation[self.mood]
 
     def show_attributes(self):
         s = ""
@@ -2214,7 +2175,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self._joy
 
     def set_energy(self):
-        value = 0
+        value = self.mood
         value += self.count_modifiers('energy')
         self._energy = max(0, min(5, value))
 

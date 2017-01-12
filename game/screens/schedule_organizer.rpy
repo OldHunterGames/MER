@@ -85,7 +85,11 @@ screen sc_schedule_organaizer():
 
         text 'Player money: %s'%player.money:
             yalign 0.90
-        text 'Decade bill: %s'%player.decade_bill:
+        if player.decade_bill > player.money:
+            $ txt = '%s({color=#f00}owerdraw{/color})'%player.decade_bill
+        else:
+            $ txt = str(player.decade_bill)
+        text 'Decade bill: %s'%txt:
             yalign 0.95    
         textbutton 'Leave':
             yalign 1.0
