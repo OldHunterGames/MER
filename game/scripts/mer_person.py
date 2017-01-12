@@ -402,13 +402,18 @@ class FoodSystem(object):
         if shape is not None:
             shape = shape.name
         index = flist.index(shape)
-        
+        if self.amount == 3:
+            amount_value = 1
+        elif self.amount == 1:
+            amount_value = -1
+        else:
+            amount_value = 0
         if self.amount < 1:
             total = 0
         elif self.quality < 0:
             total = 0 
         else:
-            total = max(0, min(5, self.quality + self.amount - 2))
+            total = max(0, min(5, self.quality + self.amount_value))
         if total > 0:
             self.owner.nutrition.set_satisfaction(total)
         else:
@@ -1428,146 +1433,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.use_accommodation()
         self.use_feed()
         self.use_overtime()
-
-    #testing new food system, food methods are unused for some time
-    #and maybe we'll remove them
-    def food_demand(self):
-        """
-        Evaluate optimal food consumption to maintain current weight.
-        :return:
-        """
-        demand = self.physique
-        demand += self.appetite
-        demand += self.count_modifiers('food_demand')
-
-        if demand < 1:
-            demand = 1
-
-        return demand
-
-    def food_desire(self):
-        """
-        Evaluate ammount of food character likes to consume.
-        :return:
-        """
-        desire = self.food_demand()
-        if self.nutrition.level == 0:
-            desire -= 1
-        elif self.nutrition.level == 3:
-            desire += 1
-        if self.feature('obese'):
-            desire -= 1
-        elif self.feature('emaciated'):
-            desire += 2
-        elif self.feature('slim'):
-            desire += 1
-        desire += self.count_modifiers("food_desire")
-
-        if desire < 1:
-            desire = 1
-
-        return desire
-
-    def get_food_consumption(self, show_multi=False):
-        types = {'sperm': 0, 'forage': 1, 'dry': 1, 'canned': 2, 'cousine': 2}
-        value = self.consume_food()
-        multiplier = types[self.ration['food_type']]
-        value *= multiplier
-        if show_multi:
-            return value, self.ration['food_type']
-        try:
-            value = min(self.resources_storage.provision, value)
-        except AttributeError:
-            pass
-        return value
-
-    def consume_food(self):
-        food_consumed = self.food_desire()
-        fatness = self.feature_by_slot('shape')
-        if fatness:
-            fatness = fatness.name
-        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
-        val = flist.index(fatness)
-        if self.ration['amount'] == 'starvation':
-            food_consumed = 0
-
-        if self.ration['amount'] == 'limited':
-            if food_consumed > self.ration["limit"]:
-                food_consumed = self.ration["limit"]
-
-        if self.ration['amount'] == 'regime':
-            food_consumed = self.food_demand()
-            if self.ration['target'] > val:
-                food_consumed += 1 + self.appetite
-            if self.ration['target'] < val:
-                food_consumed = self.food_demand() - 1
-            if self.ration['target'] == val:
-                food_consumed = self.food_demand()
-        return food_consumed
-
-    def fatness_change(self):
-        consumed = self.get_food_consumption()
-        demand = self.food_demand()
-        desire = self.food_desire()
-        calorie_difference = consumed - demand
-        if consumed < desire:
-            self.nutrition.set_tension()
-        if consumed > 0:
-            d = {'sperm': -4, 'forage': 0, 'dry': -2, 'canned': 0, 'cousine': 3}
-            if d[self.ration['food_type']] < 0:
-                self.nutrition.set_tension()
-            else:
-                self.nutrition.satisfaction = d[self.ration['food_type']]
-        self.calorie_storage += calorie_difference
-        fatness = self.feature_by_slot('shape')
-        if fatness is not None:
-            fatness = fatness.name
-        flist = ['emaciated', 'slim', None, 'chubby', 'obese']
-        ind = flist.index(fatness)
-        if self.calorie_storage <= 0:
-            self.remove_feature('dyspnoea')
-        if self.calorie_storage >= 0:
-            self.remove_feature('starving')
-        if self.calorie_storage < 0:
-            chance = randint(-10, -1)
-            if self.calorie_storage <= chance:
-                ind -= 1
-                if self.feature('dyspnoea'):
-                    self.remove_feature('dyspnoea')
-                if ind < 0:
-                    ind = 0
-                    if self.feature('starving'):
-                        self.die()
-                    else:
-                        self.add_feature('starving')
-                f = flist[ind]
-                if f:
-                    self.add_feature(f)
-                else:
-                    self.feature_by_slot('shape').remove()
-                if not self.feature('starving'):
-                    self.calorie_storage = 0
-                return 'fatness -'
-        if self.calorie_storage > 0:
-            chance = randint(1, 10)
-            if self.calorie_storage >= chance:
-                ind += 1
-                if ind > 4:
-                    ind = 4
-                    if self.feature('dyspnoea'):
-                        self.add_feature('diabetes')
-                    else:
-                        self.add_feature('dyspnoea')
-                f = flist[ind]
-                if f:
-                    self.add_feature(f)
-                else:
-                    self.feature_by_slot('shape').remove()
-                if not self.feature('dyspnoea'):
-                    self.calorie_storage = 0
-                return 'fatness +'
-    #end of food methods
-
 
     def know_person(self, person):
         if person in self.known_characters:
