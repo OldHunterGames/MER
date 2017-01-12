@@ -789,27 +789,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             value += 1
         return max(0, min(5, value))
 
-    def alure(self):
-        value = 0
-        shape = self.feature_by_slot('shape')
-        if self.gender == 'male':
-            value -= 1
-        elif self.gender == 'female':
-            value += 1
-        value += self.sensitivity - 3
-        if shape is not None:
-            if shape.id == 'slim' or shape.id == 'obese':
-                value += 1
-            elif shape.id == 'emaciated':
-                value -= 1
-        if self.age == 'adolescent':
-            value += 1
-        elif self.age == 'elder':
-            value -= 1
-        if self.skill('expression').level > 2:
-            value += 1
-        return max(0, min(5, value))
-
     def set_avatar(self, avatar=None):
         if avatar is not None:
             if avatar in renpy.list_files():
