@@ -338,7 +338,7 @@ class SimpleCombatant(object):
 
     @property
     def combat_level(self):
-        return self.person.skill('combat').level
+        return self.person.skill('physique')
 
     def weapons(self):
         return self.person.weapons()

@@ -1916,9 +1916,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             overtime = self._overtime[self.world().name]['cost']
         except KeyError:
             overtime = 0
-
+        try:
+            feed = self._feed[self.wolrd().name]['cost']
+        except KeyError:
+            feed = 0
         return (sum([i['cost'] for i in self.get_services().values()]) +
-            accommodation + overtime + self.pocket_money)
+            accommodation + overtime + self.pocket_money + feed)
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
