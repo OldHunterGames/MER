@@ -1273,8 +1273,11 @@ class Person(Skilled, InventoryWielder, Attributed):
                 value += 1
             for i in reds:
                 value -= 1
+        minimum = 0
+        if len(reds) > 1:
+            minimum = -1
         value += self.count_modifiers('mood')
-        return max(-1, min(5, value))
+        return max(minimum, min(5, value))
 
 
 
