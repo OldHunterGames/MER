@@ -615,6 +615,11 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.life_level = 1
         else:
             self.life_level = 0
+        self.life_buffer = 'life_level calculated with %s'%self.life_quality
+        print self.life_buffer
+        for i in self._needs:
+            print i.name
+            print i.values
         self.life_quality = 0
 
     def emotional_stability(self):
