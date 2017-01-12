@@ -262,6 +262,8 @@ class InventoryWielder(object):
         if len(self.get_corpses()) < 1:
             return -1
         else:
+            if self.corpse_buffer is not None:
+                return self.corpse_buffer.succulence()
             return max([i.succulence() for i in self.get_corpses()])
 
     def get_corpses(self):
