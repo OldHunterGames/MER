@@ -1917,8 +1917,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         except KeyError:
             overtime = 0
         try:
-            feed = self._feed[self.wolrd().name]['cost']
-        except KeyError:
+            feed = self.get_schedule_value('feed')['cost']
+        except:
             feed = 0
         return (sum([i['cost'] for i in self.get_services().values()]) +
             accommodation + overtime + self.pocket_money + feed)
