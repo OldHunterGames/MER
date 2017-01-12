@@ -53,7 +53,7 @@ class Need(object):
         self.owner.life_quality += value*self.level
         self.last_satisfaction = value
         self.values.append(value*self.level)
-        if self.level == 3 and value >= self.owner.sensitivity:
+        if self.level == 3:
             self.owner.stimul = 1
         if self.name == 'wellness':
             if self.owner.physique <= value:

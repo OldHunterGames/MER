@@ -95,7 +95,8 @@ screen sc_schedule_organaizer():
             yalign 1.0
             action Hide('sc_schedule_organaizer')
     on 'hide':
-        action Hide('sc_text_popup'), Hide('sc_job_picker')
+        action [Hide('sc_text_popup'), Hide('sc_job_picker'), Hide('sc_accomodation_picker'),
+            Hide('sc_overtime_picker'), Hide('sc_feed_picker')]
 
 screen sc_job_picker():
     tag picker
