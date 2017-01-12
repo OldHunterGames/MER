@@ -2196,7 +2196,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self._joy
 
     def set_energy(self):
-        value = 0
+        value = self.mood
         value += self.count_modifiers('energy')
         self._energy = max(0, min(5, value))
 
