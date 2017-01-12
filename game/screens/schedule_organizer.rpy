@@ -9,31 +9,37 @@ screen sc_schedule_organaizer():
         frame:
             xsize 350
             ysize 350
-            vbox:
-                for key, value in player.available_services().items():
-                    $ has_service = player.has_service(key)
-                    hbox:
-                        python:
-                            if has_service:
-                                name = encolor_text(value['name'], 'green')
+            viewport:
+                scrollbars 'vertical'
+                draggable True
+                mousewheel True
+                xsize 350
+                ysize 350
+                vbox:
+                    for key, value in player.available_services().items():
+                        $ has_service = player.has_service(key)
+                        hbox:
+                            python:
+                                if has_service:
+                                    name = encolor_text(value['name'], 'green')
+                                else:
+                                    name = encolor_text(value['name'], 'red')
+                            textbutton name:
+                                style 'hoverable_text'
+                                action NullAction()
+                                hovered Show('sc_text_popup', text=value['description'])
+                                unhovered Hide('sc_text_popup')
+                            if not has_service:
+                                textbutton "Off":
+                                    xsize 50
+                                    action Function(player.add_service, key)
                             else:
-                                name = encolor_text(value['name'], 'red')
-                        textbutton name:
-                            style 'hoverable_text'
-                            action NullAction()
-                            hovered Show('sc_text_popup', text=value['description'])
-                            unhovered Hide('sc_text_popup')
-                        if not has_service:
-                            textbutton "Off":
-                                xsize 50
-                                action Function(player.add_service, key)
-                        else:
-                            textbutton "On":
-                                xsize 50
-                                action Function(player.remove_service, key)
-                        if has_service:
-                            text ' '
-                            text 'Bill: %s'%value['cost']
+                                textbutton "On":
+                                    xsize 50
+                                    action Function(player.remove_service, key)
+                            if has_service:
+                                text ' '
+                                text 'Bill: %s'%value['cost']
         textbutton player.job:
             action ShowTransient('sc_job_picker')
             hovered Show('sc_text_popup', text=player.job_description())
