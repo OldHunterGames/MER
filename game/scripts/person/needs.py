@@ -24,6 +24,7 @@ class Need(object):
         self._level = _default_need['level']
         self.tokens = []
         self.spoils = []
+        self.values = []
         self.last_satisfaction = 0
         self.tension = False
 
@@ -51,6 +52,7 @@ class Need(object):
     def set_satisfaction(self, value):
         self.owner.life_quality += value*self.level
         self.last_satisfaction = value
+        self.values.append(value*self.level)
         if self.level == 3 and value >= self.owner.sensitivity:
             self.owner.stimul = 1
         if self.name == 'wellness':
@@ -72,6 +74,7 @@ class Need(object):
         self.tension = True
         values = {1: -3, 2: -6, 3: -15, 0: 0}
         self.owner.life_quality += values[self.level]
+        self.values.append(values[self.level])
         if self.level == 3:
             self.owner.stimul = -1
         if self.name in self._special.keys():
