@@ -477,6 +477,7 @@ init python:
     player_generator_garbage = []
     def gen_player(core):
         person = gen_random_person(genus='human')
+        person.player_controlled = True
         old = core.player
         core.set_player(person)
         player_generator_garbage.append(old)

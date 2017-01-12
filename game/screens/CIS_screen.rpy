@@ -122,7 +122,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
             ysize 350
             xalign 1.0
             yalign 1.0
-            if person==player:
+            if person.player_controlled:
                 imagebutton:  
                     idle im.Scale('images/tarot/card_deck.jpg', 200, 350)
                     action Show('sc_tokens', person=player)
