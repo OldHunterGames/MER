@@ -1419,6 +1419,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.tick_buffs_time()
         self.tick_features()
     def tick_schedule(self):
+        for i in self._needs:
+            i.values = []
         if not self.calculatable:
             return
         self.use_job()
@@ -1696,7 +1698,8 @@ class Person(Skilled, InventoryWielder, Attributed):
                 self.selfesteem += arg
                 return
         result = self.check_moral(*args, **kwargs)
-        self.selfesteem_buffer.append(result)
+        if result != 0:
+            self.selfesteem_buffer.append(result)
         return result
 
     def check_moral(self, *args, **kwargs):
