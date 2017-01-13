@@ -67,7 +67,7 @@ label lbl_edge_main:
         
         ## Exploration variatns
         edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
-        
+        edge.explorations = edge_exploration
                
     
     slums_leader 'Hi, I am a leader of the Slums'

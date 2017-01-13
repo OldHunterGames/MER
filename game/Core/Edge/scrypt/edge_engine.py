@@ -32,6 +32,7 @@ class EdgeEngine(object):
         self.faction_mode = False
         self.resources = BarterSystem()
         self.gang_list = []
+        self.explorations = None
         self.factions = self.gang_list
         self.stashes = {'echoing_hills': [False, ItemsStorage(), 0], 'hazy_marshes': [False, ItemsStorage(), 0],
             'dying_grove': [False, ItemsStorage(), 0]}
@@ -39,12 +40,14 @@ class EdgeEngine(object):
 
     def explore_stash(self, name):
         self.stashes[name][0] = True
+        self.explorations.remove(name)
         self.options.append('treasure_hunt_%s'%name)
 
     def unexplore_stash(self, name):
         self.stashes[name][0] = False
         self.stashes[name][1] = ItemsStorage()
         self.stashes[name][2] = 0
+        self.explorations.append(name)
         try:
             self.options.remove('treasure_hunt_%s'%name)
         except ValueError:

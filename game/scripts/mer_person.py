@@ -1382,7 +1382,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.remove_money(self.decade_bill)
         self.set_energy()
         self.reset_needs()
-        self.decay_corpses()
+        
         if self.pocket_money > 0:
             self.prosperity.set_satisfaction(self.pocket_money)
         
@@ -1403,6 +1403,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             i.values = []
         self.bad_markers = []
         self.good_markers = []
+        self.decay_corpses()
         if not self.calculatable:
             return
         self.use_job()

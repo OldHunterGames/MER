@@ -109,7 +109,7 @@ init python:
             self.stop_rolling()
             if self.free_turn > 0:
                 self.start_rolling()
-            if self.chances < 0 and self.free_turn <= 0:
+            elif self.chances < 0 and self.free_turn <= 0:
                 renpy.return_statement()
 
         def is_locked(self, slot):
