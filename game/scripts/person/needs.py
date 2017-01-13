@@ -54,19 +54,10 @@ class Need(object):
         self.last_satisfaction = value
         self.values.append(value*self.level)
         if self.level == 3:
-            self.owner.stimul = 1
-        if self.name == 'wellness':
-            if self.owner.physique <= value:
-                self.owner.add_buff('drugs')
-        if self.name == 'comfort':
-            if self.owner.sensitivity <= value:
-                self.owner.add_buff('bliss')
-        if self.name == 'activity':
-            if self.owner.spirit <= value:
-                self.owner.add_buff('adrenaline')
-        if self.name == 'eros':
-            if value == 5:
-                self.owner.add_buff('orgasm')
+            if self.master is not None:
+                if not self.player_controlled:
+                    if 4 - self.player_stance().value > value:
+                        self.owner.stimul = 1
 
     def set_tension(self):
         if self.tension:
@@ -77,8 +68,7 @@ class Need(object):
         self.values.append(values[self.level])
         if self.level == 3:
             self.owner.stimul = -1
-        if self.name in self._special.keys():
-            self.owner.add_buff(self._special[self.name])
+
 
     @property
     def level(self):
