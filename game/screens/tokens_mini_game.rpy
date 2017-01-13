@@ -107,6 +107,8 @@ init python:
         def clear(self):
             self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
             self.stop_rolling()
+            if self.free_turn > 0:
+                self.start_rolling()
             if self.chances < 0 and self.free_turn <= 0:
                 renpy.return_statement()
 
