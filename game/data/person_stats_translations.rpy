@@ -62,7 +62,7 @@ init python:
         'luck': __('luck'),
         'determination': __('determination')
     }
-    bad_markers_traslation = {
+    bad_markers_translation = {
         'nutrition': 'hunger',
         'wellness': 'pain',
         'comfort': 'discomfort',

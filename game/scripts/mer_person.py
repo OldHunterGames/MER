@@ -1288,6 +1288,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         value += self.count_modifiers('mood')
         return max(minimum, min(5, value))
 
+    def show_mood(self):
+        return store.mood_translation[self.mood]
 
 
     # adds features to person, if mutually exclusive removes old feature
