@@ -40,7 +40,7 @@ init python:
             __('Volya'),__('Vseslava'),__('Goluba'),__('Gorislava'),__('Dobrava'),
             __('Efrosinya'),__('Jdana'),__('Zarina'),__('Zoryana'),__('Zvenislava'),            
             __('Zlata'),__('Iskra'),__('Klara'),__('Klavdia'),__('Lada'),        
-            __('Lesya'),__('Lybbomira'),__('Marfa'),__('Matrena'),__('Melania'),        
+            __('Lesya'),__('Lybomira'),__('Marfa'),__('Matrena'),__('Melania'),        
             __('Milana'),__('Militsa'),__('Miloslava'),__('Miroslava'),__('Mlada'),        
             __('Mstislava'),__('Praskovia'),__('Rada'),__('Radmila'),__('Svetlana'),                    
             __('Svetozara'),__('Svoboda'),__('Svyatoslava'),__('Slava'),__('Slavyana'),            

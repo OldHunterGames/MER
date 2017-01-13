@@ -102,17 +102,30 @@ label lbl_edge_manage:
                 call lbl_edge_opportunities 
             else:
                 'No energy'
-        'Trade':
-            call screen sc_trade(edge_slaver)                    
-        'House [edge_sovereign.name] outpost':
-            call lbl_edge_outpost
-        'Stashes' if edge.any_stash_found():
-            call lbl_edge_stashes    
-
+        'Places':
+            call lbl_edge_places
         'Faction' if edge.faction_mode:
             $ pass
     
     jump lbl_edge_manage
+    return
+
+label lbl_edge_places:
+    menu:
+        'Marketplace':
+            menu:
+                'Trader':
+                    call screen sc_trade(edge_slaver) 
+                'Back':
+                    pass
+        'House [edge_sovereign.name] outpost':
+            call lbl_edge_outpost
+        'Stashes' if edge.is_stash_found(name):
+            call lbl_edge_stashes    
+        'Done':
+            jump lbl_edge_manage
+    
+    call lbl_edge_places    
     return
 
 label lbl_all_gangs:

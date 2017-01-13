@@ -63,7 +63,7 @@ label lbl_edge_errant_fight(allies, enemies):
     
     return
 
-label lbl_edge_errant_fight:
+label lbl_edge_errant_stalk:
     'You trying to stalk the confused wanderer stealthily. Cautious aproach. Finesse challenge. '
     python:
         dif = max(0, stranger.agility - player.agility)

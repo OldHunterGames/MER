@@ -8,7 +8,6 @@
 label edge_init_events:
     python:
         register_event('evn_edge_uneventful')
-        register_event('evn_edge_mistadvance')
         register_event('evn_edge_slaver')
         register_event('evn_edge_recruiter')
         register_event('evn_edge_bukake')
@@ -52,7 +51,7 @@ label evn_edge_template(event):
 label evn_edge_slaver(event):
     
     if not event.skipcheck:
-        if 'slaver' in edge_exploration:
+        if 'slaver' not in edge.options:
             $ event.skipcheck = True
     if not event.skipcheck:
         return False
@@ -61,14 +60,13 @@ label evn_edge_slaver(event):
     'You found a slaver, new options in Outpost'
     $ edge.options.append('slaver')
     $ player.relations(edge_slaver)
-    $ edge_exploration.remove('slaver')
     call lbl_edge_slavery
     return True
       
 label evn_edge_recruiter(event):
     
     if not event.skipcheck:
-        if 'recruiter' in edge_exploration:
+        if 'recruiter' not in edge.options:
             $ event.skipcheck = True
     if not event.skipcheck:
         return False
@@ -77,14 +75,13 @@ label evn_edge_recruiter(event):
     'You found a recruiter, new options in Outpost'
     $ edge.options.append('recruiter')
     $ player.relations(edge_recruiter)
-    $ edge_exploration.remove('recruiter')
     call lbl_edge_hiring
     return True
       
 label evn_edge_bukake(event):
     
     if not event.skipcheck:
-        if 'bukake' in edge_exploration:
+        if 'bukake' not in edge.options:
             $ event.skipcheck = True
     if not event.skipcheck:
         return False
@@ -94,13 +91,12 @@ label evn_edge_bukake(event):
     else:
         'You can be a bukake slut now'
         $ edge.options.append('bukake')
-    $ edge_exploration.remove('bukake')
     return True
                               
 label evn_edge_dying_grove(event):
     
     if not event.skipcheck:
-        if 'dying_grove' in edge_exploration:
+        if 'dying_grove' not in edge.options:
             $ event.skipcheck = True
 
     if not event.skipcheck:
@@ -113,7 +109,7 @@ label evn_edge_dying_grove(event):
 label evn_edge_hazy_marshes(event):
     
     if not event.skipcheck:
-        if 'hazy_marshes' in edge_exploration:
+        if 'hazy_marshes' not in edge.options:
             $ event.skipcheck = True
             
     if not event.skipcheck:
@@ -127,7 +123,7 @@ label evn_edge_hazy_marshes(event):
 label evn_edge_echoing_hills(event):
     
     if not event.skipcheck:
-        if 'echoing_hills' in edge_exploration:
+        if 'echoing_hills' not in edge.options:
             $ event.skipcheck = True
 
     if not event.skipcheck:
@@ -141,16 +137,4 @@ label evn_edge_echoing_hills(event):
 
 label evn_edge_uneventful(event):    
     'Unevetful decade...'    
-    return True
-    
-label evn_edge_mistadvance(event):
-    if len(edge.locations) == 0:
-        $ event.skipcheck = False 
-    if not event.skipcheck:
-        return False
-    python:
-        loc_list = [location for location in edge.locations if not location.permanent]
-        to_remove = choice(loc_list)
-        edge.remove_location(to_remove)
-    'Mists take over [to_remove.name] location'
     return True
