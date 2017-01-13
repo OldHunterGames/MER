@@ -80,6 +80,14 @@ screen sc_manage_stash(stash):
 
 screen sc_trade(stash):
     modal True
+    python:
+        multiplier = (float(player.trade_level)-float(stash.trade_level)) / 10
+        if multiplier < 0:
+            buy_multiplier = 1 + abs(multiplier)
+            sell_multiplier = 1 - abs(multiplier)
+        else:
+            buy_multiplier = 1 - abs(multiplier)
+            sell_multiplier = 1 + abs(multiplier)
     window:
         xfill True
         yfill True
@@ -106,11 +114,11 @@ screen sc_trade(stash):
                                     else:
                                         name = i.name
                                 if i.amount > 1:
-                                    text 'Price for 1: %s'%(i.price)
+                                    text 'Price for 1: %s'%(int(i.price*sell_multiplier))
                                 else:
-                                    text 'Price: %s'%(i.price)
+                                    text 'Price: %s'%(int(i.price*sell_multiplier))
                                 textbutton name:
-                                    action Function(player.transfer_item, i, stash), Function(player.add_money, i.price)
+                                    action Function(player.transfer_item, i, stash), Function(player.add_money, int(i.price*sell_multiplier))
                 frame:
                     vbox:
                         text "Nutrition bars(%s)"%player.money
@@ -136,12 +144,12 @@ screen sc_trade(stash):
                                     else:
                                         name = i.name
                                 if i.amount > 1:
-                                    text 'Price for 1: %s'%(i.price)
+                                    text 'Price for 1: %s'%(int(i.price*buy_multiplier))
                                 else:
-                                    text 'Price: %s'%(i.price)
+                                    text 'Price: %s'%(int(i.price*buy_multiplier))
                                 textbutton name:
-                                    action [Function(stash.transfer_item, i, player), Function(player.remove_money, i.price),
-                                        SensitiveIf(player.has_money(i.price))]
+                                    action [Function(stash.transfer_item, i, player), Function(player.remove_money, int(i.price*buy_multiplier)),
+                                        SensitiveIf(player.has_money(int(i.price*buy_multiplier)))]
         frame:
             ypos 501
             xpos 5

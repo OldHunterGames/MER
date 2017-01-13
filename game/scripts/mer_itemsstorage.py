@@ -5,6 +5,7 @@ class ItemsStorage(object):
     def __init__(self):
         self.storage = []
         self.money = 0
+        self.trade_level = 3
 
     def add_money(self, value):
         self.money += value

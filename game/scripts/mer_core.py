@@ -152,6 +152,7 @@ class MistsOfEternalRome(object):
     def set_player(self, person):
         self._player = person
         self._actor = person
+        person.trade_level = 0
         person.player_controlled = True
 
     def set_actor(self, person):

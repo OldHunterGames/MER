@@ -44,6 +44,7 @@ screen sc_schedule_organaizer():
             action ShowTransient('sc_job_picker')
             hovered Show('sc_text_popup', text=player.job_description())
             unhovered Hide('sc_text_popup')
+            sensitive not player.get_schedule_obj('job').locked
             xsize 200
             yminimum 30
             xpos 355
@@ -52,6 +53,7 @@ screen sc_schedule_organaizer():
             action ShowTransient('sc_accomodation_picker')
             hovered Show('sc_text_popup', text=player.accommodation_description())
             unhovered Hide('sc_text_popup')
+            sensitive not player.get_schedule_obj('accommodation').locked
             xsize 200
             yminimum 30
             xpos 555
@@ -60,6 +62,7 @@ screen sc_schedule_organaizer():
             action ShowTransient('sc_overtime_picker')
             hovered Show('sc_text_popup', text=player.overtime_description())
             unhovered Hide('sc_text_popup')
+            sensitive not player.get_schedule_obj('overtime').locked
             xsize 200
             yminimum 30
             xpos 755
@@ -67,6 +70,7 @@ screen sc_schedule_organaizer():
             action ShowTransient('sc_feed_picker')
             hovered Show('sc_text_popup', text=player.feed_description())
             unhovered Hide('sc_text_popup')
+            sensitive not player.get_schedule_obj('feed').locked
             xsize 200
             yminimum 30
             xpos 955
@@ -85,10 +89,10 @@ screen sc_schedule_organaizer():
 
         text 'Player money: %s'%player.money:
             yalign 0.90
-        if player.decade_bill > player.money:
-            $ txt = '%s({color=#f00}owerdraw{/color})'%player.decade_bill
+        if player.decade_bill() > player.money:
+            $ txt = '%s({color=#f00}owerdraw{/color})'%player.decade_bill()
         else:
-            $ txt = str(player.decade_bill)
+            $ txt = str(player.decade_bill())
         text 'Decade bill: %s'%txt:
             yalign 0.95    
         textbutton 'Leave':

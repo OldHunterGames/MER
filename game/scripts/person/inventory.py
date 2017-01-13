@@ -29,8 +29,6 @@ class Inventory(ItemsStorage, ModifiersStorage):
     def equiped_items(self):
         return [i for i in self.storage if i.equiped]
 
-    
-
     def weapon_slots(self):
         return self.carried_weapons.keys()
 
@@ -222,6 +220,16 @@ class InventoryWielder(object):
         self.captives = []
 
     @property
+    def trade_level(self):
+        return self.inventory.trade_level
+    @trade_level.setter
+    def trade_level(self, value):
+        self.inventory.trade_level = value
+
+    def get_unequiped(self):
+        return [i for i in self.inventory.storage if not i.equiped]
+
+    @property
     def money(self):
         return self.inventory.money
 
@@ -275,6 +283,7 @@ class InventoryWielder(object):
     def eat_corpse(self, corpse):
         self.joy('nutrition', corpse.succulence())
         self.set_feed('canibalism')
+        self.get_schedule_obj('feed').lock()
         self.corpse_buffer = corpse
         self.remove_corpse(corpse)
 
