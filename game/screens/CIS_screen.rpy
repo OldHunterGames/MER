@@ -109,17 +109,16 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
 
             
             $ needs = person.get_all_needs().values()
-            $ changes = any([len(i.values) > 0 for i in needs])
+            $ changes = len(person.life_buffer.keys()) > 0
             if changes:
                 frame:
                     vbox:
-                        for i in needs:
-                            if len(i.values) > 0:
-                                hbox:
-                                    spacing 3
-                                    text i.name
-                                    for value in i.values:
-                                        text str(value)
+                        for key, value in person.life_buffer.items():
+                            hbox:
+                                spacing 3
+                                text key
+                                for i in value:
+                                    text str(i)
                                 
                 
         frame:

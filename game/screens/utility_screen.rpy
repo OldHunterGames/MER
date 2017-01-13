@@ -50,7 +50,7 @@ screen sc_person_equipment(person):
                     xsize 300
                     ysize 500
                     box_wrap True
-                    for i in player.get_corpses():
+                    for i in player.corpse_storage:
                         imagebutton:
                             idle im.Grayscale(im.Scale(i.avatar_path, 100, 100))
                             action Show('sc_character_info_screen', person=i)

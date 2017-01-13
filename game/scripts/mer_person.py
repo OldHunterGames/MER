@@ -561,7 +561,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.use_job_productivity = False
         self._job_productivity = 0
         self.productivity_raised = False
-
+        self.life_buffer = {}
         self._accommodation = dict()
         self._overtime = dict()
         self._feed = dict()
@@ -619,11 +619,12 @@ class Person(Skilled, InventoryWielder, Attributed):
             self.life_level = 1
         else:
             self.life_level = 0
-        self.life_buffer = 'life_level calculated with %s'%self.life_quality
-        print self.life_buffer
+        self.life_buffer = {}
         for i in self._needs:
-            print i.name
-            print i.values
+            if len(i.values) > 0:
+                self.life_buffer[i.name] = [j for j in i.values]
+                i.values = []
+
         self.life_quality = 0
 
     def emotional_stability(self):
@@ -1399,8 +1400,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.tick_buffs_time()
         self.tick_features()
     def tick_schedule(self):
-        for i in self._needs:
-            i.values = []
         self.bad_markers = []
         self.good_markers = []
         self.decay_corpses()
@@ -2193,7 +2192,7 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def set_energy(self):
         value = self.mood
-        value += self.count_modifiers('energy')
+        # value += self.count_modifiers('energy')
         self._energy = max(0, min(5, value))
 
     def drain_energy(self, value=1):
