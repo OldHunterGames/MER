@@ -1360,8 +1360,7 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         self._favor.tick_time()
         self.favor_income()
-        self.bad_markers = []
-        self.good_markers = []
+
         if not self.calculatable:
             return
         if self.player_controlled:
@@ -1400,6 +1399,8 @@ class Person(Skilled, InventoryWielder, Attributed):
     def tick_schedule(self):
         for i in self._needs:
             i.values = []
+        self.bad_markers = []
+        self.good_markers = []
         if not self.calculatable:
             return
         self.use_job()
