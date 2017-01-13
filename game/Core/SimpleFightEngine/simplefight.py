@@ -47,7 +47,10 @@ class SimpleFight(object):
         self.selected_ally = ally
 
     def clear_log(self):
-        del self._log[abs(self.round - self.logged_round-1)]
+        try:
+            del self._log[abs(self.round - self.logged_round-1)]
+        except:
+            pass
 
     def log(self, log):
         self._log[self.round].append(log)
