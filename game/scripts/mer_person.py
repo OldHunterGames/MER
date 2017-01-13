@@ -27,6 +27,42 @@ import mer_utilities as utilities
 from mer_event import call_event
 
 
+class ScheduleObject(object):
+
+
+    def __init__(self, id, world, type_, data):
+        self.data = data
+        self.world = world
+        self.type = type_
+        self.id = id
+        self.locked = False
+    
+    @property
+    def cost(self):
+        try:
+            cost = self.data['cost']
+        except KeyError:
+            cost = 0
+        return 0
+
+    def __getattr__(self, key):
+        try:
+            value = self.data[key]
+        except KeyError:
+            return None
+        else:
+            return value
+
+    def use(self, person):
+        lbl = self.world+'%s'%self.type+'_%s'%self.id
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, person)
+        self.locked = False
+
+    def lock(self):
+        self.locked = True
+
+
 def get_avatars(path):
     all_ = renpy.list_files()
     avas = [str_ for str_ in all_ if str_.startswith(path)]
@@ -555,16 +591,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.renpy_character = store.Character(self.firstname)
 
         self.pocket_money = 0
-        self._job = dict()
-        self.job_buffer = []
-        self.job_skill = None
-        self.use_job_productivity = False
-        self._job_productivity = 0
+        self._job = None
+        self.job_buffer = None
         self.productivity_raised = False
         self.life_buffer = {}
-        self._accommodation = dict()
-        self._overtime = dict()
-        self._feed = dict()
+        self._accommodation = None
+        self._overtime = None
+        self._feed = None
 
         self.services = collections.defaultdict(dict)
 
@@ -1005,37 +1038,16 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def job(self):
-        try:
-            values = self._job.values()
-            if len(values) > 0:
-                name = self._job.values()[0]['id']
-            else:
-                name = 'idle'
-        except KeyError:
-            name = 'idle'
-        return name
+        return self._job.id
     
     def job_name(self):
-        try:
-            values = self._job.values()
-            if len(values) > 0:
-                name = self._job.values()[0]['name']
-            else:
-                name = 'idle'
-        except KeyError:
-            name = 'idle'
-        return name
+        if self._job.name is None:
+            return 'idle'
+        else:
+            return self._job.name
 
     def job_description(self):
-        try:
-            values = self._job.values()
-            if len(values) > 0:
-                description = self._job.values()[0]['description']
-            else:
-                description = 'No description'
-        except KeyError:
-            description = 'No description'
-        return description
+        return self._job.description
 
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):
@@ -1380,7 +1392,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         
         self.reduce_esteem()
         self.calc_life_level()
-        self.remove_money(self.decade_bill)
+        self.remove_money(self.decade_bill())
         self.set_energy()
         self.reset_needs()
         
@@ -1749,22 +1761,15 @@ class Person(Skilled, InventoryWielder, Attributed):
     # end of favor methods
     
     def can_tick(self):
-        return self._favor.can_tick() and self.has_money(self.decade_bill)
+        if not self.calculatable:
+            return True
+        return self._favor.can_tick() and self.has_money(self.decade_bill())
 
-    @property
+
     def decade_bill(self):
-        try:
-            accommodation = self._accommodation[self.world().name]['cost']
-        except KeyError:
-            accommodation = 0
-        try:
-            overtime = self._overtime[self.world().name]['cost']
-        except KeyError:
-            overtime = 0
-        try:
-            feed = self.get_schedule_value('feed')['cost']
-        except:
-            feed = 0
+        accommodation = self._accommodation.cost
+        overtime = self._overtime.cost
+        feed = self._feed.cost
         return (sum([i['cost'] for i in self.get_services().values()]) +
             accommodation + overtime + self.pocket_money + feed)
 
@@ -1916,26 +1921,35 @@ class Person(Skilled, InventoryWielder, Attributed):
         return value
 
     def focus(self):
-        return abs(self.skill(self.job_skill) - self.job_difficulty)+self._job_productivity
+        if self._job.skill is not None:
+            return abs(self.skill(self._job.skill) - self.job_difficulty)+self._job.productivity
+        else:
+            return 0
+
+    @property
+    def job_difficulty(self):
+        if self._job.difficulty is not None:
+            return self._job.difficulty
+        else:
+            return 0
 
     def increase_productivity(self):
-        self.job_buffer = []
-        self._job_productivity += 1
+        if self.productivity_raised:
+            return
+        self.job_buffer = None
+        self._job.productivity += 1
         self.productivity_raised = True
 
     def use_job(self):
-        if self.use_job_productivity:
+        if self._job.skill is not None:
             if self.player_controlled:
                 renpy.call_in_new_context('lbl_jobcheck', person=self, attribute=self.job_skill)
             else:
                 renpy.call_in_new_context('lbl_jobcheck_npc', person=self, attribute=self.job_skill)
-        self.job_buffer = []
+        self.job_buffer = None
         self.productivity_raised = False
-        job = self._job[self.world().name]
-        lbl = self.world().name+'_job'+'_%s'%job['id']
-        if renpy.has_label(lbl):
-            renpy.call_in_new_context(lbl, self)
-
+        self._job.use(self)
+    
     def world(self):
         return self.game_ref.current_world
 
@@ -1944,107 +1958,68 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         data = self.available_jobs()[job]
         world = self.world().name
-        if self._job_productivity > 0:
-            old_job = self._job.items()
-            old_job_dict = {}
-            for key, value in old_job:
-                old_job_dict[key] = value
-            self.job_buffer = [old_job_dict, self._job_productivity, self.productivity_raised]
-            self._job_productivity = 0
-
-        if target is not None:
-            special_values = {'target': target}
-        else:
-            special_values = None
-    
-        self._job = {}
-        self._job[world] = {'id': job}
-        for key, value in data.items():
-            self._job[world][key] = value
+        obj = ScheduleObject(job, world, 'job', data)
+        obj.productivity = 0
+        if self._job is None:
+            self._job = obj
+            return
         
-        if len(self.job_buffer) > 0:
-            for key, value in self.job_buffer[0].items():
-                if job == value['id'] and world == key:
-                    self._job_productivity = self.job_buffer[1]
-                    self.productivity_raised = self.job_buffer[2]
-                    self.job_buffer = []
-        try:
-            skill = data['skill']
-        except KeyError:
-            skill = None
-        try:
-            difficulty = data['difficulty']
-        except KeyError:
-            difficulty = 0
-        if skill is None:
-            self.use_job_productivity = False
+        if self._job.productivity > 0:
+            old_job = self._job.items()
+            self.job_buffer = self._job
         else:
-            self.use_job_productivity = True
-        self.job_skill = skill
-        self.job_difficulty = difficulty
+            self.job_buffer = None
 
+        if self.job_buffer is not None:
+            if self._job.id == self.job_buffer.id and self.job.world == self.job_buffer.world:
+                self._job = self.job_buffer
+                self.job_buffer = None
+       
+    def get_schedule_obj(self, name):
+        return getattr(self, '_%s'%name)
     def set_accommodation(self, name):
-        self._accommodation = collections.defaultdict(dict)
         data = self.available_accommodations()[name]
-        world = self.world().name
-        self._accommodation[world] = {'id': name}
-        for key, value in data.items():
-            self._accommodation[world][key] = value
-
+        obj = ScheduleObject(name, self.world().name, 'accommodation', data)
+        self._accommodation = obj
 
     def use_accommodation(self):
-        self.use_schedule_part('_accommodation')
+        self._accommodation.use(self)
 
     def set_overtime(self, name):
-        self._overtime = collections.defaultdict(dict)
         data = self.available_overtimes()[name]
-        world = self.world().name
-        self._overtime[world] = {'id': name}
-        for key, value in data.items():
-            self._overtime[world][key] = value
+        obj = ScheduleObject(name, self.world().name, 'overtime', data)
+        self._overtime = obj
 
     def set_feed(self, name):
-        self._feed = collections.defaultdict(dict)
         data = self.available_feeds()[name]
-        world = self.world().name
-        self._feed[world] = {'id': name}
-        for key, value in data.items():
-            self._feed[world][key] = value
+        obj = ScheduleObject(name, self.world().name, 'feed', data)
+        self._feed = obj
 
     def use_feed(self):
-        data = self.use_schedule_part('_feed')
+        data = self._feed.use(self)
 
-    def use_schedule_part(self, name):
-        data = getattr(self, name)[self.world().name]
-        lbl = self.world().name+'%s'%name+'_%s'%data['id']
-        if renpy.has_label(lbl):
-            renpy.call_in_new_context(lbl, self)
-        return data
     @property
     def feed(self):
-        return self._feed[self.world().name]['name']
+        return self._feed.name
     def feed_description(self):
-        return self._feed[self.world().name]['description']
+        return self._feed.description
 
     @property
     def overtime(self):
-        return self._overtime[self.world().name]['name']
+        return self._overtime.name
 
     def overtime_description(self):
-        return self._overtime[self.world().name]['description']
+        return self._overtime.description
 
     def use_overtime(self):
-        self.use_schedule_part('_overtime')
+        self._overtime.use(self)
 
     @property
     def accommodation(self):
-        return self._accommodation[self.world().name]['name']
+        return self._accommodation.name
 
     def accommodation_description(self):
-        return self._accommodation[self.world().name]['description']
-
-    def get_schedule_value(self, name):
-        return getattr(self, '_%s'%name).values()[0]
+        return self._accommodation.description
 
     def available_jobs(self):
         dict_ = {}
