@@ -97,11 +97,16 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                     if skill is not None:
                                         txt += '(%s)'%encolor_text(skill, person.skill(i)+2)
                                 text txt
-                if any([person.get_buffs()]):
+                if any([person.get_buffs()]) or person.bad_markers or person.good_markers:
                     frame:
                         vbox:
                             for i in person.get_buffs():
                                 text encolor_text(i.name, i.color())
+                            for i in person.bad_markers:
+                                text encolor_text(bad_markers_translation[i], 'red')
+                            for i in person.good_markers:
+                                text encolor_text(good_markers_translation[i], 'green')
+
             
             $ needs = person.get_all_needs().values()
             $ changes = any([len(i.values) > 0 for i in needs])

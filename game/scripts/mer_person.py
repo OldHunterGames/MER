@@ -499,6 +499,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.factors = []
         self.restrictions = []
         self._needs = init_needs(self)
+        self.bad_markers = []
+        self.good_markers = []
         self.life_quality = 0
         self.life_level = 0
         self._stimul = 0
@@ -609,6 +611,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         need.add_spoil(self._spoil_number)
 
     def calc_life_level(self):
+        for i in self._needs:
+            self.life_quality += i.max_satisfaction
         if self.life_quality < -self.emotional_stability():
             self.life_level = -1
         elif self.life_quality > self.emotional_stability():
@@ -1356,6 +1360,8 @@ class Person(Skilled, InventoryWielder, Attributed):
     def rest(self):
         self._favor.tick_time()
         self.favor_income()
+        self.bad_markers = []
+        self.good_markers = []
         if not self.calculatable:
             return
         if self.player_controlled:

@@ -25,6 +25,7 @@ class Need(object):
         self.tokens = []
         self.spoils = []
         self.values = []
+        self.max_satisfaction = 0
         self.last_satisfaction = 0
         self.tension = False
 
@@ -50,7 +51,9 @@ class Need(object):
         return token in self.tokens
     
     def set_satisfaction(self, value):
-        self.owner.life_quality += value*self.level
+        if self.name not in self.owner.good_markers:
+            self.owner.good_markers.append(self.name)
+        self.max_satisfaction = max(self.max_satisfaction, value*self.level)
         self.last_satisfaction = value
         self.values.append(value*self.level)
         if self.level == 3:
@@ -62,6 +65,7 @@ class Need(object):
     def set_tension(self):
         if self.tension:
             return
+        self.owner.bad_markers.append(self.name)
         self.tension = True
         values = {1: -3, 2: -6, 3: -15, 0: 0}
         self.owner.life_quality += values[self.level]
@@ -77,3 +81,4 @@ class Need(object):
 
     def reset(self):
         self.tension = False
+        self.max_satisfaction = 0
