@@ -13,21 +13,21 @@ label edge_None_template(actor):
 label edge_service_whores(actor):
     python:
         name = actor.name
-        actor.eros.satisfaction = 3
+        actor.eros.set_satisfaction(3)
     "[name]fucks whores."
     return
 
 label edge_service_booze(actor):
     python:
         name = actor.name
-        actor.wellness.satisfaction = 3
+        actor.wellness.set_satisfaction(3)
     "[name]is drunk. Makes him feel better."
     return
 
 label edge_service_maid(actor):
     python:
         name = actor.name
-        actor.authority.satisfaction = 3
+        actor.authority.set_satisfaction(3)
     "[name]have subservient maid."
     return
          
@@ -114,15 +114,15 @@ label edge_accommodation_mat(actor):
     return 
 
 label edge_accommodation_cot(actor):
-    $ actor.comfort.satisfaction = 1
+    $ actor.comfort.set_satisfaction(1)
     $ name = actor.name
     '[name]sleeps on a rough cot under the holy blanket. Well, SOME comfort at least...'    
     return 
 
 label edge_accommodation_appartment(actor):
     python:
-        actor.comfort.satisfaction = 3
-        actor.prosperity.satisfaction = 1
+        actor.comfort.set_satisfaction(3)
+        actor.prosperity.set_satisfaction(1)
         name = actor.name
     '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  

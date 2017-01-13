@@ -114,14 +114,10 @@ init python:
 
     fates_list = {
         'concubine': __('You become a concubine at the Major House of Eternal Rome. Game full of sexy encounters ecpected...'),   
-        'stripper': __('You become a stripper at the Major House of Eternal Rome. Game full of sexy encounters ecpected...'),   
-        'maid': __('You become a sexy maid at the Major House of Eternal Rome. Game full of hard work and sexy encounters ecpected...'),   
-        'secretaty': __('You become a secretary at the Major House of Eternal Rome. Game full of hard work and sexy encounters ecpected...'),   
-        'nurse': __('You become a sexy nurse at the Major House of Eternal Rome. Game full of hard work and sexy encounters ecpected...'),   
-        'scholar': __('You become a sholar at the Major House of Eternal Rome. Game of career developement ecpected...'),   
-        'artisan': __('You become an artisan at the Major House of Eternal Rome. Game of career developement ecpected...'),   
-        'repairperson': __('You become a repairperson at the Major House of Eternal Rome. Game of career developement ecpected...'),   
-        'integrator': __('You become an electrinics system integrator at the Major House of Eternal Rome. Game of career developement ecpected...'),   
+        'servant': __('You become a servant at the Major House of Eternal Rome. Game of career developement ecpected...'),   
+        'clerk': __('You become a clerk at the Major House of Eternal Rome. Game of career developement ecpected...'),   
+        'host': __('You become a host at the Major House of Eternal Rome. Game of career developement ecpected...'),   
+        'builder': __('You become a builder at the Major House of Eternal Rome. Game of career developement ecpected...'),   
         'mistmarine': __('You become a mistmarine at the Major House of Eternal Rome. Game of epic warfare and violence in Outer Worlds is ecpected...'),   
     }
 

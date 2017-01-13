@@ -48,17 +48,25 @@ label lbl_edge_mistmarine:
     return
 
 label lbl_edge_sexy_exam:
-    'Skillcheck [skill]'
+    menu:
+        'You need to impress House representatives. What to do?'
+        'Show your body. (Might)':
+            $ skill = 'physiqye'
+        'Dance a stiptease. (Finesse)':
+            $ skill = 'agility'
+        'Play a doctor. (Wisdom)':
+            $ skill = 'mind'
+        'Demonstrate a character. (Spirit)':
+            $ skill = 'spirit'                            
     python:
-        moral = target.check_moral(['timid', 'lawful'], player)
-        result = core.threshold_skillcheck(player, skill, difficulty = 0, tense_needs=['authority', 'independence'], satisfy_needs=['eros', 'order'], beneficiar=player, morality=moral, success_threshold = 1, special_motivators=[])        
+        result = core.skillcheck(player, skill, 2)        
 
-    if result[0]:
+    if result:
         'scuccess'    
         call lbl_edge_fuck_challenge(skill)
     else:
         'fail'
-        call lbl_edge_outpost(location)
+        call lbl_edge_outpost
     
     return
 
@@ -76,7 +84,7 @@ label lbl_edge_fuck_challenge(skill):
 label lbl_edge_skill_exam(skill):
     edge_recruiter 'I will test your skills'
     $ player.moral_action('timid', 'lawful', edge_recruiter) 
-    $ result = core.skillcheck(player, skill, 0)
+    $ result = core.skillcheck(player, skill, 5)
     
     player '[result]'
 
@@ -85,6 +93,6 @@ label lbl_edge_skill_exam(skill):
         jump lbl_edge_fate
     else:
         'fail'
-        call lbl_edge_outpost(location)
+        call lbl_edge_outpost
         
     return

@@ -111,8 +111,6 @@ label lbl_edge_manage:
 
         'Faction' if edge.faction_mode:
             $ pass
-        'Equipment':
-            call screen sc_person_equipment(player)
     
     jump lbl_edge_manage
     return

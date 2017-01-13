@@ -3,15 +3,6 @@
 #
 # Random encounters on the edge
 
-label lbl_edge_errant_fight(allies, enemies):
-    
-    call lbl_simple_fight(allies, enemies) 
-    
-    $ enemies = fight.get_enemies()
-    $ loot = fight.get_loot()
-    
-    return
-
 label lbl_edge_randenc_errant:
     python:
         stranger = gen_random_person('human')    
@@ -62,6 +53,28 @@ label lbl_edge_randenc_errant:
             'oooook'       
 
     return
+
+label lbl_edge_errant_fight(allies, enemies):
+    
+    call lbl_simple_fight(allies, enemies) 
+    
+    $ enemies = fight.get_enemies()
+    $ loot = fight.get_loot()
+    
+    return
+
+label lbl_edge_errant_fight:
+    'You trying to stalk the confused wanderer stealthily. Cautious aproach. Finesse challenge. '
+    python:
+        dif = max(0, stranger.agility - player.agility)
+        result = core.skillcheck(player, 'agility', dif)
+    if result:
+        'BINGO!'
+    else:
+        stranger 'Whos there?'
+    
+    return
+
     
 label lbl_edge_randenc_bandit:
     python:
