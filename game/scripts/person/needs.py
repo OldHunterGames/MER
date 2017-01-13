@@ -57,10 +57,10 @@ class Need(object):
         self.last_satisfaction = value
         self.values.append(value*self.level)
         if self.level == 3:
-            if self.master is not None:
+            if self.owner.master is not None:
                 if not self.player_controlled:
                     if 4 - self.player_stance().value > value:
-                        self.owner.stimul = 1
+                        self.owner.stimul += 1
 
     def set_tension(self):
         if self.tension:
