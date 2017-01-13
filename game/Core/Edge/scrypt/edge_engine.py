@@ -40,7 +40,6 @@ class EdgeEngine(object):
 
     def explore_stash(self, name):
         self.stashes[name][0] = True
-        self.explorations.remove(name)
         self.options.append('treasure_hunt_%s'%name)
 
     def unexplore_stash(self, name):
