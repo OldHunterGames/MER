@@ -43,7 +43,7 @@ class ScheduleObject(object):
             cost = self.data['cost']
         except KeyError:
             cost = 0
-        return 0
+        return cost
 
     def __getattr__(self, key):
         try:
@@ -54,7 +54,7 @@ class ScheduleObject(object):
             return value
 
     def use(self, person):
-        lbl = self.world+'%s'%self.type+'_%s'%self.id
+        lbl = self.world+'_%s'%self.type+'_%s'%self.id
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, person)
         self.locked = False
@@ -1908,13 +1908,13 @@ class Person(Skilled, InventoryWielder, Attributed):
         return max(0, min(value, 5))
 
     def job_productivity(self):
-        if self.job_skill is not None:
-            value = self.skill(self.job_skill) - self.job_difficulty
+        if self._job.skill is not None:
+            value = self.skill(self._job.skill) - self.job_difficulty
         else:
             return 0
         if value < 0:
             value = 0
-        value += self._job_productivity
+        value += self._job.productivity
         
         if not self.player_controlled:
             return min(value, self.motivation())
@@ -1925,6 +1925,9 @@ class Person(Skilled, InventoryWielder, Attributed):
             return abs(self.skill(self._job.skill) - self.job_difficulty)+self._job.productivity
         else:
             return 0
+
+    def job_skill(self):
+        return self._job.skill
 
     @property
     def job_difficulty(self):
@@ -1943,9 +1946,9 @@ class Person(Skilled, InventoryWielder, Attributed):
     def use_job(self):
         if self._job.skill is not None:
             if self.player_controlled:
-                renpy.call_in_new_context('lbl_jobcheck', person=self, attribute=self.job_skill)
+                renpy.call_in_new_context('lbl_jobcheck', person=self, attribute=self._job.skill)
             else:
-                renpy.call_in_new_context('lbl_jobcheck_npc', person=self, attribute=self.job_skill)
+                renpy.call_in_new_context('lbl_jobcheck_npc', person=self, attribute=self._job.skill)
         self.job_buffer = None
         self.productivity_raised = False
         self._job.use(self)
@@ -1974,6 +1977,7 @@ class Person(Skilled, InventoryWielder, Attributed):
             if self._job.id == self.job_buffer.id and self.job.world == self.job_buffer.world:
                 self._job = self.job_buffer
                 self.job_buffer = None
+        self._job = obj
        
     def get_schedule_obj(self, name):
         return getattr(self, '_%s'%name)
