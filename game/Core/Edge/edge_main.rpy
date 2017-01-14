@@ -66,8 +66,8 @@ label lbl_edge_main:
         slavers.add_member(edge_recruiter)
         
         ## Exploration variatns
-        edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
-        edge.explorations = edge_exploration
+        #edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
+        #edge.explorations = edge_exploration
                
     
     slums_leader 'Hi, I am a leader of the Slums'
@@ -115,13 +115,23 @@ label lbl_edge_places:
         'Marketplace':
             menu:
                 'Trader':
-                    call screen sc_trade(edge_slaver) 
+                    python:
+                        knife = create_item('knife', 'weapon')
+                        slums_leader.add_item(knife)
+                    call screen sc_trade(slums_leader) 
                 'Back':
                     pass
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
-        'Stashes' if edge.is_stash_found(name):
-            call lbl_edge_stashes    
+        'Hazy marsh' if edge.is_stash_found('hazy_marsh'):
+            $ stash = edge.get_stash('hazy_marsh')
+            call screen sc_manage_stash(stash)   
+        'Echoing hills' if edge.is_stash_found('echoing_hills'):
+            $ stash = edge.get_stash('echoing_hills')
+            call screen sc_manage_stash(stash) 
+        'Dying grove' if edge.is_stash_found('dying_grove'):
+            $ stash = edge.get_stash('dying_grove')
+            call screen sc_manage_stash(stash)              
         'Done':
             jump lbl_edge_manage
     
