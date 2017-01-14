@@ -81,6 +81,17 @@ class SexEngine(object):
             if i.feelings > i.standart:
                 i.person.sex_standart = i.feelings
 
+    def get_results(self):
+        results = []
+        for i in self.participants:
+            if i.feelings < 0:
+                result = 'bad'
+            elif i.feelings >= 0:
+                result = 'default'
+            if i.feelings > i.standart:
+                result = 'good'
+            results.append((i, result))
+        return results
 
 
 class SexParticipant(object):
@@ -169,7 +180,7 @@ class SexParticipant(object):
     
     @property
     def sex_level(self):
-        return 0
+        return 3
 
     def anatomy(self):
         return [i for i in self.person.anatomy()]

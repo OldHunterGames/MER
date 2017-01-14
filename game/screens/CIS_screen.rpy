@@ -141,6 +141,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     imagebutton:
                         idle im.Grayscale(im.Scale(person.get_token_image(), 200, 350))
                         hovered Show('sc_text_popup', text=__("Not enough energy"))
+                        unhovered Hide('sc_text_popup')
                         action NullAction()
 
 init python:

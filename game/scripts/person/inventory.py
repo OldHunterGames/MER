@@ -250,6 +250,7 @@ class InventoryWielder(object):
         self.inventory.transfer_money(storage, value)
 
     def add_captive(self, person):
+        self.enslave(person)
         self.captives.append(person)
 
     def remove_captive(self, person):
