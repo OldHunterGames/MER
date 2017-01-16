@@ -1530,7 +1530,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.token = 'power'
 
     def set_token(self, token, free=False):
-        sekf.token = token      
+        self.token = token      
         renpy.call_in_new_context('lbl_notify', self, token)
 
     def get_token_image(self):
