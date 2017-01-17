@@ -21,7 +21,7 @@ from factions import Faction
 from buffs import Buff
 from background import Background
 from inventory import Inventory, InventoryWielder
-from mer_item import create_weapon, create_armor
+from mer_item import create_item
 from mer_resources import BarterSystem
 import mer_utilities as utilities
 from mer_event import call_event
@@ -298,7 +298,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
             return 
         else:
             self.avatar_path = avatar
-
+    """
     def _equip(self, id_):
         try:
             data = store.equip_sets[id_]
@@ -310,6 +310,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
             elif key == 'armor':
                 item = create_armor(**value)
         setattr(self, key, item)
+    """
 
 
 class FoodSystem(object):

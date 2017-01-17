@@ -12,31 +12,9 @@ from mer_utilities import encolor_text
 class Item(object):
     type_ = 'item'
 
-    def __init__(self, item_id=None, *args, **kwargs):
-        if 'name' in kwargs.keys():
-            self._name = kwargs['name']
-        else:
-            raise Exception('Unnamed item')
-        if 'mutable_name' in kwargs.keys():
-            self.mutable_name = kwargs['mutable_name']
-        else:
-            self.mutable_name = True
-        if id is None:
-            self.id = None
-        else:
-            self.id = item_id
-        if 'description' in kwargs.keys():
-            self._description = kwargs['description']
-        else:
-            self._description = None
-        if 'mutable_description' in kwargs.keys():
-            self.mutable_description = kwargs['mutable_description']
-        else:
-            self.mutable_description = True
-        if 'quality' in kwargs.keys():
-            self._quality = kwargs['quality']
-        else:
-            self._quality = 1
+    def __init__(self, data_dict, id_, *args, **kwargs):
+        self.data = data_dict[id_]
+        self.id = id_
         self.equiped = False
         
         self.features = []
@@ -51,8 +29,61 @@ class Item(object):
         self.new_name = None
 
     @property
+    def price(self):
+        return self.data.get('price', 1)
+
+    @property
+    def quality(self):
+        value = self.data.get('quality', 0)
+        value += self.count_modifiers('quality')
+        return max(0, min(5, value))
+
+    def set_quality(self, quality):
+        self._quality = quality
+
+    @property
+    def name(self):
+        if self.new_name is not None:
+            return encolor_text(self.new_name, self.quality)
+        name = self.data.get('name', 'Unnamed')
+        return encolor_text(name, self.quality)
+
+    @property
+    def mutable_name(self):
+        return self.data.get('mutable_name', False)
+
+    def set_name(self, name):
+        if not self.mutable_name:
+            return
+        self.new_name = name
+
+    def reset_name(self):
+        self.new_name = None
+
+    @property
+    def type(self):
+        return self.type_
+    
+    @property
     def amount(self):
         return 1
+
+    def description(self):
+        if self.new_description is not None:
+            return self.new_description
+        return self.data.get('description', "No description")
+
+    def set_description(self, value):
+        if not self.mutable_description:
+            return
+        self.new_description = value
+
+    @property
+    def mutable_description(self):
+        return self.data.get('mutable_description', False)
+
+    def reset_description(self):
+        self.new_description = None
 
     def add_feature(self, id_):
         Feature(self, id_, self.features_data_dict)
@@ -80,39 +111,6 @@ class Item(object):
     def get_all_modifiers(self):
         return self.modifiers.get_all_modifiers()
 
-    def set_name(self, name):
-        if not self.mutable_name:
-            return
-        self.new_name = name
-
-    def set_quality(self, quality):
-        self._quality = quality
-
-    def make_from_dict(self, properties_dict):
-        for key, value in properties_dict.items():
-            setter = 'set_' + key
-            try:
-                getattr(self, setter)(value)
-            except AttributeError:
-                pass
-
-    @property
-    def quality(self):
-        return min(5, self._quality + self.count_modifiers('quality'))
-
-    @property
-    def name(self):
-        if self.new_name is not None:
-            return encolor_text(self.new_name, self.quality)
-        return encolor_text(self._name, self.quality)
-
-    def reset_name(self):
-        self.new_name = None
-
-    @property
-    def type(self):
-        return self.type_
-
     def use(self):
         return
 
@@ -122,33 +120,16 @@ class Item(object):
     def unequip(self):
         self.equiped = False
 
-    @property
-    def description(self):
-        if self.new_description is not None:
-            return self.new_description
-        return self._description
-
-    def set_description(self, value):
-        if not self.mutable_description:
-            return
-        self.new_description = value
-
-    def reset_description(self):
-        self.new_description = None
 
     def stats(self):
         return ''
 
-    @property
-    def price(self):
-        return self._price
-
-    @price.setter
-    def price(self, value):
-        self._price = value
-
     def stackable(self):
         return False
+
+    @property
+    def present(self):
+        return self.data.get('present', None)
 
        
 
@@ -201,16 +182,16 @@ class Treasure(Stackable):
 class Weapon(Item):
     type_ = 'weapon'
 
-    def __init__(self, size, damage_type, wpn_range=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(Weapon, self).__init__(*args, **kwargs)
-        self.set_size(size)
-        self.set_damage_type(damage_type)
-        if wpn_range is not None:
-            self.set_range(wpn_range)
+        self.set_size(self.data['size'])
+        self.set_damage_type(self.data['damage_type'])
+        if self.wpn_range is not None:
+            self.set_range(self.wpn_range)
 
-    def _init_features(self):
-        self.add_feature(self.size)
-        self.add_feature(self.damage_type)
+    @property
+    def wpn_range(self):
+        return self.data.get('wpn_range')
 
     @property
     def size(self):
@@ -242,12 +223,9 @@ class Weapon(Item):
 class Armor(Item):
     type_ = 'armor'
 
-    def __init__(self, armor_rate, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(Armor, self).__init__(*args, **kwargs)
-        self.set_armor_rate(armor_rate)
-
-    def _init_features(self):
-        self.add_feature(self.armor_rate)
+        self.set_armor_rate(self.data['armor_rate'])
 
     @property
     def armor_rate(self):
@@ -281,66 +259,11 @@ def get_armor_rates():
             list_.append(key)
     return list_
 
-def create_weapon(size=None, damage_type=None, wpn_range=None, quality=1, name=None, description=None, price=1, id=None, *args, **kwargs):
-    if id is not None:
-        weapon = make_weapon_from_dict(id, store.weapon_data)
-        return weapon
-    if size is None:
-        size = random.choice(get_weapon_sizes())
-    if damage_type is None:
-        damage_type = random.choice(get_weapon_damage_types())
-    weapon = Weapon(size, damage_type, wpn_range, quality=quality, name=name, description=description, **kwargs)
-    weapon.price = price
-    return weapon
-
-def create_armor(armor_rate=None, quality=1, name=None, price=1, description=None, id=None, *args, **kwargs):
-    if id is not None:
-        armor = make_armor_from_dict(id, store.armor_data)
-        return armor
-    if armor_rate is None:
-        armor_rate = random.choice(get_armor_rates())
-    armor = Armor(armor_rate, quality=quality, name=name, description=description, **kwargs)
-    armor.price = price
-    return armor
-
-def create_treasure(id=None):
-    if id is None:
-        raise Exception('create_treasure called without id')
-    data = store.treasure_data
-    try:
-        data = data[id]
-    except KeyError:
-        raise Exception("Unknow treasure %s"%id)
-    treasure = Treasure(item_id=id, **data)
-
-    return treasure
-"""
-def create_item():
-    creator_item_properties = {'type': None}
-    renpy.call_screen('sc_item_creator', creator_item_properties)
-    item_type = creator_item_properties['type']
-    if item_type == 'armor':
-        item = Armor(creator_item_properties['armor_rate'])
-    elif item_type == 'weapon':
-        item = Weapon(creator_item_properties[
-                      'size'], creator_item_properties['damage_type'])
-    item.set_quality(1)
-    return item
-"""
 
 def create_item(id, type):
-    types = {'armor': create_armor, 'weapon': create_weapon,
-        'treasure': create_treasure}
-    return types[type](id=id)
-
-def make_weapon_from_dict(key, dict_):
-    data = dict_[key]
-    weapon = create_weapon(**data)
-    weapon.id = key
-    return weapon
-
-def make_armor_from_dict(key, dict_):
-    data = dict_[key]
-    armor = create_armor(**data)
-    armor.id = key
-    return armor
+    types = {'armor': (Armor, store.armor_data),
+        'weapon': (Weapon, store.weapon_data),
+        'treasure': (Treasure, store.treasure_data)}
+    item_properties = types[type]
+    item = item_properties[0](item_properties[1], id)
+    return item

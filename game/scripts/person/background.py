@@ -4,7 +4,7 @@ import random
 import renpy.store as store
 import renpy.exports as renpy
 
-from mer_item import make_weapon_from_dict, make_armor_from_dict
+from mer_item import create_item
 import mer_utilities
 
 class BackgroundBase(object):
@@ -125,10 +125,10 @@ class Background(object):
         for key, value in equipment.items():
             if value is not None:
                 if key == 'armor':
-                    item = make_armor_from_dict(value, store.armor_data)
+                    item = create_item(value, 'armor')
                     owner.equip_item(item, 'overgarments')
                 else:
-                    item = make_weapon_from_dict(value, store.weapon_data)
+                    item = create_item(value, 'weapon')
                     owner.equip_item(item, key)
 
     def make(self, world, culture, family, education, occupation):
