@@ -1537,7 +1537,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         return {'power': 'images/tarot/arcana_lust.jpg',
             'conquest': 'images/tarot/arcana_charriot.jpg',
             'convention': 'images/tarot/arcana_justice.jpg',
-            'contribution': 'images/tarot/arcana_lovers.jpg'}[self.token]
+            'contribution': 'images/tarot/arcana_lovers.jpg',
+            'antagonism': 'images/tarot/arcana_moon.jpg'}[self.token]
 
     def player_relations(self):
         return self.relations(self.game_ref.player)
