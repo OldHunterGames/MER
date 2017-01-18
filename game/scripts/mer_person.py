@@ -588,6 +588,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._fetishes = []
         self.revealed_taboos = []
         self.revealed_fetishes = []
+        self.communications_done = []
 
         self.renpy_character = store.Character(self.firstname)
 
