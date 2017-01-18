@@ -80,6 +80,13 @@ label lbl_contribution(target):
     'Connection' if visavis.relations(player).distance > -1:
         $ visavis.relations(player).change('distance', '-')       
     return
+
+label lbl_antagonism(target):
+    python:
+        visavis = target
+        player.drain_energy()
+        visavis.stance(player).value -= 1
+    visavis 'I hate you'
             
 label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
