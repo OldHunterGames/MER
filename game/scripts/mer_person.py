@@ -1700,6 +1700,8 @@ class Person(Skilled, InventoryWielder, Attributed):
     def gain_favor(self, value):
         if self.player_controlled:
             return
+        if not self.game_ref.player in self.known_characters:
+            return
         value = self.favor + value
         if value < 0:
             self.favor = 0
@@ -1730,6 +1732,8 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     def favor_income(self):
         if self.player_controlled:
+            return
+        if not self.game_ref.player in self.known_characters:
             return
         relations = self.player_relations()
         value = 0
