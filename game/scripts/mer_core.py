@@ -236,8 +236,14 @@ class MistsOfEternalRome(object):
             target.set_token('antagonism')
         return result
 
-    def use_token(self):
-        pass
+    def call_token_label(self, person):
+        labels = ['conquest', 'convention', 'contribution', 'antagonism']
+        token = person.token
+        if token in labels:
+            token_lbl = 'lbl_%s'%token
+        else:
+            token_lbl = 'lbl_communicate'
+        renpy.call_in_new_context(token_lbl, person)
 
 #Alternate Skillcheck
 
