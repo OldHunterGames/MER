@@ -94,7 +94,7 @@ init python:
             self.fill_revolver()
 
         def fill_revolver(self):
-            cards = [i for i in self.person.resources_deck if i.active_if(self)]
+            cards = [i for i in self.person.resources_deck if i.is_active(self.person)]
             shuffle(cards)
             self.revolver[0][0] = cards[0]
             self.revolver[1][0] = cards[1]
@@ -152,16 +152,20 @@ init python:
             else:
                 self._activate(taro_game)
 
-        def active_if(self, taro_game):
+        def is_active(self, person):
             if self.name == 'death':
-                return taro_game.person.anxiety > 0
+                return person.anxiety > 0
             if self.mood is None:
                 if self.attribute != 'any' and self.attribute is not None:
-                    attr = getattr(taro_game.person, self.attribute)
-                    return attr >= self.value
+                    try:
+                        attr = getattr(person, self.attribute)
+                    except AttributeError:
+                        return True
+                    else:
+                        return attr >= self.value
                 else:
                     return True
-            return taro_game.person.mood >= self.mood
+            return person.mood >= self.mood
 
         def display_name(self):
             if self.type == 'common':
@@ -179,6 +183,11 @@ init python:
                 return encolor_text(self.display_name(), 'red')
             else:
                 return self.display_name()
+
+        def available(self, attribute):
+            if self.attribute == 'any':
+                return True
+            return self.attribute == attribute
 
     def temperance_activate(taro_game):
         taro_game.person.gain_energy()
@@ -207,7 +216,7 @@ init python:
         'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg', 'nature': 'neutral'},
         'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
         'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
-        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': None},
+        'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': 'luck'},
         'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good'},
         'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
         'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg', 'nature': 'good'},
@@ -226,9 +235,3 @@ init python:
             card = TaroCard(key, **value)
             card.type = 'arcana'
             player.resources_deck.append(card)
-
-label lbl_jackpot:
-    python:
-        player.anxiety = 0
-        player.add_buff('epic_luck')
-    '!!JACKPOT!!'

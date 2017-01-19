@@ -1950,6 +1950,9 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._job.productivity += 1
         self.productivity_raised = True
 
+    def reset_productivity(self):
+        self._job.productivity = 0
+
     def use_job(self):
         if self._job.skill is not None:
             if self.player_controlled:
@@ -1969,7 +1972,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         data = self.available_jobs()[job]
         world = self.world().name
         obj = ScheduleObject(job, world, 'job', data)
-        obj.productivity = 0
+        if skill is not None:
+            obj.productivity = self.skill(skill) - difficulty
+            if obj.productivity < 0:
+                obj.productivity = 0
+        else:
+            obj.productivity = 0
         if self._job is None:
             self._job = obj
             return

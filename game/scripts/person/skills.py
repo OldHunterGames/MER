@@ -135,27 +135,35 @@ class Skilled(object):
         self.active_resources.remove(res)
         self.resources_deck.append(res)
 
-    def get_resource(self, attribute, difficulty):
-        values = [i.value for i in self.active_resources if i.attribute==attribute]
-        values = [i for i in values if i > difficulty]
+    def get_all_resources(self):
+        return self.resources_deck + self.active_resources
+
+    def get_resource(self, attribute, difficulty, job=False):
+        values = [i.value for i in self.active_resources if i.available(attribute)]
+        if job:
+            value = [i for i in values if i > difficulty]
+        else:
+            values = [i for i in values if i >= difficulty]
         try:
             min_value = min(values)
         except ValueError:
-            values = [i.value for i in self.active_resources if i.attribute == 'any']
-            values = [i for i in values if i > difficulty]
+            values = [i.value for i in self.active_resources if i.available(attribute)]
+            if job:
+                value = [i for i in values if i > difficulty]
+            else:
+                values = [i for i in values if i >= difficulty]
             try:
                 min_value = min(values)
             except ValueError:
                 return None
             else:
                 for i in self.active_resources:
-                    if i.attribute == 'any' and i.value == min_value:
+                    if i.available(attribute) and i.value == min_value:
                         return i
         else:
             for i in self.active_resources:
-                if i.attribute == attribute and i.value == min_value:
+                if i.available(attribute) and i.value == min_value:
                     return i
-    
 
     def skill(self, attribute):
         attr = self._tokens_relations[attribute]

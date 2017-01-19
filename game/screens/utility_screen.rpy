@@ -492,9 +492,62 @@ screen edge_sell_screen(person, item_type):
         text "Current resources: %s"%(encolor_text(show_resource[edge.resources.value], edge.resources.value))
 
 
-screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
+init python:
+    class SkillcheckGame(object):
+
+
+        def __init__(self, person, attribute, difficulty, text, resource, job=False):
+            self.text = text
+            self.randomed = None
+            self.attribute = attribute
+            self.person = person
+            self.difficulty = difficulty
+            self.job = job
+            self.result = 0
+            self.resource = resource
+
+        def get_random_resource(self):
+            resources_list = ['tower']
+            for i in person.get_all_resources():
+                if i.available(self.attribute) and i.is_active(self.person):
+                    if i.nature != 'neutral':
+                        resources_list.append(i)
+            resource = choice(resources_list)
+            if resource == 'tower':
+                self.result = 0
+                self.randomed = im.Scale('images/tarot/arcana_tower.jpg', 300, 450)
+                self.text = '{person.name} had to try better'.format(person=self.person)
+            else:
+                self.randomed = im.Scale(resource.image, 300, 450)
+                if resource.nature == 'good':
+                    if self.job:
+                        success = resource.value > self.difficulty
+                    else:
+                        success = resource.value >= self.difficulty
+
+                    if success:
+                        self.text = encolor_text("Success", 5)
+                        if self.job:
+                            self.person.increase_productivity()
+                        else:
+                            self.result = 1
+                        if resource in self.person.active_resources:
+                            self.person.use_resource(resource)
+                    else:
+                        self.text = '{person.name} had to try better'.format(person=self.person)
+                        self.result = 0
+                elif resource.nature == 'bad':
+                    self.text = '%s. Something gone terribly wrong!'%encolor_text('Epic fail', 'red')
+                    self.result = -1
+                    if self.job:
+                        self.person.reset_productivity()
+
+                
+
+
+screen sc_skillcheck_mini(skillcheck):
     window:
-        text text
+        text skillcheck.text
     frame:
         xalign 0.5
         yalign 0.3
@@ -502,43 +555,55 @@ screen sc_skillcheck_mini(person, attribute, difficulty, text, job=False):
             spacing 10
             if attr is not None:
                 imagebutton:
-                    idle im.Scale(attr.image, 300, 450)
-                    action [Function(person.use_resource, attr), Return(True),
-                        If(job, Function(person.increase_productivity))]
+                    idle im.Scale(skillchec.resource.image, 300, 450)
+                    action [Function(person.use_resource, attr), Return(skillcheck),
+                        If(skillcheck.job, Function(person.increase_productivity))]
             else:
-                image im.Scale('images/tarot/card_back.jpg', 300, 450)
+                image im.Grayscale(im.Scale('images/tarot/arcana_fool.jpg', 300, 450))
 
             imagebutton:
+                idle im.Scale('images/tarot/card_back.jpg', 300, 450)
+                action Function(skillcheck.get_random_resource), Return(skillcheck)
+            imagebutton:
                 idle im.Scale('images/tarot/arcana_tower.jpg', 300, 450)
-                action Return(False)
+                action Return(skillcheck)
 
+screen sc_show_card(img, x_align, y_align):
+    image img:
+        xalign x_align
+        yalign y_align
 
 
 label lbl_skillcheck_mini(person, attribute, difficulty):
     python:
         attr = person.get_resource(attribute, difficulty)
         skill = attributes_translation[attribute]
+        attribute_needed = encolor_text(skill, difficulty)
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[difficulty]
         if difficulty == 0:
-            text = '{person.name} uses {skill} expirience to success'.format(person=person, skill=skill_name_colored)
+            text = '{person.name} passes {skill} challenge with ease.'.format(person=person, skill=skill_name_colored)
         elif difficulty > 5:
             text = '{person.name} needs higher {skill} expirience to even hope for a luck. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
                 person=person, skill=skill_name_colored)
         else:
-            text = '{person.name} meets {skill} challenge. To succeed {person.name} need {resqual}'.format(
-                person=person, skill=skill_name_colored, resqual=resqual)
-    if difficulty > 0 and difficulty <= 5 and attr is not None:
+            text = '{person.name} meets {skill} challenge. Need {attribute} to success'.format(
+                person=person, skill=skill_name_colored, attribute=attribute_needed)
+    if difficulty > 0 and difficulty <= 5:
         python:
-            result = renpy.call_screen('sc_skillcheck_mini', person, attribute, difficulty, text)
-        return result
+            check = SkillcheckGame(person, attribute, difficulty, text, attr, False)
+            result = renpy.call_screen('sc_skillcheck_mini', check)
+        if result.randomed is not None:
+            show screen sc_show_card(result.randomed, 0.5, 0.3)
+            '[result.text]'
+        return result.result
 
     elif difficulty == 0:
         '[text]'
-        return True
+        return 1
     else:
         '[text]'
-        return False
+        return 0
 label lbl_jobcheck(person, attribute):
     python:
         productivity = person.job_productivity()
@@ -553,19 +618,24 @@ label lbl_jobcheck(person, attribute):
         attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. To rise the productivity level {person.name} need {resqual}".format(
+                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. {person.name} need {resqual} to rise productivity".format(
                         person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
+                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
                         focus=focus_desc)
         else:
-            text = "{person.name} {job_description} with {productivity} productivity and {focus} effor".format(
+            text = "{person.name} {job_description} with {focus} effort lading to {productivity} productivity".format(
                 person=person, job_description=job_description,
                 productivity=productivity_str, focus=focus_desc)
-    if person.focus() < 5 and not person.productivity_raised and not attr is None:
-        call screen sc_skillcheck_mini(person, attribute, focus, text, True)
+    if person.focus() < 5 and not person.productivity_raised:
+        python:
+            check = SkillcheckGame(person, attribute, focus, text, attr, True)
+            result = renpy.call_screen('sc_skillcheck_mini', check)
+        if result.randomed is not None:
+            show screen sc_show_card(result.randomed, 0.5, 0.3)
+            '[result.text]'
         return
     else:
         '[text]'
@@ -575,8 +645,6 @@ label lbl_jobcheck_npc(person, attribute):
     python:
         productivity = person.job_productivity()
         productivity_str = encolor_text(success_rate[productivity], productivity)
-        if person.focus() <= person.motivation():
-            factor = __("motivation")
 
         
         skill = attributes_translation[attribute]
@@ -585,6 +653,7 @@ label lbl_jobcheck_npc(person, attribute):
         job_description = person.job_description()
         energy = person.energy
         motivation = person.motivation()
+        motivation_text = encolor_text(__("motivation"), motivation)
         real_productivity = person.real_productivity()
         real_prod_str = success_rate[real_productivity]
         focus = person.focus()
@@ -592,17 +661,17 @@ label lbl_jobcheck_npc(person, attribute):
         attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {focus} effor. To rise the productivity level {person.name} need {resqual}".format(
+                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. {person.name} need {resqual} to rise productivity".format(
                         person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {productivity} productivity and {focus} effort. There has been some progress.".format(
+                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
                         focus=focus_desc)
         else:
-            text = "{person.name} {job_description} with {productivity} productivity and {focus} effort, limited by {motivation}".format(
+            text = "{person.name} {job_description} with {focus} effort limited by {motivation} and leading to {productivity} productivity".format(
                 person=person, job_description=job_description, productivity=productivity_str,
-                focus=focus_desc, motivation=person.motivation())
+                focus=focus_desc, motivation=motivation_text)
     '[text]'
     return
 
