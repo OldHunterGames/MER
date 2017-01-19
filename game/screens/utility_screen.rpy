@@ -509,7 +509,7 @@ init python:
         def get_random_resource(self):
             resources_list = ['tower']
             for i in person.get_all_resources():
-                if i.name == 'mage':
+                if i.name == 'mage' or i.name == 'hangman':
                     continue
                 if i.available(self.attribute) and i.is_active(self.person):
                     if i.nature != 'neutral':
