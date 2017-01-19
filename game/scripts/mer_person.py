@@ -1468,7 +1468,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._relations.append(relations)
         return relations
 
-    def aknowledge_faction(self, faction):
+    def discover_faction(self, faction):
         if not self.know_faction(faction):
             self._known_factions.append(faction)
 
@@ -1476,8 +1476,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         if person == self:
             raise Exception("relations: target and caller is same person")
         if isinstance(person, Faction):
-            self.aknowledge_faction(person)
-            return self.relations(person.owner)
+            self.discover_faction(person)
+            if self.know_person(person.owner):
+                return self.relations(person.owner)
+            else:
+                return
         elif isinstance(person, Person):
             if person.faction is not None:
                 self.aknowledge_faction(person.faction)
@@ -1501,8 +1504,11 @@ class Person(Skilled, InventoryWielder, Attributed):
         if person == self:
             raise Exception("stance: target and caller is same person")
         if isinstance(person, Faction):
-            self.aknowledge_faction(person)
-            return self.stance(person.owner)
+            self.discover_faction(person)
+            if self.know_person(person.owner):
+                return self.relations(person.owner)
+            else:
+                return
         elif isinstance(person, Person):
             if person.faction is not None:
                 self.aknowledge_faction(person.faction)
