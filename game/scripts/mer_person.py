@@ -351,7 +351,7 @@ class FoodSystem(object):
         quality = store.food_quality_dict[quality]
         text = '%s'%(utilities.encolor_text(quality, colorize_quality))
         if colorize_amount != 2:
-            amount = utilities.encolor_text(amount, colorize_amount)
+            amount = utilities.encolor_text(amount, colorize_amount+1)
             text += '(%s)'%(amount)
         if colorize_amount < 1:
             return utilities.encolor_text(amount, 0)
