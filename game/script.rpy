@@ -117,5 +117,11 @@ label game_over:
     "To be continued in next build. Please support us."
     $ renpy.full_restart()
 
+screen sc_token_image(person):
+    image im.Scale(person.get_token_image(), 300, 450):
+        xalign 0.5
+        yalign 0.4
+
 label lbl_notify(person, token):
+    show screen sc_token_image(person)
     '[person.name] get token [token]'
