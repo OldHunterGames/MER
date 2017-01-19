@@ -26,19 +26,19 @@ label lbl_conquest(target):
         visavis = target
         player.drain_energy()
         chance_to_rise = False
-        if person.relations(person).harmony > visavis.stance(player).value + 1
+        if visavis.relations(player).harmony > visavis.stance(player).value + 1:
             chance_to_rise = True  
-    
-    'Influence' if  chance_to_rise:
-        $ visavis.stance(player).value += 1
-    'Dominance' if visavis.stance(player).value = 2:
-        $ player.joy('authority', 5)
-    'Hatred' if visavis.relations(player).congruence > -1:
-        $ visavis.relations(player).change('congruence', '-')
-    'Fervor' if visavis.relations(player).fervor < 1:
-        $ visavis.relations(player).change('fervor', '+')       
-    'Connection' if visavis.relations(player).distance > -1:
-        $ visavis.relations(player).change('distance', '-')       
+    menu:
+        'Influence' if  chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Dominance' if visavis.stance(player).value = 2:
+            $ player.joy('authority', 5)
+        'Hatred' if visavis.relations(player).congruence > -1:
+            $ visavis.relations(player).change('congruence', '-')
+        'Fervor' if visavis.relations(player).fervor < 1:
+            $ visavis.relations(player).change('fervor', '+')       
+        'Connection' if visavis.relations(player).distance > -1:
+            $ visavis.relations(player).change('distance', '-')       
     return
 
 label lbl_convention(target):
@@ -46,19 +46,19 @@ label lbl_convention(target):
         visavis = target
         player.drain_energy()
         chance_to_rise = False
-        if person.relations(person).harmony > visavis.stance(player).value + 1
+        if visavis.relations(player).harmony > visavis.stance(player).value + 1:
             chance_to_rise = True 
-            
-    'Influence' if chance_to_rise:
-        $ visavis.stance(player).value += 1
-    'Control' if visavis.stance(player).value = 2:
-        $ player.joy('ambition', 5)
-    'Politesse' if visavis.relations(player).distance < 1:
-        $ visavis.relations(player).change('distance', '+')    
-    'Temperance' if visavis.relations(player).fervor > -1:
-        $ visavis.relations(player).change('fervor', '-')       
-    'Admiration' if visavis.relations(player).congruence < 1:
-        $ visavis.relations(player).change('congruence', '+')
+    menu:
+        'Influence' if chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Control' if visavis.stance(player).value = 2:
+            $ player.joy('ambition', 5)
+        'Politesse' if visavis.relations(player).distance < 1:
+            $ visavis.relations(player).change('distance', '+')    
+        'Temperance' if visavis.relations(player).fervor > -1:
+            $ visavis.relations(player).change('fervor', '-')       
+        'Admiration' if visavis.relations(player).congruence < 1:
+            $ visavis.relations(player).change('congruence', '+')
     return
 
 label lbl_contribution(target):
@@ -66,19 +66,19 @@ label lbl_contribution(target):
         visavis = target
         player.drain_energy()
         chance_to_rise = False
-        if person.relations(person).harmony > visavis.stance(player).value + 1
+        if visavis.relations(player).harmony > visavis.stance(player).value + 1:
             chance_to_rise = True 
-            
-    'Influence' if chance_to_rise:
-        $ visavis.stance(player).value += 1
-    'Fondness' if visavis.stance(player).value = 2:
-        $ player.joy('communication', 5)
-    'Admiration' if visavis.relations(player).congruence < 1:
-        $ visavis.relations(player).change('congruence', '+')
-    'Passion' if visavis.relations(player).fervor < 1:
-        $ visavis.relations(player).change('fervor', '+')       
-    'Connection' if visavis.relations(player).distance > -1:
-        $ visavis.relations(player).change('distance', '-')       
+    menu:        
+        'Influence' if chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Fondness' if visavis.stance(player).value = 2:
+            $ player.joy('communication', 5)
+        'Admiration' if visavis.relations(player).congruence < 1:
+            $ visavis.relations(player).change('congruence', '+')
+        'Passion' if visavis.relations(player).fervor < 1:
+            $ visavis.relations(player).change('fervor', '+')       
+        'Connection' if visavis.relations(player).distance > -1:
+            $ visavis.relations(player).change('distance', '-')       
     return
 
 label lbl_antagonism(target):
@@ -109,7 +109,7 @@ label lbl_first_impression:
                 $ visavis.set_token('antagonism')
         'Flatter (good, finesse)':
             $ player.moral_action('good', visavis) 
-            $ dif = visavis.finesse
+            $ dif = visavis.agility
             $ result = core.skillcheck(player, 'agility', dif)
             if result:
                 $ visavis.set_token('contribution')
@@ -140,8 +140,14 @@ label lbl_first_impression:
     
 label lbl_hungout:
     menu:
-        'Promenade (spirit)' if 'promenade' not in visavis.communications_done:
-            pass
+        'Promenade (spirit, communication)':
+            $ dif = 3 + visavis.stance(player).value - visavis.communication.level
+            $ result = core.skillcheck(player, 'spirit', dif)
+            if result:
+                '[reult]'
+                $ visavis.set_token('convention')
+            else:
+                'Fail: [reult]'
         'Booze (spirit, 1 bar)' if 'booze' not in visavis.communications_done:
             pass   
         'Dinner treat (spirit, 3 bars)' if 'dinner' not in visavis.communications_done:
