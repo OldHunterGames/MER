@@ -557,7 +557,7 @@ screen sc_skillcheck_mini(skillcheck):
             spacing 10
             if attr is not None:
                 imagebutton:
-                    idle im.Scale(skillchec.resource.image, 300, 450)
+                    idle im.Scale(skillcheck.resource.image, 300, 450)
                     action [Function(person.use_resource, attr), Return(skillcheck),
                         If(skillcheck.job, Function(person.increase_productivity))]
             else:
@@ -620,15 +620,15 @@ label lbl_jobcheck(person, attribute):
         attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. {person.name} need {resqual} to rise productivity".format(
+                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
                         person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. There has been some progress.".format(
+                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
                         focus=focus_desc)
         else:
-            text = "{person.name} {job_description} with {focus} effort lading to {productivity} productivity".format(
+            text = "{person.name} {job_description} with {focus} effort leading to {productivity} productivity".format(
                 person=person, job_description=job_description,
                 productivity=productivity_str, focus=focus_desc)
     if person.focus() < 5 and not person.productivity_raised:
@@ -663,11 +663,11 @@ label lbl_jobcheck_npc(person, attribute):
         attr = person.get_resource(attribute, focus)
         if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. {person.name} need {resqual} to rise productivity".format(
+                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
                         person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
                         productivity=productivity_str)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort lading to {productivity}. There has been some progress.".format(
+                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. There has been some progress.".format(
                         person=person, productivity=productivity_str, job_description=job_description,
                         focus=focus_desc)
         else:
