@@ -1511,7 +1511,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         if isinstance(person, Faction):
             self.discover_faction(person)
             if self.know_person(person.owner):
-                return self.relations(person.owner)
+                return self.stance(person.owner)
             else:
                 return
         elif isinstance(person, Person):
