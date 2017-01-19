@@ -724,11 +724,16 @@ class Person(Skilled, InventoryWielder, Attributed):
 
     @property
     def selfesteem(self):
-        return self._selfesteem
-
-    @selfesteem.setter
-    def selfesteem(self, value):
-        self._selfesteem = value
+        if len(self.selfesteem_buffer) < 1:
+            return None
+        if all([i >= 0 for i in self.selfesteem_buffer]):
+            return 1
+        else:
+            value = sum(self.selfesteem_buffer)
+            if value > 0:
+                return 0
+            else:
+                return -1
 
 
     @property
@@ -1558,7 +1563,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         # checks moral like person.check_moral, but instantly affect selfesteem
         for arg in args:
             if isinstance(arg, int):
-                self.selfesteem += arg
+                self.selfesteem_buffer.append(arg)
                 return
         result = self.check_moral(*args, **kwargs)
         if result != 0:
@@ -1625,20 +1630,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         return result
 
     def reduce_esteem(self):
-        if len(self.selfesteem_buffer) < 1:
-            self._selfesteem = None
-            return
-        if all([i >= 0 for i in self.selfesteem_buffer]):
-            self._selfesteem = 1
-            
-        else:
-            value = 0
-            for i in self.selfesteem_buffer:
-                value += i
-                if value > 0:
-                    self._selfesteem = 0
-                else:
-                    self._selfesteem = -1
         self.selfesteem_buffer = []
 
             
