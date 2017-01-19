@@ -1483,7 +1483,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 return
         elif isinstance(person, Person):
             if person.faction is not None:
-                self.aknowledge_faction(person.faction)
+                self.discover_faction(person.faction)
         else:
             raise Exception("relations called with not valid arg: %s" % person)
         if not self.know_person(person):
@@ -1511,7 +1511,7 @@ class Person(Skilled, InventoryWielder, Attributed):
                 return
         elif isinstance(person, Person):
             if person.faction is not None:
-                self.aknowledge_faction(person.faction)
+                self.discover_faction(person.faction)
         else:
             raise Exception("relations called with not valid arg: %s" % person)
         
