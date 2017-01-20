@@ -84,8 +84,8 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                         unhovered Hide('sc_mood_info')
                                         action NullAction()
                             if person != core.player and stance is not None:
-                                text (stance.show_type() + ' ' +
-                                    '{0} {1} {2}'.format(*relations.description()))
+                                text (encolor_text(stance.show_type(), stance.value+2)+
+                                    '({0} {1} {2})'.format(*relations.description()))
                             text "{b}%s{/b}"%encolor_text("Energy", person.energy)
                     frame:
                         vbox:
@@ -195,8 +195,8 @@ screen sc_info_popup(person):
             text "{0} {1} {2} ({mood})".format(*person.alignment.description(),
                 mood=encolor_text(person.show_mood(), person.mood))
             if person != player and relations is not None:
-                text (stance.show_type() + ' ' +
-                    '{0} {1} {2}'.format(*relations.description()))
+                text (encolor_text(stance.show_type(), stance.value+2)+
+                    '({0} {1} {2})'.format(*relations.description()))
             for i in person.visible_features():
                 text i.name
             for i in person.equiped_items():

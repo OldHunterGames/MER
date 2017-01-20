@@ -1537,7 +1537,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         return stance
 
     def use_token(self):
-        self.tokens.remove(token)
         self.player_relations().stability += 1
         self.relations_tendency[token] += 1
         self.token = 'power'
