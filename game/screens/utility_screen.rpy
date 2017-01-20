@@ -544,6 +544,9 @@ init python:
                     if self.job:
                         self.person.reset_productivity()
 
+        def set_result(self, value):
+            self.result = value
+
                 
 
 
@@ -559,7 +562,8 @@ screen sc_skillcheck_mini(skillcheck):
                 imagebutton:
                     idle im.Scale(skillcheck.resource.image, 300, 450)
                     action [Function(person.use_resource, attr), Return(skillcheck),
-                        If(skillcheck.job, Function(person.increase_productivity))]
+                        If(skillcheck.job, Function(person.increase_productivity)),
+                        Function(skillcheck.set_result, 1)]
             else:
                 image im.Grayscale(im.Scale('images/tarot/arcana_fool.jpg', 300, 450))
 

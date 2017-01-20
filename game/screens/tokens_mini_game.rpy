@@ -165,7 +165,10 @@ init python:
                         return attr >= self.value
                 else:
                     return True
-            return person.mood <= self.mood
+            if self.nature == 'good':
+                return person.mood >= self.mood
+            else:
+                return person.mood <= self.mood
 
         def display_name(self):
             if self.type == 'common':
