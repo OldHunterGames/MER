@@ -63,7 +63,7 @@ label lbl_edge_main:
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
         edge_recruiter = gen_random_person(genus='human', occupation='administrator')
-        slavers.add_member(edge_recruiter)
+        edge_sovereign.add_member(edge_recruiter)
         
         ## Exploration variatns
         #edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
@@ -71,10 +71,13 @@ label lbl_edge_main:
                
     
     slums_leader 'Hi, I am a leader of the Slums'
+    $ player.relations(slums_leader)
     slums_champion "I'll watch for you"
+    $ player.relations(slums_champion)
     slums_entertainer 'If you need to relax, welcome to my pub.'
+    $ player.relations(slums_entertainer)
     slums_medic "I'll patch you if you'l get hurt... for a price!"
-        
+    $ player.relations(slums_medic)    
 
     call edge_init_events
     call lbl_edge_manage

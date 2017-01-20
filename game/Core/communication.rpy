@@ -95,25 +95,28 @@ label lbl_first_impression:
             $ player.moral_action('ardent', visavis) 
             $ dif = visavis.spirit
             $ result = core.skillcheck(player, 'spirit', dif)
-            if result:
+            if result > 0:
                 $ visavis.set_token('conquest')
-            else:
+            elif result < 0:
                 $ visavis.set_token('antagonism')
         'Get to know (lawful, wisdom)':
             $ player.moral_action('lawful', visavis) 
             $ dif = visavis.mind
             $ result = core.skillcheck(player, 'mind', dif)
-            if result:
+            '[result]'
+            if result > 0:
                 $ visavis.set_token('convention')
-            else:
+                'got it'
+            elif result < 0:
                 $ visavis.set_token('antagonism')
+                'fail'
         'Flatter (good, finesse)':
             $ player.moral_action('good', visavis) 
             $ dif = visavis.agility
             $ result = core.skillcheck(player, 'agility', dif)
-            if result:
+            if result > 0:
                 $ visavis.set_token('contribution')
-            else:
+            elif result < 0:
                 $ visavis.set_token('antagonism')
         'Sudden joke (chotic, random)':
             $ player.moral_action('chaotic', visavis) 
@@ -121,12 +124,11 @@ label lbl_first_impression:
             if rnd == 'plus':
                 $ visavis.stance(player).value += 1
                 'stance up'
-            elif rnd = 'minus':
+            elif rnd == 'minus':
                 $ visavis.stance(player).value -= 1
                 'stance down'
             else:
                 $ visavis.set_token(rnd)                
-            'Result = [rnd]'
         'Mock (evil)':
             $ player.moral_action('evil', visavis) 
             $ visavis.set_token('antagonism')
@@ -144,16 +146,23 @@ label lbl_hungout:
             $ dif = 3 + visavis.stance(player).value - visavis.communication.level
             $ result = core.skillcheck(player, 'spirit', dif)
             if result:
-                '[reult]'
+                '[result]'
                 $ visavis.set_token('convention')
             else:
-                'Fail: [reult]'
+                'Fail: [result]'
         'Booze (spirit, 1 bar)' if 'booze' not in visavis.communications_done:
             pass   
         'Dinner treat (spirit, 3 bars)' if 'dinner' not in visavis.communications_done:
             pass     
-        'Discuccion (wisdom)' if 'discussion' not in visavis.communications_done:
-            pass             
+        'Discuccion (wisdom, authority)' if 'discussion' not in visavis.communications_done:
+            $ dif = 3 + visavis.stance(player).value - visavis.authority.level
+            $ result = core.skillcheck(player, 'mind', dif)
+            if result:
+                '[result]'
+                $ visavis.set_token('convention')
+                $ player.joy('authority', 2)
+            else:
+                'Fail: [result]'
         'Impressive erudition (wisdom)' if 'impress' not in visavis.communications_done:
             pass                                     
         'Carry favor (finesse)' if 'favor' not in visavis.communications_done:
