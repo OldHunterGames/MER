@@ -16,3 +16,16 @@ init python:
         'outflank': {'name': __('Outflank'), 'description': __('Deflect first enemy attack. If no damage recived get power up.')},  
         'tank': {'name': __('Tank'), 'description': __('Half damage this round. All attacks aimed at you and only you (even "wide strikes").')},  
     }
+
+    combat_styles_translation = {
+    'brawler': __("brawler"),
+    'cutthroat': __("cutthroat"),
+    'swashbuclker': __("swashbuclker"),
+    'shieldbearer': __("shieldbearer"),
+    'wrecker': __("wrecker"),
+    }
+
+    combat_weight = {
+        'heavy': __("heavy"),
+        'mobile': __('mobile')
+    }

@@ -246,19 +246,25 @@ class SimpleCombatant(object):
         self.skill_difference = 0
         self.power_up = 0
         self._target = None
+        self._combat_style = None
+        if self.combat_style() == 'shieldbearer':
+            self.protection += 5*self.shield_quality()
 
     @property
     def hp(self):
         return self._hp
+
+    def shield_quality(self):
+        for i in self.weapons():
+            if i.size == 'shield':
+                return i.quality
+        return 0
 
     @hp.setter
     def hp(self, value):
         self._hp = value
         if not self.person.has_buff('wound'):
             self.person.add_buff('wound', 1)
-        if not self.person.player_controlled:
-            if self._hp < 0:
-                self.person.die()
 
     @property
     def target(self):
@@ -269,6 +275,41 @@ class SimpleCombatant(object):
                 target = None
             return target
         return self._target
+
+
+    def combat_style(self):
+        if self._combat_style is not None:
+            return self._combat_style
+        style = 'brawler'
+        if self.person.main_hand is not None:
+            if self.person.main_hand.size == 'offhand':
+                style = 'cutthroat'
+        elif any([i.size == 'versatile' for i in self.weapons()]):
+            style = 'swashbuckler'
+        elif any([i.size == 'shield' for i in self.weapons()]):
+            style = 'shieldbearer'
+        elif any([i.size == 'twohand' for i in self.weapons()]):
+            style = 'wrecker'
+        self._combat_style = style
+        return style
+
+    def get_damage_multiplier(self, source):
+        if source.combat_style() == 'versatile':
+            return 2
+        if source.combat_style() == 'cutthroat':
+            if self.weight() == 'mobile':
+                return 3
+        if source.combat_style() == 'wrecker':
+            if self.combat_style() == 'shieldbearer' or self.weight() == 'heavy':
+                return 3
+        return 1
+
+    def weight(self):
+        if self.armor_rate is None:
+            return 'mobile'
+        elif self.armor_rate == 'heavy_armor':
+            return 'heavy'
+        return
     
     def set_target(self, target):
         self._target = target
@@ -407,6 +448,7 @@ class SimpleCombatant(object):
         for i in self.incoming_damage_multipliers:
             value *= i
         value = int(value)
+        value *= self.get_damage_multiplier(source)
         for i in self.protections:
             value = i.protect(value, source, self)
         if value > 0:
@@ -419,6 +461,9 @@ class SimpleCombatant(object):
             self.defence = 0
             value -= self.defence
             self.hp -= value
+            if self.hp <= 0:
+                if source.combat_style() != 'brawler':
+                    self.person.die()
         else:
             self.defence -= value
 
@@ -611,6 +656,13 @@ class WideStrike(SimpleManeuver):
         for i in self.person.enemies:
             self.add_target(i)
 
+    def can_be_applied(self, person):
+        if person.type == 'npc':
+            if len(person.enemies) > 1:
+                return person.combat_style() == 'wrecker'
+            return False
+        return person.combat_style() == 'wrecker'
+
 class Dodge(SimpleManeuver):
 
     def __init__(self, person):
@@ -677,11 +729,11 @@ class Parry(SimpleManeuver):
 
     def can_be_applied(self, person):
         if person.type == 'player':
-            return True
+            return person.combat_style() == 'swashbuckler'
         else:
             if len(person.enemies) > 1:
                 return False
-        return True
+        return person.combat_style() == 'swashbuckler'
 
 """
 class Recovery(SimpleManeuver):
@@ -736,13 +788,14 @@ class ShielUp(RuledManeuver):
         return value
 
     def can_be_applied(self, person):
+        shield = person.combat_style() == 'shieldbearer'
         if person.type == 'npc':
             if person.defence < 1:
-                return any([i.size == 'shield' for i in person.weapons()])
+                return shield
             else:
                 return False
-        return any([i.size == 'shield' for i in person.weapons()])
-
+        return shield
+"""
 class Grapple(RuledManeuver):
 
 
@@ -766,6 +819,8 @@ class Grapple(RuledManeuver):
         two_weapons = len(person.weapons()) > 1
         twohand = any([i.size == 'twohand' for i in person.weapons()])
         return (not (twohand and two_weapons)) and npc
+"""
+
 
 class Backstab(RuledManeuver):
 
@@ -781,9 +836,10 @@ class Backstab(RuledManeuver):
         target.damage(self.person.attack * 2, self.person, True)
 
     def can_be_applied(self, person):
-        return any([i.size == 'offhand' for i in person.weapons()])
+        return person.combat_style() == 'cutthroat'
 
 
+"""
 class PowerStrike(RuledManeuver):
 
 
@@ -798,7 +854,8 @@ class PowerStrike(RuledManeuver):
         target.damage(self.person.attack * 3, self.person)
 
     def can_be_applied(self, person):
-        return any([i.size == 'twohand' for i in person.weapons()])
+        pass
+"""
 
 
 class PinDown(RuledManeuver):
@@ -821,10 +878,10 @@ class PinDown(RuledManeuver):
         amount = len(person.enemies) < 2
         physique = enemy.physique < person.physique
         weapon = len(person.enemies[0].weapons()) < 1
-        skill = enemy.combat_level <= person.combat_level
-        return amount and skill and physique and weapon
+        style = person.combat_style() == 'brawler'
+        return amount and physique and weapon and style
 
-
+"""
 class Flee(RuledManeuver):
 
     
@@ -847,7 +904,7 @@ class Flee(RuledManeuver):
         enemies_armor = all([i.armor_rate is not None for i in person.enemies])
         allies = len(person.allies) > 1
         return armor and (enemies_armor or allies)
-
+"""
 
 class Tank(RuledManeuver):
 
@@ -874,12 +931,12 @@ class Tank(RuledManeuver):
 
     def can_be_applied(self, person):
         if person.type == 'player':
-            return True and person.armor_rate == 'heavy_armor'
+            return person.weight() == 'heavy'
 
         allies = len(person.allies) > 1
         enemies = len(person.enemies) > 1
         defence = all([person.defence >= i.defence for i in person.allies])
-        return allies and enemies and defence
+        return allies and enemies and defence and person.weight() == 'heavy'
 
 class Outflank(RuledManeuver):
 
@@ -909,11 +966,8 @@ class Outflank(RuledManeuver):
             self.person.power_up
 
     def can_be_applied(self, person):
-        armor = person.armor_rate
-        if armor == 'heavy_armor':
-            return False
-        elif armor == 'light_armor':
-            return all([i.armor_rate == 'heavy_armor' for i in person.enemies])
-        else:
-            return all([i.armor_rate == 'heavy_armor' or i.armor_rate == 'light_armor' for i in person.enemies])
+        if person.type == 'npc':
+            if len(person.enemies) > 1:
+                return False
+        return person.weight() == 'mobile'
 

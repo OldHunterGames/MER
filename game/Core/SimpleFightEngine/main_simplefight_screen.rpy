@@ -18,6 +18,11 @@ screen sc_simple_fight(fight):
             for i in fight.allies:
                 vbox:
                     text i.name
+                    if i.weight() is None:
+                        $ txt = combat_styles_translation[i.combat_style()]
+                    else:
+                        $ txt = '%s %s'%(combat_weight[i.weight()], combat_styles_translation[i.combat_style()])
+                    text txt
                     hbox:
                         if not i.inactive:
                             imagebutton:
@@ -49,6 +54,11 @@ screen sc_simple_fight(fight):
             for i in fight.enemies:
                 vbox:
                     text i.name
+                    if i.weight() is None:
+                        $ txt = combat_styles_translation[i.combat_style()]
+                    else:
+                        $ txt = '%s %s'%(combat_weight[i.weight()], combat_styles_translation[i.combat_style()])
+                    text txt
                     hbox:
                         if not i.inactive:
                             imagebutton:
