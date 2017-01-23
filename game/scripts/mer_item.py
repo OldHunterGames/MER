@@ -68,6 +68,7 @@ class Item(object):
     def amount(self):
         return 1
 
+    @property
     def description(self):
         if self.new_description is not None:
             return self.new_description
