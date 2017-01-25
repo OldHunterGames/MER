@@ -3,16 +3,29 @@ import renpy.exports as renpy
 
 
 class Alignment(object):
-    _needs = {'orderliness': {-1: 'independence', 1: 'stability'},
-              'activity': {-1: 'approval', 1: 'trill'},
-              'morality': {-1: 'power', 1: 'altruism'}
-              }
 
     _orderliness = {-1: "chaotic", 0: "conformal", 1: "lawful"}
     _activity = {-1: "timid", 0: "reasonable", 1: "ardent"}
     _morality = {-1: "evil", 0: "selfish", 1: "good"}
+    
     relation_binding = {'activity': 'fervor',
-                         'morality': 'congruence', 'orderliness': 'distance'}
+        'morality': 'congruence', 'orderliness': 'distance'
+    }
+
+    _chance_names = {
+        'morality': {
+            -1: ('powerful', 'mean'),
+            1: ('nice', 'spineless')
+        },
+        'orderliness': {
+            -1: ('independent', 'scandalous'),
+            1: ('respectable', 'detached')
+        },
+        'activity': {
+            -1: ('compose', 'insignificant'),
+            1: ('drive', 'intrusive')
+        }
+    }
 
     def __init__(self):
         self._orderliness = 0
@@ -97,18 +110,10 @@ class Alignment(object):
     def activity_str(self):
         return Alignment._activity[self.activity]
 
-    def special_needs(self):
-        n = Alignment._needs
-        needs = []
-        zero_needs = []
-        default = []
-        for k in n.keys():
-            try:
-                val = getattr(self, k)
-                needs.append(n[k][val])
-                zero_needs.append(n[k][val - val * 2])
-            except KeyError:
-                for val in n[k].values():
-                    default.append(val)
-        return needs, zero_needs, default
+    def get_chance_name(self, axis, kind, fake_value=None):
+        value = getattr(self, axis) if fake_value is None else fake_value
+        kind_value = {'good': 0, 'bad': 1}[kind]
+        name = self._chance_names[axis][value][kind_value]
+        return name
+
 

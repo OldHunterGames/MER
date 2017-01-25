@@ -9,13 +9,12 @@ import renpy.exports as renpy
 
 from features import Feature, Phobia
 from skills import Skilled
-from needs import init_needs
-
+from psymodel import PsyModel
 from schedule import *
 from relations import Relations
 from stance import Stance
 from genus import available_genuses, Genus
-from alignment import Alignment
+
 from modifiers import ModifiersStorage, Modifiable
 from factions import Faction
 from buffs import Buff
@@ -183,13 +182,13 @@ class Attributed(Modifiable):
 
     def vitality_info(self):
         d = {'physique': self.physique, 'shape': self.modifiers.count_modifiers('shape'), 'fitness': self.modifiers.count_modifiers('fitness'),
-             'mood': self.mood, 'therapy': self.modifiers.count_modifiers('therapy')}
+            'therapy': self.modifiers.count_modifiers('therapy')}
         list_ = self.modifiers.get_modifier_separate('vitality')
         list_ = [(value.name, value.value) for value in list_]
         return d, list_
     @property
     def vitality(self):
-        list_ = [self.physique, self.modifiers.count_modifiers('shape'), self.modifiers.count_modifiers('fitness'), self.mood,
+        list_ = [self.physique, self.modifiers.count_modifiers('shape'), self.modifiers.count_modifiers('fitness'),
                  self.modifiers.count_modifiers('therapy')]
         vitality_mods = self.modifiers.get_modifier_separate('vitality')
         list_.extend([modifier.value for modifier in vitality_mods])
@@ -487,7 +486,7 @@ class FoodSystem(object):
             self.owner.add_buff('underfeed')
         self.set_starvation()
 
-class Person(Skilled, InventoryWielder, Attributed):
+class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     game_ref = None
     @utilities.Observable
     def __init__(self, age=None, gender=None, genus='human'):
@@ -497,11 +496,12 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.init_inventorywielder()
         self.init_skilled()
         self.init_attributed()
+        self.init_psymodel()
         self._event_type = 'person'
         self._firstname = u"Anonimous"
         self.surname = u""
         self.nickname = u""
-        self.alignment = Alignment()
+        
         # gets Feature() objects and their child's. Add new Feature only with
         # self.add_feature()
         self.features = []
@@ -535,12 +535,8 @@ class Person(Skilled, InventoryWielder, Attributed):
         }
         self.factors = []
         self.restrictions = []
-        self._needs = init_needs(self)
         self.bad_markers = []
         self.good_markers = []
-        self.life_quality = 0
-        self.life_level = 0
-        self._stimul = 0
         self.discipline = 0
 
         self.university = {'name': 'study', 'effort': 'bad', 'auto': False}
@@ -558,7 +554,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         # Other persons known and relations with them, value[1] = [needed
         # points, current points]
         self._relations = []
-        self._selfesteem = None
         self.conditions = []
         if isinstance(genus, Genus):
             self.genus = genus
@@ -582,7 +577,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._favor = BarterSystem()
         self.card_storage = None
         self.decks = []
-        self.selfesteem_buffer = []
 
         self._taboos = []
         self._fetishes = []
@@ -615,7 +609,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             'overtime': 'rest',
             'feed': 'forage'}
         self.token = 'power'
-        self._joy = 0
         self._spoil_number = 1
         self.success = 0
         self.purporse = 0
@@ -632,49 +625,8 @@ class Person(Skilled, InventoryWielder, Attributed):
     def energy(self):
         return self._energy
 
-    @property
-    def spoil_number(self):
-        return self._spoil_number
-
-    def spoil(self, need):
-        self._spoil_number += 1
-        if self._spoil_number > 10:
-            self._spoil_number = 1
-        for i in self._needs:
-            if self._spoil_number in i.spoils:
-                i.spoils.remove_spoil(self._spoil_number)
-        need.add_spoil(self._spoil_number)
-
-    def calc_life_level(self):
-        for i in self._needs:
-            self.life_quality += i.max_satisfaction
-        if self.life_quality < -self.emotional_stability():
-            self.life_level = -1
-        elif self.life_quality > self.emotional_stability():
-            self.life_level = 1
-        else:
-            self.life_level = 0
-        self.life_buffer = {}
-        for i in self._needs:
-            if len(i.values) > 0:
-                self.life_buffer[i.name] = [j for j in i.values]
-                i.values = []
-
-        self.life_quality = 0
-
     def emotional_stability(self):
         return 3+self.count_modifiers('emotional_stability')
-
-    @property
-    def stimul(self):
-        return self._stimul
-
-    @stimul.setter
-    def stimul(self, value):
-        if self._stimul < 0:
-            return
-        else:
-            self._stimul = value
 
     def armor_heavier_than(self, person):
         return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
@@ -721,20 +673,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             if skill_level > 1:
                 style = 'wrestler'
         return style
-
-    @property
-    def selfesteem(self):
-        if len(self.selfesteem_buffer) < 1:
-            return None
-        if all([i >= 0 for i in self.selfesteem_buffer]):
-            return 1
-        else:
-            value = sum(self.selfesteem_buffer)
-            if value > 0:
-                return 0
-            else:
-                return -1
-
 
     @property
     def firstname(self):
@@ -1066,15 +1004,6 @@ class Person(Skilled, InventoryWielder, Attributed):
                 pass
         return super(Person, self).__getattribute__(key)
 
-    def __getattr__(self, key):
-        n = {}
-        if '_needs' in self.__dict__:
-            for need in self.__dict__['_needs']:
-                n[need.name] = need
-        if key in n.keys():
-            return n[key]
-        raise AttributeError(key)
-
     @property
     def determination(self):
         return self._determination
@@ -1115,21 +1044,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         except AttributeError:
             return None
 
-    # get needs with level > 0 aka turned on needs
-    def get_needs(self):
-        d = {}
-        for need in self._needs:
-            if need.level > 0:
-                d[need.name] = need
-        return d
-
-    # get all needs person has
-    def get_all_needs(self):
-        d = {}
-        for need in self._needs:
-            d[need.name] = need
-        return d
-
     # show methods returns strings, to simplify displaying various stats to
     # player
     def show_taboos(self):
@@ -1137,12 +1051,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         for taboo in self.taboos:
             if taboo.value != 0:
                 s += "{taboo.name}({taboo.value}), ".format(taboo=taboo)
-        return s
-
-    def show_needs(self):
-        s = ""
-        for need in self.get_needs().values():
-            s += "{need.name}({need.level}), ".format(need=need)
         return s
 
     def show_features(self):
@@ -1199,119 +1107,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         for feature in self.features:
             feature.tick_time()
 
-    # needs should be a list of tuples[(need, shift)]
-    def motivation(self):
-        golds = []
-        greens = []
-        cian = []
-        reds = []
-        value = 0
-        
-        if self.life_level == 1:
-            greens.append(1)
-        elif self.life_level == 0:
-            cian.append(1)
-        else:
-            reds.append(1)
-
-        if self.stimul == 1:
-            greens.append(1)
-        elif self.stimul == 0:
-            cian.append(1)
-        else:
-            reds.append(1)
-
-        if self.selfesteem == 1:
-            greens.append(1)
-        elif self.selfesteem == 0:
-            cian.append(1)
-        elif self.selfesteem == -1:
-            reds.append(1)
-
-        if self.master is not None:
-            if self.discipline == 4:
-                golds.append(1)
-            elif self.discipline == 3:
-                greens.append(1)
-            elif self.discipline == 1:
-                cian.append(1)
-            else:
-                reds.append(1)
-        else:
-            greens.append(1)
-
-        if self.overseer_stance() is not None:
-            if self.overseer_stance().value == 2:
-                golds.append(1)
-            elif self.overseer_stance().value == 1:
-                greens.append(1)
-            elif self.overseer_stance().value == -1:
-                reds.append(1)
-
-        if len(cian) < 0 and len(reds) < 0:
-            if len(golds) > 0 and len(greens) > 0:
-                return 5
-        else:
-            for i in golds:
-                value += 1
-            for i in greens:
-                value += 1
-            for i in reds:
-                value -= 1
-        value += self.count_modifiers('motivation')
-        return max(-1, min(5, value))
-
-    @property
-    def mood(self):
-        golds = []
-        greens = []
-        cian = []
-        reds = []
-        value = 0
-        
-        if self.life_level == 1:
-            greens.append(1)
-        elif self.life_level == 0:
-            cian.append(1)
-        else:
-            reds.append(1)
-
-        if self.selfesteem == 1:
-            greens.append(1)
-        elif self.selfesteem == 0:
-            cian.append(1)
-        elif self.selfesteem == -1:
-            reds.append(1)
-
-        if self._joy == 1:
-            greens.append(1)
-
-        if self.success == 1:
-            greens.append(1)
-
-        if self.purporse == 1:
-            greens.append(1)
-
-        if len(cian) < 0 and len(reds) < 0:
-            if len(golds) > 0 and len(greens) > 0:
-                return 5
-        else:
-            for i in golds:
-                value += 1
-            for i in greens:
-                value += 1
-            for i in reds:
-                value -= 1
-        minimum = 0
-        if len(reds) > 1:
-            minimum = -1
-        value += self.count_modifiers('mood')
-        return max(minimum, min(5, value))
-
-    def show_mood(self):
-        return store.mood_translation[self.mood]
-
-
     # adds features to person, if mutually exclusive removes old feature
     def add_feature(self, id_, time=None):
         Feature(self, id_)
@@ -1365,10 +1160,6 @@ class Person(Skilled, InventoryWielder, Attributed):
             txt += ','
         return txt
 
-    def reset_needs(self):
-        for need in self.get_all_needs().values():
-            need.reset()
-
     def overseer_relations(self):
         if self.overseer is not None:
             return self.relations(self.overseer)
@@ -1385,23 +1176,12 @@ class Person(Skilled, InventoryWielder, Attributed):
 
         if not self.calculatable:
             return
-        if self.player_controlled:
-            if self.mood < 0:
-                self.anxiety += 1
-        
-        else:
-            if self.motivation() < 0:
-                self.anxiety += 1
 
         if self.energy < 0:
             self.add_buff('exhausted')
         self.food_system.fatness_change()
-        
-        self.reduce_esteem()
-        self.calc_life_level()
         self.remove_money(self.decade_bill())
         self.set_energy()
-        self.reset_needs()
         
         if self.pocket_money > 0:
             self.prosperity.set_satisfaction(self.pocket_money)
@@ -1410,7 +1190,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self._stimul = 0
         self.success = 0
         self.purporse = 0
-        self._joy = 0
 
     def tick_time(self):
         if not self.calculatable:
@@ -1556,82 +1335,7 @@ class Person(Skilled, InventoryWielder, Attributed):
         return self.relations(self.game_ref.player)
 
     def player_stance(self):
-        return self.stance(self.game_ref.player)
-
-    def moral_action(self, *args, **kwargs):
-        # checks moral like person.check_moral, but instantly affect selfesteem
-        for arg in args:
-            if isinstance(arg, int):
-                self.selfesteem_buffer.append(arg)
-                return
-        result = self.check_moral(*args, **kwargs)
-        if result != 0:
-            self.selfesteem_buffer.append(result)
-        return result
-
-    def check_moral(self, *args, **kwargs):
-        result = 0
-        act = {'ardent': 1, 'reasonable': 0, 'timid': -1}
-        moral = {'good': 1, 'selfish': 0, 'evil': -1}
-        order = {'lawful': 1, 'conformal': 0, 'chaotic': -1}
-        action_tones = {'activity': None,
-                        'morality': None, 'orderliness': None}
-        activity = None
-        morality = None
-        orderliness = None
-        target = None
-
-        if 'target' in kwargs:
-            if isinstance(kwargs['target'], Person):
-                target = kwargs['target']
-
-        else:
-            for arg in args:
-                if isinstance(arg, Person):
-                    target = arg
-        toned = False
-        for arg in args:
-            if isinstance(arg, list):
-                toned = True
-                for i in arg:
-                    if i in act.keys():
-                        activity = i
-                    if i in moral.keys():
-                        morality = i
-                    if i in order.keys():
-                        orderliness = i
-        if not toned:
-            for arg in args:
-                if arg in act.keys():
-                    activity = arg
-                if arg in moral.keys():
-                    morality = arg
-                if arg in order.keys():
-                    orderliness = arg
-        action_tones['activity'] = act.get(activity)
-        action_tones['morality'] = moral.get(morality)
-        action_tones['orderliness'] = order.get(orderliness)
-        for k, v in action_tones.items():
-            if v:
-                valself = getattr(self.alignment, k)
-                valact = v
-                if valself != 0:
-                    if valself + valact == 0:
-                        result -= 1
-                    elif abs(valself + valact) == 2:
-                        result += 1
-                elif target:
-                    if valact != 0:
-                        if getattr(self.relations(target), Alignment.relation_binding[k]) != valact:
-                            result -= 1
-                        else:
-                            result += 1
-        return result
-
-    def reduce_esteem(self):
-        self.selfesteem_buffer = []
-
-            
+        return self.stance(self.game_ref.player)      
 
     def enslave(self, target):
         target.master = self
@@ -1803,7 +1507,6 @@ class Person(Skilled, InventoryWielder, Attributed):
     def destroy(self):
         self.remove_relations()
         self._remove_features()
-        self._remove_needs()
         self._remove_foodsystem()
         self.remove_genus()
         self.remove_schedule()
@@ -1816,11 +1519,6 @@ class Person(Skilled, InventoryWielder, Attributed):
         self.schedule.actions = []
         self.schedule.owner = None
         self.schedule = None
-
-    def _remove_needs(self):
-        for i in self._needs:
-            i.owner = None
-        self._needs = []       
 
     def _remove_foodsystem(self):
         self.food_system.owner = None
@@ -2168,21 +1866,8 @@ class Person(Skilled, InventoryWielder, Attributed):
             if renpy.has_label(lbl):
                 renpy.call_in_new_context(lbl, self)
 
-        
-
-    def joy(self, need, value):
-        need = getattr(self, need)
-        value -= need.spoil_level()
-        if value > 0:
-            self._joy = 1
-        self.spoil(need)
-
-    def get_joy(self):
-        return self._joy
-
     def set_energy(self):
-        value = self.mood
-        # value += self.count_modifiers('energy')
+        value = self.count_modifiers('energy')
         self._energy = max(0, min(5, value))
 
     def drain_energy(self, value=1):
