@@ -167,3 +167,14 @@ init python:
         'healing': {"name": __("Healing"), 'description': __("Get some medical attention."), 'cost': 5},          
     }
 
+    edge_nameset = {
+    'generic': {'leader': __('Leader of'), 'champion': __('Champion of'), 'agent': __('Agent from'), 'ambassador': __('Ambassador of'), 'advisor': __('Advisor of'), 'member': __('Member of')}, 
+    # 'cosanostra': {'leader': __('Goodfather'), 'champion': __('Cappodecina'), 'agent': __('Sotto cappo'), 'ambassador': __('Lawer'), 'advisor': __('Consigliere'), 'member': __('Soldati')}, 
+    'band': {'leader': __('Boss of'), 'champion': __('Enforcer of'), 'agent': __('Pimp from'), 'ambassador': __('Dealer from'), 'advisor': __('Underboss of'), 'member': __('Thug of')}, 
+    'western': {'leader': __('Mayor of'), 'champion': __('Sheriff of'), 'agent': __('Bartender from'), 'ambassador': __('Preacher from'), 'advisor': __('Doctor from'), 'member': __('Citisen of')}, 
+    'medieval': {'leader': __('Baron of'), 'champion': __('Knight from'), 'agent': __('Jester from'), 'ambassador': __('Merchant from'), 'advisor': __('Bishop of'), 'member': __('Bond from')}, 
+    'corporate': {'leader': __('President of'), 'champion': __('Sequrity of'), 'agent': __('Creative officer of'), 'ambassador': __('Vice-president of'), 'advisor': __('Chief engeneer of'), 'member': __('Employee of')}, 
+    'tribal': {'leader': __('Chief of'), 'champion': __('Warlord of'), 'agent': __('Fire-keeper of'), 'ambassador': __('Trader from'), 'advisor': __('Shaman of'), 'member': __('Clansman of')}, 
+    'military': {'leader': __('Commander of'), 'champion': __('Chief-sergeant of'), 'agent': __('Scout from'), 'ambassador': __('Quartermaster of'), 'advisor': __('Chief of staff from'), 'member': __('Squaddie from')}, 
+            
+    }

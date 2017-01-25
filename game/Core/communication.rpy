@@ -196,7 +196,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('discussion') 
                 $ visavis.set_token('convention')
                 $ player.joy('authority', 2)
-            else:
+            elif result = 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
                 $ visavis.communications_done.append('discussion') 
@@ -207,7 +207,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'mind', dif)
             if result > 0:
                 $ visavis.set_token('convention')
-            else:
+            elif result = 0:
                 visavis 'Not impressed.'
             else:
                 $ visavis.set_token('antagonism')                                        
@@ -233,7 +233,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'agility', dif)
             if result > 0:
                 $ visavis.set_token('contribution')
-            else:
+            elif result = 0:
                 visavis 'Not impressed.'
             else:
                 $ visavis.set_token('antagonism')      
@@ -245,7 +245,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('dance') 
                 $ visavis.set_token('contribution')
                 $ player.joy('activity', 2)
-            else:
+            elif result = 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
                 $ visavis.communications_done.append('dance') 
@@ -256,7 +256,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'physique', dif)
             if result > 0:
                 $ visavis.set_token('convention')
-            else:
+            elif result = 0:
                 visavis 'Not impressed.'
             else:
                 $ visavis.set_token('antagonism')        
