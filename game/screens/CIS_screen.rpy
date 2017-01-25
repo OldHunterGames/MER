@@ -11,16 +11,12 @@ style gray_button is button:
 
 screen sc_character_info_screen(person, return_l=False, communicate=False):
     python:
-        if person.player_controlled:
-            mood = encolor_text(mood_translation[person.mood], person.mood)
+        if player.know_person(person):
+            relations = player.relations(person)
+            stance = player.stance(person)
         else:
-            mood = encolor_text(motivation_translation[person.motivation()], person.motivation())
-            if player.know_person(person):
-                relations = player.relations(person)
-                stance = player.stance(person)
-            else:
-                relations = None
-                stance = None
+            relations = None
+            stance = None
     modal True
     window:
         xfill True
@@ -76,13 +72,6 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             
                             hbox:
                                 text "{0} {1} {2} ".format(*person.alignment.description())
-                                if person.player_controlled:
-                                    textbutton "({mood})".format(mood=mood):
-                                        style 'hoverable_text'
-                                        text_style 'hoverable_text'
-                                        hovered Show('sc_mood_info', person=person)
-                                        unhovered Hide('sc_mood_info')
-                                        action NullAction()
                             if person != core.player and stance is not None:
                                 text (encolor_text(stance.show_type(), stance.value+2)+
                                     '({0} {1} {2})'.format(*relations.description()))
@@ -105,21 +94,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             for i in person.bad_markers:
                                 text encolor_text(bad_markers_translation[i], 'red')
                             for i in person.good_markers:
-                                text encolor_text(good_markers_translation[i], 'green')
-
-            
-            $ needs = person.get_all_needs().values()
-            $ changes = len(person.life_buffer.keys()) > 0
-            if changes:
-                frame:
-                    vbox:
-                        for key, value in person.life_buffer.items():
-                            hbox:
-                                spacing 3
-                                text key
-                                for i in value:
-                                    text str(i)
-                                
+                                text encolor_text(good_markers_translation[i], 'green')                        
                 
         frame:
             xsize 200
@@ -165,16 +140,7 @@ screen sc_tokens(person):
             xalign 0.5
             yalign 1.0
             xsize 200
-
-screen sc_skill_info(skill):
-    frame:
-        xalign 0.5
-        yalign 0.5
-        vbox:
-            for i in skill.description:
-                text i
-        
-
+       
 screen sc_info_popup(person):
     python:
         if player.know_person(person):
@@ -192,8 +158,7 @@ screen sc_info_popup(person):
             text person.full_name():
                 size 25
             text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-            text "{0} {1} {2} ({mood})".format(*person.alignment.description(),
-                mood=encolor_text(person.show_mood(), person.mood))
+            text "{0} {1} {2}".format(*person.alignment.description())
             if person != player and relations is not None:
                 text (encolor_text(stance.show_type(), stance.value+2)+
                     '({0} {1} {2})'.format(*relations.description()))
@@ -201,57 +166,7 @@ screen sc_info_popup(person):
                 text i.name
             for i in person.equiped_items():
                 text i.name
-
-screen sc_mood_info(person):
-        frame:
-            xalign 0.5
-            yalign 0.5
-            vbox:
-                spacing 5
-                if person.life_level > 0:
-                    text encolor_text('Life quality', 'green')
-                elif person.life_level < 0:
-                    text encolor_text("Life quality", 'red')
-                else:
-                    text encolor_text("Life quality", 2)
-
-                if person.selfesteem is not None:
-                    if person.selfesteem < 0:
-                        text encolor_text(__('Faithless'), 'red')
-                    elif person.selfesteem > 0:
-                        text encolor_text(__('Faithful'), 4)
-                    else:
-                        text encolor_text(__('Cynical'), 2)
-                
-                if not person.player_controlled:
-                
-                    if person.stimul < 0:
-                        text encolor_text(__('Punished'), 2)
-                    elif person.stimul > 0:
-                        text encolor_text(__('Rewarded'), 'green')
-                    else:
-                        text encolor_text(__('Uninterested'), 'red')
-
-                    if person.master is None:
-                        text encolor_text(__("Own choice"), 'green')
-                    else:
-                        if person.discipline != 2:
-                            text discipline_translation[person.discipline]
-
-                    if person.overseer is not None:
-                        if person.discipline != 0:
-                            text stance_overseer_translation[person.overseer_stance().value]
-                else:
-                    if person.joy == 1:
-                        text encolor_text("Joy", 'green')
-                    if person.success == 1:
-                        text encolor_text("Success", 'green')
-                    if person.purporse == 1:
-                        text encolor_text("Purporse", 5)
-
-
-                
-
+              
 screen sc_weapon_info(weapon):
     frame:
         xalign 0.5
@@ -260,7 +175,7 @@ screen sc_weapon_info(weapon):
             spacing 5
             text weapon.stats()
             if weapon.description is not None:
-                text weapon.description()
+                text weapon.description
             text 'price: ' + str(weapon.price)
 
 screen sc_vitality_info(person):
