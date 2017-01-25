@@ -55,6 +55,7 @@ class MistsOfEternalRome(object):
         self.current_world = self
         self.characters = persons_list
         self.time = 0
+        self.tokens_game = None
 
         self.allow_shemales = True
         self.allow_sexless = True
@@ -176,6 +177,7 @@ class MistsOfEternalRome(object):
         for person in self.characters:
             person.tick_schedule()
             person.rest()
+        self.tokens_game = None
         self.time += 1
         self.player.ap = 1
 
@@ -244,3 +246,14 @@ class MistsOfEternalRome(object):
         else:
             token_lbl = 'lbl_communicate'
         renpy.call_in_new_context(token_lbl, person)
+
+    def start_tokens_game(self, person):
+        if self.tokens_game is None:
+            self.tokens_game = store.TokensGame(person)
+        self.tokens_game.start()
+
+    def is_tokens_game_active(self):
+        if self.tokens_game is not None:
+            return self.tokens_game.chance is not None
+        else:
+            return self.player.chances_left() > 0

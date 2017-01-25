@@ -8,9 +8,9 @@ screen sc_player_hud:
             action Show('sc_player_contacts')
         textbutton "schedule":
             action Show('sc_schedule_organaizer')
-        if player.chances_left() > 0:
+        if core.is_tokens_game_active():
             textbutton encolor_text(__('divination'), player.chances_left()):
-                action Function(renpy.call_in_new_context, 'lbl_tokens_game_glue', player)
+                action Function(core.start_tokens_game, player)
         else:
             textbutton 'divination':
                 style 'gray_button'
@@ -27,7 +27,3 @@ screen sc_player_hud:
             hovered Show('sc_text_popup', text=__("Not enough money"))
             unhovered Hide('sc_text_popup')
             action NullAction()
-
-label lbl_tokens_game_glue(person):
-    $ TokensGame(person)
-    return

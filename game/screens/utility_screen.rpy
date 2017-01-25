@@ -507,18 +507,24 @@ init python:
             self.resource = resource
 
         def get_random_resource(self):
-            resources_list = ['tower']
-            for i in person.get_all_resources():
-                if i.name == 'mage' or i.name == 'hangman':
-                    continue
-                if i.available(self.attribute) and i.is_active(self.person):
-                    if i.nature != 'neutral':
-                        resources_list.append(i)
+            resources_list = self.get_player_cards()
             resource = choice(resources_list)
             if resource == 'tower':
+                self.bad_result()
+            elif resource == 'fool':
                 self.result = 0
-                self.randomed = im.Scale('images/tarot/arcana_tower.jpg', 300, 450)
-                self.text = '{person.name} had to try better'.format(person=self.person)
+                self.randomed = im.Scale('images/tarot/arcana_fool.jpg', 300, 450)
+            elif resource == 'hangman':
+                self.bad_result(resource)
+            elif resource == 'devil':
+                self.bad_result(resource)
+                self.person.add_condition('exhausted')
+            elif resource == 'death':
+                self.bad_result(resource)
+                self.person.add_condition('exhausted')
+                cards = [i for i in self.person.active_resources]
+                for i in cards:
+                    self.person.use_resource(i)
             else:
                 self.randomed = im.Scale(resource.image, 300, 450)
                 if resource.nature == 'good':
@@ -544,6 +550,23 @@ init python:
                     if self.job:
                         self.person.reset_productivity()
 
+        def bad_result(self, name):
+            self.result = -1
+            self.randomed = im.Scale('images/tarot/arcana_%s.jpg'%name, 300, 450)
+            self.text = '{person.name} had to try better'.format(person=self.person) 
+
+        def get_player_cards(self):
+            person = self.person
+            cards = TokensGame.get_defaults(person)
+            cards.append('fool')
+            cards.append('tower')
+            if any([value.tensed for key, value in person.needs.items() if person.need_level(key) == 1]):
+                cards.append('hangman')
+            if any([value.tensed for key, value in person.needs.items() if person.need_level(key) == 2]):
+                cards.append('devil')
+            if any([value.tensed for key, value in person.needs.items() if person.need_level(key) == 3]):
+                cards.append('death')
+            return cards
         def set_result(self, value):
             self.result = value
 
@@ -565,13 +588,13 @@ screen sc_skillcheck_mini(skillcheck):
                         If(skillcheck.job, Function(person.increase_productivity)),
                         Function(skillcheck.set_result, 1)]
             else:
-                image im.Grayscale(im.Scale('images/tarot/arcana_fool.jpg', 300, 450))
+                image im.Grayscale(im.Scale('images/tarot/card_back.jpg', 300, 450))
 
             imagebutton:
                 idle im.Scale('images/tarot/card_back.jpg', 300, 450)
                 action Function(skillcheck.get_random_resource), Return(skillcheck)
             imagebutton:
-                idle im.Scale('images/tarot/arcana_tower.jpg', 300, 450)
+                idle im.Scale('images/tarot/arcana_fool.jpg', 300, 450)
                 action Return(skillcheck)
 
 screen sc_show_card(img, x_align, y_align):

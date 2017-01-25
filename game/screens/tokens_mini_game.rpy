@@ -26,6 +26,10 @@ screen sc_chances(tokens_game):
                 txt = encolor_text(chance.id, chance_value)
             text txt:
                 xalign 0.5
+        textbutton 'Leave':
+            xalign 0.5
+            yalign 1.0
+            action Return()
 
 
 screen sc_tokens_game(tokens_game):
@@ -72,16 +76,20 @@ init python:
             self.roll_phase = False
             self.failed = False
             self.person = person
+            self.chance = None
             self.chance_value = None
             self.revolver = []
             self.free_turn = 0
             self.get_chance()
+
+        def start(self):
             renpy.call_in_new_context('lbl_tokens_game', self)
 
 
         def get_chance(self):
             person = self.person
             chance = choice(person.get_all_chances())
+            self.chance = chance
             person.remove_chance(chance.id)
             self.active_chance = chance
             if chance.negative:
@@ -101,7 +109,7 @@ init python:
         def fill_revolver(self):
             cards = [i for i in self.get_available_cards()]
             shuffle(cards)
-            for i in range(max(3, min(1, self.chance_value))):
+            for i in range(min(3, max(1, self.chance_value))):
                 self.revolver.append(cards[i])
             renpy.show_screen('sc_tokens_game', self)
 
@@ -132,6 +140,7 @@ init python:
             if self.person.chances_left() > 0:
                 self.get_chance()
             else:
+                self.chance = None
                 renpy.return_statement()
 
         @classmethod
@@ -141,7 +150,7 @@ init python:
             for name in names:
                 for i in range(1, 6):
                     defaults.append('%s_%s'%(name, i))
-            return [card for card in self.person.resources_deck in card.name in defaults and card.can_be_applied(self.person)]
+            return [card for card in person.resources_deck if card.name in defaults and card.can_be_applied(person)]
         
         def get_available_cards(self):
             chance_value = self.chance_value
