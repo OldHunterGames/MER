@@ -170,8 +170,7 @@ class Skilled(object):
         value = self.count_modifiers(attr+'_skill')
         return max(0, min(3, value))
 
-    def use_inner_resource(self, resource):
-        self.used_inner_resources.append(resource)
-
-    def has_inner_resource(self, resource):
-        return resource not in self.used_inner_resources
+    def has_resource(self, id_):
+        for i in self.active_resources:
+            if i.name == id_:
+                return i
