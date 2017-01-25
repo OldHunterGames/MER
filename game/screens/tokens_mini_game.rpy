@@ -1,9 +1,35 @@
 label lbl_tokens_game(tokens_game):
-    call screen sc_tokens_game(tokens_game)
+    call screen sc_chances(tokens_game)
     return
+
+screen sc_chances(tokens_game):
+    $ chances = tokens_game.person.chances_left()
+    window:
+        xfill True
+        yfill True  
+        vbox:
+            xalign 0.0
+            xmaximum 400
+            ymaximum 500
+            image im.Scale('images/tarot/card_back.jpg', 300, 400)
+            text 'Cards: %s'%chances:
+                xalign 0.5
+        vbox:
+            xalign 1.0
+            imagebutton:
+                idle im.Scale('images/tarot/card_back.jpg', 300, 400)
+                hover im.MatrixColor(im.Scale('images/tarot/card_back.jpg', 300, 400), im.matrix.brightness(0.05))
+                action Function(tokens_game.start_rolling)
+            python:
+                chance = tokens_game.active_chance
+                chance_value = tokens_game.chance_value
+                txt = encolor_text(chance.id, chance_value)
+            text txt:
+                xalign 0.5
 
 
 screen sc_tokens_game(tokens_game):
+    modal True
     python:
         colors = [(1, 0, 0), (1, 0, 1), (0, 1, 1), (0, 0, 1), (0, 1, 0), (0.85, 0.64, 0.12)]
     window:
@@ -21,48 +47,20 @@ screen sc_tokens_game(tokens_game):
                 yalign 0.5
                 xalign 0.5
                 spacing 10
-                if not tokens_game.roll_phase:
-                    imagebutton:
-                        if tokens_game.free_turn > 0:
-                            idle im.Scale('images/tarot/arcana_judgement.jpg', 300, 480)
-                        else:
-                            idle im.MatrixColor(im.Scale('images/tarot/card_draw.jpg', 300, 480), im.matrix.tint(*colors[tokens_game.chances]))
-                        insensitive im.Grayscale(im.Scale('images/tarot/card_draw.jpg', 300, 480))
-                        action [Function(tokens_game.start_rolling),
-                            SensitiveIf(tokens_game.chances > -1 or tokens_game.free_turn > 0)]
-                else:
-                    for i in range(0, 3):
-                        $ value = tokens_game.revolver[i]
-                        $ card = value[0]
-                        $ revealed = value[2]
-                        $ locked = tokens_game.is_locked(i)
-                        $ key = i
-                        if tokens_game.roll_phase:
-                            if revealed:
-                                vbox:
-                                    imagebutton:
-                                        idle im.Scale(card.image, 300, 480)
-                                        hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
-                                        insensitive im.Grayscale(im.Scale(card.image, 300, 480))
-                                        action Function(tokens_game.use_card, i), SensitiveIf(not locked)
-                                    text card.encolor_name():
-                                        xalign 0.5
-                            else:
-                                imagebutton:
-                                    idle im.Scale('images/tarot/card_back.jpg', 300, 480)
-                                    hover im.MatrixColor(im.Scale('images/tarot/card_back.jpg', 300, 480), im.matrix.brightness(0.05))
-                                    insensitive im.Grayscale(im.Scale('images/tarot/card_back.jpg', 300, 480))
-                                    action Function(tokens_game.open_card, i), SensitiveIf(not locked)
-    if not tokens_game.roll_phase:
-        vbox:
-            xalign 0.5
-            yalign 1.0
-            
-            if tokens_game.free_turn <= 0:
-                textbutton 'Done':
-                    action Return()
-                    xsize 200
-
+                for i in range(0, len(tokens_game.revolver)):
+                    python:
+                        value = tokens_game.revolver
+                        card = value[i]
+                        key = i
+                    if tokens_game.roll_phase:
+                        vbox:
+                            imagebutton:
+                                idle im.Scale(card.image, 300, 480)
+                                hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
+                                insensitive im.Grayscale(im.Scale(card.image, 300, 480))
+                                action Function(tokens_game.use_card, i), Hide('sc_tokens_game')
+                            text card.encolor_name():
+                                xalign 0.5
 
 
 init python:
@@ -74,10 +72,22 @@ init python:
             self.roll_phase = False
             self.failed = False
             self.person = person
-            self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
+            self.chance_value = None
+            self.revolver = []
             self.free_turn = 0
+            self.get_chance()
             renpy.call_in_new_context('lbl_tokens_game', self)
 
+
+        def get_chance(self):
+            person = self.person
+            chance = choice(person.get_all_chances())
+            person.remove_chance(chance.id)
+            self.active_chance = chance
+            if chance.negative:
+                self.chance_value = 3-chance.value
+            else:
+                self.chance_value = chance.value
 
         @property
         def chances(self):
@@ -86,31 +96,22 @@ init python:
         def start_rolling(self):
             self.roll_phase = True
             self.failed = False
-            if self.free_turn <= 0:
-
-                self.person.drain_energy()
-            else:
-                self.free_turn -= 1
             self.fill_revolver()
 
         def fill_revolver(self):
-            cards = [i for i in self.person.resources_deck if i.is_active(self.person)]
+            cards = [i for i in self.get_available_cards()]
             shuffle(cards)
-            self.revolver[0][0] = cards[0]
-            self.revolver[1][0] = cards[1]
-            self.revolver[2][0] = cards[2]
+            for i in range(max(3, min(1, self.chance_value))):
+                self.revolver.append(cards[i])
+            renpy.show_screen('sc_tokens_game', self)
 
 
         def stop_rolling(self):
             self.roll_phase = False
 
         def clear(self):
-            self.revolver = [[None, False, False], [None, False, False], [None, False, False]]
+            self.revolver = []
             self.stop_rolling()
-            if self.free_turn > 0:
-                self.start_rolling()
-            elif self.chances < 0 and self.free_turn <= 0:
-                renpy.return_statement()
 
         def is_locked(self, slot):
             return self.revolver[slot][1]
@@ -126,9 +127,32 @@ init python:
                 self.revolver[slot][1] = True
 
         def use_card(self, slot):
-            self.revolver[slot][0].activate(self)
+            self.revolver[slot].activate(self)
             self.clear()
+            if self.person.chances_left() > 0:
+                self.get_chance()
+            else:
+                renpy.return_statement()
 
+
+        def get_available_cards(self):
+            chance_value = self.chance_value
+            negatives = ['hermit', 'fool', 'mage', 'fortune', 'hangman', 'devil', 'death']
+            if chance_value < 3:
+                return [card for card in self.person.resources_deck if card.name in negatives]
+            else:
+                defaults = []
+                names = ["swords", 'wands', 'pentacles', 'cups']
+                for name in names:
+                    for i in range(1, 6):
+                        defaults.append('%s_%s'%(name, i))
+                valued = {
+                    3: ['fool', 'mage', 'temperance', 'empress'],
+                    4: ['fool', 'mage', 'emperor', 'justice'],
+                    5: ['fool', 'mage', 'sun', 'pope', 'judgement']
+                }
+                defaults.extend(values[chance_value])
+                return [card for card in self.person.resources_deck in card.name in defaults]
 
     class TaroCard(object):
 
@@ -193,24 +217,38 @@ init python:
             return self.attribute == attribute
 
     def temperance_activate(taro_game):
-        taro_game.person.gain_energy()
+        person = taro_game.person
+        if person.energy < 3:
+            person.gain_energy()
+        elif person.energy > 3:
+            person.drain_energy()
 
     def judgement_activate(taro_game):
-        taro_game.free_turn += 1
+        taro_game.person.clear_chances()
 
     def hangman_activate(taro_game):
-        pass
+        taro_game.person.drain_energy(taro_game.person.energy)
 
     def devil_activate(taro_game):
-        while taro_game.person.energy > -1:
-            taro_game.person.drain_energy()
-
-    def death_activate(taro_game):
         person = taro_game.person
+        person.drain_energy(person.energy)
         cards = [i for i in person.active_resources]
         for i in cards:
             person.use_resource(i)
-        devil_activate(taro_game)
+
+    def death_activate(taro_game):
+        person = taro_game.person
+        person.drain_energy(person.energy)
+        person.clear_chances(True)
+
+    def pope_activate(taro_game):
+        taro_game.person.gain_energy(3)
+
+    def mage_activate(taro_game):
+        taro_game.person.gain_energy(1)
+
+    def justice_activate(taro_game):
+        taro_game.person.gain_energy(2)
 
     default_taro_cards = {"swords": 'physique', 'wands': 'spirit', 'pentacles': 'mind', 'cups': 'agility'}
     taro_suffix = [None, 'slave', 'overseer', 'mistress', 'master', 'ace']
@@ -220,20 +258,23 @@ init python:
         'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
         'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
         'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': 'luck'},
-        'mage': {'value': 5, 'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good'},
+        'mage': {'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good', 'activate': mage_activate},
         'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
         'emperor': {'value': 4, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_emperor.jpg', 'nature': 'good'},
         'empress': {'value': 3, 'attribute': 'any', 'mood': 4, 'image': 'images/tarot/arcana_empress.jpg', 'nature': 'good'},
         'hangman': {'locker': True, 'activate': hangman_activate, 'image': 'images/tarot/arcana_hangman.jpg', 'nature': 'bad'},
         'devil': {'mood': 0, 'activate': devil_activate, 'image': 'images/tarot/arcana_devil.jpg', 'locker': True, 'nature': 'bad'},
-        'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg', 'nature': 'bad'}
+        'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg', 'nature': 'bad'},
+        'hermit': {'value': 4, 'image': 'images/tarot/arcana_hermit.jpg', 'nature': 'good', 'attribute': 'any'},
+        'pope': {'image': 'images/tarot/arcana_pope.jpg', 'nature': 'good', 'activate': pope_activate},
+        'justice': {'image': 'images/tarot/arcana_justice.jpg', 'nature': 'good', 'activate': justice_activate}
 
     }
 
     def init_taro(player):
         for key, value in default_taro_cards.items():
             for i in range(1, 6):
-                player.resources_deck.append(TaroCard(key, 'images/tarot/%s_%s.jpg'%(key, taro_suffix[i]), value, i))
+                player.resources_deck.append(TaroCard(key+'_%s'%i, 'images/tarot/%s_%s.jpg'%(key, taro_suffix[i]), value, i))
         for key, value in special_taro_cards.items():
             card = TaroCard(key, **value)
             card.type = 'arcana'
