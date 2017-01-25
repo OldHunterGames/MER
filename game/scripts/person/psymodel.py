@@ -79,6 +79,9 @@ class Need(object):
     def remove_tension(self, point):
         self.tension_points.remove(point)
 
+    def tensed(self):
+        return len(self.tension_points) > 0
+
 
 class PsyModel(object):
 

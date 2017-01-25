@@ -8,8 +8,8 @@ screen sc_player_hud:
             action Show('sc_player_contacts')
         textbutton "schedule":
             action Show('sc_schedule_organaizer')
-        if player.energy >= 0:
-            textbutton encolor_text(__('divination'), player.energy):
+        if player.chances_left() > 0:
+            textbutton encolor_text(__('divination'), player.chances_left()):
                 action Function(renpy.call_in_new_context, 'lbl_tokens_game_glue', player)
         else:
             textbutton 'divination':

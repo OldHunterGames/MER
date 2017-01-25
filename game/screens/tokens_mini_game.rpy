@@ -134,18 +134,22 @@ init python:
             else:
                 renpy.return_statement()
 
-
+        @classmethod
+        def get_defaults(cls, person):
+            defaults = []
+            names = ["swords", 'wands', 'pentacles', 'cups']
+            for name in names:
+                for i in range(1, 6):
+                    defaults.append('%s_%s'%(name, i))
+            return [card for card in self.person.resources_deck in card.name in defaults and card.can_be_applied(self.person)]
+        
         def get_available_cards(self):
             chance_value = self.chance_value
             negatives = ['hermit', 'fool', 'mage', 'fortune', 'hangman', 'devil', 'death']
             if chance_value < 3:
                 return [card for card in self.person.resources_deck if card.name in negatives]
             else:
-                defaults = []
-                names = ["swords", 'wands', 'pentacles', 'cups']
-                for name in names:
-                    for i in range(1, 6):
-                        defaults.append('%s_%s'%(name, i))
+                defaults = self.get_defaults(self.person)
                 valued = {
                     3: ['fool', 'mage', 'temperance', 'empress'],
                     4: ['fool', 'mage', 'emperor', 'justice'],
@@ -176,24 +180,6 @@ init python:
             else:
                 self._activate(taro_game)
 
-        def is_active(self, person):
-            if self.name == 'death':
-                return person.anxiety > 0
-            if self.mood is None:
-                if self.attribute != 'any' and self.attribute is not None:
-                    try:
-                        attr = getattr(person, self.attribute)
-                    except AttributeError:
-                        return True
-                    else:
-                        return attr >= self.value
-                else:
-                    return True
-            if self.nature == 'good':
-                return person.mood >= self.mood
-            else:
-                return person.mood <= self.mood
-
         def display_name(self):
             if self.type == 'common':
                 return taro_common[self.name][self.value]['name']
@@ -210,6 +196,11 @@ init python:
                 return encolor_text(self.display_name(), 'red')
             else:
                 return self.display_name()
+
+        def can_be_applied(self, person):
+            if self.attribute != 'any':
+                return getattr(person, self.attribute) >= self.value
+            return True
 
         def available(self, attribute):
             if self.attribute == 'any':
