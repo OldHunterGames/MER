@@ -42,17 +42,6 @@ def change_needs(person, satisfy, tense, result):
         for i in satisfy:
             getattr(person, i).set_satisfaction(result)
 
-
-def get_max_skill(person, skills):
-    list_ = [person.skill(i) for i in skills]
-    max_level = max([i.level for i in list_])
-    for j in [i for i in list_]:
-        if j.level < max_level:
-            list_.remove(j)
-    return random.choice(list_)
-
-
-
 class Observable(object):
 
 
