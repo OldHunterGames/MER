@@ -513,6 +513,7 @@ init python:
                 self.bad_result('tower')
             elif resource == 'fool':
                 self.result = 0
+                self.text = '{person.name} had to try better'.format(person=self.person)
                 self.randomed = im.Scale('images/tarot/arcana_fool.jpg', 300, 450)
             elif resource == 'hangman':
                 self.bad_result(resource)
@@ -553,7 +554,7 @@ init python:
         def bad_result(self, name):
             self.result = -1
             self.randomed = im.Scale('images/tarot/arcana_%s.jpg'%name, 300, 450)
-            self.text = '{person.name} had to try better'.format(person=self.person) 
+            self.text = '%s. Something gone terribly wrong!'%encolor_text('Epic fail', 'red')
 
         def get_player_cards(self):
             person = self.person
