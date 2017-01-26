@@ -67,8 +67,6 @@ label start:
     # call screen sc_faction_info(great_houses[0])
     call lbl_gen_player
     $ init_taro(core.player)
-    $ player.tense_need('nutrition', 'hunger')
-    $ player.tense_need('wellness', 'pain')
     # call screen sc_sexengine_main(sex)
     # call lbl_simple_fight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
