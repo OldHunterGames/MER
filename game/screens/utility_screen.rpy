@@ -510,7 +510,7 @@ init python:
             resources_list = self.get_player_cards()
             resource = choice(resources_list)
             if resource == 'tower':
-                self.bad_result()
+                self.bad_result('tower')
             elif resource == 'fool':
                 self.result = 0
                 self.randomed = im.Scale('images/tarot/arcana_fool.jpg', 300, 450)

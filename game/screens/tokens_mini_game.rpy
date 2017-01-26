@@ -109,7 +109,9 @@ init python:
         def fill_revolver(self):
             cards = [i for i in self.get_available_cards()]
             shuffle(cards)
-            for i in range(min(3, max(1, self.chance_value))):
+            if self.chance_value <= 2:
+                self.chance_value += 1
+            for i in range(self.chance_value):
                 self.revolver.append(cards[i])
             renpy.show_screen('sc_tokens_game', self)
 
