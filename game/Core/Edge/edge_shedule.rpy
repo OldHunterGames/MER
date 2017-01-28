@@ -13,21 +13,21 @@ label edge_None_template(actor):
 label edge_service_whores(actor):
     python:
         name = actor.name
-        actor.eros.set_satisfaction(3)
+        actor.set_satisfy('eros', 3)
     "[name]fucks whores."
     return
 
 label edge_service_booze(actor):
     python:
         name = actor.name
-        actor.wellness.set_satisfaction(3)
+        actor.set_satisfy('wellness', 3)
     "[name]is drunk. Makes him feel better."
     return
 
 label edge_service_maid(actor):
     python:
         name = actor.name
-        actor.authority.set_satisfaction(3)
+        actor.set_satisfy('authority', 3)
     "[name]have subservient maid."
     return
          
@@ -99,30 +99,31 @@ label edge_feed_canibalism(actor):
 label edge_accommodation_makeshift(actor):
     python:
         name = actor.name
-        actor.comfort.set_tension()
-        actor.prosperity.set_tension()
-        actor.wellness.set_tension()   
+        person.set_tension('comfort', 'bad_sleep')
+        person.set_tension('prosperity', 'homeless')
+        person.set_tension('wellness', 'bed_of_rocks')
     "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
 label edge_accommodation_mat(actor):
     python:
-        actor.comfort.set_tension()
-        actor.prosperity.set_tension()
+        person.set_tension('comfort', 'bad_sleep')
+        person.set_tension('prosperity', 'poor_accomodation')
         name = actor.name
     "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
     return 
 
 label edge_accommodation_cot(actor):
-    $ actor.comfort.set_satisfaction(1)
-    $ name = actor.name
-    '[name]sleeps on a rough cot under the holy blanket. Well, SOME comfort at least...'    
+    python:
+        actor.set_satisfy('comfort', 1)    
+        name = actor.name
+    '[name]sleeps on a rough cot under the ruggy blanket. Well, SOME comfort at least...'    
     return 
 
 label edge_accommodation_appartment(actor):
     python:
-        actor.comfort.set_satisfaction(3)
-        actor.prosperity.set_satisfaction(1)
+        actor.set_satisfy('comfort', 3)    
+        person.set_tension('prosperity', 1)
         name = actor.name
     '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  
@@ -140,11 +141,11 @@ label edge_job_beg(actor):
     python:
         actor = actor
         name = actor.name
-        actor.moral_action('timid') 
+        actor.moral_action(activity = 'timid') 
 
-        actor.wellness.set_tension()        
-        actor.prosperity.set_tension()        
-        actor.authority.set_tension()
+        person.set_tension('wellness', 'unhealthy_job')
+        person.set_tension('prosperity', 'beggar')
+        person.set_tension('authority', 'humiliation')        
 
         actor.eat(1, -1)
         ration = actor.food_info()    
@@ -155,10 +156,10 @@ label edge_job_beg(actor):
 label edge_job_bukake(actor):
     python:
         name = actor.name
-        actor.wellness.set_tension()    
-        actor.comfort.set_tension()
-        actor.authority.set_tension()        
-        actor.eros.set_tension()    
+        person.set_tension('wellness', 'unhealthy_job')
+        person.set_tension('comfort', 'tiresome_job')
+        person.set_tension('authority', 'humiliation')    
+        person.set_tension('eros', 'sexplotation')    
         actor.eat(3, -1)
         ration = actor.food_info()    
         text = __('')
@@ -170,13 +171,13 @@ label edge_job_manual(actor):
     python:
         name = actor.name
         result = actor.job_productivity()
-        actor.moral_action('lawful') 
+        actor.moral_action(orderliness = 'lawful') 
     if result > 0:
         "[name]earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
         $ player.add_money(10)
-        $ actor.amusement.set_tension()
-    else: 
-        $ actor.ambition.set_tension()
+        $ person.set_tension('amusement', 'boring_job')    
+    elif result < 0: 
+        $ person.set_tension('ambition', 'failure_at_work')    
 
     return
     
@@ -188,10 +189,9 @@ label edge_job_houseservice(actor):
     if result > 0:
         "[name]earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
         $ player.add_money(10)
-        $ actor.amusement.set_tension()
-    else: 
-        $ actor.ambition.set_tension()
-
+        $ person.set_tension('amusement', 'boring_job')    
+    elif result < 0: 
+        $ person.set_tension('ambition', 'failure_at_work')    
     return
     
 label edge_job_construction(actor):
@@ -201,9 +201,10 @@ label edge_job_construction(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a tiresome job."
         $ player.add_money(yeld)
-        $ actor.comfort.set_tension()
+        $ person.set_tension('comfort', 'tiresome_job') 
     else: 
-        $ actor.ambition.set_tension()
+        $ person.set_tension('prosperity', 'buissiness_fail') 
+        $ person.set_tension('ambition', 'failure_at_work')            
     return
     
 label edge_job_entertain(actor):
@@ -213,9 +214,10 @@ label edge_job_entertain(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a humiliating job."
         $ player.add_money(yeld)
-        $ actor.authority.set_tension()
+        $ person.set_tension('authority', 'humiliation') 
     else: 
-        $ actor.ambition.set_tension()
+        $ person.set_tension('prosperity', 'buissiness_fail') 
+        $ person.set_tension('ambition', 'failure_at_work')            
     return
     
 label edge_job_disassembly(actor):
@@ -225,9 +227,10 @@ label edge_job_disassembly(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a boring job."
         $ player.add_money(yeld)
-        $ actor.amusement.set_tension()
+        $ person.set_tension('amusement', 'boring_job')  
     else: 
-        $ actor.ambition.set_tension()
+        $ person.set_tension('prosperity', 'buissiness_fail') 
+        $ person.set_tension('ambition', 'failure_at_work')            
     return
                 
 label edge_job_range(actor):

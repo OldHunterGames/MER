@@ -481,6 +481,15 @@ init python:
         'sexless': { 'straight': (0,0), 'male': (3, 3), 'female': (3, 3), 'shemale': (3, 3), 'sexless': (1, 2),},
     }
     
+    
+    sexual_type = {
+        'f': {'loves_to_do': ['rough', 'tender', 'passionate', 'bizarre'], 
+            'loves_to_get': ['rough', 'tender', 'passionate', 'bizarre'], 
+            'hates_to_do': ['rough', 'tender', 'passionate', 'bizarre'], 
+            'hates_to_get': ['rough', 'tender', 'passionate', 'bizarre']},
+            
+    }
+    
     kink_types = {
         'dominant': {'active': (8, 0), 
             'abuse': (6, 0), 
