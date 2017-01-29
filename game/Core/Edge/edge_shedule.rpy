@@ -99,16 +99,16 @@ label edge_feed_canibalism(actor):
 label edge_accommodation_makeshift(actor):
     python:
         name = actor.name
-        actor.set_tension('comfort', 'bad_sleep')
-        actor.set_tension('prosperity', 'homeless')
-        actor.set_tension('wellness', 'bed_of_rocks')
+        actor.tense_need('comfort', 'bad_sleep')
+        actor.tense_need('prosperity', 'homeless')
+        actor.tense_need('wellness', 'bed_of_rocks')
     "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
 label edge_accommodation_mat(actor):
     python:
-        actor.set_tension('comfort', 'bad_sleep')
-        actor.set_tension('prosperity', 'poor_accomodation')
+        actor.tense_need('comfort', 'bad_sleep')
+        actor.tense_need('prosperity', 'poor_accomodation')
         name = actor.name
     "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
     return 
@@ -123,7 +123,7 @@ label edge_accommodation_cot(actor):
 label edge_accommodation_appartment(actor):
     python:
         actor.set_satisfy('comfort', 3)    
-        actor.set_tension('prosperity', 1)
+        actor.tense_need('prosperity', 1)
         name = actor.name
     '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  
@@ -143,9 +143,9 @@ label edge_job_beg(actor):
         name = actor.name
         actor.moral_action(activity = 'timid') 
 
-        actor.set_tension('wellness', 'unhealthy_job')
-        actor.set_tension('prosperity', 'beggar')
-        actor.set_tension('authority', 'humiliation')        
+        actor.tense_need('wellness', 'unhealthy_job')
+        actor.tense_need('prosperity', 'beggar')
+        actor.tense_need('authority', 'humiliation')        
 
         actor.eat(1, -1)
         ration = actor.food_info()    
@@ -156,10 +156,10 @@ label edge_job_beg(actor):
 label edge_job_bukake(actor):
     python:
         name = actor.name
-        actor.set_tension('wellness', 'unhealthy_job')
-        actor.set_tension('comfort', 'tiresome_job')
-        actor.set_tension('authority', 'humiliation')    
-        actor.set_tension('eros', 'sexplotation')    
+        actor.tense_need('wellness', 'unhealthy_job')
+        actor.tense_need('comfort', 'tiresome_job')
+        actor.tense_need('authority', 'humiliation')    
+        actor.tense_need('eros', 'sexplotation')    
         actor.eat(3, -1)
         ration = actor.food_info()    
         text = __('')
@@ -175,9 +175,9 @@ label edge_job_manual(actor):
     if result > 0:
         "[name]earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
         $ player.add_money(10)
-        $ actor.set_tension('amusement', 'boring_job')    
+        $ actor.tense_need('amusement', 'boring_job')    
     elif result < 0: 
-        $ actor.set_tension('ambition', 'failure_at_work')    
+        $ actor.tense_need('ambition', 'failure_at_work')    
 
     return
     
@@ -189,9 +189,9 @@ label edge_job_houseservice(actor):
     if result > 0:
         "[name]earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
         $ player.add_money(10)
-        $ actor.set_tension('amusement', 'boring_job')    
+        $ actor.tense_need('amusement', 'boring_job')    
     elif result < 0: 
-        $ actor.set_tension('ambition', 'failure_at_work')    
+        $ actor.tense_need('ambition', 'failure_at_work')    
     return
     
 label edge_job_construction(actor):
@@ -201,10 +201,10 @@ label edge_job_construction(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a tiresome job."
         $ player.add_money(yeld)
-        $ actor.set_tension('comfort', 'tiresome_job') 
+        $ actor.tense_need('comfort', 'tiresome_job') 
     else: 
-        $ actor.set_tension('prosperity', 'buissiness_fail') 
-        $ actor.set_tension('ambition', 'failure_at_work')            
+        $ actor.tense_need('prosperity', 'buissiness_fail') 
+        $ actor.tense_need('ambition', 'failure_at_work')            
     return
     
 label edge_job_entertain(actor):
@@ -214,10 +214,10 @@ label edge_job_entertain(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a humiliating job."
         $ player.add_money(yeld)
-        $ actor.set_tension('authority', 'humiliation') 
+        $ actor.tense_need('authority', 'humiliation') 
     else: 
-        $ actor.set_tension('prosperity', 'buissiness_fail') 
-        $ actor.set_tension('ambition', 'failure_at_work')            
+        $ actor.tense_need('prosperity', 'buissiness_fail') 
+        $ actor.tense_need('ambition', 'failure_at_work')            
     return
     
 label edge_job_disassembly(actor):
@@ -227,10 +227,10 @@ label edge_job_disassembly(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a boring job."
         $ player.add_money(yeld)
-        $ actor.set_tension('amusement', 'boring_job')  
+        $ actor.tense_need('amusement', 'boring_job')  
     else: 
-        $ actor.set_tension('prosperity', 'buissiness_fail') 
-        $ actor.set_tension('ambition', 'failure_at_work')            
+        $ actor.tense_need('prosperity', 'buissiness_fail') 
+        $ actor.tense_need('ambition', 'failure_at_work')            
     return
                 
 label edge_job_range(actor):
@@ -240,50 +240,4 @@ label edge_job_range(actor):
     call lbl_edge_randenc_errant
     return
           
-          
-          
-          
-          
-          
-          
-          
-            
-label shd_edge_job_servitor(actor):
-    python:
-        name = actor.name
-        beneficiar = actor
-        actor.moral_action('timid') 
-        actor.authority.set_tension()
-        actor.comfort.set_tension()
-        actor.ambition.set_tension()        
-        actor.independence.set_tension()
-        text = __(' ministering gang members.')
-        target.supervisor.gain_favor(1)
-    '[name] [text]'
-    return
-
-    
-label shd_edge_job_treasurehunt(actor):
-    python:
-        skill = 'observation'
-        difficulty = special_values['difficulty'] 
-
-        name = actor.name
-        descr = special_values['description'] 
-
-    call lbl_skillcheck(actor, skill, motivation, difficulty)
-
-    python:
-        result = skillcheck.result
-        if result > 0:
-            trs = edge.gen_treasures
-            yeld = __('Found: [trs].')
-        else:
-            yeld = __('Noting found.')
-
-    '[name] [descr][yeld].'
-    return
-       
-
-    
-    
+        

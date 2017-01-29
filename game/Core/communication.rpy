@@ -96,7 +96,7 @@ label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
     menu:
         'Intimidate (ardent, spirit)':
-            $ player.moral_action(activity='ardent', visavis) 
+            $ player.moral_action(visavis, activity='ardent') 
             $ dif = visavis.spirit
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
@@ -104,7 +104,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Get to know (lawful, wisdom)':
-            $ player.moral_action(orderliness='lawful', visavis) 
+            $ player.moral_action(visavis, orderliness='lawful') 
             $ dif = visavis.mind
             $ result = core.skillcheck(player, 'mind', dif)
             '[result]'
@@ -113,7 +113,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Flatter (good, finesse)':
-            $ player.moral_action(moral='good', visavis) 
+            $ player.moral_action(visavis, moral='good') 
             $ dif = visavis.agility
             $ result = core.skillcheck(player, 'agility', dif)
             if result > 0:
@@ -121,7 +121,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Sudden joke (chotic, random)':
-            $ player.moral_action(orderliness=''chaotic', visavis) 
+            $ player.moral_action(visavis, orderliness='chaotic') 
             $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
             if rnd == 'plus':
                 $ visavis.stance(player).value += 1
@@ -132,11 +132,11 @@ label lbl_first_impression:
             else:
                 $ visavis.set_token(rnd)                
         'Mock (evil)':
-            $ player.moral_action(moral='evil', visavis) 
+            $ player.moral_action(visavis, moral='evil') 
             $ visavis.set_token('antagonism')
             $ player.set_satisfy('authority', 2)
         'Reticence (timid)':
-            $ player.moral_action(activity='timid', visavis)
+            $ player.moral_action(visavis, activity='timid')
             'No changes' 
                 
     hide card
