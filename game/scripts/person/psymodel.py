@@ -172,27 +172,27 @@ class PsyModel(object):
             pass
         del self._chances[name]
 
-    def get_need_(self, name):
+    def get_need(self, name):
         return self.needs[name]
 
-    def need_level(self, need):
-        return DEFAULT_NEED_LEVEL + self.count_modifiers(need)
+    def need_level(self, name):
+        return DEFAULT_NEED_LEVEL + self.count_modifiers(name)
 
-    def tense_need(self, need, point):
-        need_obj = self.needs[need]
+    def tense_need(self, name, point):
+        need_obj = self.needs[name]
         if need_obj.has_tension(point):
             return
         else:
-            self.add_chance(self.need_level(need), point, True,
+            self.add_chance(self.need_level(name), point, True,
                 lambda: need_obj.remove_tension(point),
                 False)
             need_obj.set_tension(point)
 
-    def satisfy_need(self, need, value):
-        need_obj = self.needs[need]
+    def satisfy_need(self, name, value):
+        need_obj = self.needs[name]
         satisfied = need_obj.set_satisfaction(value)
         if satisfied:
-            self.add_chance(self.satisfy_chances[need], need_obj.level)
+            self.add_chance(self.satisfy_chances[name], need_obj.level)
 
     def get_chances(self, bad=False):
         dict_ = {}

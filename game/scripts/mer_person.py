@@ -451,9 +451,9 @@ class FoodSystem(object):
         else:
             total = max(-1, min(5, self.quality + amount_value))
         if total > 0:
-            self.owner.nutrition.set_satisfaction(total)
+            self.owner.satisfy_need('nutrition', total)
         elif total < 0:
-            self.owner.nutrition.set_tension()
+            self.owner.tense_need('nutrition', 'hunger')
         if self.amount == 3:
             self.satiety += self.amount - 2
         elif self.amount == 1:
