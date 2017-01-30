@@ -3,6 +3,7 @@
 import renpy.store as store
 import renpy.exports as renpy
 from alignment import Alignment
+import mer_utilities
 
 
 needs_names = ["nutrition", "wellness", "comfort", "activity", "communication",
@@ -57,7 +58,7 @@ class Need(object):
     def set_satisfaction(self, value):
         if self.satisfied:
             return False
-        roll = roll(value, 6)
+        roll = mer_utilities.roll(value, 6)
         if roll:
             self.satisfied = True
             return True
