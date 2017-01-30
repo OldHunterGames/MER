@@ -105,6 +105,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
 persons_list = []
 
 def gen_sex_traits(person):
+    return
     kink_data = store.kink_types
     kink = choice(kink_data.keys())
     person.kink = kink
@@ -491,7 +492,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     @utilities.Observable
     def __init__(self, age=None, gender=None, genus='human'):
         super(Person, self).__init__()
-
+        self.kink = 'default'
         self.player_controlled = False
         self.init_inventorywielder()
         self.init_skilled()

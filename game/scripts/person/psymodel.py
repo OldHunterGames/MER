@@ -2,7 +2,6 @@
 
 import renpy.store as store
 import renpy.exports as renpy
-from needs import init_needs
 from alignment import Alignment
 
 
