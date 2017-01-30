@@ -93,13 +93,6 @@ label lbl_edge_manage:
         enrgy_txt = encolor_text('energy', player.energy)
            
     menu:
-
-#        'Нарастить энергию':
-#            $ player.gain_energy() 
-#        'Test your MIGHT':
-#            $ core.skillcheck(player, 'physique', 3)
-#        'Divination ([enrgy_txt])' if player.energy >= 0:
-#            $ TokensGame(player)      
         'Opportunities':
             if player.energy >= 0:
                 call lbl_edge_opportunities 
