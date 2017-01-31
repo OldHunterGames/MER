@@ -128,11 +128,8 @@ screen sc_maneuver_info(maneuver):
                 for i in maneuver.targets:
                     image im.Scale(i.avatar, 50, 50) 
 
-label lbl_simple_fight(allies, enemies):
+label lbl_simple_fight(fight, allies):
 
-    python:
-        
-        fight = SimpleFight(allies, enemies)
     call screen sc_simplefight_equip(allies[0])
     call screen sc_simple_fight(fight)
     call lbl_postfight(fight)

@@ -42,6 +42,7 @@ class SimpleFight(object):
             i.type = 'npc'
             i.set_enemies([i for i in self.allies])
         self.enemies_turn()
+        renpy.call_in_new_context('lbl_simple_fight', self, allies_list)
     
     def select(self, ally):
         self.selected_ally = ally
