@@ -134,7 +134,7 @@ label lbl_first_impression:
         'Mock (evil)':
             $ player.moral_action(visavis, moral='evil') 
             $ visavis.set_token('antagonism')
-            $ player.set_satisfy('authority', 2)
+            $ player.satisfy_need('authority', 2)
         'Reticence (timid)':
             $ player.moral_action(visavis, activity='timid')
             'No changes' 
@@ -148,7 +148,7 @@ label lbl_hungout:
             $ dif = 3 + visavis.relations(player).stability - visavis.communication.level
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
-                $ player.set_satisfy('communication', 2)
+                $ player.satisfy_need('communication', 2)
                 $ visavis.set_token('contribution')
                 $ visavis.communications_done.append('promenade')                
             elif result = 0:
@@ -162,10 +162,10 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
                 $ visavis.communications_done.append('booze')  
-                $ player.set_satisfy('amusement', 2)
+                $ player.satisfy_need('amusement', 2)
                 $ visavis.set_token('contribution')
             elif result = 0:
-                $ player.set_satisfy('amusement', 2)
+                $ player.satisfy_need('amusement', 2)
                 'No progress in relationship. At least you get some amusement.' 
             else:
                 $ visavis.communications_done.append('booze')  
@@ -176,7 +176,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
                 $ visavis.communications_done.append('dinner') 
-                $ player.set_satisfy('nutrition', 4) 
+                $ player.satisfy_need('nutrition', 4) 
                 menu:
                     visavis 'Yum! What shoul we talk about?'
                     'Discuss serious matters':
@@ -184,7 +184,7 @@ label lbl_hungout:
                     "Let's just relax":
                         $ visavis.set_token('contribution')    
             elif result = 0:
-                $ player.set_satisfy('nutrition', 4) 
+                $ player.satisfy_need('nutrition', 4) 
                 'No progress in relationship. The food is good newertheless.' 
             else:
                 $ visavis.communications_done.append('dinner')  
@@ -195,7 +195,7 @@ label lbl_hungout:
             if result > 0:
                 $ visavis.communications_done.append('discussion') 
                 $ visavis.set_token('convention')
-                $ player.set_satisfy('authority', 2) 
+                $ player.satisfy_need('authority', 2) 
             elif result = 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
@@ -244,7 +244,7 @@ label lbl_hungout:
             if result > 0:
                 $ visavis.communications_done.append('dance') 
                 $ visavis.set_token('contribution')
-                $ player.set_satisfy('activity', 2) 
+                $ player.satisfy_need('activity', 2) 
             elif result = 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
