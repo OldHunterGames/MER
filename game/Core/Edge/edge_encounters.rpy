@@ -31,7 +31,8 @@ label lbl_edge_randenc_errant:
                 menu:
                     'Grapple':
                         $ player.moral_action('ardent', stranger)   
-                        call lbl_simple_fight([player], [stranger])
+                        $ fight = SimpleFight([player], [stranger])
+                        
                     'Backstab':
                         pass                    
             else:
@@ -39,7 +40,7 @@ label lbl_edge_randenc_errant:
                 menu:
                     'Engage':         
                         $ player.moral_action('ardent', stranger)   
-                        call lbl_simple_fight([player], [stranger])
+                        $ fight = SimpleFight([player], [stranger])
                     'Newermind':
                         $ player.moral_action('timid', stranger)
                      
