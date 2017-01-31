@@ -5,20 +5,20 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from features import Feature
-from modifiers import ModifiersStorage
+from modifiers import Modifiable
 from mer_utilities import encolor_text
 
 # sizes 'offhand', 'versatile', 'shield', 'twohand'
-class Item(object):
+class Item(Modifiable):
     type_ = 'item'
 
     def __init__(self, data_dict, id_, *args, **kwargs):
         self.data = data_dict[id_]
         self.id = id_
         self.equiped = False
+        self.init_modifiable()
         
         self.features = []
-        self.modifiers = ModifiersStorage()
         self.features_data_dict = 'item_features'
         if 'price' in kwargs.keys():
             self._price = kwargs['price']
@@ -105,12 +105,6 @@ class Item(object):
         for feature in self.features:
             if feature.slot == slot:
                 return feature
-
-    def count_modifiers(self, attribute):
-        return self.modifiers.count_modifiers(attribute)
-
-    def get_all_modifiers(self):
-        return self.modifiers.get_all_modifiers()
 
     def use(self):
         return

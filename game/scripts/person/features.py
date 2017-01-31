@@ -76,6 +76,8 @@ class Feature(object):
         if self.modifiers is not None:
             self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
+        for i in self.dependencies:
+            self.owner.remove_feature(i)
 
     def reveal(self):
         self._revealed = True
@@ -113,9 +115,9 @@ class Feature(object):
                                 break
                 else:
                     dict_ = dict_['default']
-                    feature = mer_utilities.weighted_random([(key, value) for key, value in dict_.items()])
-                    self.owner.add_feature(feature)
-                    self.dependencies.append(feature)
+                feature = mer_utilities.weighted_random([(key, value) for key, value in dict_.items()])
+                self.owner.add_feature(feature)
+                self.dependencies.append(feature)
 
 
     def tick_time(self):

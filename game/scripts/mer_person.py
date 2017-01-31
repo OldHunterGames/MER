@@ -150,7 +150,7 @@ class Attributed(Modifiable):
 
     def _get_modified_attribute(self, attr):
         value = self.attributes[attr]
-        value += self.modifiers.count_modifiers(attr)
+        value += self.count_modifiers(attr)
         return max(0, min(5, value))
 
     @property
@@ -182,16 +182,16 @@ class Attributed(Modifiable):
         self.attributes['agility'] = value
 
     def vitality_info(self):
-        d = {'physique': self.physique, 'shape': self.modifiers.count_modifiers('shape'), 'fitness': self.modifiers.count_modifiers('fitness'),
-            'therapy': self.modifiers.count_modifiers('therapy')}
-        list_ = self.modifiers.get_modifier_separate('vitality')
+        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
+            'therapy': self.count_modifiers('therapy')}
+        list_ = self.modifiers_separate('vitality')
         list_ = [(value.name, value.value) for value in list_]
         return d, list_
     @property
     def vitality(self):
-        list_ = [self.physique, self.modifiers.count_modifiers('shape'), self.modifiers.count_modifiers('fitness'),
-                 self.modifiers.count_modifiers('therapy')]
-        vitality_mods = self.modifiers.get_modifier_separate('vitality')
+        list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'),
+                 self.count_modifiers('therapy')]
+        vitality_mods = self.modifiers_separate('vitality')
         list_.extend([modifier.value for modifier in vitality_mods])
         list_ = [i for i in list_ if i != 0]
         lgood = []
@@ -649,6 +649,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         value = super(Person, self).count_modifiers(attribute)
         value += self.inventory.count_modifiers(attribute)
         return value
+
+    def modifiers_separate(self, attribute):
+        list_ = super(Person, self).modifiers_separate(attribute)
+        list_.extend(self.inventory.get_modifier_separate(attribute))
+        return list_
 
     def ration_status(self):
         return self.food_system.ration_status()
