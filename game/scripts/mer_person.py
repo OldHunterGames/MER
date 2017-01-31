@@ -1190,7 +1190,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.set_energy()
         
         if self.pocket_money > 0:
-            self.prosperity.set_satisfaction(self.pocket_money)
+            self.satisfy_need('prosperity', self.pocket_money)
         
         self.ap = 1
         self._stimul = 0
