@@ -1,5 +1,7 @@
 # -*- coding: <UTF-8> -*-
 import random
+import renpy.store as store
+import renpy.exports as renpy
 
 def encolor_text(text, value):
     if isinstance(value, str):
@@ -65,3 +67,29 @@ class Observable(object):
 
         def add_callback(self, callback):
             self.observers.append(callback)
+
+def sex_images_path():
+    return 'images/sexcards'
+
+def make_sex_card(quality, type_, contact_type):
+    qualities = {1: sex_images_path()+'/base_bronze.jpg',
+        2: sex_images_path()+'/base_silver.jpg',
+        3: sex_images_path()+'/base_gold.jpg'}
+    quality_image = qualities[quality]
+    types = {
+        'bizzare': sex_images_path()+'/over_bizzare.png',
+        'passion': sex_images_path()+'/over_passion.png',
+        'rage': sex_images_path()+'/over_rage.png',
+        'tender': sex_images_path()+'/over_tender.png'
+    }
+    type_image = types[type_]
+    image_start = sex_images_path()+'/%s'%contact_type
+    images = [i for i in renpy.list_files() if i.startswith(image_start)]
+    image = renpy.display.im.Scale(random.choice(images), 400, 600)
+    image = renpy.display.im.Composite((400, 600),
+        (0, 0), quality_image, 
+        (0, 0), image,
+        (0, 0), type_image,)
+        
+    return image
+    
