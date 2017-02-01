@@ -653,7 +653,7 @@ init python:
                 {1: 1, 2: 3, 3: 6, 4: 3, 5: 1})
         instance.set_size(size)
     anatomy_data = {
-        'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add},
+        'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add, 'sensitive': True, 'stimulating': True, 'penetration': False},
         'boobs': {},
         'vagina': {}
     }
