@@ -14,9 +14,8 @@ class Feature(object):
         try:
             data_dict = getattr(store, data_dict)
             stats = data_dict[id_]
-        except KeyError as AttributeError:
-            return
-            raise Exception("no feature named %s in %s" % (id_, data_dict))
+        except KeyError:
+            raise KeyError("no feature named %s in %s" % (id_, data_dict))
         self.id = id_
         self.stats = stats
         self._time = time
@@ -76,8 +75,6 @@ class Feature(object):
         if self.modifiers is not None:
             self.owner.modifiers.remove_modifier(self)
         self.owner.features.remove(self)
-        for i in self.dependencies:
-            self.owner.remove_feature(i)
 
     def reveal(self):
         self._revealed = True
@@ -96,28 +93,9 @@ class Feature(object):
                 self.name, self.modifiers, self, slot)
         self.owner.features.append(self)
         
-        if self.anatomy:
-            if self.id in store.anatomy_dependency.keys():
-                for i in store.anatomy_dependency[self.id]:
-                    self.owner.add_feature(i)
-                    self.dependencies.append(i)
-            if self.id in store.anatomy_weights.keys():
-                dict_ = store.anatomy_weights[self.id]
-                for key in dict_.keys():
-                    if key != 'default':
-                        try:
-                            check = getattr(self.owner, key).id
-                        except AttributeError:
-                            check = getattr(self.owner, key)
-                        for k in dict_[key]:
-                            if k == check:
-                                dict_ = dict[key][k]
-                                break
-                else:
-                    dict_ = dict_['default']
-                feature = mer_utilities.weighted_random([(key, value) for key, value in dict_.items()])
-                self.owner.add_feature(feature)
-                self.dependencies.append(feature)
+        if self.id in store.anatomy_dependency.keys():
+            for i in store.anatomy_dependency[self.id]:
+                self.dependencies.append(i)
 
 
     def tick_time(self):

@@ -58,7 +58,6 @@ label start:
         player.reveal_all_taboos()
         player.reveal_all_fetishes()
         player.add_feature('penis')
-        sex = SexEngine((player, True), [(p, True)])
         # for test cases added some determination
         #player.add_inner_resource('determination', 'any', 4)
         #player.add_inner_resource('determination', 'any', 3)

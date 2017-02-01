@@ -636,27 +636,36 @@ init python:
             },                     
     }
 
-    anatomy_weights = {
-        'penis': {
-            'default': {'micropenis': 1, 'small_penis': 3, 'normal_penis': 6, 'big_penis': 3, 'huge_penis': 1},
-            'genus':{
-                'werwolf': {'small_penis': 1, 'normal_penis': 3, 'big_penis': 6, 'huge_penis': 3, 'enormous_penis': 1},
-                'lupine': {'small_penis': 1, 'normal_penis': 3, 'big_penis': 6, 'huge_penis': 3, 'enormous_penis': 1}
-            }
-
-        },
-        'boobs': {
-            'default': {'flat_chest': 1, 'small_breast': 3, 'normal_breast': 6, 'big_breast': 3, 'huge_breast': 1},
-            'age':{
-                'junior': {'flat_chest': 1},
-                'mature': {'flat_chest': 1, 'small_breast': 3, 'normal_breast': 5, 'big_breast': 4, 'huge_breast': 2, 'enormous_breast': 1}
-            }
-        }
-    }
     anatomy_dependency = {
         'male': ['penis'],
         'female': ['boobs', 'vagina'],
         'shemale': ['penis', 'boobs', 'vagina']
     }
-    
+    def penis_add(owner, instance):
+        if owner.genus.id == 'werwolf':
+            size = weighted_random(
+                {1: 1, 2: 3, 3: 6, 4: 3, 5: 1})
+        elif owner.genus.id == 'lupine':
+            size = weighted_random(
+                {1: 1, 2: 3, 3: 6, 4: 3, 5: 1})
+        else:
+            size = weighted_random(
+                {1: 1, 2: 3, 3: 6, 4: 3, 5: 1})
+        instance.set_size(size)
+    anatomy_data = {
+        'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add},
+        'boobs': {},
+        'vagina': {}
+    }
+    anatomy_sizes = {
+        'penis': 
+        {
+            1: 'micropenis',
+            2: 'small_penis',
+            3: 'normal_penis',
+            4: 'huge_penis',
+            5: 'enormous_penis'
+        }
+    }
 
+   

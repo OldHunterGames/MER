@@ -9,6 +9,7 @@ import renpy.exports as renpy
 
 from features import Feature, Phobia
 from skills import Skilled
+from anatomy import Anatomy
 from psymodel import PsyModel
 from schedule import *
 from relations import Relations
@@ -493,6 +494,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def __init__(self, age=None, gender=None, genus='human'):
         super(Person, self).__init__()
         self.kink = 'default'
+        self.anatomy = Anatomy()
+
         self.player_controlled = False
         self.init_inventorywielder()
         self.init_skilled()
@@ -826,18 +829,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.random_features()
         return
 
-    def anatomy(self):
-        list_ = []
-        for i in self.features:
-            if i.anatomy:
-                list_.append(i)
-        return list_
-
-    def has_anatomy_feat(self, name):
-        if self.has_feature('polymorphous'):
-            return True
-        return any([i.id == name for i in self.anatomy()])
-
     def fetishes(self):
         list_ = [i for i in self._fetishes]
         list_.extend(self.revealed('fetishes'))
@@ -1115,7 +1106,12 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     # adds features to person, if mutually exclusive removes old feature
     def add_feature(self, id_, time=None):
-        Feature(self, id_)
+        try:
+            feature = Feature(self, id_)
+        except KeyError:
+            pass
+        else:
+            self.anatomy.feature_dependencies(self, feature)
 
     def add_phobia(self, id_):
         Phobia(self, id_)

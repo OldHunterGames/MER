@@ -21,10 +21,14 @@ def default_avatar_path():
     return 'images/avatar/none.jpg'
 
 def weighted_random(pairs):
-   total = sum(w for c, w in pairs)
-   r = random.uniform(0, total)
-   upto = 0
-   for c, w in pairs:
+    try:
+        pairs = pairs.items()
+    except AttributeError:
+        pass
+    total = sum(w for c, w in pairs)
+    r = random.uniform(0, total)
+    upto = 0
+    for c, w in pairs:
         if upto + w >= r:
             return c
         upto += w
