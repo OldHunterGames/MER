@@ -96,7 +96,7 @@ label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
     menu:
         'Intimidate (ardent, spirit)':
-            $ player.moral_action(visavis, activity='ardent') 
+            $ player.moral_action(target=visavis, activity='ardent') 
             $ dif = visavis.spirit
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
@@ -104,7 +104,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Get to know (lawful, wisdom)':
-            $ player.moral_action(visavis, orderliness='lawful') 
+            $ player.moral_action(target=visavis, orderliness='lawful') 
             $ dif = visavis.mind
             $ result = core.skillcheck(player, 'mind', dif)
             '[result]'
@@ -113,7 +113,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Flatter (good, finesse)':
-            $ player.moral_action(visavis, moral='good') 
+            $ player.moral_action(target=visavis, moral='good') 
             $ dif = visavis.agility
             $ result = core.skillcheck(player, 'agility', dif)
             if result > 0:
@@ -121,7 +121,7 @@ label lbl_first_impression:
             elif result < 0:
                 $ visavis.set_token('antagonism')
         'Sudden joke (chotic, random)':
-            $ player.moral_action(visavis, orderliness='chaotic') 
+            $ player.moral_action(target=visavis, orderliness='chaotic') 
             $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
             if rnd == 'plus':
                 $ visavis.stance(player).value += 1
@@ -132,11 +132,11 @@ label lbl_first_impression:
             else:
                 $ visavis.set_token(rnd)                
         'Mock (evil)':
-            $ player.moral_action(visavis, moral='evil') 
+            $ player.moral_action(target=visavis, moral='evil') 
             $ visavis.set_token('antagonism')
             $ player.satisfy_need('authority', 2)
         'Reticence (timid)':
-            $ player.moral_action(visavis, activity='timid')
+            $ player.moral_action(target=visavis, activity='timid')
             'No changes' 
                 
     hide card
@@ -238,7 +238,7 @@ label lbl_hungout:
             else:
                 $ visavis.set_token('antagonism')      
         'Dance (might, ardent)' if 'dance' not in visavis.communications_done:
-            $ player.moral_action('ardent') 
+            $ player.moral_action(activity='ardent') 
             $ dif = 3 + visavis.relations(player).stability - visavis.activity.level
             $ result = core.skillcheck(player, 'physique', dif)
             if result > 0:

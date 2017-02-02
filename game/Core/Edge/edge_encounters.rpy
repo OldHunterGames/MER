@@ -10,7 +10,7 @@ label lbl_edge_randenc_errant:
     stranger "Where am I? What is this place? Can you help me, please?!"
     menu:
         'Engage':
-            $ player.moral_action('ardent', stranger) 
+            $ player.moral_action(target=stranger, activity='ardent') 
             if player.check_your_privilege(stranger):
                 if stranger.armor_heavier_than(player):
                     call lbl_edge_dominate(stranger)
@@ -19,7 +19,7 @@ label lbl_edge_randenc_errant:
             else:
                 call lbl_edge_errant_fight([player], [stranger]) 
         'Decieve': 
-            $ player.moral_action('evil', stranger)  
+            $ player.moral_action(target=stranger, moral='evil')  
             $ motivation = player.motivation('charisma', ['order'], ['communication'], player, ['chaotic'])
             $ difficulty = stranger.mind - 2
             if difficulty < 0:
@@ -30,7 +30,7 @@ label lbl_edge_randenc_errant:
                 '[player.name] are lulled wanderer and went behind him.'
                 menu:
                     'Grapple':
-                        $ player.moral_action('ardent', stranger)   
+                        $ player.moral_action(target=stranger, activity='ardent')   
                         $ fight = SimpleFight([player], [stranger])
                         
                     'Backstab':
@@ -39,25 +39,25 @@ label lbl_edge_randenc_errant:
                 'The stranger did not believe [player.name] and walkes away'  
                 menu:
                     'Engage':         
-                        $ player.moral_action('ardent', stranger)   
+                        $ player.moral_action(target=stranger, activity='ardent')   
                         $ fight = SimpleFight([player], [stranger])
                     'Newermind':
-                        $ player.moral_action('timid', stranger)
+                        $ player.moral_action(target=stranger, activity='timid')
                      
         'Hide & stalk': 
-            $ player.moral_action('timid', stranger)  
+            $ player.moral_action(target=stranger, activity='timid')  
             call lbl_edge_errant_stalk 
         'Talk': 
             call lbl_edge_errant_talk 
         'Flee': 
-            $ player.moral_action('timid', stranger)   
+            $ player.moral_action(target=stranger, activity='timid')   
             'oooook'       
 
     return
 
 label lbl_edge_errant_fight(allies, enemies):
     
-    call lbl_simple_fight(allies, enemies) 
+    $ fight = SimpleFight(allies, enemies)
     
     $ enemies = fight.get_enemies()
     $ loot = fight.get_loot()

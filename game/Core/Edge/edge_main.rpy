@@ -119,8 +119,8 @@ label lbl_edge_places:
                     pass
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
-        'Hazy marsh' if edge.is_stash_found('hazy_marsh'):
-            $ stash = edge.get_stash('hazy_marsh')
+        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
+            $ stash = edge.get_stash('hazy_marshes')
             call screen sc_manage_stash(stash)   
         'Echoing hills' if edge.is_stash_found('echoing_hills'):
             $ stash = edge.get_stash('echoing_hills')
