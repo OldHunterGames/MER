@@ -81,5 +81,4 @@ class Anatomy(object):
 
     def feature_dependencies(self, owner, feature):
         for i in feature.dependencies:
-            print i
             self.add_part(owner, i)
