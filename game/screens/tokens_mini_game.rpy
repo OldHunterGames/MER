@@ -179,7 +179,7 @@ init python:
                     5: ['fool', 'mage', 'sun', 'pope', 'judgement']
                 }
                 defaults.extend(valued[chance_value])
-                return [card for card in self.person.resources_deck in card.name in defaults]
+                return [card for card in self.person.resources_deck if card.name in defaults]
 
     class TaroCard(object):
 
