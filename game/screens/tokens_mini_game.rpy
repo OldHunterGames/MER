@@ -74,7 +74,7 @@ screen sc_taro_description(card):
     frame:
         xalign 0.5
         yalign 1.0
-        text i.display_description()
+        text card.display_description()
 
 
 init python:
