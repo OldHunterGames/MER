@@ -641,6 +641,7 @@ init python:
         'female': ['boobs', 'vagina'],
         'shemale': ['penis', 'boobs', 'vagina']
     }
+    
     def penis_add(owner, instance):
         if owner.genus.id == 'werwolf':
             size = weighted_random(
@@ -652,6 +653,7 @@ init python:
             size = weighted_random(
                 {1: 1, 2: 3, 3: 6, 4: 3, 5: 1})
         instance.set_size(size)
+        
     anatomy_data = {
         'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add, 'sensitive': True, 'stimulating': True, 'penetration': False},
         'boobs': {},
