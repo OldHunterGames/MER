@@ -1679,7 +1679,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             return
         
         if self._job.productivity > 0:
-            old_job = self._job.items()
             self.job_buffer = self._job
         else:
             self.job_buffer = None

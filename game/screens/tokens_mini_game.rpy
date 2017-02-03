@@ -45,7 +45,7 @@ screen sc_tokens_game(tokens_game):
             yalign 0.0
             yfill False
             xsize 1280
-            ysize 720
+            ysize 420
 
             hbox:
                 yalign 0.5
@@ -63,8 +63,18 @@ screen sc_tokens_game(tokens_game):
                                 hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
                                 insensitive im.Grayscale(im.Scale(card.image, 300, 480))
                                 action Function(tokens_game.use_card, i), Hide('sc_tokens_game')
+                                hovered Show('sc_taro_description', i)
+                                unhovered Hide('sc_taro_description')
                             text card.encolor_name():
                                 xalign 0.5
+    on 'hide':
+        action Hide('sc_taro_description')
+
+screen sc_taro_description(card):
+    frame:
+        xalign 0.5
+        yalign 1.0
+        text i.display_description()
 
 
 init python:
@@ -207,6 +217,12 @@ init python:
                 return encolor_text(self.display_name(), 'red')
             else:
                 return self.display_name()
+
+        def display_description(self):
+            if self.type == 'common':
+                return taro_commod[self.name][self.value]['description']
+            else:
+                return taro_arcanas[self.name]['description']
 
         def can_be_applied(self, person):
             if self.attribute != 'any':
