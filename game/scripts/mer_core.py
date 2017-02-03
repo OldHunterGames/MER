@@ -177,9 +177,11 @@ class MistsOfEternalRome(object):
         for person in self.characters:
             person.tick_schedule()
             person.rest()
-        self.tokens_game = None
+        
         self.time += 1
         self.player.ap = 1
+        self.tokens_game = store.TokensGame(self.player)
+        self.tokens_game.start()
 
     def end_turn_event(self, skipcheck=False):
         events = self.events_dict.values()
@@ -254,6 +256,21 @@ class MistsOfEternalRome(object):
 
     def is_tokens_game_active(self):
         if self.tokens_game is not None:
-            return self.tokens_game.chance is not None
+            return self.tokens_game.chance is not None and not self.tokens_game.blocked
         else:
             return self.player.chances_left() > 0
+
+
+    def make_sex(actor, target, type_):
+        data = store.sex_types[type_]
+        actor_value = get_sex_value(actor, 'actor')
+        target_value = get_sex_value(target, 'target')
+    def get_sex_value(data, target, target_type):
+        value = 0
+        for i in data[target_type]:
+            value += i(target)
+        if value > 0:
+            target.satisfy_need('eros', value)
+        #elif value < 0:
+            #target.tense_need('eros', '?')
+        return value

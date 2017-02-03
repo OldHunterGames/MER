@@ -72,6 +72,7 @@ screen sc_tokens_game(tokens_game):
 
 screen sc_taro_description(card):
     frame:
+        xmaximum 400
         xalign 0.5
         yalign 1.0
         text card.display_description()
@@ -88,6 +89,7 @@ init python:
             self.person = person
             self.chance = None
             self.chance_value = None
+            self.blocked = False
             self.revolver = []
             self.free_turn = 0
             self.get_chance()
@@ -149,7 +151,7 @@ init python:
         def use_card(self, slot):
             self.revolver[slot].activate(self)
             self.clear()
-            if self.person.chances_left() > 0:
+            if self.person.chances_left() > 0 and not self.blocked:
                 self.get_chance()
             else:
                 self.chance = None
@@ -249,13 +251,14 @@ init python:
 
     def devil_activate(taro_game):
         person = taro_game.person
-        person.drain_energy(person.energy)
+        taro_game.blocked = True
         cards = [i for i in person.active_resources]
         for i in cards:
             person.use_resource(i)
 
     def death_activate(taro_game):
         person = taro_game.person
+        taro_game.blocked = True
         person.drain_energy(person.energy)
         person.clear_chances(True)
 

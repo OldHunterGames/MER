@@ -9,7 +9,7 @@ screen sc_player_hud:
         textbutton "schedule":
             action Show('sc_schedule_organaizer')
         if core.is_tokens_game_active():
-            textbutton encolor_text(__('divination'), player.chances_left()):
+            textbutton 'divination':
                 action Function(core.start_tokens_game, player)
         else:
             textbutton 'divination':
