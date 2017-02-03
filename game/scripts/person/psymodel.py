@@ -192,7 +192,7 @@ class PsyModel(object):
         need_obj = self.needs[name]
         satisfied = need_obj.set_satisfaction(value)
         if satisfied:
-            self.add_chance(satisfy_chances[name], need_obj.level)
+            self.add_chance(self.need_level(name), satisfy_chances[name])
 
     def get_chances(self, bad=False):
         dict_ = {}
