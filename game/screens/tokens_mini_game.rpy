@@ -272,13 +272,16 @@ init python:
     def justice_activate(taro_game):
         taro_game.person.gain_energy(2)
 
+    def fool_activate(taro_game):
+        pass
+
     default_taro_cards = {"swords": 'physique', 'wands': 'spirit', 'pentacles': 'mind', 'cups': 'agility'}
     taro_suffix = [None, 'slave', 'overseer', 'mistress', 'master', 'ace']
 
     special_taro_cards = {
         'temperance': {'activate': temperance_activate, 'image': 'images/tarot/arcana_temperance.jpg', 'nature': 'neutral'},
         'judgement': {'activate': judgement_activate, 'image': 'images/tarot/arcana_judgement.jpg', 'locker': True, 'nature': 'neutral'},
-        'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral'},
+        'fool': {'sensitive': False, 'image': 'images/tarot/arcana_fool.jpg', 'nature': 'neutral', 'activate': fool_activate},
         'fortune': {'image': 'images/tarot/arcana_fortune.jpg', 'nature': 'good', 'attribute': 'luck'},
         'mage': {'attribute': 'any', 'image': 'images/tarot/arcana_mage.jpg', 'nature': 'good', 'activate': mage_activate},
         'sun': {'value': 5, 'attribute': 'any', 'mood': 5, 'image': 'images/tarot/arcana_sun.jpg', 'nature': 'good'},
