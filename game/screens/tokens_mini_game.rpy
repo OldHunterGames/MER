@@ -63,7 +63,7 @@ screen sc_tokens_game(tokens_game):
                                 hover im.MatrixColor(im.Scale(card.image, 300, 480), im.matrix.brightness(0.05))
                                 insensitive im.Grayscale(im.Scale(card.image, 300, 480))
                                 action Function(tokens_game.use_card, i), Hide('sc_tokens_game')
-                                hovered Show('sc_taro_description', card=i)
+                                hovered Show('sc_taro_description', card=card)
                                 unhovered Hide('sc_taro_description')
                             text card.encolor_name():
                                 xalign 0.5
