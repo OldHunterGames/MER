@@ -1678,16 +1678,20 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             self._job = obj
             return
         
+        if self.job_buffer is not None:
+            if obj.id == self.job_buffer.id and obj.world == self.job_buffer.world:
+                self._job = self.job_buffer
+                self.job_buffer = None
+                return
+        
         if self._job.productivity > 0:
             self.job_buffer = self._job
         else:
             self.job_buffer = None
-
-        if self.job_buffer is not None:
-            if self._job.id == self.job_buffer.id and self.job.world == self.job_buffer.world:
-                self._job = self.job_buffer
-                self.job_buffer = None
+        
         self._job = obj
+        
+        
        
     def get_schedule_obj(self, name):
         return getattr(self, '_%s'%name)

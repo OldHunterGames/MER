@@ -247,6 +247,7 @@ init python:
         taro_game.person.clear_chances()
 
     def hangman_activate(taro_game):
+        taro_game.blocked = True
         taro_game.person.drain_energy(taro_game.person.energy)
 
     def devil_activate(taro_game):
