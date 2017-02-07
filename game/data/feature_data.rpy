@@ -130,22 +130,22 @@ init python:
         'frigid': {'name': __('frigid'), 'slot': 'eros_feat', 'modifiers': {'eros': -1}, 'visible': True},
 
         # shape
-        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'vitality': -1, 'succulence': -2, 'menace': -2}, 'visible': True},
-        'frail': {'name': __('Tender'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
-        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},
-        'wiry': {'name': __('Fit'), 'slot': 'shape', 'modifiers': {'finesse_skill': +1, 'might_skill': +1, 'menace': +1}, 'visible': True},
-        'skinnyfat': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},     
-        'undistinguished': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},                 
-        'muscular': {'name': __('Muscular'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'physique': +1, 'menace': +2}, 'visible': True},        
-        'flabby': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},        
-        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'finesse_skill': -1, 'nutrition': -1, 'succulence': +1}, 'visible': True},        
-        'beefy': {'name': __('Beefy'), 'slot': 'shape', 'modifiers': {'physique': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
-        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'agility': -1, 'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
+        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'might_skill': -2, 'succulence': -2, 'menace': -2, 'allure': -1, 'exotic': +1, 'purity': +1, 'hardiness': -2}, 'visible': True},
+        'frail': {'name': __('tender'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'menace': -2, 'purity': +1, 'hardiness': -2}, 'visible': True},
+        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'menace': -1, 'succulence': -1, 'hardiness': -1}, 'visible': True},
+        'wiry': {'name': __('wiry'), 'slot': 'shape', 'modifiers': {'finesse_skill': +1, 'succulence': -2, 'purity': -1}, 'visible': True},
+        'skinnyfat': {'name': __('skinny-fat'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': -1, 'succulence': +1, 'menace': -1, 'hardiness': -1}, 'visible': True},     
+        'undistinguished': {'name': __('undistinguished figure'), 'slot': 'shape', 'modifiers': {}, 'visible': True},                 
+        'muscular': {'name': __('toned'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'menace': +1, 'purity': -1, 'hardiness': +1, 'allure': +1}, 'visible': True},        
+        'flabby': {'name': __('juicy'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': -1, 'succulence': +2}, 'visible': True},        
+        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'finesse_skill': -1, 'succulence': +1, 'menace': +1, 'purity': -1, 'hardiness': +1}, 'visible': True},        
+        'beefy': {'name': __('beefy'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2, 'purity': -2,  'hardiness': +2}, 'visible': True},
+        'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'finesse_skill': -2, 'allure': -2, 'exotic': +1, 'purity': -1}, 'visible': True, 'value': -1},
         
         # Physical conditions        
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1, 'menace': -2}, 'visible': True},
         'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1}, 'visible': True},
-        'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': True},
+        'diabetes': {'name': __('diabetes'), 'modifiers': {'hardiness': -1, 'succulence': -1}, 'visible': True},
         'dead': {'name': __('dead'), 'modifiers': {'succulence': -1}, 'visible': True},
         
             
