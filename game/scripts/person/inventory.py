@@ -282,7 +282,7 @@ class InventoryWielder(object):
         return corpses
 
     def eat_corpse(self, corpse):
-        self.joy('nutrition', corpse.succulence())
+        self.satisfy_need('nutrition', corpse.succulence())
         self.set_feed('canibalism')
         self.get_schedule_obj('feed').lock()
         self.corpse_buffer = corpse

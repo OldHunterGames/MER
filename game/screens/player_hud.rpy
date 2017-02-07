@@ -15,6 +15,7 @@ screen sc_player_hud:
             textbutton 'divination':
                 style 'gray_button'
                 action NullAction()
+        text encolor_text(__('energy'), player.energy)
     if core.can_skip_turn():
         textbutton 'Skip Turn' action Function(core.current_world.new_turn):
             xalign 0.5
