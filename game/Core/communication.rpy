@@ -145,7 +145,7 @@ label lbl_first_impression:
 label lbl_hungout:
     menu:
         'Promenade (spirit, communication)' if 'promenade' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.communication.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('communication')
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
                 $ player.satisfy_need('communication', 2)
@@ -158,7 +158,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('promenade')                          
         'Booze (spirit, 1 bar)' if 'booze' not in visavis.communications_done and player.money > 0:
             $ player.remove_money -= 1
-            $ dif = 3 + visavis.relations(player).stability - visavis.amusement.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('amusement')
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
                 $ visavis.communications_done.append('booze')  
@@ -172,7 +172,7 @@ label lbl_hungout:
                 $ visavis.set_token('antagonism')                                
         'Dinner treat (spirit, 3 bars)' if 'dinner' not in visavis.communications_done:
             $ player.remove_money -= 3
-            $ dif = 3 + visavis.relations(player).stability - visavis.nutrition.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('nutrition')
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
                 $ visavis.communications_done.append('dinner') 
@@ -190,7 +190,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('dinner')  
                 $ visavis.set_token('antagonism')                
         'Discuccion (wisdom, authority)' if 'discussion' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.authority.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('authority')
             $ result = core.skillcheck(player, 'mind', dif)
             if result > 0:
                 $ visavis.communications_done.append('discussion') 
@@ -212,7 +212,7 @@ label lbl_hungout:
             else:
                 $ visavis.set_token('antagonism')                                        
         'Carry favor (finesse)' if 'favor' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.authority.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('authority')
             $ result = core.skillcheck(player, 'agility', dif)
             if result > 0:
                 $ visavis.communications_done.append('favor') 
@@ -239,7 +239,7 @@ label lbl_hungout:
                 $ visavis.set_token('antagonism')      
         'Dance (might, ardent)' if 'dance' not in visavis.communications_done:
             $ player.moral_action(activity='ardent') 
-            $ dif = 3 + visavis.relations(player).stability - visavis.activity.level
+            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('activity')
             $ result = core.skillcheck(player, 'physique', dif)
             if result > 0:
                 $ visavis.communications_done.append('dance') 

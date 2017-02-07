@@ -1,16 +1,18 @@
 init python:
     person_features = {
-        # base
+        # Age
         'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'agility': +1, 'succulence': +1}, 'visible': True},
         'adolescent': {'name': __('adolescent'), 'slot': 'age', 'modifiers': {'allure': +1}, 'visible': True},
         'mature': {'name': __('mature'), 'slot': 'age', 'modifiers': {'spirit': +1, 'hardiness': +1, 'succulence': -1, 'menace': +1}, 'visible': True},
         'elder': {'name': __('elder'), 'slot': 'age', 'modifiers': {'agility': -1, 'mind': +1, 'allure': -1, 'hardiness': -1, 'succulence': -2}, 'visible': True},
 
+        # Sex
         'sexless': {'name': __('sexless'), 'slot': 'gender', 'modifiers': {}, 'visible': True},
         'male': {'name': __('male'), 'slot': 'gender', 'modifiers': {'physique': +1, 'agility': -1, 'succulence': -1}, 'visible': True},
         'female': {'name': __('female'), 'slot': 'gender', 'modifiers': {'physique': -1, 'agility': +1, 'succulence': +1}, 'visible': True},
         'shemale': {'name': __('shemale'), 'slot': 'gender', 'modifiers': {'allure': +1}, 'visible': True},
 
+        # Constitution
         'brawny': {'name': __('brawny'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': +1}, 'visible': True},
         'large': {'name': __('large'), 'slot': 'constitution', 'modifiers': {'physique': +1, 'succulence': +1}, 'visible': True},
         'athletic': {'name': __('athletic'), 'slot': 'constitution', 'modifiers': {'physique': +1}, 'visible': True},
@@ -19,6 +21,7 @@ init python:
         'crooked': {'name': __('crooked'), 'slot': 'constitution', 'modifiers': {'agility': -1, 'physique': -1, 'allure': -1}, 'visible': True},
         'clumsy': {'name': __('clumsy'), 'slot': 'constitution', 'modifiers': {'agility': -1}, 'visible': True},
 
+        # Spirit feat
         'brave': {'name': __('brave'), 'slot': 'spirit_feat', 'modifiers': {'spirit': +1, 'menace': +1}, 'visible': True},
         'shy': {'name': __('shy'), 'slot': 'spirit_feat', 'modifiers': {'spirit': -1, 'menace': -1}, 'visible': True},
         'smart': {'name': __('smart'), 'slot': 'mind_feat', 'modifiers': {'mind': +1}, 'visible': True},
@@ -126,21 +129,23 @@ init python:
         'lewd': {'name': __('sensual'), 'slot': 'eros_feat', 'modifiers': {'eros': +1}, 'visible': True},
         'frigid': {'name': __('frigid'), 'slot': 'eros_feat', 'modifiers': {'eros': -1}, 'visible': True},
 
-        # nutrition
-        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True, 'value': 1},
-        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'nutrition': 2, 'vitality': -1, 'succulence': -1, 'menace': -1}, 'visible': True, 'value': 2},
-        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'finesse_skill': -1, 'nutrition': -1, 'succulence': +1}, 'visible': True, 'value': -1},
+        # shape
+        'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'vitality': -1, 'succulence': -2, 'menace': -2}, 'visible': True},
+        'frail': {'name': __('Tender'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
+        'slim': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},
+        'wiry': {'name': __('Fit'), 'slot': 'shape', 'modifiers': {'finesse_skill': +1, 'might_skill': +1, 'menace': +1}, 'visible': True},
+        'skinnyfat': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},     
+        'undistinguished': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},                 
+        'muscular': {'name': __('Muscular'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'physique': +1, 'menace': +2}, 'visible': True},        
+        'flabby': {'name': __('slim'), 'slot': 'shape', 'modifiers': {'might_skill': -1, 'finesse_skill': +1, 'nutrition': 1, 'succulence': -1}, 'visible': True},        
+        'chubby': {'name': __('chubby'), 'slot': 'shape', 'modifiers': {'might_skill': +1, 'finesse_skill': -1, 'nutrition': -1, 'succulence': +1}, 'visible': True},        
+        'beefy': {'name': __('Beefy'), 'slot': 'shape', 'modifiers': {'physique': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
         'obese': {'name': __('obese'), 'slot': 'shape', 'modifiers': {'agility': -1, 'nutrition': -1, 'vitality': -1, 'menace': +1}, 'visible': True, 'value': -1},
+        
+        # Physical conditions        
         'starving': {'name': __('starving'), 'slot': None, 'modifiers': {'physique': -1, 'menace': -2}, 'visible': True},
         'dyspnoea': {'name': __('dyspnoea'), 'modifiers': {'menace': -1}, 'visible': True},
         'diabetes': {'name': __('diabetes'), 'modifiers': {'vitality': -1}, 'visible': True},
-
-        # fitness
-        'tender': {'name': __('Tender'), 'slot': 'fitness', 'modifiers': {'might_skill': -1, 'succulence': +1, 'menace': -1}, 'visible': True},
-        'fit': {'name': __('Fit'), 'slot': 'fitness', 'modifiers': {'finesse_skill': +1, 'might_skill': +1, 'menace': +1}, 'visible': True},
-        'beefy': {'name': __('Beefy'), 'slot': 'fitness', 'modifiers': {'physique': +1, 'finesse_skill': -1, 'succulence': +1, 'menace': +2}, 'visible': True},
-        'muscular': {'name': __('Muscular'), 'slot': 'fitness', 'modifiers': {'might_skill': +1, 'physique': +1, 'menace': +2}, 'visible': True},
-
         'dead': {'name': __('dead'), 'modifiers': {'succulence': -1}, 'visible': True},
         
             
