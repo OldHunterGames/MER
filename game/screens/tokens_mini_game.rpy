@@ -253,9 +253,7 @@ init python:
     def devil_activate(taro_game):
         person = taro_game.person
         taro_game.blocked = True
-        cards = [i for i in person.active_resources]
-        for i in cards:
-            person.use_resource(i)
+        person.drop_all_resources()
 
     def death_activate(taro_game):
         person = taro_game.person

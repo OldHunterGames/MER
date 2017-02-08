@@ -127,9 +127,18 @@ class Skilled(object):
         self.resources_deck = []
         self.active_resources = []
 
+    def drop_all_resources(self):
+        for i in [i for i in self.active_resources]:
+            self.resources_deck.append(i)
+            self.active_resources.remove(i)
+
     def activate_resource(self, res):
         self.resources_deck.remove(res)
         self.active_resources.append(res)
+        if res.attribute == 'physique':
+            self.tonus += 1
+        elif res.attribute == 'mind':
+            self.tonus -= 1
 
     def use_resource(self, res):
         self.active_resources.remove(res)

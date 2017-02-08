@@ -523,9 +523,7 @@ init python:
             elif resource == 'death':
                 self.bad_result(resource)
                 self.person.add_condition('exhausted')
-                cards = [i for i in self.person.active_resources]
-                for i in cards:
-                    self.person.use_resource(i)
+                person.drop_all_resources()
             else:
                 self.randomed = im.Scale(resource.image, 300, 450)
                 if resource.nature == 'good':
