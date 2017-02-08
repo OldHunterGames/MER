@@ -159,12 +159,7 @@ init python:
 
         @classmethod
         def get_defaults(cls, person):
-            defaults = []
-            names = ["swords", 'wands', 'pentacles', 'cups']
-            for name in names:
-                for i in range(1, 6):
-                    defaults.append('%s_%s'%(name, i))
-            return [card for card in person.resources_deck if card.name in defaults and card.can_be_applied(person)]
+            return [card for card in person.resources_deck if card.type == 'common' and card.can_be_applied(person)]
         
         def get_available_cards(self):
             chance_value = self.chance_value
@@ -178,8 +173,10 @@ init python:
                     4: ['fool', 'mage', 'emperor', 'justice'],
                     5: ['fool', 'mage', 'sun', 'pope', 'judgement']
                 }
-                defaults.extend(valued[chance_value])
-                return [card for card in self.person.resources_deck if card.name in defaults]
+                for i in self.person.resources_deck:
+                    if i.name in valued[self.chance_value]:
+                        defaults.append(i)
+                return defaults
 
     class TaroCard(object):
 
@@ -222,7 +219,7 @@ init python:
 
         def display_description(self):
             if self.type == 'common':
-                return taro_commod[self.name][self.value]['description']
+                return taro_common[self.name][self.value]['description']
             else:
                 return taro_arcanas[self.name]['description']
 
@@ -288,7 +285,7 @@ init python:
         'hangman': {'locker': True, 'activate': hangman_activate, 'image': 'images/tarot/arcana_hangman.jpg', 'nature': 'bad'},
         'devil': {'mood': 0, 'activate': devil_activate, 'image': 'images/tarot/arcana_devil.jpg', 'locker': True, 'nature': 'bad'},
         'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg', 'nature': 'bad'},
-        'hermit': {'value': 4, 'image': 'images/tarot/arcana_hermit.jpg', 'nature': 'good', 'attribute': 'any'},
+        'hermit': {'value': 3, 'image': 'images/tarot/arcana_hermit.jpg', 'nature': 'good', 'attribute': 'any'},
         'pope': {'image': 'images/tarot/arcana_pope.jpg', 'nature': 'good', 'activate': pope_activate},
         'justice': {'image': 'images/tarot/arcana_justice.jpg', 'nature': 'good', 'activate': justice_activate}
 
@@ -297,7 +294,7 @@ init python:
     def init_taro(player):
         for key, value in default_taro_cards.items():
             for i in range(1, 6):
-                player.resources_deck.append(TaroCard(key+'_%s'%i, 'images/tarot/%s_%s.jpg'%(key, taro_suffix[i]), value, i))
+                player.resources_deck.append(TaroCard(key, 'images/tarot/%s_%s.jpg'%(key, taro_suffix[i]), value, i))
         for key, value in special_taro_cards.items():
             card = TaroCard(key, **value)
             card.type = 'arcana'

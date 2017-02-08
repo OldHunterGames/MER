@@ -135,14 +135,15 @@ class Skilled(object):
     def activate_resource(self, res):
         self.resources_deck.remove(res)
         self.active_resources.append(res)
-        if res.attribute == 'physique':
-            self.tonus += 1
-        elif res.attribute == 'mind':
-            self.tonus -= 1
+        
 
     def use_resource(self, res):
         self.active_resources.remove(res)
         self.resources_deck.append(res)
+        if res.attribute == 'physique':
+            self.tonus += 1
+        elif res.attribute == 'mind':
+            self.tonus -= 1
 
     def get_all_resources(self):
         return self.resources_deck + self.active_resources
@@ -150,7 +151,7 @@ class Skilled(object):
     def get_resource(self, attribute, difficulty, job=False):
         values = [i.value for i in self.active_resources if i.available(attribute)]
         if job:
-            value = [i for i in values if i > difficulty]
+            values = [i for i in values if i > difficulty]
         else:
             values = [i for i in values if i >= difficulty]
         try:
@@ -158,7 +159,7 @@ class Skilled(object):
         except ValueError:
             values = [i.value for i in self.active_resources if i.available(attribute)]
             if job:
-                value = [i for i in values if i > difficulty]
+                values = [i for i in values if i > difficulty]
             else:
                 values = [i for i in values if i >= difficulty]
             try:
@@ -183,3 +184,10 @@ class Skilled(object):
         for i in self.active_resources:
             if i.name == id_:
                 return i
+
+
+    def add_card(self, name):
+        # for test use
+        for i in self.resources_deck:
+            if i.name == name:
+                self.activate_resource(i)

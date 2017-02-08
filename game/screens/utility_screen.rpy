@@ -645,7 +645,7 @@ label lbl_jobcheck(person, attribute):
         job_description = person.job_description()
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
-        attr = person.get_resource(attribute, focus)
+        attr = person.get_resource(attribute, focus, True)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
@@ -688,7 +688,7 @@ label lbl_jobcheck_npc(person, attribute):
         real_prod_str = success_rate[real_productivity]
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
-        attr = person.get_resource(attribute, focus)
+        attr = person.get_resource(attribute, focus, True)
         if person.focus() < 5:
             if not person.productivity_raised:
                 text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(

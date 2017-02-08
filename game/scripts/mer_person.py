@@ -1649,14 +1649,15 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         if value < 0:
             value = 0
         value += self._job.productivity
-        
+        value = max(0, min(5, value))
         if not self.player_controlled:
             return min(value, self.motivation())
         return value
 
     def focus(self):
         if self._job.skill is not None:
-            return abs(self.skill(self._job.skill) - self.job_difficulty)+self._job.productivity
+            value = abs(self.skill(self._job.skill) - self.job_difficulty)+self._job.productivity
+            return max(0, min(value, 5))
         else:
             return 0
 
