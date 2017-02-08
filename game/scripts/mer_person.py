@@ -315,14 +315,72 @@ class Combatant(Skilled, InventoryWielder, Attributed):
 
 
 class FoodSystem(object):
-    
-    features_list = ['emaciated', 'slim', None, 'chubby', 'obese']
+
+    _features = {
+        2: 'obese',
+        1: {0: 'chubby', 1: 'beefy', -1: 'flabby'},
+        0: {0: 'undistinguished', 1: 'muscular', -1: 'skinyfar'},
+        -1: {0: 'slim', 1: 'wiry', -1: 'frail'},
+        -2: 'emaciated'
+    }
     def __init__(self, owner):
         self.owner = owner
         self.satiety = 0
+        self._fatness = 0
+        self._fitness = 0
+        self._tonus = 0
         self.quality = 0
         self.quality_changed = False
         self.amount = 0
+
+    @property
+    def fitness(self):
+        if abs(self._fatness) == 2:
+            return 0
+        if self._tonus > 7 - self.owner.physique:
+            return 1
+        elif self._tonus < -2 - self.owner.physique:
+            return -1
+        else:
+            return 0
+
+    @property
+    def tonus(self):
+        return self._tonus
+
+    @tonus.setter
+    def tonus(self, value):
+        self._tonus = max(-10, min(10, value))
+        self._set_shape()
+        
+    @property
+    def fatness(self):
+        return self._fatness
+
+    def increase_fatness(self):
+        if self._fatness == 2:
+            self._increase_shape()
+            return
+        self._fatness += 1
+        self._set_shape()
+
+    def decrease_fatness(self):
+        if self._fatness == -2:
+            self._decrease_shape()
+            return
+        if self.owner.has_feature('dyspnoea'):
+            self.owner.remove_feature('dyspnoea')
+        else:
+            self._fatness -= 1
+            self._set_shape()
+        
+        
+
+    def _set_shape(self):
+        data = self._features[self._fatness]
+        if not isinstance(data, str):
+            data = data[self._fitness]
+        self.owner.add_feature(data)
 
     def set_starvation(self):
         self.quality = 0
@@ -385,44 +443,18 @@ class FoodSystem(object):
         else:
             return text
     
-    def increase_shape(self, index):
-        flist = self.features_list
-        self.owner.remove_feature('emaciated')
-        try:
-            new_shape = flist[index]
-        except IndexError:
-            new_shape = 'max'
-        if new_shape != 'max':
-            if new_shape is None:
-                self.owner.remove_feature_by_slot('shape')
-            else:
-                self.owner.add_feature(new_shape)
+    def _increase_shape(self):
+        if not self.owner.has_feature('dyspnoea'):
+            self.owner.add_feature('dyspnoea')
         else:
-            if not self.owner.has_feature('dyspnoea'):
-                self.owner.add_feature('dyspnoea')
-            else:
-                random_num = randint(1, 10)
-                satiety = min(satiety, self.owner.physique)
-                if random_num <= satiety:
-                    self.owner.add_feature('diabetes')
+            random_num = randint(1, 10)
+            satiety = min(self.satiety, self.owner.physique)
+            if random_num <= satiety:
+                self.owner.add_feature('diabetes')
 
-    def decrease_shape(self, index):
-        flist = self.features_list
-        self.owner.remove_feature('dyspnoea')
-        try:
-            new_shape = flist[index]
-        except IndexError:
-            new_shape = 'min'
-        if new_shape != 'min':
-            if new_shape is None:
-                self.owner.remove_feature_by_slot('shape')
-            else:
-                self.owner.add_feature(new_shape)
-        else:
-            if not self.owner.has_feature('emaciated'):
-                self.owner.add_feature('emaciated')
-            elif self.amount < 1:
-                self.owner.die()
+    def _decrease_shape(self):
+        if self.amount < 1:
+            self.owner.die()
 
     def is_good_feed(self):
         return (not self.owner.has_feature('diabetes')
@@ -433,13 +465,8 @@ class FoodSystem(object):
                 self.owner.has_feature('emaciated'))
     
     def fatness_change(self):
-        flist = self.features_list
-        shape = self.owner.feature_by_slot('shape')
         if self.owner.has_condition('workout'):
             self.satiety -= 1
-        if shape is not None:
-            shape = shape.name
-        index = flist.index(shape)
         if self.amount == 3:
             amount_value = 1
         elif self.amount == 1:
@@ -459,32 +486,27 @@ class FoodSystem(object):
         if self.amount == 3:
             self.satiety += self.amount - 2
         elif self.amount == 1:
-            self.satiety = -1
+            if self.fatness != -2:
+                self.satiety -= 1
         elif self.amount == 0:
             if self.satiety > 0:
                 self.satiety = -1
             else:
                 self.satiety += self.satiety - 1
+        satiety = self.satiety
         
         if self.satiety > self.owner.physique:
-            index += 1
-            self.increase_shape(index)
-            if not self.owner.has_feature('dyspnoea'):
-                self.satiety = 0
-            else:
-                self.satiety = min(self.satiety, self.owner.physique)
+            self.satiety = 0
+            self.increase_fatness()
             
-        if self.satiety < -(6 - self.owner.physique):
-            index -= 1
-            self.decrease_shape(index)
-            if not self.owner.has_feature('emaciated'):
-                self.satiety = 0
-            else:
-                self.satiety = max(self.satiety, -(6-self.owner.physique))
+        elif self.satiety < -(6 - self.owner.physique):
+            self.satiety = 0
+            self.decrease_fatness()
+                
             
-        if self.satiety > 0 and self.is_good_feed():
+        if satiety > 0 and self.is_good_feed():
             self.owner.add_buff('overfeed')
-        elif self.satiety < 0 or self.is_bad_feed():
+        elif satiety < 0 or self.is_bad_feed():
             self.owner.add_buff('underfeed')
         self.set_starvation()
 
@@ -624,6 +646,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def set_pocket_money(self, level):
         self.pocket_money = level
 
+    @property
+    def tonus(self):
+        return self.food_system.tonus
+
+    @tonus.setter
+    def tonus(self, value):
+        self.food_system.tonus = value
 
     @property
     def energy(self):
