@@ -34,14 +34,28 @@ init python:
     treasure_data = {
         'gem':{
             'name': __("clear gem"),
-            'description': __(''),
+            'description': __('Clear crystal, suited to store the Sparks.'),
+            'price': 1,
+            'mutable_name': False,
+            'mutable_description': False
+        },
+        'sparkgem':{
+            'name': __("clear gem"),
+            'description': __('Shiny gem, filled with Sparks.'),
+            'price': 1,
+            'mutable_name': False,
+            'mutable_description': False
+        },
+        'navigem':{
+            'name': __("clear gem"),
+            'description': __('This shiny gem contains a vision of Outer World.'),
             'price': 1,
             'mutable_name': False,
             'mutable_description': False
         },
         'notes':{
             'name': __("bundle of notes"),
-            'description': __(''),
+            'description': __("It's a papper money emmited by a Noble House of Eternal Rome."),
             'price': 4,
             'mutable_name': False,
             'mutable_description': False

@@ -114,6 +114,10 @@ label lbl_edge_places:
                     python:
                         knife = create_item('knife', 'weapon')
                         slums_leader.add_item(knife)
+                        harm = create_item('hard_armor', 'armor')
+                        slums_leader.add_item(harm)
+                        sarm = create_item('soft_armor', 'armor')
+                        slums_leader.add_item(sarm)
                     call screen sc_trade(slums_leader) 
                 'Back':
                     pass
