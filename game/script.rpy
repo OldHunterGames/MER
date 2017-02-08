@@ -66,7 +66,6 @@ label start:
     # call screen sc_faction_info(great_houses[0])
     call lbl_gen_player
     $ init_taro(core.player)
-    $ player.add_card('hermit')
     # call screen sc_sexengine_main(sex)
     # $ fight = SimpleFight([player, g], [p, z])
     show expression "interface/bg_base.jpg" as bg
