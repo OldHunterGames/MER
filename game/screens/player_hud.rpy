@@ -8,6 +8,8 @@ screen sc_player_hud:
             action Show('sc_player_contacts')
         textbutton "schedule":
             action Show('sc_schedule_organaizer')
+        textbutton "anatomy":
+            action Function(tests)
         if core.is_tokens_game_active():
             textbutton 'divination':
                 action Function(core.start_tokens_game, player)
