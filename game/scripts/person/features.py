@@ -92,6 +92,11 @@ class Feature(object):
             self.owner.modifiers.add_modifier(
                 self.name, self.modifiers, self, slot)
         self.owner.features.append(self)
+        
+        if self.id in store.anatomy_dependency.keys():
+            for i in store.anatomy_dependency[self.id]:
+                self.dependencies.append(i)
+
 
     def tick_time(self):
         try:
