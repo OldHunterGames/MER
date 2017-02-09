@@ -68,45 +68,6 @@ init python:
         'confident': {'name': __('Confident'), 'slot': 'exp_spirit', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
         'miserable': {'name': __('Miserable'), 'slot': 'exp_spirit', 'modifiers': {'spirit_skill': -1}, 'visible': True},  
             
-        # anatomy
-        'polymorphous': {'name': __('Polymorphous'), 'slot': None, 'visible': True, 'anatomy': True},
-        'body': {'name': __('Corporeal'), 'slot': None, 'visible': True, 'anatomy': True},
-        'megatongue': {'name': __('Super tongue'), 'slot': None, 'visible': True, 'anatomy': True},
-        'fangs': {'name': __('Dangerous fangs'), 'slot': None, 'visible': True, 'anatomy': True},
-        'horns': {'name': __('Tough horns'), 'slot': None, 'visible': True, 'anatomy': True},
-        'graspers': {'name': __('Graspers'), 'slot': None, 'visible': False, 'anatomy': True},                
-        'claws': {'name': __('Dangerous claws'), 'slot': None, 'visible': True, 'anatomy': True},
-        'hoofs': {'name': __('Tough hoofs'), 'slot': None, 'visible': True, 'anatomy': True},
-        'locomotors': {'name': __('Locomotors'), 'slot': None, 'visible': False, 'anatomy': True},
-        'feets': {'name': __('Human feets'), 'slot': None, 'visible': False, 'anatomy': True},
-        'tail': {'name': __('Flexible tail'), 'slot': None, 'visible': True, 'anatomy': True},
-        'stinger': {'name': __('Poisonous stinger'), 'slot': None, 'visible': True, 'anatomy': True},        
-        'penis': {'name': __('Functional coock'), 'slot': None, 'visible': False, 'anatomy': True},
-        'dualpenis': {'name': __('Dual coock'), 'slot': None, 'visible': True, 'anatomy': True},
-        'multipenis': {'name': __('Many coocks'), 'slot': None, 'visible': True, 'anatomy': True},
-        'vagina': {'name': __('Functional pussy'), 'slot': None, 'visible': False, 'anatomy': True},
-        'cloaca': {'name': __('Huge cloaca'), 'slot': None, 'visible': True, 'anatomy': True},
-        'boobs': {'name': __('Boobs'), 'slot': None, 'visible': False, 'anatomy': True},                
-
-        'flat_chest': {'name': __('flat chest'), 'slot': 'breast_size', 'modifiers': {'appearance_boobs': 0}, 'visible': True},
-        'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True},
-        'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True},
-        'large_breast': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True},
-        'huge_breast': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4, 'succulence': +1},  'visible': True},
-        'enormous_breast': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5, 'succulence': +2},  'visible': True},
-
-        'micropenis': {'name': __('tiny willy'), 'slot': 'penis_size', 'visible': True},
-        'small_penis': {'name': __('small cock'), 'slot': 'penis_size', 'visible': True},
-        'normal_penis': {'name': __('decent cock'), 'slot': 'penis_size', 'visible': True},
-        'big_penis': {'name': __('impressive prick'), 'slot': 'penis_size', 'visible': True},
-        'huge_penis': {'name': __('huge cock'), 'slot': 'penis_size', 'visible': True},
-        'enormous_penis': {'name': __('enormous cock'), 'slot': 'penis_size', 'visible': True},        
-
-        'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
-        'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
-        
-        'virgin': {'name': __('Virgin'), 'slot': None, 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
-
         # needs
         'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True},
         'generous': {'name': __('generous'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': -1}, 'visible': True},
@@ -128,6 +89,47 @@ init python:
         'modest': {'name': __('modest'), 'slot': 'ambition_feat', 'modifiers': {'ambition': -1}, 'visible': True},
         'lewd': {'name': __('sensual'), 'slot': 'eros_feat', 'modifiers': {'eros': +1}, 'visible': True},
         'frigid': {'name': __('frigid'), 'slot': 'eros_feat', 'modifiers': {'eros': -1}, 'visible': True},
+
+
+        # anatomy
+#        'polymorphous': {'name': __('Polymorphous'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'body': {'name': __('Corporeal'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'megatongue': {'name': __('Super tongue'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'fangs': {'name': __('Dangerous fangs'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'horns': {'name': __('Tough horns'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'graspers': {'name': __('Graspers'), 'slot': None, 'visible': False, 'anatomy': True},                
+#        'claws': {'name': __('Dangerous claws'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'hoofs': {'name': __('Tough hoofs'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'locomotors': {'name': __('Locomotors'), 'slot': None, 'visible': False, 'anatomy': True},
+#        'feets': {'name': __('Human feets'), 'slot': None, 'visible': False, 'anatomy': True},
+#        'tail': {'name': __('Flexible tail'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'stinger': {'name': __('Poisonous stinger'), 'slot': None, 'visible': True, 'anatomy': True},        
+#        'penis': {'name': __('Functional coock'), 'slot': None, 'visible': False, 'anatomy': True},
+#        'dualpenis': {'name': __('Dual coock'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'multipenis': {'name': __('Many coocks'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'vagina': {'name': __('Functional pussy'), 'slot': None, 'visible': False, 'anatomy': True},
+#        'cloaca': {'name': __('Huge cloaca'), 'slot': None, 'visible': True, 'anatomy': True},
+#        'boobs': {'name': __('Boobs'), 'slot': None, 'visible': False, 'anatomy': True},                
+
+#        'flat_chest': {'name': __('flat chest'), 'slot': 'breast_size', 'modifiers': {'appearance_boobs': 0}, 'visible': True},
+#        'small_breast': {'name': __('small breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 1},  'visible': True},
+#        'normal_breast': {'name': __('normal breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 2},  'visible': True},
+#        'large_breast': {'name': __('large breast'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 3},  'visible': True},
+#        'huge_breast': {'name': __('huge tits'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 4, 'succulence': +1},  'visible': True},
+#        'enormous_breast': {'name': __('enormous udders'), 'slot': 'breast_size','modifiers': {'appearance_boobs': 5, 'succulence': +2},  'visible': True},
+
+#        'micropenis': {'name': __('tiny willy'), 'slot': 'penis_size', 'visible': True},
+#        'small_penis': {'name': __('small cock'), 'slot': 'penis_size', 'visible': True},
+#        'normal_penis': {'name': __('decent cock'), 'slot': 'penis_size', 'visible': True},
+#        'big_penis': {'name': __('impressive prick'), 'slot': 'penis_size', 'visible': True},
+#        'huge_penis': {'name': __('huge cock'), 'slot': 'penis_size', 'visible': True},
+#        'enormous_penis': {'name': __('enormous cock'), 'slot': 'penis_size', 'visible': True},        
+
+#        'human_penis': {'name': __('human_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
+#        'canine_penis': {'name': __('canine_penis'), 'slot': 'penis_type', 'visible': True, 'anatomy': True},
+        
+#        'virgin': {'name': __('Virgin'), 'slot': None, 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
+
 
         # shape
         'emaciated': {'name': __('emaciated'), 'slot': 'shape', 'modifiers': {'might_skill': -2, 'succulence': -2, 'menace': -2, 'allure': -1, 'exotic': +1, 'purity': +1, 'hardiness': -2}, 'visible': True},
@@ -432,53 +434,7 @@ init python:
         'heavy_armor': {'name': __('heavy armor'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 2}},  
 
         }
-    
-    ##Sexual preferences
-        
-    sexual_traits = {
-        'pleasure': {'name': __('Pleasure'), 'description': __('Universaly good feelings.'),}, 
-        'vexation': {'name': __('Suffering'), 'description': __('Universaly good feelings.'),}, 
-        'active': {'name': __('Active position'), 'description': __('Sexual initiative, acting position.'),}, 
-        'passive': {'name': __('Passive position'), 'description': __('Sexualy receiving side, no initiative.'),}, 
-        'straight': {'name': __('Straight stimulation'), 'description': __('Direct stimulation of sexual organs.'),}, 
-        'humiliation': {'name': __('Humiliated'), 'description': __('Character is humuliated.'),}, 
-        'abuse': {'name': __('Abusive'), 'description': __('Character is abusively dominating.'),}, 
-        'sadism': {'name': __('Sadism'), 'description': __('Sadistic actions.'),}, 
-        'masochism': {'name': __('Masohism'), 'description': __('Masochistic love for pain.'),}, 
-        'restraint': {'name': __('Restraining'), 'description': __('Character is physicaly restrained and forced by a partner.'),}, 
-        'forcing': {'name': __('Forced'), 'description': __('Character physicaly restraining a partner.'),}, 
-        'roughness': {'name': __('Rough'), 'description': __('The rough and hard sexual action.'),}, 
-        'softness': {'name': __('Gentle'), 'description': __('descriptivetext'),}, 
-        'sweettalk': {'name': __('Sweet talk'), 'description': __('descriptivetext'),}, 
-        'dirtytalk': {'name': __('Dirty talk'), 'description': __('descriptivetext'),}, 
-        'sucker': {'name': __('Oral job'), 'description': __('descriptivetext'),}, 
-        'nipplestim': {'name': __('Nipple stimulated'), 'description': __('descriptivetext'),}, 
-        'analstim': {'name': __('Analy stimulated'), 'description': __('descriptivetext'),}, 
-        'feetstim': {'name': __('Feet stimulated'), 'description': __('descriptivetext'),}, 
-        'asslove': {'name': __('Ass fetish'), 'description': __('descriptivetext'),}, 
-        'orallove': {'name': __('Oral fetish'), 'description': __('descriptivetext'),}, 
-        'boobslove': {'name': __('Boobs fetish'), 'description': __('descriptivetext'),}, 
-        'footlove': {'name': __('Foot fetish'), 'description': __('descriptivetext'),}, 
-        'breath': {'name': __('Breath play'), 'description': __('descriptivetext'),}, 
-        'blood': {'name': __('Blood play'), 'description': __('descriptivetext'),}, 
-        'iron': {'name': __('Iron play'), 'description': __('descriptivetext'),}, 
-        'fire': {'name': __('Fire play'), 'description': __('descriptivetext'),}, 
-        'toys': {'name': __('Toys'), 'description': __('descriptivetext'),}, 
-        'ttop': {'name': __('Toilet top'), 'description': __('descriptivetext'),}, 
-        'tbottom': {'name': __('Toilet bottom'), 'description': __('descriptivetext'),}, 
-        'male': {'name': __('Androphylia'), 'description': __('descriptivetext'),}, 
-        'female': {'name': __('Gynophilia'), 'description': __('descriptivetext'),}, 
-        'shemale': {'name': __('Shemale fetish'), 'description': __('descriptivetext'),}, 
-        'sexless': {'name': __('Andrigynophilia'), 'description': __('descriptivetext'),}, 
-        'furry': {'name': __('Furr fetish'), 'description': __('descriptivetext'),}, 
-        'brute': {'name': __('Brute fetish'), 'description': __('descriptivetext'),}, 
-        'zoo': {'name': __('Zoophylia'), 'description': __('descriptivetext'),}, 
-        'xeno': {'name': __('Xenophilia'), 'description': __('descriptivetext'),}, 
-        'junior': {'name': __('Pedophilia'), 'description': __('descriptivetext'),}, 
-        'elder': {'name': __('Gerontophilia'), 'description': __('descriptivetext'),}, 
-        'incest': {'name': __('Incest'), 'description': __('descriptivetext'),}, 
-        }
-            
+           
     gender_types = {
         'male': {'straight': (8,1), 'male': (1, 5), 'female': (5, 1), 'shemale': (3, 3), 'sexless': (3, 2), },
         'female': {'straight': (6,1), 'male': (6, 1), 'female': (3, 2), 'shemale': (3, 3), 'sexless': (5, 2), },
@@ -660,10 +616,11 @@ init python:
         instance.set_size(size)
         
     anatomy_data = {
-        'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add, 'sensitive': True, 'stimulating': True, 'penetration': False},
+        'penis': {'name': __("Penis"), 'description': __("Functional penis"), 'count': 1, 'on_add': penis_add, 'sensitive': True, 'stimulating': False, 'penetration': penetrative},
         'boobs': {},
         'vagina': {}
     }
+
     anatomy_sizes = {
         'penis': 
         {

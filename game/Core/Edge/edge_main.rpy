@@ -118,6 +118,8 @@ label lbl_edge_places:
                         slums_leader.add_item(harm)
                         sarm = create_item('soft_armor', 'armor')
                         slums_leader.add_item(sarm)
+                        gem = create_item('gem')
+                        slums_leader.add_item(gem)                        
                     call screen sc_trade(slums_leader) 
                 'Back':
                     pass
