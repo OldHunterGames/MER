@@ -1139,8 +1139,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             feature = Feature(self, id_)
         except KeyError:
             pass
-        else:
-            self.anatomy.feature_dependencies(self, feature)
 
     def add_phobia(self, id_):
         Phobia(self, id_)
