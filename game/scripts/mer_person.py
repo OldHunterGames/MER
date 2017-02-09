@@ -680,6 +680,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def count_modifiers(self, attribute):
         value = super(Person, self).count_modifiers(attribute)
         value += self.inventory.count_modifiers(attribute)
+        for i in self.features:
+            value += i.count_modifiers(attribute)
         return value
 
     def modifiers_separate(self, attribute):
@@ -1135,10 +1137,16 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     # adds features to person, if mutually exclusive removes old feature
     def add_feature(self, id_, time=None):
+        if self.has_feature(id_):
+            return
         try:
-            feature = Feature(self, id_)
+            feature = Feature(id_)
         except KeyError:
             pass
+        else:
+            if feature.slot is not None:
+                self.remove_feature_by_slot(feature.slot)
+            self.features.append(feature)
 
     def add_phobia(self, id_):
         Phobia(self, id_)
@@ -1158,22 +1166,22 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def has_feature(self, id_):
         return self.feature(id_) is not None
 
-    def remove_feature(self, feature):       # feature='str' or Fearutere()
+    def remove_feature(self, feature):
         if isinstance(feature, str):
-            for f in self.features:
-                if f.name == feature:
-                    f.remove()
+            for i in self.features:
+                if i.id == feature:
+                    self.features.remove(i)
         else:
             try:
-                i = self.features.index(feature)
-                self.features[i].remove()
+                self.features.remove(feature)
             except ValueError:
                 return
 
     def remove_feature_by_slot(self, slot):
         for f in self.features:
             if f.slot == slot:
-                f.remove()
+                self.features.remove(f)
+                return
 
     def visible_features(self,):
         return [i for i in self.features if i.id != self.age and i.id != self.gender]

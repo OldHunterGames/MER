@@ -15,6 +15,7 @@ init -10 python:
     from mer_metric import *      
     from mer_event import *
     from mer_metaperson import *
+    from anatomy import BodyPart
     from duel_engine import *
     
 init python:
@@ -22,6 +23,8 @@ init python:
     renpy.block_rollback()
     register_actions()
     core = MistsOfEternalRome()
+    def tests():
+        renpy.call_in_new_context('lbl_test_anatomy')
 
 # The game starts here.
 label start:
@@ -124,3 +127,8 @@ screen sc_token_image(person):
 label lbl_notify(person, token):
     show screen sc_token_image(person)
     '[person.name] get token [token]'
+
+
+label lbl_test_anatomy:
+    call screen sc_anatomy_builder
+    return

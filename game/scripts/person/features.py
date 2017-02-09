@@ -4,32 +4,30 @@ from random import *
 import renpy.store as store
 import renpy.exports as renpy
 
+from modifiers import Modifiable
 import mer_utilities
 
 
-class Feature(object):
-    optional_keys = ['anatomy']
-    def __init__(self, owner=None, id_="generic",
-                 data_dict='person_features', time=None, *args, **kwargs):
+class Feature(Modifiable):
+    
+
+    def __init__(self, id_, data_dict='person_features', time=None, *args, **kwargs):
         try:
             data_dict = getattr(store, data_dict)
             stats = data_dict[id_]
         except KeyError:
             raise KeyError("no feature named %s in %s" % (id_, data_dict))
+        self.init_modifiable()
         self.id = id_
         self.stats = stats
         self._time = time
         self._revealed = False   # true if the feature is revealed to player
-        self.owner = owner    # the Person() who owns this feature
-        self.dependencies = []
-        self.add()
+        self.add_modifier(self.id, self.modifiers, self, self.slot)
 
     def __getattr__(self, key):
         try:
             value = self.stats[key]
         except KeyError:
-            if key in self.optional_keys:
-                return None
             raise AttributeError(key)
         else:
             return value
@@ -53,7 +51,7 @@ class Feature(object):
         try:
             return self.stats['modifiers']
         except KeyError:
-            return None
+            return dict()
 
     @property
     def visible(self):
@@ -71,28 +69,8 @@ class Feature(object):
     def revealed(self):
         return self._revealed and self.visible
 
-    def remove(self):
-        if self.modifiers is not None:
-            self.owner.modifiers.remove_modifier(self)
-        self.owner.features.remove(self)
-
     def reveal(self):
         self._revealed = True
-
-    def add(self):
-        if self in self.owner.features:
-            return
-        if self.slot is not None:
-            for feature in self.owner.features:
-                if feature.slot == self.slot:
-                    feature.remove()
-            
-        if self.modifiers is not None:
-            slot = self.slot if self.slot else self.id
-            self.owner.modifiers.add_modifier(
-                self.name, self.modifiers, self, slot)
-        self.owner.features.append(self)
-
 
     def tick_time(self):
         try:

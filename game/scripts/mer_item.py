@@ -28,6 +28,12 @@ class Item(Modifiable):
         self.new_description = None
         self.new_name = None
 
+    def count_modifiers(self, attribute):
+        value = super(Item, self).count_modifiers(attribute)
+        for i in self.features:
+            value += i.count_modifiers(attribute)
+        return value
+
     @property
     def price(self):
         return self.data.get('price', 1)
@@ -87,17 +93,17 @@ class Item(Modifiable):
         self.new_description = None
 
     def add_feature(self, id_):
-        Feature(self, id_, self.features_data_dict)
+        self.features.append(Feature(id_, self.features_data_dict))
+        
 
     def remove_feature(self, feature):
         if isinstance(feature, str):
-            for feature in self.features:
-                if feature.id == feature:
-                    feature.remove()
+            for i in self.features:
+                if i.id == feature:
+                    self.features.remove(i)
         else:
             try:
-                i = self.features.index(feature)
-                self.features[i].remove()
+                self.features.remove(feature)
             except ValueError:
                 return
 

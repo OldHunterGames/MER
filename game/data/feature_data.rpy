@@ -641,4 +641,11 @@ init python:
             },                     
     }
 
+    anatomy_features = {
+        'penis': {'name': __("Penis"), "description": __("{self.penis_size.name} {self.penis_type.name}"), 'slot': 'basis', 'parts': ['penis_size', 'penis_type']},
+        'horse_penis': {'name': __("horse penis"), 'slot': 'penis_type'},
+        'micropenis': {"name": __("micro"), 'slot': 'penis_size'},
+        'dualpenis': {'name': __('Dual coock'), 'slot': 'basis', 'description': __("{self.penis_size.name} dual {self.penis_type.name}"), 'parts': ['penis_size', 'penis_type']}
+    }
+
    
