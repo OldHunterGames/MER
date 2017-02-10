@@ -642,7 +642,6 @@ init python:
     }
 
     anatomy_features = {
-<<<<<<< HEAD
         'penis': 
             {
             'name': __("Penis"), 
@@ -655,9 +654,7 @@ init python:
             'penetration': 'penetrative'},
         'horse_penis': {'name': __("horse penis"), 'slot': 'penis_type'},
         'micropenis': {"name": __("micro"), 'slot': 'penis_size'},
-        'dualpenis': {'name': __('Dual coock'), 'slot': 'penis', 'description': __("{self.penis_size.name} dual {self.penis_type.name}"), 'parts': ['penis_size', 'penis_type']}
-=======
-        'penis': {'name': __("cock"), "description": __("{self.penis_size.name} {self.penis_type.name}"), 'slot': 'basis', 'parts': ['penis_size', 'penis_type']},
+        'dualpenis': {'name': __('Dual coock'), 'slot': 'penis', 'description': __("{self.penis_size.name} dual {self.penis_type.name}"), 'parts': ['penis_size', 'penis_type']},
         'horse_penis': {'name': __("horse penis"), 'slot': 'penis_type'},
         'human_penis': {'name': __("cock"), 'slot': 'penis_type'},
         'canine_penis': {'name': __("canine penis"), 'slot': 'penis_type'},        
@@ -665,9 +662,7 @@ init python:
         'small_penis': {"name": __("small"), 'slot': 'penis_size'},        
         'normal_penis': {"name": __("normal"), 'slot': 'penis_size'},
         'large_penis': {"name": __("large"), 'slot': 'penis_size'},        
-        'huge_penis': {"name": __("huge"), 'slot': 'penis_size'},
-                  
->>>>>>> origin/master
+        'huge_penis': {"name": __("huge"), 'slot': 'penis_size'},             
     }
 
    

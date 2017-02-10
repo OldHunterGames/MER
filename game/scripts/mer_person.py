@@ -1563,11 +1563,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.food_system.owner = None
 
     def _remove_features(self):
-        to_remove = []
-        for i in self.features:
-            to_remove.append(i)
-        for i in to_remove:
-            i.remove()
+        self.features = []
 
     def remove_relations(self):
         characters = [i for i in self.known_characters]
