@@ -16,7 +16,7 @@ screen sc_anatomy_builder():
                     ysize 250
                     vbox:
                         for key, value in anatomy_features.items():
-                            if value.get('slot') == 'basis':
+                            if value.get('basis', False):
                                 textbutton value['name']:
                                     action SetVariable('body_part', BodyPart(key))
                                     if body_part is not None:
