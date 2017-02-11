@@ -11,6 +11,10 @@ label lbl_communicate(target):
 
     target "I'm here"
     menu:
+        'Be my garantor' if not garantor and visavis.stance(player).value > 0:
+            visavis 'Ok. I will be your garantor.'
+            $ garantor = visavis
+                        
         'Hung out':
             call lbl_hungout              
         'Present':
@@ -30,7 +34,7 @@ label lbl_conquest(target):
             chance_to_rise = True  
         visavis.use_token()
     menu:
-        'Influence' if  chance_to_rise:
+        'Influence' if chance_to_rise:
             $ visavis.stance(player).value += 1
         'Dominance' if visavis.stance(player).value == 2:
             $ player.joy('authority', 5)

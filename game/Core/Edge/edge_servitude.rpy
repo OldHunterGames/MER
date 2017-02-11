@@ -47,8 +47,9 @@ label lbl_edge_libertine_exam:
         
     edge_recruiter "What do you need?"
     menu:
-        '[garantor.name] will bail for me!' if 'got_garantor' not in edge.options:
+        '[garantor.name] will bail for me!' if 'got_garantor' not in edge.options and garantor:
             $ edge.options.append('got_garantor')
+            edge_recruiter "Good for you! Let's settle the formalities."
             
         'I have a sparkgem!' if 'got_gem' not in edge.options:
             $ edge.options.append('got_gem')

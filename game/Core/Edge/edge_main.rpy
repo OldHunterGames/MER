@@ -42,6 +42,7 @@ label lbl_edge_main:
         
         
         ## Houses & Persons
+        garantor = None
         edge_sovereign = core.get_faction('serpis')
         
         slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
