@@ -9,8 +9,14 @@ class BodyPart(object):
 
     def __init__(self, basis):
         self.basis = Feature(basis, 'anatomy_features')
-
+        self.add_feature(self.basis)
+        self.wetness = 0
+        self.stretch = 0
         self.features = []
+
+    @property
+    def size(self):
+        return sum([i.count_modifiers('size') for i in self.features])
 
     def add_feature(self, id_, time=None):
         if self.has_feature(id_):

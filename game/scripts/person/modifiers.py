@@ -71,6 +71,9 @@ class Modifiable(object):
     def init_modifiable(self):
         self._modifiers = ModifiersStorage()
 
+    def remove_modifier(self, source):
+        self._modifiers.remove_modifier(source)
+
     def add_modifier(self, id_, stats_dict, source, slot=None):
         self._modifiers.add_modifier(id_, stats_dict, source, slot)
 

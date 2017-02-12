@@ -47,5 +47,5 @@ class Buff(object):
             pass
 
     def remove(self):
-        self.owner.modifiers.remove_modifier(self)
+        self.owner.remove_modifier(self)
         self.owner._buffs.remove(self)

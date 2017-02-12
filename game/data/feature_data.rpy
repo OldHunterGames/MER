@@ -658,7 +658,7 @@ init python:
         'horse_penis': {'name': __("horse penis"), 'slot': 'penis_type'},
         'human_penis': {'name': __("cock"), 'slot': 'penis_type'},
         'canine_penis': {'name': __("canine penis"), 'slot': 'penis_type'},        
-        'micro_penis': {"name": __("diminutive"), 'slot': 'penis_size'},
+        'micro_penis': {"name": __("diminutive"), 'slot': 'penis_size', 'modifiers': {'size': 1}},
         'small_penis': {"name": __("small"), 'slot': 'penis_size'},        
         'normal_penis': {"name": __("normal"), 'slot': 'penis_size'},
         'large_penis': {"name": __("large"), 'slot': 'penis_size'},        
