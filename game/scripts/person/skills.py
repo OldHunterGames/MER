@@ -135,6 +135,12 @@ class Skilled(object):
     def activate_resource(self, res):
         self.resources_deck.remove(res)
         self.active_resources.append(res)
+
+    def activate_resource_by_name(self, name):
+        for i in self.resources_deck:
+            if i.name == name:
+                self.activate_resource(i)
+                return
         
 
     def use_resource(self, res):

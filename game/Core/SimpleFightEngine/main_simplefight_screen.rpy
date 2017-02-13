@@ -167,7 +167,7 @@ screen sc_postfight_win(fight):
         def take_all_captives(player, captives):
             to_remove = []
             for i in captives:
-                player.add_captive(i)
+                player.enslave(i)
                 to_remove.append(i)
             for i in to_remove:
                 captives.remove(i)
@@ -204,7 +204,7 @@ screen sc_postfight_win(fight):
                         text 'Captives'
                         for i in fight.captives:
                             textbutton i.name:
-                                action Function(player.add_captive, i), Function(fight.captives.remove, i)
+                                action Function(player.enslave, i), Function(fight.captives.remove, i)
                 textbutton 'Take all' action Function(take_all_captives, player, fight.captives)
 
         textbutton 'Leave' action Return():

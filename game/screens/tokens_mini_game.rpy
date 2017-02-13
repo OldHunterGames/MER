@@ -287,7 +287,8 @@ init python:
         'death': {'locker': True, 'activate': death_activate, 'image': 'images/tarot/arcana_death.jpg', 'nature': 'bad'},
         'hermit': {'value': 3, 'image': 'images/tarot/arcana_hermit.jpg', 'nature': 'good', 'attribute': 'any'},
         'pope': {'image': 'images/tarot/arcana_pope.jpg', 'nature': 'good', 'activate': pope_activate},
-        'justice': {'image': 'images/tarot/arcana_justice.jpg', 'nature': 'good', 'activate': justice_activate}
+        'justice': {'image': 'images/tarot/arcana_justice.jpg', 'nature': 'good', 'activate': justice_activate},
+        'star': {'image': 'images/tarot/arcana_justice.jpg', 'nature': 'good', 'value': 4, 'attribute': 'any'}
 
     }
 

@@ -756,6 +756,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     @property
     def calculatable(self):
+        return self.player_controlled
         mastered_by_player = False
         master_of_player = False
         supervisor_of_player = False
@@ -1382,6 +1383,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.slaves.append(target)
         self.relations(target)
 
+    def remove_slave(self, target):
+        self.slaves.remove(target)
+        target.master = None
+        target.set_supervisor(None)
+
     def set_supervisor(self, supervisor):
         self.supervisor = supervisor
 
@@ -1579,7 +1585,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     #rating methods
     def allure(self):
         value = 0
-        value += self.count_modifiers('alure')
+        value += self.count_modifiers('allure')
         if self.skill('spirit') > value:
             value += 1
         if self.vitality > value:

@@ -217,7 +217,6 @@ class InventoryWielder(object):
         self.inventory = Inventory()
         self.corpse_storage = []
         self.corpse_buffer = None
-        self.captives = []
 
     @property
     def trade_level(self):
@@ -248,16 +247,6 @@ class InventoryWielder(object):
 
     def transfer_money(self, storage, value):
         self.inventory.transfer_money(storage, value)
-
-    def add_captive(self, person):
-        self.enslave(person)
-        self.captives.append(person)
-
-    def remove_captive(self, person):
-        self.captives.remove(person)
-
-    def get_captives(self):
-        return [i for i in self.captives]
     
     @utilities.Observable
     def add_corpse(self, person):

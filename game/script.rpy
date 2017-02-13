@@ -127,7 +127,7 @@ screen sc_token_image(person):
 label lbl_notify(person, token):
     show screen sc_token_image(person)
     '[person.name] get token [token]'
-
+    return
 
 label lbl_test_anatomy:
     call screen sc_anatomy_builder

@@ -33,6 +33,27 @@ def get_max_need(target, *args):
                 maxn_name = arg
     return maxn, maxn_name
 
+
+class QuestTracker(object):
+
+    def __init__(self):
+        self.active_quests = []
+
+    def add_quest(self, quest):
+        self.active_quests.append(quest)
+
+    def remove_quest(self, quest):
+        self.active_quests.remove(quest)
+
+    def quest_targets_achieved(self, quest):
+        return quest.check()
+
+    def finish_quest(self, quest):
+        finished = quest.finish()
+        if finished:
+            self.remove_quest(quest)
+
+
 class MistsOfEternalRome(object):
     """
     This is the engine of MER core module
@@ -56,6 +77,7 @@ class MistsOfEternalRome(object):
         self.characters = persons_list
         self.time = 0
         self.tokens_game = None
+        self.quest_tracker = QuestTracker()
 
         self.allow_shemales = True
         self.allow_sexless = True
