@@ -19,6 +19,8 @@ label lbl_communicate(target):
             call lbl_hungout              
         'Present':
             call lbl_present
+        'Take quest' if target.has_quest():
+            call lbl_quests(target)
         'Nevermind':
             pass
     
@@ -281,3 +283,22 @@ label lbl_present:
     $ player.drain_energy()
     return    
     return    
+
+
+label lbl_quests(target):
+    python:
+        quests = target.quests_to_give
+        menu_items = []
+        for i in quests:
+            menu_items.append((i.name(), i))
+
+        choice = renpy.display_menu(menu_items)
+        description = choice.description()
+
+    menu:
+        '[description]'
+        'Take this quest':
+            $ core.quest_tracker.add_quest(choice(player))
+        "Don't interrested":
+            return
+    return

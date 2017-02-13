@@ -650,6 +650,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def remove_quest(self, quest_cls):
         self.quests_to_give.remove(quest_cls)
 
+    def has_quest(self):
+        return len(self.quests_to_give) > 0
+
     def set_pocket_money(self, level):
         self.pocket_money = level
 
