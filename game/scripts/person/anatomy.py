@@ -8,11 +8,11 @@ class BodyPart(object):
 
 
     def __init__(self, basis):
+        self.features = []
         self.basis = Feature(basis, 'anatomy_features')
         self.add_feature(self.basis)
         self.wetness = 0
         self.stretch = 0
-        self.features = []
 
     @property
     def size(self):
@@ -63,7 +63,12 @@ class BodyPart(object):
                 return
 
     def __getattr__(self, key):
-        value = self.feature_by_slot(key)
+        for f in self.__dict__['features']:
+            if f.slot == key:
+                value = f
+                break
+        else:
+            value = None
         if value is None:
             raise AttributeError(key)
         else:
