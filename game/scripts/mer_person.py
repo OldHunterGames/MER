@@ -642,6 +642,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._energy = 0
         self.set_energy()
         self._current_job = None
+        self.quests_to_give = []
+
+    def add_quest(self, quest_cls):
+        self.quests_to_give.append(quest_cls)
+
+    def remove_quest(self, quest_cls):
+        self.quests_to_give.remove(quest_cls)
 
     def set_pocket_money(self, level):
         self.pocket_money = level

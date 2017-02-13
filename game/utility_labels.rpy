@@ -32,29 +32,41 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
 
 
 init python:
-    class SlaverQuest(object):
-        allure = 4
-        
-        def __init__(self, performer):
-            self.performer = performer
+    class Quest(object):
+        id = None
 
-        @property
+        @classmethod
         def description(self):
-            data = quests_data.get('slaver_quest')
+            data = quests_data.get(self.id)
             no_desc = 'No description'
             if data is not None:
                 return data.get('description', no_desc)
             else:
                 return no_desc
 
-        @property
+        @classmethod
         def name(self):
-            data = quests_data.get('slaver_quest')
+            data = quests_data.get(self.id)
             name = 'Unnamed'
             if data is not None:
                 return data.get('name', name)
             else:
                 return name
+
+        def check(self):
+            raise Exception("Not implemented")
+
+        def finish(self):
+            raise Exception("Not implemented")
+    
+    class SlaverQuest(Quest):
+        id = 'slaver_quest'
+        allure = 4
+        
+        def __init__(self, performer):
+            self.performer = performer
+
+        
 
         def check(self):
             for i in self.performer.slaves:
