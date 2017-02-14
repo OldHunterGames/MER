@@ -1665,24 +1665,14 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return max(0, min(value, 5))
 
     def job_productivity(self):
-        if self._job.skill is not None:
-            value = self.skill(self._job.skill) - self.job_difficulty
-        else:
+        if self._job.skill is None:
             return 0
-        if value < 0:
-            value = 0
-        value += self._job.productivity
+        value = self._job.productivity
         value = max(0, min(5, value))
-        if not self.player_controlled:
-            return min(value, self.motivation())
         return value
 
     def focus(self):
-        if self._job.skill is not None:
-            value = self._focus_value + skillelf._job.productivity
-            return max(0, min(value, 5))
-        else:
-            return 0
+        return self.job_productivity()
 
     def job_skill(self):
         return self._job.skill
@@ -1723,8 +1713,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         data = self.available_jobs()[job]
         world = self.world().name
         obj = ScheduleObject(job, world, 'job', data)
-        if skill is not None:
-            self._focus_value = abs(self.skill(skill) - difficulty)
         if skill is not None:
             obj.productivity = self.skill(skill) - difficulty
             if obj.productivity < 0:

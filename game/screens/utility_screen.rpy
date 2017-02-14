@@ -611,14 +611,8 @@ label lbl_skillcheck_mini(person, attribute, difficulty):
         attribute_needed = encolor_text(skill, difficulty)
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[difficulty]
-        if difficulty == 0:
-            text = '{person.name} passes {skill} challenge with ease.'.format(person=person, skill=skill_name_colored)
-        elif difficulty > 5:
-            text = '{person.name} needs higher {skill} expirience to even hope for a luck. The {{color=#f00}}challenge{{/color}} is beyond capabilities'.format(
-                person=person, skill=skill_name_colored)
-        else:
-            text = '{person.name} meets {skill} challenge. Need {attribute} to success'.format(
-                person=person, skill=skill_name_colored, attribute=attribute_needed)
+        text = '{person.name} meets a challenging task. Need {attribute} to succeed'.format(
+                person=person, attribute=attribute_needed)
     if difficulty > 0 and difficulty <= 5:
         python:
             check = SkillcheckGame(person, attribute, difficulty, text, attr, False)
@@ -636,9 +630,6 @@ label lbl_skillcheck_mini(person, attribute, difficulty):
         return 0
 label lbl_jobcheck(person, attribute):
     python:
-        productivity = person.job_productivity()
-        productivity_str = encolor_text(success_rate[productivity], productivity)
-        
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[person.focus()+1]
@@ -648,17 +639,14 @@ label lbl_jobcheck(person, attribute):
         attr = person.get_resource(attribute, focus, True)
         if person.focus() < 5:
             if not person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
-                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
-                        productivity=productivity_str)
+                text = "{person.name} {job_description} with {focus} effort. {person.name} need {resqual} to rise productivity".format(
+                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual)
             elif person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. There has been some progress.".format(
-                        person=person, productivity=productivity_str, job_description=job_description,
-                        focus=focus_desc)
+                text = "{person.name} {job_description} with {focus} effort. There has been some progress.".format(
+                        person=person, job_description=job_description, focus=focus_desc)
         else:
-            text = "{person.name} {job_description} with {focus} effort leading to {productivity} productivity".format(
-                person=person, job_description=job_description,
-                productivity=productivity_str, focus=focus_desc)
+            text = "{person.name} {job_description} with {focus} effort. Perfect!".format(
+                person=person, job_description=job_description, focus=focus_desc)
     if person.focus() < 5 and not person.productivity_raised:
         python:
             check = SkillcheckGame(person, attribute, focus, text, attr, True)

@@ -242,8 +242,6 @@ class MistsOfEternalRome(object):
 
 
     def skillcheck(self, person, attribute, difficulty):
-        skill = person.skill(attribute)
-        difficulty -= skill
         difficulty = max(0, difficulty)
         return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, attribute=attribute, difficulty=difficulty)
 
