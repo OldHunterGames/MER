@@ -1238,6 +1238,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._stimul = 0
         self.success = 0
         self.purporse = 0
+        for i in self.tokens_relations.items():
+            skill = self.skill(i[0])
+            if skill > 0:
+                self.add_chance(skill, i[1], attributed=True)
 
     def tick_time(self):
         if not self.calculatable:
@@ -1245,6 +1249,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.conditions = []
         self.tick_buffs_time()
         self.tick_features()
+    
     def tick_schedule(self):
         self.bad_markers = []
         self.good_markers = []
@@ -1674,7 +1679,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def focus(self):
         if self._job.skill is not None:
-            value = abs(self.skill(self._job.skill) - self.job_difficulty)+self._job.productivity
+            value = self._focus_value + skillelf._job.productivity
             return max(0, min(value, 5))
         else:
             return 0
@@ -1718,6 +1723,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         data = self.available_jobs()[job]
         world = self.world().name
         obj = ScheduleObject(job, world, 'job', data)
+        if skill is not None:
+            self._focus_value = abs(self.skill(skill) - difficulty)
         if skill is not None:
             obj.productivity = self.skill(skill) - difficulty
             if obj.productivity < 0:

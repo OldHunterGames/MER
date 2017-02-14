@@ -34,13 +34,14 @@ def init_needs():
 class Chance(object):
 
 
-    def __init__(self, id_, value, negative=False, on_remove=None, remove_on_refresh=False):
+    def __init__(self, id_, value, negative=False, on_remove=None, remove_on_refresh=False, attributed=False):
 
         self.id = id_
         self.value = value
         self.negative = negative
         self.on_remove = on_remove
         self.remove_on_refresh = remove_on_refresh
+        self.attributed = False
 
 class Need(object):
     def __init__(self, name):
@@ -162,8 +163,8 @@ class PsyModel(object):
         self.add_chance(chance_value, chance_name, negative)
 
 
-    def add_chance(self, value, name, negative=False, on_remove=None, remove_on_refresh=True):
-        self._chances[name] = Chance(name, value, negative, on_remove, remove_on_refresh)
+    def add_chance(self, value, name, negative=False, on_remove=None, remove_on_refresh=True, attributed=False):
+        self._chances[name] = Chance(name, value, negative, on_remove, remove_on_refresh, attributed)
 
     def remove_chance(self, name):
         try:
@@ -176,9 +177,11 @@ class PsyModel(object):
         return self.needs[name]
 
     def need_level(self, name):
-        return DEFAULT_NEED_LEVEL + self.count_modifiers(name)
+        return max(0, min(3, DEFAULT_NEED_LEVEL + self.count_modifiers(name)))
 
     def tense_need(self, name, point):
+        if self.need_level(name) == 0:
+            return
         need_obj = self.needs[name]
         if need_obj.has_tension(point):
             return
@@ -189,6 +192,8 @@ class PsyModel(object):
             need_obj.set_tension(point)
 
     def satisfy_need(self, name, value):
+        if self.need_level(name) == 0:
+            return
         need_obj = self.needs[name]
         satisfied = need_obj.set_satisfaction(value)
         if satisfied:

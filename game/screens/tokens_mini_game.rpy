@@ -102,12 +102,14 @@ init python:
             person = self.person
             chance = choice(person.get_all_chances())
             self.chance = chance
+            print chance.id
+            print chance.value
             person.remove_chance(chance.id)
             self.active_chance = chance
             if chance.negative:
-                self.chance_value = 3-chance.value
+                self.chance_value = 3 - chance.value
             else:
-                self.chance_value = chance.value
+                self.chance_value = chance.value + 2
 
         @property
         def chances(self):
@@ -119,11 +121,18 @@ init python:
             self.fill_revolver()
 
         def fill_revolver(self):
-            cards = [i for i in self.get_available_cards()]
+            if self.chance.attributed:
+                skip = True
+            else:
+                skip = False
+            cards = [i for i in self.get_available_cards(skip)]
             shuffle(cards)
-            if self.chance_value <= 2:
-                self.chance_value += 1
-            for i in range(self.chance_value):
+            value = 0
+            if not self.chance.negative:
+                value = self.chance_value - 2
+            else:
+                value = self.chance_value + 1
+            for i in range(value):
                 self.revolver.append(cards[i])
             renpy.show_screen('sc_tokens_game', self)
 
@@ -158,16 +167,18 @@ init python:
                 renpy.return_statement()
 
         @classmethod
-        def get_defaults(cls, person):
+        def get_defaults(cls, person, skipcheck=False):
+            if skipcheck:
+                return [card for card in person.resources_deck if card.type == 'common']
             return [card for card in person.resources_deck if card.type == 'common' and card.can_be_applied(person)]
         
-        def get_available_cards(self):
+        def get_available_cards(self, skipcheck=False):
             chance_value = self.chance_value
             negatives = ['hermit', 'fool', 'mage', 'fortune', 'hangman', 'devil', 'death']
             if chance_value < 3:
                 return [card for card in self.person.resources_deck if card.name in negatives]
             else:
-                defaults = self.get_defaults(self.person)
+                defaults = self.get_defaults(self.person, skipcheck)
                 valued = {
                     3: ['fool', 'mage', 'temperance', 'empress'],
                     4: ['fool', 'mage', 'emperor', 'justice'],

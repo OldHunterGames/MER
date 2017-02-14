@@ -118,7 +118,7 @@ from mer_utilities import encolor_text
 
 
 class Skilled(object):
-    _tokens_relations = {'physique': 'might', 'mind': 'wisdom', 'spirit': 'spirit',
+    tokens_relations = {'physique': 'might', 'mind': 'wisdom', 'spirit': 'spirit',
         'agility': 'finesse'}
     def init_skilled(self):
         self.inner_resources = []
@@ -182,7 +182,7 @@ class Skilled(object):
                     return i
 
     def skill(self, attribute):
-        attr = self._tokens_relations[attribute]
+        attr = self.tokens_relations[attribute]
         value = self.count_modifiers(attr+'_skill')
         return max(0, min(3, value))
 
