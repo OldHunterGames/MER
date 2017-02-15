@@ -7,12 +7,14 @@ init python:
             'available_technical_levels': [0],
             'available_prestige_levels': [0],
             'name': __('wild'),
+            'features': ['ignorant'], 
             'descriptions': [__('wild world 1'), __('wild world 2'), __('wild world 3'), ]
         },
         'prehistoric':{
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'name': __('prehistoric'),
+            'features': ['ignorant'],             
             'descriptions': [__('prehistoric world 1'), __('prehistoric world 2'), __('prehistoric world 3'), ]
         },
         'lowtec':{
@@ -43,6 +45,7 @@ init python:
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'name': __('modern'),
+            'features': ['educated'],             
             'descriptions': [__('modern world 1'), __('modern world 2'), __('modern world 3'), ]
         },
         'cyberpunk':{
@@ -55,6 +58,7 @@ init python:
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'name': __('utopia'),
+            'features': ['educated'],                
             'descriptions': [__('utopia world 1'), __('utopia world 2'), __('utopia world 3'), ]
         },
         'dystopia':{
@@ -67,6 +71,7 @@ init python:
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'name': __('spaceopera'),
+            'features': ['educated'],                
             'descriptions': [__('spaceopera world 1'), __('spaceopera world 2'), __('spaceopera world 3'), ]
         },
     }
