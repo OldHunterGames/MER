@@ -9,10 +9,12 @@ from mer_utilities import make_sex_card
 class SimpleSex(object):
 
 
-    def __init__(self, player, participants):
-
-        self.participants = [SexParticipant(player[0], player[1])]
-        self.participants.extend([SexParticipant(i[0], i[1]) for i in participants])
+    def __init__(self, participant_1, participant_2, *args):
+        if len(args) > 3:
+            raise Exception('Maximum of 5 participants per sexgame exceed')
+        self.participants = [SexParticipant(participant_1[0], participant_1[1]),
+            SexParticipant(participant_2[0], participant_2[1])]
+        self.participants.extend([SexParticipant(i[0], i[1]) for i in args])
         self.target_picker = None
         renpy.call_in_new_context('lbl_simplesex', self)
 
