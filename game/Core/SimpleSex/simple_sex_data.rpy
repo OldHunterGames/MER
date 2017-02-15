@@ -5,6 +5,7 @@ init python:
             'suite': 'bizarre',
             'quality': 0,
             'implement': 'penis',
-            'target': 'vagina'
+            'target': 'vagina',
+            'action_type': 'afuck'
         }
     }

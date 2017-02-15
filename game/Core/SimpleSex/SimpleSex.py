@@ -100,9 +100,9 @@ class SexEffect(object):
         self._image = None
         self.contact_type = contact_type
 
-    def image(self):
+    def image(self, size=None):
         if self._image is None:
-            self._image = make_sex_card(self.quality+2, self.suite, self.contact_type)
+            self._image = make_sex_card(self.quality+2, self.suite, self.contact_type, size)
         return self._image
 
     def use(self, actor, taker):
@@ -183,4 +183,4 @@ class SexEffect(object):
         actor_rating, target_rating = self._calc_penetration(actor, taker, actor_rating, target_rating)
         return actor_rating, target_rating
 
-test1 = SexEffect('vagina', 'penis', 'bizarre', 2, 'afuck', 'test1')
+test1 = SexEffect('vagina', 'penis', 'bizarre', 0, 'afuck', 'test1')
