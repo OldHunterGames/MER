@@ -41,7 +41,7 @@ label lbl_conquest(target):
         'Dominance' if visavis.stance(player).value == 2:
             $ player.joy('authority', 5)
         'Hatred' if visavis.relations(player).congruence > -1:
-            $ visavis.relations(player).change('congruence', '-')
+            $ visavis.relations(player).change('congruence', '+')
         'Fervor' if visavis.relations(player).fervor < 1:
             $ visavis.relations(player).change('fervor', '+')       
         'Connection' if visavis.relations(player).distance > -1:
@@ -66,7 +66,7 @@ label lbl_convention(target):
         'Temperance' if visavis.relations(player).fervor > -1:
             $ visavis.relations(player).change('fervor', '-')       
         'Admiration' if visavis.relations(player).congruence < 1:
-            $ visavis.relations(player).change('congruence', '+')
+            $ visavis.relations(player).change('congruence', '-')
     return
 
 label lbl_contribution(target):
@@ -83,7 +83,7 @@ label lbl_contribution(target):
         'Fondness' if visavis.stance(player).value == 2:
             $ player.joy('communication', 5)
         'Admiration' if visavis.relations(player).congruence < 1:
-            $ visavis.relations(player).change('congruence', '+')
+            $ visavis.relations(player).change('congruence', '-')
         'Passion' if visavis.relations(player).fervor < 1:
             $ visavis.relations(player).change('fervor', '+')       
         'Connection' if visavis.relations(player).distance > -1:
