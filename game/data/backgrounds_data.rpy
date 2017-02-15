@@ -105,7 +105,6 @@ init python:
             'name': __('slave'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'skills': {'housekeeping': ['training']},                    
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -113,7 +112,6 @@ init python:
             'name': __('serf'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'skills': {'housekeeping': ['training']},                    
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -121,7 +119,6 @@ init python:
             'name': __('low-class'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'skills': {'housekeeping': ['training']},            
             'technical_level': 1,
             'prestige_level': 1
         },   
@@ -129,7 +126,6 @@ init python:
             'name': __('middle-class'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'skills': {'housekeeping': ['training']},        
             'technical_level': 1,
             'prestige_level': 1
         },
@@ -166,6 +162,7 @@ init python:
             'available_prestige_levels': [2],
             'technical_level': 1,
             'prestige_level': 1,
+            'features': ['ignorant'],                        
         },
         'natural':{
             'name': __('natural'),
@@ -173,6 +170,7 @@ init python:
             'available_prestige_levels': [1],
             'technical_level': 1,
             'prestige_level': 1,          
+            'features': ['ignorant'],                        
         },
         'forced_labor':{
             'name': __('forced labor'),
@@ -201,6 +199,7 @@ init python:
             'available_prestige_levels': [3, 4],
             'technical_level': 3,
             'prestige_level': 3,          
+            'features': ['educated'],                        
         },
         'martial':{
             'name': __('martial'),

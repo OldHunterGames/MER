@@ -40,7 +40,6 @@ init python:
         'wild_appearance': {'name': __('wild'), 'slot': 'look', 'modifiers': {'exotic': +1, 'hardiness': +1, 'menace': +1, 'purity': -1}, 'visible': True},    
         'foxy_appearance': {'name': __('foxy'), 'slot': 'look', 'modifiers': {'allure': +1}, 'visible': True},    
         'sleasy_appearance': {'name': __('sleasy'), 'slot': 'look', 'modifiers': {'allure': +1, 'purity': -1, 'menace': -1}, 'visible': True},    
-
         
         'voice_sweet': {'name': __('sweet'), 'slot': 'voice', 'modifiers': {'allure': +1, 'menace': -1}, 'visible': True},               
         'voice_clear': {'name': __('clear'), 'slot': 'voice', 'modifiers': {'allure': +1, 'menace': +1}, 'visible': True},         
@@ -672,6 +671,22 @@ init python:
         'dry_vagina': {"name": __("dry and "), 'slot': 'vagina_wetness', 'modifiers': {'wetness': -1}},
         'wet_vagina': {"name": __("juicy and"), 'slot': 'vagina_wetness', 'modifiers': {'wetness': 1}},
 
+        'ass': 
+            {
+            'name': __("asshole"), 
+            "description": __("{self.ass_size.name}"), 
+            'slot': 'ass', 
+            'parts': ['ass_size'],
+            'basis': True,
+            'sensitive': False,
+            'stimulating': True,
+            'penetration': 'receiving'},
+        'micro_ass': {"name": __("very tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 1}},
+        'small_ass': {"name": __("nice and tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 2}},        
+        'normal_ass': {"name": __("reasonably tigh anus"), 'slot': 'boobs_size', 'modifiers': {'size': 3}},
+        'large_ass': {"name": __("loose anus"), 'slot': 'boobs_size', 'modifiers': {'size': 4}},        
+        'huge_ass': {"name": __("gaping anal spincter"), 'slot': 'boobs_size', 'modifiers': {'size': 5}},   
+
         'boobs': 
             {
             'name': __("boobs"), 
@@ -688,22 +703,54 @@ init python:
         'large_boobs': {"name": __("large boobs"), 'slot': 'boobs_size', 'modifiers': {'size': 4}},        
         'huge_boobs': {"name": __("enormous udders"), 'slot': 'boobs_size', 'modifiers': {'size': 5}},   
 
-        'ass': 
+        'mouth': 
             {
-            'name': __("asshole"), 
-            "description": __("{self.ass_size.name}"), 
-            'slot': 'ass', 
-            'parts': ['ass_size'],
+            'name': __("mouth"), 
+            "description": __("normal mouth"), 
+            'slot': 'mouth', 
+            'parts': [],
             'basis': True,
             'sensitive': False,
             'stimulating': True,
-            'penetration': 'receiving'},
-        'micro_ass': {"name": __("very tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 1}},
-        'small_ass': {"name": __("nice and tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 2}},        
-        'normal_ass': {"name": __("reasonably tigh anus"), 'slot': 'boobs_size', 'modifiers': {'size': 3}},
-        'large_ass': {"name": __("loose anus"), 'slot': 'boobs_size', 'modifiers': {'size': 4}},        
-        'huge_ass': {"name": __("gaping anal spincter"), 'slot': 'boobs_size', 'modifiers': {'size': 5}},   
-                
+            'penetration': False},
+
+        'body': 
+            {
+            'name': __("body"), 
+            "description": __(""), 
+            'slot': 'body', 
+            'parts': [],
+            'basis': True,
+            'sensitive': False,
+            'stimulating': False,
+            'penetration': False},
+
+        'manipulator': 
+            {
+            'name': __("mouth"), 
+            "description": __("{self.appendage.name}"), 
+            'slot': 'mouth', 
+            'parts': ['appendage'],
+            'basis': True,
+            'sensitive': False,
+            'stimulating': False,
+            'penetration': False},        
+
+        'human_hand': {"name": __("human hands"), 'slot': 'appendage', 'modifiers': {},                                                
+
+        'foot': 
+            {
+            'name': __("foot"), 
+            "description": __("{self.pedal.name}"), 
+            'slot': 'foot', 
+            'parts': ['pedal'],
+            'basis': True,
+            'sensitive': False,
+            'stimulating': False,
+            'penetration': False},        
+
+        'human_foot': {"name": __("human feets"), 'slot': 'pedal', 'modifiers': {},     
+
     }
 
    
