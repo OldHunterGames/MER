@@ -41,8 +41,7 @@ class BackgroundBase(object):
                 and background.prestige_level in self.available_prestige_levels)
 
     def apply(self, owner):
-        for feature_paires in self.features:
-            feature = mer_utilities.weighted_random(feature_pairs)
+        for feature in self.features:
             owner.add_feature(feature)
         dice = mer_utilities.roll(1, 10)
 
