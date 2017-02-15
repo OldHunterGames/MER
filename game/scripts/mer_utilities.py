@@ -90,7 +90,9 @@ class Observable(object):
 def sex_images_path():
     return 'images/sexcards'
 
-def make_sex_card(quality, type_, contact_type):
+def make_sex_card(quality, type_, contact_type, size=None):
+    if size is None:
+        size = (400, 600)
     qualities = {1: sex_images_path()+'/base_bronze.jpg',
         2: sex_images_path()+'/base_silver.jpg',
         3: sex_images_path()+'/base_gold.jpg'}
@@ -104,8 +106,8 @@ def make_sex_card(quality, type_, contact_type):
     type_image = types[type_]
     image_start = sex_images_path()+'/%s'%contact_type
     images = [i for i in renpy.list_files() if i.startswith(image_start)]
-    image = renpy.display.im.Scale(random.choice(images), 400, 600)
-    image = renpy.display.im.Composite((400, 600),
+    image = renpy.display.im.Scale(random.choice(images), *size)
+    image = renpy.display.im.Composite(size,
         (0, 0), quality_image, 
         (0, 0), image,
         (0, 0), type_image,)
