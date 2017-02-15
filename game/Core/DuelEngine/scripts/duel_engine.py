@@ -620,7 +620,7 @@ class CardStorage(object):
     def count_for_deck(self, deck, card_id):
         return self.count(card_id) - deck.count_cards(card_id)
 
-def make_storage(person):
+def make_storage(person, *args, **kwargs):
     person.card_storage = CardStorage()
 Person.__init__.add_callback(make_storage)
 

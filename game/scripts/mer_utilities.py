@@ -66,11 +66,26 @@ class Observable(object):
         def __call__(self, *args, **kwargs):
             result = self.func(*args, **kwargs)
             for observer in self.observers:
-                observer(self.instance)
+                observer(self.instance, *args, **kwargs)
             return result
 
         def add_callback(self, callback):
             self.observers.append(callback)
+
+"""class DefaultObservable(object):
+
+    def init_observable(self):
+        self._observers = []
+
+    def remove_observer(self, observer):
+        self._observers.remove(observer)
+
+    def add_observer(self, observer):
+        self._observers.append(observer)
+
+    def notify_observers(self, **kwargs):
+        for i in self._observers:
+            i.notify(**kwargs)"""
 
 def sex_images_path():
     return 'images/sexcards'
@@ -81,7 +96,7 @@ def make_sex_card(quality, type_, contact_type):
         3: sex_images_path()+'/base_gold.jpg'}
     quality_image = qualities[quality]
     types = {
-        'bizzare': sex_images_path()+'/over_bizzare.png',
+        'bizarre': sex_images_path()+'/over_bizarre.png',
         'passion': sex_images_path()+'/over_passion.png',
         'rage': sex_images_path()+'/over_rage.png',
         'tender': sex_images_path()+'/over_tender.png'

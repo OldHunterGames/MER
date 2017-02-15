@@ -18,6 +18,10 @@ class BodyPart(object):
     def size(self):
         return sum([i.count_modifiers('size') for i in self.features])
 
+    @property
+    def penetration(self):
+        return self.basis.penetration
+
     def add_feature(self, id_, time=None):
         if self.has_feature(id_):
             return
@@ -85,3 +89,11 @@ class Anatomy(object):
 
     def __init__(self):
         self.parts = dict()
+
+    def get_part(self, name):
+        return self.parts.get(name)
+
+    def add_part(self, name):
+        part = BodyPart(name)
+        self.parts[name] = part
+        return part

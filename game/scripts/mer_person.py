@@ -101,21 +101,19 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p.random_alignment()
     p.random_features()
     gen_sex_traits(p)
+    if p.gender == 'male':
+        penis = p.add_body_part('penis')
+        penis.add_feature('human_penis')
+        penis.add_feature('micro_penis')
+    elif p.gender == 'female':
+        vagina = p.add_body_part('vagina')
+        vagina.add_feature('micro_vagina')
     return p
 
 persons_list = []
 
 def gen_sex_traits(person):
-    return
-    kink_data = store.kink_types
-    kink = choice(kink_data.keys())
-    person.kink = kink
-    genders_data = store.gender_types
-    gender = person.gender
-    basic = store.basic_preferences
-    get_traits_from_dict(person, kink_data[kink])
-    get_traits_from_dict(person, genders_data[gender])
-    get_traits_from_dict(person, basic)
+    person.sexual_suite = choice(store.sexual_type.values())
 
 def get_traits_from_dict(person, dict): 
     for key, value in dict.items():
@@ -643,6 +641,12 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.set_energy()
         self._current_job = None
         self.quests_to_give = []
+
+    def get_body_part(self, name):
+        return self.anatomy.get_part(name)
+
+    def add_body_part(self, name):
+        return self.anatomy.add_part(name)
 
     def add_quest(self, quest_cls):
         self.quests_to_give.append(quest_cls)
