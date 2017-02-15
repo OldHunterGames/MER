@@ -736,7 +736,7 @@ init python:
             'stimulating': False,
             'penetration': False},        
 
-        'human_hand': {"name": __("human hands"), 'slot': 'appendage', 'modifiers': {},                                                
+        'human_hand': {"name": __("human hands"), 'slot': 'appendage', 'modifiers': {}},                                                
 
         'foot': 
             {
@@ -751,6 +751,7 @@ init python:
 
         'human_foot': {"name": __("human feets"), 'slot': 'pedal', 'modifiers': {},     
 
+    }
     }
 
    
