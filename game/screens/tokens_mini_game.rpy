@@ -121,10 +121,10 @@ init python:
             self.fill_revolver()
 
         def fill_revolver(self):
-            if self.chance.attributed:
-                skip = True
+            if self.chance.attributed is not None:
+                skip = self.chance.attributed
             else:
-                skip = False
+                skip = None
             cards = [i for i in self.get_available_cards(skip)]
             shuffle(cards)
             value = 0
@@ -167,18 +167,18 @@ init python:
                 renpy.return_statement()
 
         @classmethod
-        def get_defaults(cls, person, skipcheck=False):
-            if skipcheck:
-                return [card for card in person.resources_deck if card.type == 'common']
+        def get_defaults(cls, person, attributed=None):
+            if attributed is not None:
+                return [card for card in person.resources_deck if card.type == 'common' and card.attribute == attributed]
             return [card for card in person.resources_deck if card.type == 'common' and card.can_be_applied(person)]
         
-        def get_available_cards(self, skipcheck=False):
+        def get_available_cards(self, attributed=None):
             chance_value = self.chance_value
             negatives = ['hermit', 'fool', 'mage', 'fortune', 'hangman', 'devil', 'death']
             if chance_value < 3:
                 return [card for card in self.person.resources_deck if card.name in negatives]
             else:
-                defaults = self.get_defaults(self.person, skipcheck)
+                defaults = self.get_defaults(self.person, attributed)
                 valued = {
                     3: ['fool', 'mage', 'temperance', 'empress'],
                     4: ['fool', 'mage', 'emperor', 'justice'],

@@ -163,7 +163,7 @@ class PsyModel(object):
         self.add_chance(chance_value, chance_name, negative)
 
 
-    def add_chance(self, value, name, negative=False, on_remove=None, remove_on_refresh=True, attributed=False):
+    def add_chance(self, value, name, negative=False, on_remove=None, remove_on_refresh=True, attributed=None):
         self._chances[name] = Chance(name, value, negative, on_remove, remove_on_refresh, attributed)
 
     def remove_chance(self, name):

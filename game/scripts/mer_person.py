@@ -1249,7 +1249,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         for i in self.tokens_relations.items():
             skill = self.skill(i[0])
             if skill > 0:
-                self.add_chance(skill, i[1], attributed=True)
+                self.add_chance(skill, i[1], attributed=i)
 
     def tick_time(self):
         if not self.calculatable:
