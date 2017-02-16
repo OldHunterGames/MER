@@ -105,6 +105,8 @@ label lbl_edge_manage:
             call lbl_edge_places
         'Faction' if edge.faction_mode:
             $ pass
+        'Стать богатым':            
+            $ player.add_money(1000)
     
     jump lbl_edge_manage
     return

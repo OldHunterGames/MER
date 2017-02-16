@@ -177,7 +177,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('booze')  
                 $ visavis.set_token('antagonism')                                
         'Dinner treat (spirit, 3 bars)' if 'dinner' not in visavis.communications_done:
-            $ player.remove_money -= 3
+            $ player.remove_money(3)
             $ dif = 3 + visavis.relations(player).stability - visavis.need_level('nutrition')
             $ result = core.skillcheck(player, 'spirit', dif)
             if result > 0:
