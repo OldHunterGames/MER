@@ -1246,10 +1246,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._stimul = 0
         self.success = 0
         self.purporse = 0
-        for i in self.tokens_relations.items():
-            skill = self.skill(i[0])
+        for key, value in self.tokens_relations.items():
+            skill = self.skill(key)
             if skill > 0:
-                self.add_chance(skill, i[1], attributed=i)
+                self.add_chance(skill, value, attributed=key)
 
     def tick_time(self):
         if not self.calculatable:
