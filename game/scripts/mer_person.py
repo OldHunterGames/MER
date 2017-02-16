@@ -77,10 +77,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
         genus = choice(available_genuses())
     genus = Genus(genus)
     if gender is None:
-        try:
-            gender = choice(genus.genders)
-        except IndexError:
-            gender = 'male'
+        gender = genus.get_gender()
     if age is None:
         try:
             age = choice(genus.ages)
@@ -108,6 +105,8 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     elif p.gender == 'female':
         vagina = p.add_body_part('vagina')
         vagina.add_feature('micro_vagina')
+    anus = p.add_body_part('ass')
+    anus.add_feature('micro_ass')
     return p
 
 persons_list = []
@@ -647,6 +646,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def add_body_part(self, name):
         return self.anatomy.add_part(name)
+
+    def has_body_part(self, name):
+        if name is None:
+            return True
+        return self.get_body_part(name) is not None
 
     def add_quest(self, quest_cls):
         self.quests_to_give.append(quest_cls)

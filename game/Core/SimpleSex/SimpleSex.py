@@ -5,37 +5,132 @@ import renpy.exports as renpy
 
 from mer_utilities import make_sex_card
 
+def make_cards(dict_):
+    cards = []
+    for key, value in dict_.items():
+        for i in range(-1, 2):
+            for n in value['suite']:
+                cards.append(SexEffect(value['implement'], value['target'],
+                    n, i, value['action_type'], value['name']))
+    return cards
 
 class SimpleSex(object):
 
-
+    actions = None
     def __init__(self, participant_1, participant_2, *args):
         if len(args) > 3:
             raise Exception('Maximum of 5 participants per sexgame exceed')
+        if self.actions is None:
+            self.actions = make_cards(store.simple_sex_actions_data)
         self.participants = [SexParticipant(participant_1[0], participant_1[1]),
             SexParticipant(participant_2[0], participant_2[1])]
         self.participants.extend([SexParticipant(i[0], i[1]) for i in args])
         self.target_picker = None
-        renpy.call_in_new_context('lbl_simplesex', self)
+        self.target = None
+        self.current_card = None
+        self.current_actions = []
+        self.npc_act()
+        self.active_act()
+        renpy.call_screen('sc_simplesex_final', self)
+
+    def get_player(self):
+        for i in self.participants:
+            if i.player_controlled:
+                return i
+
+    def set_target(self, target):
+        self.target = target
+
+    def swap(self, new_card):
+        index = self.current_actions.index(new_card)
+        self.current_actions.remove(new_card)
+        self.set_card(new_card)
+        self.current_actions.insert(index, self.current_card)
+        
+
+    def active_act(self):
+        actives = self.get_actives()
+        while len(actives) > 0:
+            if len(actives) < 2:
+                self.set_target_picker(self.get_actives()[0])
+                    
+            renpy.call_screen('sc_simplesex_picktarget', self)
+            actions = self.get_actions(self.target_picker, self.target)
+            self.current_actions = actions[0:4]
+            self.set_card(actions[4])
+            renpy.call_screen('sc_pick_sexaction', self)
+            renpy.call_screen('sc_show_turn', self)
+            actives.remove(self.target_picker)
+            self.target_picker.act(self.current_card, self.target)
+            self.target_picker.lock()
+            self.clear()
+
+
+    def get_actives(self):
+        return [i for i in self.participants if i.modus == 'controlled' and not i.acted()]
+
 
     def set_target_picker(self, participant):
         self.target_picker = participant
-
-    def set_target(self, target):
-        if self.target_picker is not None:
-            self.target_picker.set_target(target)
+        self.set_target(None)
+        targets = self.available_targets(participant)
+        if len(targets) > 1:
+            return
+        else:
+            self.set_target(targets[0])
 
     def npc_act(self):
         for i in self.participants:
             if i.modus == 'wishful':
-                i.set_target(self.participants[0])
-                i.act(self.get_npc_card(i))
-                renpy.call_screen('sc_show_npc_turn', i)
+                self.target_picker = i
+                target = self.get_npc_target(i)
+                self.target = target
+                card = self.get_npc_card(i, target)
+                self.set_card(card)
+                i.act(card, target)
+                renpy.call_screen('sc_show_turn', self)
+                i.lock()
+                self.clear()
 
-    def get_npc_card(self, participant):
-        shuffle(participant.actions)
-        actions = participant.actions[0:5]
-        return max(actions, key=lambda action: action.calc_result(participant, participant.target)[0])
+    def get_actions(self, participant, target):
+        shuffle(self.actions)
+        actions = [i for i in self.actions if i.can_be_used(participant, target)]
+        actions = actions[0:5]
+        return actions
+
+    def get_npc_card(self, participant, target):
+        actions = self.get_actions(participant, target)
+        return max(actions, key=lambda action: action.calc_result(participant, target)[0])
+
+    def get_npc_target(self, participant):
+        participants = [i for i in self.participants]
+        participants.remove(participant)
+        return max(participants, key=lambda participant: participant.allure())
+
+    def available_targets(self, participant):
+        targets = [i for i in self.participants]
+        targets.remove(participant)
+        return targets
+
+    def clear(self):
+        self.target = None
+        self.target_picker = None
+        self.current_card = None
+        self.current_actions = []
+
+    def set_card(self, card):
+        self.current_card = card
+
+    def get_target_rating(self):
+        value = self.current_card.calc_result(self.target_picker, self.target)[1]
+        return self.target.get_rating_description(value)
+
+    def get_actor_rating(self):
+        value = self.current_card.calc_result(self.target_picker, self.target)[0]
+        return self.target_picker.get_rating_description(value)
+
+    def calc_result(self, participant):
+        return participant.calc_rating()
 
 
 class SexParticipant(object):
@@ -47,31 +142,41 @@ class SexParticipant(object):
         self.modus = modus
         self.ratings = []
         self.actions = []
-        self.target = None
-        self.action = None
 
-    def get_rating_description(self):
+        self._acted = False
+
+    def calc_rating(self):
+        try:
+            max_ = max(self.ratings)
+        except ValueError:
+            return 0
+        if self.ratings.count(max_) > 1:
+            max_ += 1
+        return max_
+
+    def get_rating_description(self, value=0):
         return 'Lorem Ipsum'
     
     def acted(self):
         if self.modus == 'unwilling':
             return True
         else:
-            return self.action is not None
+            return self._acted
 
-    def act(self, action):
+    def lock(self):
+        self._acted = True
+
+    def act(self, action, target):
         self.action = action
-        action.use(self, self.target)
+        action.use(self, target)
 
-    def avatar(self):
-        ava = renpy.display.im.Scale(self.person.avatar_path, 200, 200)
-        if self.acted():
+    def avatar(self, size=None, ungray=False):
+        if size is None:
+            size = (200, 200)
+        ava = renpy.display.im.Scale(self.person.avatar_path, *size)
+        if self.acted() and not ungray:
             return renpy.display.im.Grayscale(ava)
         return ava
-
-
-    def set_target(self, target):
-        self.target = target
 
     def __getattr__(self, key):
         try:
@@ -96,16 +201,19 @@ class SexEffect(object):
     INITIAL_RATING = 0
     def __init__(self, active_organ, passive_organ, suite, quality, contact_type, name):
         self.active = active_organ
+        self.name = name
         self.passive = passive_organ
         self.suite = suite
         self.quality = quality
-        self._image = None
         self.contact_type = contact_type
 
     def image(self, size=None):
-        if self._image is None:
-            self._image = make_sex_card(self.quality+2, self.suite, self.contact_type, size)
-        return self._image
+        return make_sex_card(self.quality+2, self.suite, self.contact_type, size)
+
+    def can_be_used(self, actor, taker):
+        actor_organ = actor.has_body_part(self.active)
+        taker_organ = taker.has_body_part(self.passive)
+        return actor_organ and taker_organ
 
     def use(self, actor, taker):
         actor_rating, target_rating = self.calc_result(actor, taker)
@@ -126,6 +234,8 @@ class SexEffect(object):
 
 
     def _calc_penetration(self, actor, taker, actor_rating, target_rating):
+        if self.passive is None or self.active is None:
+            return actor_rating, target_rating
         actor_organ = actor.get_body_part(self.active)
         taker_organ = taker.get_body_part(self.passive)
         if actor_organ.penetration == 'penetrative':

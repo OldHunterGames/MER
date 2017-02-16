@@ -21,6 +21,11 @@ def default_avatar_path():
     return 'images/avatar/none.jpg'
 
 def weighted_random(pairs):
+    for i in pairs:
+        try:
+            iter(i)
+        except TypeError:
+            raise ValueError('weighted random takes pairs or dict as arg')
     try:
         pairs = pairs.items()
     except AttributeError:
@@ -99,8 +104,8 @@ def make_sex_card(quality, type_, contact_type, size=None):
     quality_image = qualities[quality]
     types = {
         'bizarre': sex_images_path()+'/over_bizarre.png',
-        'passion': sex_images_path()+'/over_passion.png',
-        'rage': sex_images_path()+'/over_rage.png',
+        'passionate': sex_images_path()+'/over_passion.png',
+        'rough': sex_images_path()+'/over_rage.png',
         'tender': sex_images_path()+'/over_tender.png'
     }
     type_image = types[type_]

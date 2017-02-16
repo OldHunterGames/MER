@@ -2,6 +2,7 @@
 from random import choice
 import renpy.store as store
 import renpy.exports as renpy
+from mer_utilities import weighted_random
 _available_ages_ = ['junior', 'adolescent', 'mature', 'elder']
 
 def available_genuses():
@@ -47,6 +48,13 @@ class Genus(object):
         except KeyError:
             genders = self._available_genders
         return genders
+
+    def get_gender(self):
+        try:
+            gender = weighted_random(self.genders)
+        except ValueError:
+            gender = choice(self.genders)
+        return gender
 
     @property
     def ages(self):
