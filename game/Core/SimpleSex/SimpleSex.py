@@ -3,7 +3,7 @@ from random import *
 import renpy.store as store
 import renpy.exports as renpy
 
-from mer_utilities import make_sex_card
+from mer_utilities import make_sex_card, encolor_text
 
 def make_cards(dict_):
     cards = []
@@ -130,7 +130,9 @@ class SimpleSex(object):
         return self.target_picker.get_rating_description(value)
 
     def calc_result(self, participant):
-        return participant.calc_rating()
+        rating = participant.calc_rating()
+
+        return encolor_text(store.sex_quality_rate[rating], rating)
 
 
 class SexParticipant(object):
@@ -155,7 +157,7 @@ class SexParticipant(object):
         return max_
 
     def get_rating_description(self, value=0):
-        return 'Lorem Ipsum'
+        return encolor_text(store.sex_quality_rate[value], value)
     
     def acted(self):
         if self.modus == 'unwilling':

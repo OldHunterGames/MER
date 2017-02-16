@@ -1,13 +1,13 @@
 init python:
     
     sex_quality_rate = {
-    '-1': __('disgusted'), 
-    '0': __('did not cum'), 
-    '1': __('statisfied'), 
-    '2': __('pleased'), 
-    '3': __('delighted'), 
-    '4': __('extatic'),                  
-    '5': __('seventh heaven'),        
+    -1: __('disgusted'), 
+    0: __('did not cum'), 
+    1: __('statisfied'), 
+    2: __('pleased'), 
+    3: __('delighted'), 
+    4: __('extatic'),                  
+    5: __('seventh heaven'),        
     }
     
     simple_sex_actions_data = {
