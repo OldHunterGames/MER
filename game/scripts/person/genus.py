@@ -56,6 +56,13 @@ class Genus(object):
             gender = choice(self.genders)
         return gender
 
+    def get_age(self):
+        try:
+            age = weighted_random(self.ages)
+        except ValueError:
+            age = choice(self.ages)
+        return age
+
     @property
     def ages(self):
         try:

@@ -79,10 +79,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     if gender is None:
         gender = genus.get_gender()
     if age is None:
-        try:
-            age = choice(genus.ages)
-        except IndexError:
-            age = 'adolescent'
+        age = genus.get_age()
     p = Person(age, gender, genus)
     background = Background(world, culture, family, education, occupation)
     p.apply_background(background)
