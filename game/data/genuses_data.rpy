@@ -5,7 +5,7 @@ init python:
             'head_type': 'human',
             'type': 'human',
             'genders': [('male', 3), ('female', 4), ('shemale', 1)],
-            'ages': [('junior', 1), ('adolescent', 2) ('mature', 3) ('elder', 1)],
+            'ages': [('junior', 1), ('adolescent', 2), ('mature', 3), ('elder', 1)],
             'features': []
         },
         'vampire':{
