@@ -44,8 +44,9 @@ class SimpleSex(object):
     def swap(self, new_card):
         index = self.current_actions.index(new_card)
         self.current_actions.remove(new_card)
-        self.set_card(new_card)
         self.current_actions.insert(index, self.current_card)
+        self.set_card(new_card)
+        
         
 
     def active_act(self):
