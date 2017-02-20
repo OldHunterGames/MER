@@ -8,6 +8,7 @@ from mer_person import gen_random_person
 from mer_resources import BarterSystem
 from mer_itemsstorage import ItemsStorage
 from mer_item import create_item
+from schedule import ScheduleObject, ScheduleJob
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -116,6 +117,27 @@ class EdgeEngine(object):
                 break
         return generated
 
+    def _init_player_schedule(self, unlock_func, data_dict, setter_func, default_name, default_obj_id):
+        for i in data_dict:
+            obj = ScheduleObject(i, data_dict[i])
+            if not obj.hidden:
+                unlock_func(i, obj)
+            if i == default_obj_id:
+                setter_func(default_name, obj)
+
+    def init_player_schedule(self, player):
+        self._init_player_schedule(player.schedule.unlock_accommodation, store.edge_accomodations_data,
+                player.schedule.set_default, 'accommodation' , 'makeshift')
+        self._init_player_schedule(player.schedule.unlock_overtime, store.edge_overtimes_data,
+                player.schedule.set_default, 'overtime', 'rest')
+        self._init_player_schedule(player.schedule.unlock_ration, store.edge_feeds_data,
+                player.schedule.set_default, 'ration', 'forage')
+        for i in store.edge_jobs_data:
+            obj = ScheduleJob(i, store.edge_jobs_data[i])
+            if not obj.hidden:
+                player.schedule.unlock_job(i, obj)
+            if i == 'idle':
+                player.schedule.set_default('job', obj)
 
 
     def explore_all(self):

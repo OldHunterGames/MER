@@ -6,86 +6,45 @@ screen sc_schedule_organaizer():
         xalign 0.0
         yalign 0.0
         style 'char_info_window'
-        frame:
-            xsize 350
-            ysize 350
-            viewport:
-                scrollbars 'vertical'
-                draggable True
-                mousewheel True
-                xsize 350
-                ysize 350
-                vbox:
-                    for key, value in player.available_services().items():
-                        $ has_service = player.has_service(key)
-                        hbox:
-                            python:
-                                if has_service:
-                                    name = encolor_text(value['name'], 'green')
-                                else:
-                                    name = encolor_text(value['name'], 'red')
-                            textbutton name:
-                                style 'hoverable_text'
-                                action NullAction()
-                                hovered Show('sc_text_popup', text=value['description'])
-                                unhovered Hide('sc_text_popup')
-                            if not has_service:
-                                textbutton "Off":
-                                    xsize 50
-                                    action Function(player.add_service, key)
-                            else:
-                                textbutton "On":
-                                    xsize 50
-                                    action Function(player.remove_service, key)
-                            if has_service:
-                                text ' '
-                                text 'Bill: %s'%value['cost']
-        textbutton player.job_name():
-            action ShowTransient('sc_job_picker')
-            hovered Show('sc_text_popup', text=player.job_description())
+
+        textbutton player.job.name:
+            action ShowTransient('sc_schedule_picker', x_pos=360, items=player.schedule.available_jobs(core.current_world.name),
+                setter_func=player.schedule.set_job)
+            hovered Show('sc_text_popup', text=player.job.description)
             unhovered Hide('sc_text_popup')
-            sensitive not player.get_schedule_obj('job').locked
+            sensitive not player.job.locked
             xsize 200
             yminimum 30
             xpos 355
 
-        textbutton player.accommodation:
-            action ShowTransient('sc_accomodation_picker')
-            hovered Show('sc_text_popup', text=player.accommodation_description())
+        textbutton player.accommodation.name:
+            action ShowTransient('sc_schedule_picker', x_pos=560, items=player.schedule.available_accommodations(core.current_world.name),
+                setter_func=player.schedule.set_accommodation)
+            hovered Show('sc_text_popup', text=player.accommodation.description)
             unhovered Hide('sc_text_popup')
-            sensitive not player.get_schedule_obj('accommodation').locked
+            sensitive not player.accommodation.locked
             xsize 200
             yminimum 30
             xpos 555
 
-        textbutton player.overtime:
-            action ShowTransient('sc_overtime_picker')
-            hovered Show('sc_text_popup', text=player.overtime_description())
+        textbutton player.overtime.name:
+            action ShowTransient('sc_schedule_picker', x_pos=760, items=player.schedule.available_overtimes(core.current_world.name),
+                setter_func=player.schedule.set_overtime)
+            hovered Show('sc_text_popup', text=player.overtime.description)
             unhovered Hide('sc_text_popup')
-            sensitive not player.get_schedule_obj('overtime').locked
+            sensitive not player.overtime.locked
             xsize 200
             yminimum 30
             xpos 755
-        textbutton player.feed:
-            action ShowTransient('sc_feed_picker')
-            hovered Show('sc_text_popup', text=player.feed_description())
+        textbutton player.ration.name:
+            action ShowTransient('sc_schedule_picker', x_pos=960, items=player.schedule.available_rations(core.current_world.name),
+                setter_func=player.schedule.set_ration)
+            hovered Show('sc_text_popup', text=player.ration.description)
             unhovered Hide('sc_text_popup')
-            sensitive not player.get_schedule_obj('feed').locked
+            sensitive not player.ration.locked
             xsize 200
             yminimum 30
             xpos 955
-        
-        frame:
-            xsize 200
-            ysize 220
-            yalign 0.75
-            vbox:
-                text 'Allowance'
-                for i in range(0, 6):
-                    textbutton str(i):
-                        action [Function(player.set_pocket_money, i), SensitiveIf(player.pocket_money != i),
-                            SelectedIf(player.pocket_money == i)]
-
 
         text 'Player money: %s'%player.money:
             yalign 0.90
@@ -101,12 +60,11 @@ screen sc_schedule_organaizer():
     on 'hide':
         action [Hide('sc_text_popup'), Hide('sc_job_picker'), Hide('sc_accomodation_picker'),
             Hide('sc_overtime_picker'), Hide('sc_feed_picker')]
-
-screen sc_job_picker():
+screen sc_schedule_picker(x_pos, items, setter_func):
     tag picker
     frame:
         ypos 45
-        xpos 360
+        xpos x_pos
         xsize 200
         viewport:
             scrollbars 'vertical'
@@ -115,77 +73,11 @@ screen sc_job_picker():
             xsize 200
             ysize 350
             vbox:
-                for key, value in player.available_jobs().items():
-                    textbutton value['name']:
+                for value in items:
+                    textbutton value.name:
                         xsize 180
-                        action [Function(player.set_job, key), Hide('sc_job_picker')]
-                        hovered Show('sc_text_popup', text=value['description'])
-                        unhovered Hide('sc_text_popup')
-    on 'hide':
-        action Hide('sc_text_popup')
-
-screen sc_accomodation_picker():
-    tag picker
-    frame:
-        ypos 45
-        xpos 560
-        xsize 200
-        viewport:
-            scrollbars 'vertical'
-            draggable True
-            mousewheel True
-            xsize 200
-            ysize 350
-            vbox:
-                for key, value in player.available_accommodations().items():
-                    textbutton value['name']:
-                        xsize 180
-                        action [Function(player.set_accommodation, key), Hide('sc_accomodation_picker')]
-                        hovered Show('sc_text_popup', text=value['description'])
-                        unhovered Hide('sc_text_popup')
-    on 'hide':
-        action Hide('sc_text_popup')
-
-screen sc_overtime_picker():
-    tag picker
-    frame:
-        ypos 45
-        xpos 760
-        xsize 200
-        viewport:
-            scrollbars 'vertical'
-            draggable True
-            mousewheel True
-            xsize 200
-            ysize 350
-            vbox:
-                for key, value in player.available_overtimes().items():
-                    textbutton value['name']:
-                        xsize 180
-                        action [Function(player.set_overtime, key), Hide('sc_overtime_picker')]
-                        hovered Show('sc_text_popup', text=value['description'])
-                        unhovered Hide('sc_text_popup')
-    on 'hide':
-        action Hide('sc_text_popup')
-
-screen sc_feed_picker():
-    tag picker
-    frame:
-        ypos 45
-        xpos 960
-        xsize 200
-        viewport:
-            scrollbars 'vertical'
-            draggable True
-            mousewheel True
-            xsize 200
-            ysize 350
-            vbox:
-                for key, value in player.available_feeds().items():
-                    textbutton value['name']:
-                        xsize 180
-                        action [Function(player.set_feed, key), Hide('sc_feed_picker')]
-                        hovered Show('sc_text_popup', text=value['description'])
+                        action [Function(setter_func, value), Hide('sc_schedule_picker')]
+                        hovered Show('sc_text_popup', text=value.description)
                         unhovered Hide('sc_text_popup')
     on 'hide':
         action Hide('sc_text_popup')

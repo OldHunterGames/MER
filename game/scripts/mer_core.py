@@ -131,7 +131,6 @@ class MistsOfEternalRome(object):
 
     def set_world(self, world):
         self.current_world = world
-        Schedule.set_world(world.name)
         world.core = self
 
     def get_faction(self, id_):

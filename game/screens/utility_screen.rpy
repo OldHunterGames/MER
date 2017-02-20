@@ -668,7 +668,7 @@ label lbl_jobcheck_npc(person, attribute):
         skill = attributes_translation[attribute]
         skill_name_colored = encolor_text(skill, getattr(person, attribute))
         resqual = effort_quality[productivity+1]
-        job_description = person.job_description()
+        job_description = person.job.description()
         energy = person.energy
         motivation = person.motivation()
         motivation_text = encolor_text(__("motivation"), motivation)

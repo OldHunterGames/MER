@@ -21,10 +21,7 @@ label lbl_edge_main:
     python:
         core.set_world(edge)
         edge.go_to_mist()
-        player.set_accommodation('makeshift')
-        player.set_job('idle')
-        player.set_overtime('rest')
-        player.set_feed('forage')
+        edge.init_player_schedule(player)
         player.add_corpse.add_callback(canibalism_unlocker)
         player.remove_corpse.add_callback(canibalism_locker)
         spendings_text = __("Decade bill: ")

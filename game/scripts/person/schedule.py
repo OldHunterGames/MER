@@ -1,161 +1,223 @@
 # -*- coding: UTF-8 -*-
-from random import *
-import collections
-
 import renpy.store as store
 import renpy.exports as renpy
-actions = {}
-def register_actions():
-    lbl_list = renpy.get_all_labels()
-    l = []
-    for label in lbl_list:
-        lb = label.split('_')
-        if lb[0] == 'shd':
-            l.append(lb)
-    for action in l:
-        key = '{world}_{slot}_{name}'.format(world=action[1], slot=action[2], name=action[3])
-        z = '_'
-        z = z.join(action)
+
+import mer_utilities as utilities
+
+
+class ScheduleObject(object):
+
+
+    def __init__(self, id, data_dict):
+        self._data = data_dict
+        self.id = id
+        self.locked = False
+        self._additional_data = dict()
+
+    def add_data(self, dict):
+        self._additional_data = dict
+
+    def _image_raw(self):
+        return self._data['image']
+
+    def image(self, size=None):
+        if size is None:
+            size = (200, 300)
+        return renpy.display.im.Scale(self._image_raw(), *size)
+    
+    @property
+    def cost(self):
         try:
-            special = action[4]
-        except IndexError:
-            special = None
-        if action[1].lower() == 'none':
-            action[1] = None
-        if special is None:
-            actions[key] = {'label': z, 'slot': action[2], 'name': action[3], 'world': action[1]}
+            cost = self._data['cost']
+        except KeyError:
+            cost = 0
+        return cost
 
-def check_world(dict_):
-    return dict_['world'] == Schedule._world
+    def __getattr__(self, key):
+        try:
+            value = self.__dict__['_data'][key]
+        except KeyError:
+            value = self.__dict__['_additional_data'].get(key)
+        return value
 
-def check_availability(slot):
-    act_dict = {}
-    for key, value in actions.items():
-        if check_world(value) and value['slot'] == slot:
-            act_dict[key] = value
-    return act_dict
+    def use(self, person, type):
+        self._use(person)
+        lbl = self.world+'_%s'%type+'_%s'%self.id
+        if renpy.has_label(lbl):
+            renpy.call_in_new_context(lbl, person)
+        self.locked = False
 
-def available_jobs():
-    return check_availability('job')
+    def lock(self):
+        self.locked = True
 
-def available_services():
-    return check_availability('service')
-
-
-class ScheduledAction(object):
-    def __init__(self, actor, name, lbl, slot, store_name, single=True, special_values=None):
-        self.actor = actor
-        self.slot = slot
-        self.name = name
-        self.store_name = store_name
-        self.lbl = lbl
-        self.single = single
-        self.special_values = dict()
-        self.used = False
-        self.spends = 0
-        if special_values:
-            for key in special_values:
-                self.special_values[key] = special_values[key]
-
-    def call(self):
-        if not self.used:
-            renpy.call_in_new_context(self.lbl, self)
-            self.used = True
+    def _use(self, person):
+        return 
 
 
-
-    def call_on_remove(self):
-        removal_label = self.lbl + '_' + 'remove'
-        if renpy.has_label(removal_label):
-            renpy.call_in_new_context(removal_label, self)
+class ScheduleJob(ScheduleObject):
 
 
+    def __init__(self, *args, **kwargs):
+        super(ScheduleJob, self).__init__(*args, **kwargs)
+        self.focus = 0
+
+    def _use(self, person):
+        if self.skill is not None:
+            if person.player_controlled:
+                renpy.call_in_new_context('lbl_jobcheck', person=person, attribute=self.skill)
+            else:
+                renpy.call_in_new_context('lbl_jobcheck_npc', person=person, attribute=self.skill)
 
 
 class Schedule(object):
-    _default_world = 'core'
-    _world = 'core'
-    def __init__(self, person):
-        self.actions = []
-        self.owner = person
-    @classmethod
-    def set_world(cls, world):
-        cls._world = world
-    def add_action(self, action, single=False, special_values=None, spends=0):
-        world = Schedule._world
-        action_ = Schedule._world + '_' + action
-        if not renpy.has_label('shd_%s'%(action_)):
-            action_ = Schedule._default_world + '_' + action
-            world = Schedule._default_world
-        if action_ in actions.keys():
-            action = actions[action_]
-            act = ScheduledAction(self.owner, world + '_' +action['name'], action['label'], action['slot'], action_, single, special_values)
+
+
+    def __init__(self):
+        
+        self._available_rations = {}
+        self._available_jobs = {}
+        self._available_accommodations = {}
+        self._available_overtimes = {}
+        self._job = None
+        self._job_buffer = None
+        self._accommodation = None
+        self._overtime = None
+        self._ration = None
+        self._default_job = None
+        self._default_accommdation = None
+        self._default_overtime = None
+        self._default_ration = None
+
+    def set_default(self, type, obj, **kwargs):
+        setattr(self, '_default_' + type, obj)
+        if getattr(self, '_' + type) is None:
+            getattr(self, 'set_' + type)(obj, **kwargs)
+
+    def get_cost(self):
+        return (self._accommodation.cost +
+            self._overtime.cost +
+            self._ration.cost)
+
+    @property
+    def job(self):
+        return self._job
+
+    @property
+    def accommodation(self):
+        return self._accommodation
+
+    @property
+    def overtime(self):
+        return self._overtime
+
+    @property
+    def ration(self):
+        return self._ration
+
+    def description(self, key):
+        return getattr(self, '_'+key).description
+
+    def remove_buffer(self):
+        self._job_buffer = None
+
+    def use(self, user):
+        self._job.use(user, 'job')
+        self._overtime.use(user, 'overtime')
+        self._accommodation.use(user, 'accommodation')
+        self._ration.use(user, 'ration')
+
+    def name(self, key):
+        return getattr(self, '_'+key).name
+
+    @utilities.Observable
+    def set_job(self, job, single=False, **kwargs):
+        job.add_data(kwargs)
+        difficulty = job.difficulty
+        obj = job
+
+        if self._job_buffer is not None:
+            if obj == self._job_buffer:
+                self._job = self._job_buffer
+                self._job_buffer = None
+                return
+
+        obj.focus = 0
+        
+        if self._job is None:
             
-            if act.slot is not None:
-                if act.slot != 'service':
-                    for a in self.actions:
-                        if a.slot == act.slot:
-                            self.remove_by_handle(a)
-            act.spends = spends
-            self.actions.append(act)
-            return act
+            self._job = obj
+            return
+        
+
+        if self._job.productivity > 0:
+            self._job_buffer = self._job
         else:
-            raise Exception("There is no %s action at current world(%s) or at core"%(action, self._world))
+            self._job_buffer = None
+        
+        self._job = obj
+
+    def set_accommodation(self, accommodation, single=False, **kwargs):
+        self._set('_accommodation', accommodation, single, **kwargs)
+
+    def set_overtime(self, overtime, single=False, **kwargs):
+        self._set('_overtime', overtime, single, **kwargs)
+
+    def set_ration(self, ration, single=False, **kwargs):
+        self._set('_ration', ration, single, **kwargs)
+
+    def _set(self, attr_name, obj, single=False, **kwargs):
+        obj.single = single
+        obj.add_data(kwargs)
+        setattr(self, attr_name, obj)
     
-    def use_actions(self):
-        to_remove = []
-        for action in self.actions:
-            action.call()
-            if action.single:
-                to_remove.append(action)
-            action.used = False
-        for a in to_remove:
-            self.remove_by_handle(a)
+    def _unlock(self, id_, attr_name, value):
+        getattr(self, attr_name)[id_] = value
+
+    def _remove(self, id_, attr_name):
+        try:
+            del getattr(self, attr_name)[id_]
+        except KeyError:
+            pass
+
+    def _available(self, attr_name, world):
+        value = getattr(self, attr_name)
+        return [i for i in value.values() if i.world == world]
     
-    def remove_by_handle(self, action):
-        action.call_on_remove()
-        self.actions.remove(action)
-    
-    def remove_action(self, action):
-        for a in self.actions:
-            if a.store_name == self._world + "_%s"%action:
-                self.remove_by_handle(a)
-    def remove_by_slot(self, slot):
-        for a in self.actions:
-            if a.slot == slot:
-                self.remove_by_handle(a)
+    def unlock_job(self, job_id, job_object):
+        self._unlock(job_id, '_available_jobs', job_object)
 
+    def remove_job(self, job_id):
+        self._remove(job_id, '_available_jobs')
 
-    def find_by_slot(self, slot):
-        for a in self.actions:
-            if a.slot==slot:
-                return a
+    def available_jobs(self, current_world):
+        return self._available('_available_jobs', current_world)
 
+    def unlock_accommodation(self, accommodation_id, schedule_object):
+        self._unlock(accommodation_id, '_available_accommodations', schedule_object)
 
-    def find_by_name(self, name):
-        for a in self.actions:
-            if a.store_name == name:
-                return a
+    def remove_accommodation(self, accommodation_id):
+        self._remove(accommodation_id, '_available_accommodations')
 
-    def use_action(self, name):
-        action = self.find_by_name(name)
-        if action is None:
-            return
-        action.call()
-        if action.single:
-            self.remove_by_handle(action)
+    def available_accommodations(self, current_world):
+        return self._available('_available_accommodations', current_world)
 
-    def use_by_slot(self, slot):
-        action = self.find_by_slot(slot)
-        if action is None:
-            return
-        action.call()
-        if action.single:
-            self.remove_by_handle(action)
+    def unlock_overtime(self, overtime_id, schedule_object):
+        self._unlock(overtime_id, '_available_overtimes', schedule_object)
 
+    def remove_overtime(self, overtime_id):
+        self._remove(overtime_id, '_available_overtimes')
 
-    
+    def available_overtimes(self, current_world):
+        return self._available('_available_overtimes', current_world)
 
+    def unlock_ration(self, ration_id, schedule_object):
+        self._unlock(ration_id, '_available_rations', schedule_object)
 
+    def remove_ration(self, ration_id):
+        self._remove(ration_id, '_available_rations')
 
+    def available_rations(self, current_world):
+        return self._available('_available_rations', current_world)
 
+    def get_schedule_object(self, type, world, id):
+        return getattr(self, 'available_'+type+'s')(world).get(id)

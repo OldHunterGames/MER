@@ -11,10 +11,11 @@ from features import Feature, Phobia
 from skills import Skilled
 from anatomy import Anatomy
 from psymodel import PsyModel
-from schedule import *
+from schedule import Schedule
 from relations import Relations
 from stance import Stance
 from genus import available_genuses, Genus
+from schedule import Schedule
 
 from modifiers import ModifiersStorage, Modifiable
 from factions import Faction
@@ -25,43 +26,7 @@ from mer_item import create_item
 from mer_resources import BarterSystem
 import mer_utilities as utilities
 from mer_event import call_event
-
-
-class ScheduleObject(object):
-
-
-    def __init__(self, id, world, type_, data):
-        self.data = data
-        self.world = world
-        self.type = type_
-        self.id = id
-        self.locked = False
-    
-    @property
-    def cost(self):
-        try:
-            cost = self.data['cost']
-        except KeyError:
-            cost = 0
-        return cost
-
-    def __getattr__(self, key):
-        try:
-            value = self.data[key]
-        except KeyError:
-            return None
-        else:
-            return value
-
-    def use(self, person):
-        lbl = self.world+'_%s'%self.type+'_%s'%self.id
-        if renpy.has_label(lbl):
-            renpy.call_in_new_context(lbl, person)
-        self.locked = False
-
-    def lock(self):
-        self.locked = True
-
+   
 
 def get_avatars(path):
     all_ = renpy.list_files()
@@ -212,49 +177,6 @@ class Attributed(Modifiable):
         if val > 5:
             val = 5
         return val
-
-
-"""class Wealth(object):
-
-
-    def init_wealth(self):
-        self.wealth = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-        self.income = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-        self.expense = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-
-    def calc_expense(self):
-        expense = copy(self.expense)
-        for i in expense:
-            try:
-                expense[i+1] += int(expense[i]/2)
-            except KeyError:
-                break
-        for i in reversed(sorted(expense.keys())):
-            if expense[i] > 0:
-                return i
-        return 0
-
-    def make_income(self):
-        for key, value in self.income.items():
-            self.add_wealth(key, value)
-
-    def calc_budget(self):
-        pass
-
-
-
-    def add_wealth(self, quality, value):
-        total = self.wealth[quality] + value
-        self.wealth[quality] = total%2
-        self.add_wealth(quality+1, int(total/2))
-
-    def has_wealth(self, quality, value):
-        return self.wealth[quality] >= value
-
-    def spend_wealth(self, quality, value):
-        self.wealth[quality] -= value"""
-
-
 
 def get_random_combatant():
     return choice(store.combatant_data.keys())
@@ -538,21 +460,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.slaves = []
         self.subordinates = []
         self.ap = 1
-        self.schedule = Schedule(self)
+        self.schedule = Schedule()
         # init starting features
 
         self.availabe_actions = []  # used if we are playing slave-part
 
         self.allowance = 0         # Sparks spend each turn on a lifestyle
         self.sparks = 0
-        self.ration = {
-            # 'unlimited', 'limited' by price, 'regime' for figure, 'starvation' no food
-            "amount": 'unlimited',
-            "food_type": "cousine",   # 'forage', 'sperm', 'dry', 'canned', 'cousine'
-            "target": 0,           # figures range -2:2
-            "limit": 0,             # maximum resources spend to feed character each turn
-            "overfeed": 0,
-        }
         self.factors = []
         self.restrictions = []
         self.bad_markers = []
@@ -1036,7 +950,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             return self._job.name
 
     def job_description(self):
-        return self._job.description
+        return self.job.description
 
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):
@@ -1243,6 +1157,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._stimul = 0
         self.success = 0
         self.purporse = 0
+        self.productivity_raised = False
         for key, value in self.tokens_relations.items():
             skill = self.skill(key)
             if skill > 0:
@@ -1261,11 +1176,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.decay_corpses()
         if not self.calculatable:
             return
-        self.use_job()
-        self.use_services()
-        self.use_accommodation()
-        self.use_feed()
-        self.use_overtime()
+        self.schedule.use(self)
 
     def know_person(self, person):
         if person in self.known_characters:
@@ -1539,11 +1450,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
 
     def decade_bill(self):
-        accommodation = self._accommodation.cost
-        overtime = self._overtime.cost
-        feed = self._feed.cost
-        return (sum([i['cost'] for i in self.get_services().values()]) +
-            accommodation + overtime + self.pocket_money + feed)
+        value = self.schedule.get_cost()
+        return value
 
     # methods for conditions, person.conditions list cleared after person.rest
     def add_condition(self, condition):
@@ -1574,16 +1482,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._remove_features()
         self._remove_foodsystem()
         self.remove_genus()
-        self.remove_schedule()
         persons_list.remove(self)
 
     def remove_genus(self):
         self.genus.remove()
-
-    def remove_schedule(self):
-        self.schedule.actions = []
-        self.schedule.owner = None
-        self.schedule = None
 
     def _remove_foodsystem(self):
         self.food_system.owner = None
@@ -1669,257 +1571,50 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         value += self.count_modifiers('menace')
         return max(0, min(value, 5))
 
-    def job_productivity(self):
-        if self._job.skill is None:
-            return 0
-        value = self._job.productivity
-        value = max(0, min(5, value))
-        return value
-
     def focus(self):
-        return self.job_productivity()
+        return self.schedule.job.focus
 
     def job_skill(self):
-        return self._job.skill
+        return self.schedule.job.skill
+
+    @property
+    def job(self):
+        return self.schedule.job
+
+    @property
+    def accommodation(self):
+        return self.schedule.accommodation
+
+    @property
+    def overtime(self):
+        return self.schedule.overtime
+
+    @property
+    def ration(self):
+        return self.schedule.ration
 
     @property
     def job_difficulty(self):
-        if self._job.difficulty is not None:
-            return self._job.difficulty
+        if self.schedule.job.difficulty is not None:
+            return self.schedule.job.difficulty
         else:
             return 0
 
     def increase_productivity(self):
         if self.productivity_raised:
             return
-        self.job_buffer = None
-        self._job.productivity += 1
+        self.schedule.remove_buffer()
+        self.schedule.job.focus += 1
         self.productivity_raised = True
 
     def reset_productivity(self):
-        self._job.productivity = 0
+        self.schedule.job.productivity = 0
 
-    def use_job(self):
-        if self._job.skill is not None:
-            if self.player_controlled:
-                renpy.call_in_new_context('lbl_jobcheck', person=self, attribute=self._job.skill)
-            else:
-                renpy.call_in_new_context('lbl_jobcheck_npc', person=self, attribute=self._job.skill)
-        self.job_buffer = None
-        self.productivity_raised = False
-        self._job.use(self)
+    def job_productivity(self):
+        return
     
     def world(self):
-        return self.game_ref.current_world
-
-    @utilities.Observable
-    def set_job(self, job, skill=None, single=False, target=None, difficulty=1):
-
-        data = self.available_jobs()[job]
-        world = self.world().name
-        obj = ScheduleObject(job, world, 'job', data)
-        if skill is not None:
-            obj.productivity = self.skill(skill) - difficulty
-            if obj.productivity < 0:
-                obj.productivity = 0
-        else:
-            obj.productivity = 0
-        if self._job is None:
-            self._job = obj
-            return
-        
-        if self.job_buffer is not None:
-            if obj.id == self.job_buffer.id and obj.world == self.job_buffer.world:
-                self._job = self.job_buffer
-                self.job_buffer = None
-                return
-        
-        if self._job.productivity > 0:
-            self.job_buffer = self._job
-        else:
-            self.job_buffer = None
-        
-        self._job = obj
-        
-        
-       
-    def get_schedule_obj(self, name):
-        return getattr(self, '_%s'%name)
-    def set_accommodation(self, name):
-        data = self.available_accommodations()[name]
-        obj = ScheduleObject(name, self.world().name, 'accommodation', data)
-        self._accommodation = obj
-
-    def use_accommodation(self):
-        self._accommodation.use(self)
-
-    def set_overtime(self, name):
-        data = self.available_overtimes()[name]
-        obj = ScheduleObject(name, self.world().name, 'overtime', data)
-        self._overtime = obj
-
-    def set_feed(self, name):
-        data = self.available_feeds()[name]
-        obj = ScheduleObject(name, self.world().name, 'feed', data)
-        self._feed = obj
-
-    def use_feed(self):
-        data = self._feed.use(self)
-
-    @property
-    def feed(self):
-        return self._feed.name
-    def feed_description(self):
-        return self._feed.description
-
-    @property
-    def overtime(self):
-        return self._overtime.name
-
-    def overtime_description(self):
-        return self._overtime.description
-
-    def use_overtime(self):
-        self._overtime.use(self)
-
-    @property
-    def accommodation(self):
-        return self._accommodation.name
-
-    def accommodation_description(self):
-        return self._accommodation.description
-
-    def available_jobs(self):
-        dict_ = {}
-        for key, value in self.game_ref.jobs().items():
-            try:
-                hidden = value['hidden']
-            except KeyError:
-                hidden = False
-
-            if hidden:
-                if key in self.allowed['job']:
-                    dict_[key] = value
-            else:
-                dict_[key] = value
-
-        return dict_
-
-    def available_services(self):
-        dict_ = {}
-        for key, value in self.game_ref.services().items():
-            try:
-                hidden = value['hidden']
-            except KeyError:
-                hidden = False
-
-            if hidden:
-                if key in self.allowed['service']:
-                    dict_[key] = value
-            else:
-                dict_[key] = value
-
-        return dict_
-
-    def available_accommodations(self):
-        dict_ = {}
-        for key, value in self.game_ref.accommodations().items():
-            try:
-                hidden = value['hidden']
-            except KeyError:
-                hidden = False
-
-            if hidden:
-                if key in self.allowed['accommodation']:
-                    dict_[key] = value
-            else:
-                dict_[key] = value
-
-        return dict_
-
-    def available_overtimes(self):
-        dict_ = {}
-        for key, value in self.game_ref.overtimes().items():
-            try:
-                hidden = value['hidden']
-            except KeyError:
-                hidden = False
-
-            if hidden:
-                if key in self.allowed['overtime']:
-                    dict_[key] = value
-            else:
-                dict_[key] = value
-
-        return dict_
-
-    def available_feeds(self):
-        dict_ = {}
-        for key, value in self.game_ref.feeds().items():
-            try:
-                hidden = value['hidden']
-            except KeyError:
-                hidden = False
-
-            if hidden:
-                if key in self.allowed['feed']:
-                    dict_[key] = value
-            else:
-                dict_[key] = value
-
-        return dict_
-
-    def allow(self, type_, name):
-        self.allowed[type_].append(name)
-
-    def disallow(self, type_, name):
-        try:
-            self.allowed[type_].remove(name)
-        except ValueError:
-            return
-        else:
-            if type_ == 'service':
-                if self.has_service(name):
-                    self.remove_service(name)
-            else:
-                value = self.get_schedule_value(type_)
-                print value
-                if value['id'] == name:
-                    getattr(self, 'set_%s'%type_)(self._default_schedule[type_])
-
-    def add_service(self, name):
-        data = self.available_services()[name]
-        self.services[self.world().name][name] = data
-
-
-    def has_service(self, name):
-        try:
-            services = self.services[self.world().name]
-        except KeyError:
-            return False
-        else:
-            return name in services.keys()
-
-    def remove_service(self, name):
-        services = self.services[self.world().name]
-        try:
-            del services[name]
-        except KeyError:
-            pass
-
-    def get_services(self):
-        try:
-            services = self.services[self.world().name]
-        except KeyError:
-            return {}
-        else:
-            return services
-
-    def use_services(self):
-        for i in self.get_services():
-            lbl = self.world().name+'_service'+'_%s'%i
-            if renpy.has_label(lbl):
-                renpy.call_in_new_context(lbl, self)
+        return self.game_ref.current_world 
 
     def set_energy(self):
         value = self.count_modifiers('energy')
