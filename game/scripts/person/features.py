@@ -31,6 +31,11 @@ class Feature(Modifiable):
             raise AttributeError(key)
         else:
             return value
+    
+    @property
+    def description(self):
+        return self.stats.get('description', 'No description')
+
     @property
     def name(self):
         return self.stats['name']

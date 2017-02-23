@@ -13,6 +13,7 @@ class BackgroundBase(object):
         self.id = id_
         self.data_dict = getattr(store, data_dict)
         self.name = self.data_dict[id_]['name']
+        self._description = None
         try:
             self.available_technical_levels = self.data_dict[
                 id_]['available_technical_levels']
@@ -60,12 +61,19 @@ class BackgroundBase(object):
     def apply_other(self, owner):
         return
 
+    @property
+    def description(self):
+        if self._description is not None:
+            return self._description
+        else:
+            return 'No description'
+
 
 class Homeworld(BackgroundBase):
 
     def __init__(self, id_, data_dict='homeworlds_dict'):
         super(Homeworld, self).__init__(id_, data_dict)
-        self.desription = random.choice(self.data_dict[id_]['descriptions'])
+        self._desription = random.choice(self.data_dict[id_]['descriptions'])
 
 
 class Family(BackgroundBase):

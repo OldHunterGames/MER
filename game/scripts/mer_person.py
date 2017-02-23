@@ -34,7 +34,8 @@ def get_avatars(path):
     return avas
 
 
-def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None):
+def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None,
+        initial_tonus=0, initial_fatness=0):
     if genus != None:
         if genus not in available_genuses():
             raise Exception("gen_person with genus '%s' which not exists"%(genus))
@@ -45,7 +46,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
         gender = genus.get_gender()
     if age is None:
         age = genus.get_age()
-    p = Person(age, gender, genus)
+    p = Person(age, gender, genus, initial_fatness, initial_tonus)
     background = Background(world, culture, family, education, occupation)
     p.apply_background(background)
     if gender == 'sexless':
@@ -69,7 +70,17 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
         vagina.add_feature('micro_vagina')
     anus = p.add_body_part('ass')
     anus.add_feature('micro_ass')
+    gen_features(p)
     return p
+
+
+def gen_features(person):
+    person.add_feature('voice_sweet')
+    person.add_feature('skin_silky')
+    person.add_feature('hair_soft')
+    person.add_feature('flawless_appearance')
+    person.add_feature('normal')
+
 
 persons_list = []
 
@@ -95,6 +106,83 @@ def trait_chance(fetish_value, taboo_value):
         return 'taboo'
     else:
         return None
+
+
+class DescriptionMaker(object):
+
+
+    def __init__(self, person):
+        self.person = person
+
+    def description(self):
+        person = self.person
+        background = self.person.background
+        weapon_txt = self.make_weapon_text()
+        alignment_desc = [str.capitalize(i) for i in person.alignment.description()]
+        get_feature = person.feature_by_slot
+        possesive = self.get_possesive()
+        pronoun = self.get_pronoun()
+        slots = ['hair', 'voice', 'constitution', 'shape', 'look', 'skin', 'profession', 'gender', 'age']
+
+        string = '{person.firstname} "{person.nickname} is a {person.age} {person.genus.name} {person.gender}, '
+
+        if not self.person.player_controlled:
+            string += self.relations_text()
+
+        string += '{cap_pronoun} behaves as a {alignment[0]}, {alignment[1]} and '\
+            '{alignment[2]} person and {possesive} sexuality is a {sex_suite} TODO:. '\
+            '{person.firstname} originated from {background.world.name}, {background.world.description}. '\
+            '{person.firstname} {background.family.description}, '\
+            '{background.education.description} and became a {background.occupation.name} eventually. \n'\
+            '{person.firstname} has a {constitution} and {shape} figure. '\
+            '{cap_possesive} appearance is {look}. '\
+            '{cap_possesive} voice is {voice}. '\
+            '{person.name} has a {hair} and {skin}. '
+        string += weapon_txt
+        string += '\n'
+        start = False
+        for i in person.features:
+            if i.slot not in slots:
+                if not start:
+                    start = True
+                    string += '{person.name} is {i.name}'.format(person=person, i=i)
+                else:
+                    string += ', {i.name}'.format(i=i)
+        string = string.format(person=person, pronoun=pronoun,
+                alignment=alignment_desc, possesive=possesive,
+                cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
+                hair=get_feature('hair').name, voice=get_feature('voice').name,
+                constitution=get_feature('constitution').name, shape=get_feature('shape').name,
+                look=get_feature('look').name, skin=get_feature('skin').description, background=background,
+                sex_suite=person.sexual_suite['name']) 
+        return string
+
+    def get_pronoun(self):
+        if self.person.gender == 'male' or self.person.gender == 'sexless':
+            return 'he'
+        else:
+            return 'she'
+
+    def get_possesive(self):
+        return {'he': 'his', 'she': 'her'}[self.get_pronoun()]
+
+    def make_weapon_text(self):
+        weapons = self.person.weapons()
+        if len(weapons) > 1:
+            weapon_txt = '{person.name} armed with {person.main_hand.name} and {person.other_hand.name}'.format(person=self.person)
+        elif len(weapons) == 1:
+            weapon_txt = '{person.name} armed with {weapons[0].name}'.format(weapons=weapons, person=self.person)
+        else:
+            weapon_txt = ''
+        return weapon_txt
+
+    def relations_text(self):
+        stance_type = self.person.player_stance()
+        stance_type = utilities.encolor_text(stance_type.show_type(), stance_type.value+2)
+        relations = self.person.player_relations()
+        return '{stance_type} ({relations[0]}, {relations[1]}, relations[2]) towards you. '.format(
+            stance_type=stance_type, relations=relations.description())
+
 
 
 class Attributed(Modifiable):
@@ -239,15 +327,16 @@ class FoodSystem(object):
         -1: {0: 'slim', 1: 'wiry', -1: 'frail'},
         -2: 'emaciated'
     }
-    def __init__(self, owner):
+    def __init__(self, owner, fatness=0, tonus=0):
         self.owner = owner
         self.satiety = 0
-        self._fatness = 0
+        self._fatness = fatness
         self._fitness = 0
-        self._tonus = 0
+        self._tonus = tonus
         self.quality = 0
         self.quality_changed = False
         self.amount = 0
+        self._set_shape()
 
     @property
     def fitness(self):
@@ -429,7 +518,7 @@ class FoodSystem(object):
 class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     game_ref = None
     @utilities.Observable
-    def __init__(self, age=None, gender=None, genus='human'):
+    def __init__(self, age=None, gender=None, genus='human', fatness=0, tonus=0):
         super(Person, self).__init__()
         self.kink = 'default'
         self.anatomy = Anatomy()
@@ -506,7 +595,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._calculatable = False
         self.faction = None
         self.background = None
-        self.food_system = FoodSystem(self)
+        self.food_system = FoodSystem(self, fatness, tonus)
         self._known_factions = []
         self._favor = BarterSystem()
         self.card_storage = None

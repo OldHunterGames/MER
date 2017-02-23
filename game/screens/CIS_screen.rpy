@@ -26,6 +26,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
         style 'char_info_window'
         hbox:
             frame:
+                xsize 1000
                 vbox:
                     
                     hbox:
@@ -38,54 +39,31 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                 textbutton 'Eat':
                                     action Function(player.eat_corpse, person), If(return_l, Return(), false=Hide('sc_character_info_screen'))
                             textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
-                    hbox:
-                        spacing 10
-                        vbox:
-                            for i in person.visible_features():
-                                text i.name
-                        vbox:
-                            for i in person.items:
-                                textbutton i.name:
-                                    text_style 'hoverable_text'
-                                    style 'hoverable_text'
-                                    action NullAction()
-                                    hovered Show('sc_weapon_info', weapon=i)
-                                    unhovered Hide('sc_weapon_info')
                     frame:
-                        vbox:
-                            text encolor_text(__('Allure'), person.allure())
-                            text encolor_text(__('Hardiness'), person.hardiness())
-                            text encolor_text(__('Succulence'), person.succulence())
-                            text encolor_text(__('Purity'), person.purity())
-                            text encolor_text(__('Exotic'), person.exotic())
-                            text encolor_text(__('Style'), person.style())
-                            text encolor_text(__('Menace'), person.menace())
-            vbox:
-                hbox:
-                    xalign 0.32
+                        xmaximum 1000
+                        text DescriptionMaker(person).description()
                     frame:
-                        
-                        vbox:
-                            text person.full_name():
-                                size 25
-                            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-                            
-                            hbox:
-                                text "{0} {1} {2} ".format(*person.alignment.description())
-                            if person != core.player and stance is not None:
-                                text (encolor_text(stance.show_type(), stance.value+2)+
-                                    '({0} {1} {2})'.format(*relations.description()))
-                            text "{b}%s{/b}"%encolor_text("Energy", person.energy)
-                    frame:
-                        vbox:
-                            $ skills = [None, __("able"), __("veteran"), __("expert")]
-                            for i in ['physique', 'mind', 'spirit', 'agility']:
-                                python:
-                                    skill = skills[person.skill(i)]
-                                    txt = encolor_text(attributes_translation[i], getattr(person, i))
-                                    if skill is not None:
-                                        txt += '(%s)'%encolor_text(skill, person.skill(i)+2)
-                                text txt
+                        hbox:
+                            vbox:
+                                text encolor_text(__('Allure'), person.allure())
+                                text encolor_text(__('Hardiness'), person.hardiness())
+                                text encolor_text(__('Succulence'), person.succulence())
+                                text encolor_text(__('Purity'), person.purity())
+                                text encolor_text(__('Exotic'), person.exotic())
+                                text encolor_text(__('Style'), person.style())
+                                text encolor_text(__('Menace'), person.menace())
+                            vbox:
+                                $ skills = [None, __("able"), __("veteran"), __("expert")]
+                                for i in ['physique', 'mind', 'spirit', 'agility']:
+                                    python:
+                                        skill = skills[person.skill(i)]
+                                        txt = encolor_text(attributes_translation[i], getattr(person, i))
+                                        if skill is not None:
+                                            txt += '(%s)'%encolor_text(skill, person.skill(i)+2)
+                                    text txt
+
+
+            vbox:       
                 if any([person.get_buffs()]) or person.bad_markers or person.good_markers:
                     frame:
                         vbox:
@@ -94,7 +72,9 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             for i in person.bad_markers:
                                 text encolor_text(bad_markers_translation[i], 'red')
                             for i in person.good_markers:
-                                text encolor_text(good_markers_translation[i], 'green')                        
+                                text encolor_text(good_markers_translation[i], 'green')
+        
+
                 
         frame:
             xsize 200

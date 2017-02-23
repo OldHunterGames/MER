@@ -50,9 +50,12 @@ class Item(Modifiable):
     @property
     def name(self):
         if self.new_name is not None:
-            return encolor_text(self.new_name, self.quality)
+            return self.new_name
         name = self.data.get('name', 'Unnamed')
-        return encolor_text(name, self.quality)
+        return name
+
+    def colored_name(self):
+        return encolor_text(self.name, self.quality)
 
     @property
     def mutable_name(self):
