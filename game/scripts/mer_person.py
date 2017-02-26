@@ -194,14 +194,14 @@ class DescriptionMaker(object):
             '{person.name} has a {hair} and {skin}. '
         string += weapon_txt
         string += '\n'
-        start = False
+        start = True
         for i in person.features:
             if i.slot not in slots:
                 if not start:
-                    start = True
-                    string += '{person.name} is {i.name}'.format(person=person, i=i)
+                    string += ' '
                 else:
-                    string += ', {i.name}'.format(i=i)
+                    start = False 
+                string += i.description.format(person=person, possesive=possesive, pronoun=pronoun)
         string = string.format(person=person, pronoun=pronoun,
                 alignment=alignment_desc, possesive=possesive,
                 cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
