@@ -137,29 +137,19 @@ def get_body_part_features(slot):
     data = store.anatomy_features
     return [key for key, value in data.items() if value['slot'] == slot]
 
-def gen_features(person):
-    person.add_feature('voice_sweet')
-    person.add_feature('skin_silky')
-    person.add_feature('hair_soft')
-    person.add_feature('flawless_appearance')
-    person.add_feature('normal')
+def get_features_by_slot(slot, dict):
+    return [key for key, value in dict.items() if value.get('slot') == slot]
 
+def gen_features(person):
+    for i in ['voice', 'skin', 'hair', 'look', 'constitution']:
+        features = get_features_by_slot(i, store.person_features)
+        person.add_feature(choice(features))
 
 persons_list = []
 
 def gen_sex_traits(person):
     person.sexual_suite = choice(store.sexual_type.values())
     person.sexual_orientation = choice(store.sexual_orientation.values())
-
-def get_traits_from_dict(person, dict): 
-    for key, value in dict.items():
-        roll = trait_chance(*value)
-        if roll == 'fetish':
-            person.add_fetish(key)
-        elif roll == 'taboo':
-            person.add_taboo(key)
-
-
 
 
 def trait_chance(fetish_value, taboo_value):
