@@ -61,18 +61,81 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     p.random_alignment()
     p.random_features()
     gen_sex_traits(p)
-    if p.gender == 'male':
-        penis = p.add_body_part('penis')
-        penis.add_feature('human_penis')
-        penis.add_feature('micro_penis')
-    elif p.gender == 'female':
-        vagina = p.add_body_part('vagina')
-        vagina.add_feature('micro_vagina')
-    anus = p.add_body_part('ass')
-    anus.add_feature('micro_ass')
+    gen_body_parts(p)
     gen_features(p)
     return p
 
+def gen_body_parts(person):
+    gender = person.gender
+    genus = person.genus.name
+    if gender == 'male' or gender == 'sexless':
+        sizes = {
+                'micro_penis': 1,
+                'small_penis': 1,
+                'normal_penis': 2,
+                'large_penis': 3,
+                'huge_penis': 3
+                }
+        part = person.add_body_part('penis')
+        if genus == 'lupine' or genus == 'werewolf':
+            size = utilities.weighted_random(
+                sizes)
+        else:
+            size = choice(sizes.keys())
+
+        part.add_feature(genus+'_penis')
+        part.add_feature(size)
+
+    else:
+        sizes = {
+            'micro_vagina': 1,
+            'small_vagina': 1,
+            'normal_vagina': 1,
+            'large_vagina': 1,
+            'huge_vagina': 1
+            }
+        part = person.add_body_part('vagina')
+        size = utilities.weighted_random(sizes)
+        part.add_feature(size)
+        part.add_feature(choice(['wet_vagina', 'dry_vagina']))
+
+        sizes = {'junior':
+            {
+                'micro_boobs': 10,
+                'small_boobs': 10,
+                'normal_boobs': 0,
+                'large_boobs': 0,
+                'huge_boobs': 0
+            },
+            'others':
+            {
+                'micro_boobs': 1,
+                'small_boobs': 1,
+                'normal_boobs': 1,
+                'large_boobs': 1,
+                'huge_boobs': 1
+            }
+            
+        }
+        part = person.add_body_part('boobs')
+        try:
+            size = utilities.weighted_random(sizes[gender])
+        except KeyError:
+            size = utilities.weighted_random(sizes['others'])
+        part.add_feature(size)
+    part = person.add_body_part('ass')
+    part.add_feature(choice(get_body_part_features('ass_size')))
+    person.add_body_part('body')
+    person.add_body_part('mouth')
+    part = person.add_body_part('manipulator')
+    part.add_feature('human_hand')
+    part = person.add_body_part('foot')
+    part.add_feature('human_foot')
+
+
+def get_body_part_features(slot):
+    data = store.anatomy_features
+    return [key for key, value in data.items() if value['slot'] == slot]
 
 def gen_features(person):
     person.add_feature('voice_sweet')
@@ -86,6 +149,7 @@ persons_list = []
 
 def gen_sex_traits(person):
     person.sexual_suite = choice(store.sexual_type.values())
+    person.sexual_orientation = choice(store.sexual_orientation.values())
 
 def get_traits_from_dict(person, dict): 
     for key, value in dict.items():
@@ -130,7 +194,7 @@ class DescriptionMaker(object):
             string += self.relations_text()
 
         string += '{cap_pronoun} behaves as a {alignment[0]}, {alignment[1]} and '\
-            '{alignment[2]} person and {possesive} sexuality is a {sex_suite} TODO:. '\
+            '{alignment[2]} person and {possesive} sexuality is a {sex_suite} {sex_orientation}. '\
             '{person.firstname} originated from {background.world.name}, {background.world.description}. '\
             '{person.firstname} {background.family.description}, '\
             '{background.education.description} and became a {background.occupation.name} eventually. \n'\
@@ -154,7 +218,7 @@ class DescriptionMaker(object):
                 hair=get_feature('hair').name, voice=get_feature('voice').name,
                 constitution=get_feature('constitution').name, shape=get_feature('shape').name,
                 look=get_feature('look').name, skin=get_feature('skin').description, background=background,
-                sex_suite=person.sexual_suite['name']) 
+                sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name']) 
         return string
 
     def get_pronoun(self):

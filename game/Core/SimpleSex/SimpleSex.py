@@ -224,14 +224,14 @@ class SexEffect(object):
         taker.fix_rating(target_rating)
 
     def _calc_orientation(self, actor, taker, actor_rating, target_rating):
-        actor_rating = self._change_rating(actor_rating, actor.count_modifiers(taker.gender()))
-        target_rating = self._change_rating(target_rating, taker.count_modifiers(actor.gender()))
+        actor_rating = self._change_rating(actor_rating, actor.sexual_orientation[taker.gender()])
+        target_rating = self._change_rating(target_rating, taker.sexual_orientation[actor.gender()])
         return actor_rating, target_rating
 
     def _calc_suite(self, actor, taker, actor_rating, target_rating):
         actor_value = actor.sexual_suite['active'][self.suite]
         actor_rating = self._change_rating(actor_rating, actor_value)
-        taker_value = taker.sexual_suite['active'][self.suite]
+        taker_value = taker.sexual_suite['receiving'][self.suite]
         target_rating = self._change_rating(target_rating, taker_value)
         return actor_rating, target_rating
 
