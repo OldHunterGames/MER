@@ -60,16 +60,12 @@ label start:
         player.reveal_all_taboos()
         player.reveal_all_fetishes()
         player.add_feature('penis')
-        # for test cases added some determination
-        #player.add_inner_resource('determination', 'any', 4)
-        #player.add_inner_resource('determination', 'any', 3)
-        #player.add_inner_resource('determination', 'any', 5)
 
     # call screen sc_faction_info(great_houses[0])
     call lbl_gen_player
     $ init_taro(core.player)
-    # call screen sc_sexengine_main(sex)
     # $ fight = SimpleFight([player, g], [p, z])
+    # $ SimpleSex((player, 'controlled'), (p, 'wishful')) sex call example
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
