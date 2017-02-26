@@ -102,14 +102,13 @@ init python:
             person = self.person
             chance = choice(person.get_all_chances())
             self.chance = chance
-            print chance.id
-            print chance.value
             person.remove_chance(chance.id)
             self.active_chance = chance
             if chance.negative:
                 self.chance_value = 3 - chance.value
             else:
                 self.chance_value = chance.value + 2
+            print chance.attributed
 
         @property
         def chances(self):
@@ -169,7 +168,8 @@ init python:
         @classmethod
         def get_defaults(cls, person, attributed=None):
             if attributed is not None:
-                return [card for card in person.resources_deck if card.type == 'common' and card.attribute == attributed]
+                return [card for card in person.resources_deck if card.type == 'common' and 
+                card.attribute == attributed and card.can_be_applied(person)]
             return [card for card in person.resources_deck if card.type == 'common' and card.can_be_applied(person)]
         
         def get_available_cards(self, attributed=None):

@@ -34,14 +34,14 @@ def init_needs():
 class Chance(object):
 
 
-    def __init__(self, id_, value, negative=False, on_remove=None, remove_on_refresh=False, attributed=False):
+    def __init__(self, id_, value, negative=False, on_remove=None, remove_on_refresh=False, attributed=None):
 
         self.id = id_
         self.value = value
         self.negative = negative
         self.on_remove = on_remove
         self.remove_on_refresh = remove_on_refresh
-        self.attributed = False
+        self.attributed = attributed
 
 class Need(object):
     def __init__(self, name):
