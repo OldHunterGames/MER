@@ -681,11 +681,11 @@ init python:
             'sensitive': False,
             'stimulating': True,
             'penetration': 'receiving'},
-        'micro_ass': {"name": __("very tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 1}},
-        'small_ass': {"name": __("nice and tight anus"), 'slot': 'boobs_size', 'modifiers': {'size': 2}},        
-        'normal_ass': {"name": __("reasonably tigh anus"), 'slot': 'boobs_size', 'modifiers': {'size': 3}},
-        'large_ass': {"name": __("loose anus"), 'slot': 'boobs_size', 'modifiers': {'size': 4}},        
-        'huge_ass': {"name": __("gaping anal spincter"), 'slot': 'boobs_size', 'modifiers': {'size': 5}},   
+        'micro_ass': {"name": __("very tight anus"), 'slot': 'ass_size', 'modifiers': {'size': 1}},
+        'small_ass': {"name": __("nice and tight anus"), 'slot': 'ass_size', 'modifiers': {'size': 2}},        
+        'normal_ass': {"name": __("reasonably tigh anus"), 'slot': 'ass_size', 'modifiers': {'size': 3}},
+        'large_ass': {"name": __("loose anus"), 'slot': 'ass_size', 'modifiers': {'size': 4}},        
+        'huge_ass': {"name": __("gaping anal spincter"), 'slot': 'ass_size', 'modifiers': {'size': 5}},   
 
         'boobs': 
             {
