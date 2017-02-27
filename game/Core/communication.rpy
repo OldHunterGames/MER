@@ -20,7 +20,7 @@ label lbl_communicate(target):
         'Present':
             call lbl_present
         'Sex':
-            $ SimpleSex((player, willing), (visavis, willing))
+            $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
         'Take quest' if target.has_quest():
             call lbl_quests(target)
         'Nevermind':
