@@ -178,7 +178,7 @@ class DescriptionMaker(object):
         pronoun = self.get_pronoun()
         slots = ['hair', 'voice', 'constitution', 'shape', 'look', 'skin', 'profession', 'gender', 'age']
 
-        string = '{person.firstname} "{person.nickname} is a {person.age} {person.genus.name} {person.gender}, '
+        string = '{person.firstname} "{person.nickname}" is a {person.age} {person.genus.name} {person.gender}, '
 
         if not self.person.player_controlled:
             string += self.relations_text()
@@ -232,9 +232,9 @@ class DescriptionMaker(object):
 
     def relations_text(self):
         stance_type = self.person.player_stance()
-        stance_type = utilities.encolor_text(stance_type.show_type(), stance_type.value+2)
+        stance_type = utilities.encolor_text(stance_type.show_type(), stance_type.value+2, True)
         relations = self.person.player_relations()
-        return '{stance_type} ({relations[0]}, {relations[1]}, relations[2]) towards you. '.format(
+        return '{stance_type} ({relations[0]}, {relations[1]}, {relations[2]}) towards you. '.format(
             stance_type=stance_type, relations=relations.description())
 
 

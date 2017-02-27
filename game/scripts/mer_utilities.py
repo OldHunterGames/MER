@@ -3,7 +3,7 @@ import random
 import renpy.store as store
 import renpy.exports as renpy
 
-def encolor_text(text, value):
+def encolor_text(text, value, protected=False):
     if isinstance(value, str):
         colors = {'red': 'ff0000', 'green': '00ff00'}
     else:
@@ -13,9 +13,10 @@ def encolor_text(text, value):
             value = 0
         if value > 6:
             value = 6
-    
-    return '{b}{color=#%s}%s{/color}{/b}' % (colors[value], text)
-
+    if not protected:
+        return '{b}{color=#%s}%s{/color}{/b}' % (colors[value], text)
+    else:
+        return '{{b}}{{color=#%s}}%s{{/color}}{{/b}}' % (colors[value], text)
 
 def default_avatar_path():
     return 'images/avatar/none.jpg'
