@@ -19,7 +19,8 @@ screen sc_schedule(person, return_=False):
             yalign 1.0
             action If(return_, Return(), false=Hide('sc_schedule'))
         hbox:
-            xalign 0.3
+            xalign 0.35
+            spacing 5
             for i in ('job', 'accommodation', 'ration'):
                 vbox:
                     imagebutton:
@@ -29,8 +30,9 @@ screen sc_schedule(person, return_=False):
                     text getattr(person, i).name:
                         xalign 0.5
         hbox:
-            xalign 0.3
+            xalign 0.35
             yalign 1.0
+            spacing 5
             for key, value in person.schedule.get_all_optionals().items():
                 python:
                     if value is None:

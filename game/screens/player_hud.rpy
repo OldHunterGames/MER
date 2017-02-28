@@ -7,7 +7,7 @@ screen sc_player_hud:
         textbutton 'contacts':
             action Show('sc_player_contacts')
         textbutton "schedule":
-            action Show('sc_schedule_organaizer')
+            action Show('sc_schedule', person=player)
         textbutton "tests":
             action Function(renpy.call_in_new_context, 'lbl_tests')
         textbutton 'quests':
