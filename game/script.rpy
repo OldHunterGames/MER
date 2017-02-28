@@ -22,8 +22,6 @@ init python:
     outer_worlds = []
     renpy.block_rollback()
     core = MistsOfEternalRome()
-    def tests():
-        renpy.call_in_new_context('lbl_test_anatomy')
 
 # The game starts here.
 label start:
@@ -124,6 +122,10 @@ label lbl_notify(person, token):
     '[person.name] get token [token]'
     return
 
-label lbl_test_anatomy:
-    call screen sc_anatomy_builder
+label lbl_tests:
+    menu:
+        'anatomy':
+            call screen sc_anatomy_builder
+        'new_schedule':
+            call screen sc_schedule(player, return_=True)
     return

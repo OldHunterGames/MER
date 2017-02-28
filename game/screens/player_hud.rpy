@@ -8,8 +8,8 @@ screen sc_player_hud:
             action Show('sc_player_contacts')
         textbutton "schedule":
             action Show('sc_schedule_organaizer')
-        textbutton "anatomy":
-            action Function(tests)
+        textbutton "tests":
+            action Function(renpy.call_in_new_context, 'lbl_tests')
         textbutton 'quests':
             action Show('sc_quests')
         if core.is_tokens_game_active():

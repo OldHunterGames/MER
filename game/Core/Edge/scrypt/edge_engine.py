@@ -128,8 +128,6 @@ class EdgeEngine(object):
     def init_player_schedule(self, player):
         self._init_player_schedule(player.schedule.unlock_accommodation, store.edge_accomodations_data,
                 player.schedule.set_default, 'accommodation' , 'makeshift')
-        self._init_player_schedule(player.schedule.unlock_overtime, store.edge_overtimes_data,
-                player.schedule.set_default, 'overtime', 'rest')
         self._init_player_schedule(player.schedule.unlock_ration, store.edge_feeds_data,
                 player.schedule.set_default, 'ration', 'forage')
         for i in store.edge_jobs_data:

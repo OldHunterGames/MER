@@ -27,15 +27,6 @@ screen sc_schedule_organaizer():
             yminimum 30
             xpos 555
 
-        textbutton player.overtime.name:
-            action ShowTransient('sc_schedule_picker', x_pos=760, items=player.schedule.available_overtimes(core.current_world.name),
-                setter_func=player.schedule.set_overtime)
-            hovered Show('sc_text_popup', text=player.overtime.description)
-            unhovered Hide('sc_text_popup')
-            sensitive not player.overtime.locked
-            xsize 200
-            yminimum 30
-            xpos 755
         textbutton player.ration.name:
             action ShowTransient('sc_schedule_picker', x_pos=960, items=player.schedule.available_rations(core.current_world.name),
                 setter_func=player.schedule.set_ration)
@@ -44,7 +35,7 @@ screen sc_schedule_organaizer():
             sensitive not player.ration.locked
             xsize 200
             yminimum 30
-            xpos 955
+            xpos 755
 
         text 'Player money: %s'%player.money:
             yalign 0.90

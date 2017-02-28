@@ -21,6 +21,9 @@ def encolor_text(text, value, protected=False):
 def default_avatar_path():
     return 'images/avatar/none.jpg'
 
+def empty_card():
+    return 'images/sexcards/blank.png'
+
 def weighted_random(pairs):
     for i in pairs:
         try:
@@ -119,4 +122,4 @@ def make_sex_card(quality, type_, contact_type, size=None):
         (0, 0), type_image,)
         
     return image
-    
+

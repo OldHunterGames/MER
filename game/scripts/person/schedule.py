@@ -2,6 +2,8 @@
 import renpy.store as store
 import renpy.exports as renpy
 
+from collections import OrderedDict
+from copy import copy
 import mer_utilities as utilities
 
 
@@ -18,7 +20,7 @@ class ScheduleObject(object):
         self._additional_data = dict
 
     def _image_raw(self):
-        return self._data['image']
+        return self._data.get('image', utilities.empty_card())
 
     def image(self, size=None):
         if size is None:
@@ -77,15 +79,14 @@ class Schedule(object):
         self._available_rations = {}
         self._available_jobs = {}
         self._available_accommodations = {}
-        self._available_overtimes = {}
+        self._available_optionals = {}
+        self._optional = OrderedDict({0: None, 1: None, 2: None})
         self._job = None
         self._job_buffer = None
         self._accommodation = None
-        self._overtime = None
         self._ration = None
         self._default_job = None
         self._default_accommdation = None
-        self._default_overtime = None
         self._default_ration = None
 
     def set_default(self, type, obj, **kwargs):
@@ -95,8 +96,8 @@ class Schedule(object):
 
     def get_cost(self):
         return (self._accommodation.cost +
-            self._overtime.cost +
-            self._ration.cost)
+            self._ration.cost +
+            sum([i.cost for i in self._optional.values() if i is not None]))
 
     @property
     def job(self):
@@ -105,10 +106,6 @@ class Schedule(object):
     @property
     def accommodation(self):
         return self._accommodation
-
-    @property
-    def overtime(self):
-        return self._overtime
 
     @property
     def ration(self):
@@ -125,6 +122,25 @@ class Schedule(object):
         self._overtime.use(user, 'overtime')
         self._accommodation.use(user, 'accommodation')
         self._ration.use(user, 'ration')
+
+    def set_optional(self, slot, schedule_object):
+        if slot in self._optional.keys():
+            self._optional[slot] = schedule_object
+
+    def unlock_optional(self, id, schedule_object):
+        self._available_optionals[id] = schedule_object
+
+    def remove_optional(self, id):
+        try:
+            del self._available_optionals[id]
+        except KeyError:
+            pass
+
+    def available_optionals(self, current_world):
+        return [i for i in self._available_optionals.values() if i.world == current_world]
+
+    def get_optional(self):
+        return copy(self._optional)
 
     def name(self, key):
         return getattr(self, '_'+key).name
@@ -158,9 +174,6 @@ class Schedule(object):
 
     def set_accommodation(self, accommodation, single=False, **kwargs):
         self._set('_accommodation', accommodation, single, **kwargs)
-
-    def set_overtime(self, overtime, single=False, **kwargs):
-        self._set('_overtime', overtime, single, **kwargs)
 
     def set_ration(self, ration, single=False, **kwargs):
         self._set('_ration', ration, single, **kwargs)
@@ -200,15 +213,6 @@ class Schedule(object):
 
     def available_accommodations(self, current_world):
         return self._available('_available_accommodations', current_world)
-
-    def unlock_overtime(self, overtime_id, schedule_object):
-        self._unlock(overtime_id, '_available_overtimes', schedule_object)
-
-    def remove_overtime(self, overtime_id):
-        self._remove(overtime_id, '_available_overtimes')
-
-    def available_overtimes(self, current_world):
-        return self._available('_available_overtimes', current_world)
 
     def unlock_ration(self, ration_id, schedule_object):
         self._unlock(ration_id, '_available_rations', schedule_object)
