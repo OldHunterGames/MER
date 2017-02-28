@@ -126,6 +126,4 @@ label lbl_tests:
     menu:
         'anatomy':
             call screen sc_anatomy_builder
-        'new_schedule':
-            call screen sc_schedule(player, return_=True)
     return

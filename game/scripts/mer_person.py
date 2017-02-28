@@ -202,7 +202,8 @@ class DescriptionMaker(object):
                     string += ' '
                 else:
                     start = False 
-                string += i.description.format(person=person, possesive=possesive, pronoun=pronoun, pronound2=self.get_pronoun2())
+                string += i.description.format(person=person, possesive=possesive, pronoun=pronoun,
+                    cap_pronoun2=str.capitalize(self.get_pronoun2()), pronoun2=self.get_pronoun2())
         string = string.format(person=person, pronoun=pronoun,
                 alignment=alignment_desc, possesive=possesive,
                 cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
@@ -210,7 +211,7 @@ class DescriptionMaker(object):
                 constitution=get_feature('constitution').name, shape=get_feature('shape').name,
                 look=get_feature('look').name, skin=get_feature('skin').description, background=background,
                 sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name'],
-                pronoun2=self.get_pronoun2()) 
+                pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2())) 
         return string
 
     def get_pronoun1(self):
