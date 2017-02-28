@@ -202,8 +202,7 @@ class DescriptionMaker(object):
                     string += ' '
                 else:
                     start = False 
-                string += i.description.format(person=person, possesive=possesive, pronoun=pronoun,
-                    cap_pronoun2=str.capitalize(self.get_pronoun2()), pronoun2=self.get_pronoun2())
+                string += i.description
         string = string.format(person=person, pronoun=pronoun,
                 alignment=alignment_desc, possesive=possesive,
                 cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
