@@ -123,7 +123,6 @@ label edge_accommodation_cot(actor):
 label edge_accommodation_appartment(actor):
     python:
         actor.satisfy_need('comfort', 3)    
-        actor.tense_need('prosperity', 1)
         name = actor.name
     '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  

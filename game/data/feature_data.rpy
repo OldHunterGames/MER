@@ -98,8 +98,8 @@ init python:
         'virgin': {'name': __('Virgin'), 'slot': None, 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1, 'succulence': +1}, 'visible': True, 'anatomy': True},
 
         # needs
-        'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True, 'description': __("{person.name}is greedy, wich makes {pronoun} sensitive to prosperity matters.")},
-        'generous': {'name': __('generous'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': -1}, 'visible': True, 'description': __("{person.name}is generous, so {pronoun} is not concerned by {possesive} own prosperity.")},
+        'greedy': {'name': __('greedy'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': +1}, 'visible': True, 'description': __("{person.name}is {{color=#00ffcc}}greedy{{/color}}, wich makes {pronoun} sensitive to prosperity matters.")},
+        'generous': {'name': __('generous'), 'slot': 'prosperity_feat', 'modifiers': {'prosperity': -1}, 'visible': True, 'description': __("{person.name}is {{color=#ff6666}}generous{{/color}}, so {pronoun} is not concerned by {possesive} own prosperity.")},
         'gourmet': {'name': __('gourmet'), 'slot': 'nutrition_feat', 'modifiers': {'nutrition': +1}, 'visible': True, 'description': __("{person.name}is a true gourmet, and food is a priority for {pronoun}."), },
         'moderate_eater': {'name': __('moderate eater'), 'slot': 'nutrition_feat', 'modifiers': {'nutrition': -1}, 'visible': True, 'description': __("Being a moderate eater, {pronoun} have no interest in delicacies but can easily endure crappy nutrition."), },
         'low_pain_threshold': {'name': __('hates pain'), 'slot': 'wellness_feat', 'modifiers': {'wellness': +1}, 'visible': True, 'description': __("{pronoun} has low pain treshold, and concerned by {pronoun} body wellness."), },
