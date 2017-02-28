@@ -88,20 +88,25 @@ screen sc_pick_schedule(person, type_, slot=None):
     window:
         xfill True
         yfill True
-        hbox:
+        viewport:
+            scrollbars 'vertical'
+            draggable True
+            mousewheel True
             xmaximum 880
-            box_wrap True
-            spacing 5
-            for i in picker.cards_list:
-                vbox:
-                    imagebutton:
-                        idle i.image()
-                        action Function(picker.swap, i, picker.current_card)
-                    text i.name:
-                        xalign 0.5
+            hbox:
+                xmaximum 880
+                box_wrap True
+                spacing 5
+                for i in picker.cards_list:
+                    vbox:
+                        imagebutton:
+                            idle i.image()
+                            action Function(picker.swap, i, picker.current_card)
+                        text i.name:
+                            xalign 0.5
         vbox:
-            xpos 881
-            xmaximum 400
+            xpos 900
+            xsize 380
             box_wrap True
             imagebutton:
                 idle im.Scale(img, 300, 400)
