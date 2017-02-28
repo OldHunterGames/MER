@@ -175,7 +175,8 @@ class DescriptionMaker(object):
         alignment_desc = [str.capitalize(i) for i in person.alignment.description()]
         get_feature = person.feature_by_slot
         possesive = self.get_possesive()
-        pronoun = self.get_pronoun()
+        pronoun = self.get_pronoun1()
+        pronoun2 = self.get_pronoun2()
         slots = ['hair', 'voice', 'constitution', 'shape', 'look', 'skin', 'profession', 'gender', 'age']
 
         string = '{person.firstname} "{person.nickname}" is a {person.age} {person.genus.name} {person.gender}, '
@@ -208,17 +209,24 @@ class DescriptionMaker(object):
                 hair=get_feature('hair').name, voice=get_feature('voice').name,
                 constitution=get_feature('constitution').name, shape=get_feature('shape').name,
                 look=get_feature('look').name, skin=get_feature('skin').description, background=background,
-                sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name']) 
+                sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name'],
+                pronoun2=self.get_pronoun2()) 
         return string
 
-    def get_pronoun(self):
+    def get_pronoun1(self):
         if self.person.gender == 'male' or self.person.gender == 'sexless':
             return 'he'
         else:
             return 'she'
 
+    def get_pronoun2(self):
+        if self.person.gender == 'male' or self.person.gender == 'sexless':
+            return 'him'
+        else:
+            return 'her'
+
     def get_possesive(self):
-        return {'he': 'his', 'she': 'her'}[self.get_pronoun()]
+        return {'he': 'his', 'she': 'her'}[self.get_pronoun1()]
 
     def make_weapon_text(self):
         weapons = self.person.weapons()
@@ -232,7 +240,7 @@ class DescriptionMaker(object):
 
     def relations_text(self):
         stance_type = self.person.player_stance()
-        stance_type = utilities.encolor_text(stance_type.show_type(), stance_type.value+2, True)
+        stance_type = utilities.encolor_text(stance_type.show_stance(), stance_type.value+2, True)
         relations = self.person.player_relations()
         return '{stance_type} ({relations[0]}, {relations[1]}, {relations[2]}) towards you. '.format(
             stance_type=stance_type, relations=relations.description())

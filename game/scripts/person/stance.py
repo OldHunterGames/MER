@@ -63,6 +63,8 @@ class Stance(object):
     def to_max(self, value=None):
         self._value = 2
         if self.is_player_stance():
+            if value is None:
+                return
             self._special_value = value
 
     @property
