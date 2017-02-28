@@ -1729,10 +1729,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.schedule.accommodation
 
     @property
-    def overtime(self):
-        return self.schedule.overtime
-
-    @property
     def ration(self):
         return self.schedule.ration
 

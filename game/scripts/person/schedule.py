@@ -119,7 +119,6 @@ class Schedule(object):
 
     def use(self, user):
         self._job.use(user, 'job')
-        self._overtime.use(user, 'overtime')
         self._accommodation.use(user, 'accommodation')
         self._ration.use(user, 'ration')
 

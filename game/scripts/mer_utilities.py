@@ -22,7 +22,7 @@ def default_avatar_path():
     return 'images/avatar/none.jpg'
 
 def empty_card():
-    return 'images/sexcards/blank.png'
+    return 'images/gui/blank_card.png'
 
 def weighted_random(pairs):
     for i in pairs:
