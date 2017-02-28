@@ -53,19 +53,19 @@ init python:
     class ActionPicker(object):
 
         def __init__(self, cards_list):
-            self.cards_list = cards_list
+            self._cards_list = cards_list
             self.current_card = None
-        
-        def swap(self, old_card, new_card):
-            index = self.cards_list.index(old_card)
-            self.cards_list.insert(index, new_card)
-            self.cards_list.remove(old_card)
-            self.set_card(old_card)
+
+        @property
+        def cards_list(self):
+            return sorted(self._cards_list, key=lambda card: card.name)
 
         def set_card(self, card):
+            if self.current_card is not None:
+                self._cards_list.append(self.current_card)
             self.current_card = card
             try:
-                self.cards_list.remove(card)
+                self._cards_list.remove(card)
             except ValueError:
                 pass
 
@@ -103,7 +103,7 @@ screen sc_pick_schedule(person, type_, slot=None):
                     vbox:
                         imagebutton:
                             idle i.image()
-                            action Function(picker.swap, i, picker.current_card)
+                            action Function(picker.set_card, i)
                         text i.name:
                             xalign 0.5
         vbox:
