@@ -24,6 +24,9 @@ def default_avatar_path():
 def empty_card():
     return 'images/gui/blank_card.png'
 
+def empty_sex_image():
+    return 'images/sexcards/blank.png'
+
 def weighted_random(pairs):
     for i in pairs:
         try:
@@ -115,11 +118,14 @@ def make_sex_card(quality, type_, contact_type, size=None):
     type_image = types[type_]
     image_start = sex_images_path()+'/%s'%contact_type
     images = [i for i in renpy.list_files() if i.startswith(image_start)]
-    image = renpy.display.im.Scale(random.choice(images), *size)
-    image = renpy.display.im.Composite(size,
-        (0, 0), quality_image, 
-        (0, 0), image,
-        (0, 0), type_image,)
+    try:
+        image = renpy.display.im.Scale(random.choice(images), *size)
+        image = renpy.display.im.Composite(size,
+            (0, 0), quality_image, 
+            (0, 0), image,
+            (0, 0), type_image,)
+    except IndexError:
+        image = renpy.display.im.Scale(empty_sex_image(), *size)
         
     return image
 
