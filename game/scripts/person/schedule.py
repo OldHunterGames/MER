@@ -138,8 +138,12 @@ class Schedule(object):
     def available_optionals(self, current_world):
         return [i for i in self._available_optionals.values() if i.world == current_world]
 
-    def get_optional(self):
+    def get_optional(self, key):
+        return self._optional[key]
+
+    def get_all_optionals(self):
         return copy(self._optional)
+
 
     def name(self, key):
         return getattr(self, '_'+key).name

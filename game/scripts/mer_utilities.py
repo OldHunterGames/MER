@@ -24,6 +24,9 @@ def default_avatar_path():
 def empty_card():
     return 'images/gui/blank_card.png'
 
+def card_back():
+    return 'images/tarot/card_back.jpg'
+
 def empty_sex_image():
     return 'images/sexcards/blank.png'
 
