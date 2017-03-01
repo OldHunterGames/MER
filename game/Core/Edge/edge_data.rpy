@@ -137,7 +137,7 @@ init python:
     'beg': {'name': __('Beggar'), 'description': 'Humbly beg for a food.', 'skill': None, 'difficulty': 0, 'world': 'edge'},
     'bukake': {'name': __('Bukake slut'), 'description': 'Suck your dinner out of the slum-scum cocks.', 'skill': None, 'difficulty': 0, 'hidden' : True, 'world': 'edge'},      
     
-    'construction': {'name': __('Construction'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 1, 'world': 'edge'},
+    'construction': {'name': __('Construction worker'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 1, 'world': 'edge'},
     'entertain': {'name': __('Entertain patrons'), 'description': __('Finesse challenge. Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 1, 'world': 'edge'},
     'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Wisdom challenge. Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 1, 'world': 'edge'},
 
@@ -153,9 +153,9 @@ init python:
 
     edge_accomodations_data = {
         'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground. No cost."), 'cost': 0, 'world': 'edge'},
-        'mat': {"name": __("Barracks (5)"), 'description': __("Thin rag mat in a barracks. 5 bars/decade"), 'cost': 5, 'world': 'edge'},
-        'cot': {"name": __("Humble cot (10)"), 'description': __("Cot and blanket in a common room. 10 bars/decade"), 'cost': 10, 'world': 'edge'},
-        'appartment': {"name": __("Appartments (25)"), 'description': __("Rent a flatlet. 25 bars/decade"), 'cost': 25, 'world': 'edge'},                        
+        'mat': {"name": __("Rag mat"), 'description': __("Thin rag mat in a barracks. 5 bars/decade"), 'cost': 5, 'world': 'edge'},
+        'cot': {"name": __("Humble cot"), 'description': __("Cot and blanket in a common room. 10 bars/decade"), 'cost': 10, 'world': 'edge'},
+        'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet. 25 bars/decade"), 'cost': 25, 'world': 'edge'},                        
     }
 
     edge_feeds_data = {
@@ -169,10 +169,10 @@ init python:
     }
 
     edge_overtimes_data = {
-        'rest': {"name": __("Nap"), 'description': __("Overtime nap"), 'cost': 0, 'world': 'edge'},  
-        'sports': {"name": __("Sports"), 'description': __("Free time is a workout time!"), 'cost': 0, 'world': 'edge'},  
-        'bar': {"name": __("Pub"), 'description': __("Hung in a pub."), 'cost': 5},  
-        'healing': {"name": __("Healing"), 'description': __("Get some medical attention."), 'cost': 5, 'world': 'edge'},          
+        'rest': {"name": __("Nap"), 'description': __("Overtime nap is free."), 'cost': 0, 'world': 'edge'},  
+        'booze': {"name": __("Pub"), 'description': __("Hung in a pub and drink some crappy booze. 5 bars/decade. Wellness +3"), 'cost': 5},  
+        'whores': {"name": __("Whore service"), 'description': __("Get a pro-hooker for a sexual relief. 5 bars/decade. Eros +3."), 'cost': 5},          
+        'maid': {"name": __("Maid service"), 'description': __("Hire a subservient maid to do a chores for you. 10 bars/decade. Authority +2, comfort +2."), 'cost': 5},          
     }
 
     edge_nameset = {

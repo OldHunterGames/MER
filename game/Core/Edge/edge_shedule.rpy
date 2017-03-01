@@ -9,27 +9,6 @@ label edge_None_template(actor):
     return
  
 
-## SERVICE SLOT    
-label edge_service_whores(actor):
-    python:
-        name = actor.name
-        actor.satisfy_need('eros', 3)
-    "[name]fucks whores."
-    return
-
-label edge_service_booze(actor):
-    python:
-        name = actor.name
-        actor.satisfy_need('wellness', 3)
-    "[name]is drunk. Makes him feel better."
-    return
-
-label edge_service_maid(actor):
-    python:
-        name = actor.name
-        actor.satisfy_need('authority', 3)
-    "[name]have subservient maid."
-    return
          
 ## OVERTIME SLOT
 label edge_overtime_nap(actor):
@@ -39,6 +18,27 @@ label edge_overtime_nap(actor):
     '[name]resting.'
     return      
 
+label edge_overtime_whores(actor):
+    python:
+        name = actor.name
+        actor.satisfy_need('eros', 3)
+    "[name]fucks whores."
+    return
+
+label edge_overtime_booze(actor):
+    python:
+        name = actor.name
+        actor.satisfy_need('wellness', 3)
+    "[name]is drunk. Makes him feel better."
+    return
+
+label edge_overtime_maid(actor):
+    python:
+        name = actor.name
+        actor.satisfy_need('authority', 3)
+    "[name]have subservient maid."
+    return
+    
 ## FEED SLOT    
 
 label edge_feed_starve(actor):
