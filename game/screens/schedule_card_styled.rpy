@@ -3,6 +3,7 @@ init python:
 
 
 screen sc_schedule(person, return_=False):
+    modal True
     window:
         xfill True
         yfill True
@@ -25,8 +26,8 @@ screen sc_schedule(person, return_=False):
                 vbox:
                     imagebutton:
                         idle getattr(person, i).image()
-                        action Show('sc_pick_schedule', person=person, type_=i), SetVariable('picker',
-                            ActionPicker(getattr(person.schedule, 'available_'+i+'s')(core.current_world.name)))
+                        action Show('sc_pick_schedule', person=person), SetVariable('picker',
+                            ActionPicker(getattr(person.schedule, 'available_'+i+'s')(core.current_world.name), None, i))
                     text getattr(person, i).name:
                         xalign 0.5
         hbox:
@@ -44,17 +45,19 @@ screen sc_schedule(person, return_=False):
                 vbox:
                     imagebutton:
                         idle img
-                        action Show('sc_pick_schedule', person=person, type_='optional', slot=key), SetVariable('picker',
-                            ActionPicker(getattr(person.schedule, 'available_'+'optionals')(core.current_world.name)))
+                        action Show('sc_pick_schedule', person=person), SetVariable('picker',
+                            ActionPicker(getattr(person.schedule, 'available_'+'optionals')(core.current_world.name), key, 'optional'))
                     text txt:
                         xalign 0.5
 
 init python:
     class ActionPicker(object):
 
-        def __init__(self, cards_list):
+        def __init__(self, cards_list, slot, type_):
             self._cards_list = cards_list
             self.current_card = None
+            self.slot = slot
+            self.type = type_
 
         @property
         def cards_list(self):
@@ -69,19 +72,18 @@ init python:
             except ValueError:
                 pass
 
-screen sc_pick_schedule(person, type_, slot=None):
+screen sc_pick_schedule(person):
     modal True
-    
     python:
         if picker.current_card is None:
-            if slot is None:
-                if getattr(person, type_) is not None:
-                    picker.set_card(getattr(person, type_))
+            if picker.slot is None:
+                if getattr(person, picker.type) is not None:
+                    picker.set_card(getattr(person, picker.type))
             else:
-                if person.schedule.get_optional(slot) is not None:
-                    picker.set_card(person.schedule.get_optional(slot))
-        available = getattr(person.schedule, 'available_'+type_+'s')(core.current_world.name)
-        setter = getattr(person.schedule, 'set_'+type_)
+                if person.schedule.get_optional(picker.slot) is not None:
+                    picker.set_card(person.schedule.get_optional(picker.slot))
+        available = getattr(person.schedule, 'available_'+picker.type+'s')(core.current_world.name)
+        setter = getattr(person.schedule, 'set_'+picker.type)
         if picker.current_card is None:
             img = card_back()
         else:
@@ -113,8 +115,8 @@ screen sc_pick_schedule(person, type_, slot=None):
             imagebutton:
                 idle im.Scale(img, 300, 400)
                 
-                action [If(slot is None, Function(setter, picker.current_card), 
-                    false=Function(setter, slot, picker.current_card)), Hide('sc_pick_schedule'),
+                action [If(picker.slot is None, Function(setter, picker.current_card), 
+                    false=Function(setter, picker.slot, picker.current_card)), Hide('sc_pick_schedule'),
                     SensitiveIf(picker.current_card is not None)]
                 xalign 0.5
             if picker.current_card is not None:
@@ -122,8 +124,14 @@ screen sc_pick_schedule(person, type_, slot=None):
                     xalign 0.5
                     xmaximum 400
 
-
-    textbutton 'leave':
-            xalign 0.5
-            yalign 1.0
+    vbox:
+        xalign 0.5
+        yalign 1.0
+        textbutton 'leave':
             action Hide('sc_pick_schedule')
+        if picker.slot is not None:
+            textbutton "Remove":
+                action Function(setter, picker.slot, None), Hide('sc_pick_schedule')
+
+    on 'hide':
+        action SetVariable('picker', None)

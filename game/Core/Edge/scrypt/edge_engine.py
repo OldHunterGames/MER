@@ -117,7 +117,7 @@ class EdgeEngine(object):
                 break
         return generated
 
-    def _init_player_schedule(self, unlock_func, data_dict, setter_func, default_name, default_obj_id):
+    def _init_player_schedule(self, unlock_func, data_dict, setter_func, default_name, default_obj_id, cls):
         for i in data_dict:
             obj = ScheduleObject(i, data_dict[i])
             if not obj.hidden:
@@ -127,15 +127,13 @@ class EdgeEngine(object):
 
     def init_player_schedule(self, player):
         self._init_player_schedule(player.schedule.unlock_accommodation, store.edge_accomodations_data,
-                player.schedule.set_default, 'accommodation' , 'makeshift')
+                player.schedule.set_default, 'accommodation' , 'makeshift', ScheduleObject)
         self._init_player_schedule(player.schedule.unlock_ration, store.edge_feeds_data,
-                player.schedule.set_default, 'ration', 'forage')
-        for i in store.edge_jobs_data:
-            obj = ScheduleJob(i, store.edge_jobs_data[i])
-            if not obj.hidden:
-                player.schedule.unlock_job(i, obj)
-            if i == 'idle':
-                player.schedule.set_default('job', obj)
+                player.schedule.set_default, 'ration', 'forage', ScheduleObject)
+        self._init_player_schedule(player.schedule.unlock_job, store.edge_jobs_data, 
+            player.schedule.set_default, 'job', 'idle', ScheduleJob)
+        self._init_player_schedule(player.schedule.unlock_optional, store.edge_overtimes_data,
+            None, None, None, ScheduleObject)
 
 
     def explore_all(self):
