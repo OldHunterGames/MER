@@ -7,6 +7,7 @@ screen sc_schedule(person, return_=False):
     window:
         xfill True
         yfill True
+        style 'char_info_window'
         vbox:
             imagebutton:
                 idle im.Scale(person.avatar_path, 200, 200)
@@ -90,6 +91,7 @@ screen sc_pick_schedule(person):
             img = picker.current_card.image()
 
     window:
+        style 'char_info_window'
         xfill True
         yfill True
         viewport:
@@ -108,6 +110,12 @@ screen sc_pick_schedule(person):
                             action Function(picker.set_card, i)
                         text i.name:
                             xalign 0.5
+                if picker.slot is not None:
+                    vbox:
+                        imagebutton:
+                            idle im.Scale(card_back(), 200, 300)
+                            action Function(setter, picker.slot, None), Hide('sc_pick_schedule')
+
         vbox:
             xpos 900
             xsize 380
@@ -127,11 +135,6 @@ screen sc_pick_schedule(person):
     vbox:
         xalign 0.5
         yalign 1.0
-        textbutton 'leave':
-            action Hide('sc_pick_schedule')
-        if picker.slot is not None:
-            textbutton "Remove":
-                action Function(setter, picker.slot, None), Hide('sc_pick_schedule')
 
     on 'hide':
         action SetVariable('picker', None)

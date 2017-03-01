@@ -40,9 +40,13 @@ class EdgeEngine(object):
         self.options = []
 
     def get_lifestyle(self, person):
-        for key, value in store.edge_lifestyle_values.items():
-            if value['treshold'] <= person.decade_bill():
-                return encolor_text(value['name'], int(key))
+        keys = sorted([int(i) for i in store.edge_lifestyle_values.keys()])
+        for i in keys:
+            if store.edge_lifestyle_values[str(i)]['treshold'] <= person.decade_bill():
+                value = encolor_text(store.edge_lifestyle_values[str(i)]['name'], i)
+            else:
+                break
+        return value
 
     def explore_stash(self, name):
         self.stashes[name][0] = True
