@@ -4,6 +4,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_utilities import make_sex_card, encolor_text
+from mer_command import SatisfySex
 
 def make_cards(dict_):
     cards = []
@@ -134,6 +135,10 @@ class SimpleSex(object):
         rating = participant.calc_rating()
 
         return encolor_text(store.sex_quality_rate[rating], rating)
+
+    def finish(self):
+        for i in self.participants:
+            SatisfySex(i, i.calc_rating()).run()
 
 
 class SexParticipant(object):

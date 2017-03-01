@@ -139,7 +139,8 @@ class Schedule(object):
             pass
 
     def available_optionals(self, current_world):
-        return [i for i in self._available_optionals.values() if i.world == current_world]
+        return [i for i in self._available_optionals.values() if i.world == current_world and
+            i not in self._optional.values()]
 
     def get_optional(self, key):
         return self._optional[key]
