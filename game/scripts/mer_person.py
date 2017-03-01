@@ -1438,8 +1438,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def use_token(self):
         if self.token == 'power':
             return
-        self.player_relations().stability += 1
-        self.relations_tendency[self.token] += 1
+        if self.token != 'antagonism':
+            self.player_relations().stability += 1
+            self.relations_tendency[self.token] += 1
         self.token = 'power'
 
     def set_token(self, token, free=False):
