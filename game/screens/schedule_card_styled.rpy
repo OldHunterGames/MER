@@ -13,7 +13,7 @@ screen sc_schedule(person, return_=False):
                 action Show('sc_character_info_screen', person=person, communicate=True)
                 hovered Show('sc_info_popup', person=person)
                 unhovered Hide('sc_info_popup')
-            text 'LIFESTYLE'
+            text core.get_lifestyle(person)
             text 'Money: %s'%person.money
             text 'Bill: %s'%person.decade_bill()
         textbutton 'Leave':

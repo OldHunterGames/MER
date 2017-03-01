@@ -97,6 +97,13 @@ class MistsOfEternalRome(object):
         else:
             return self.current_world.jobs()
 
+    def get_lifestyle(self, person):
+        try:
+            value = self.current_world.get_lifestyle(person)
+        except AttributeError:
+            value = "DEFAULT"
+        return value
+
     def services(self):
         if self.current_world == self:
             return store.services_data

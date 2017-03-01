@@ -39,6 +39,11 @@ class EdgeEngine(object):
             'dying_grove': [False, ItemsStorage(), 0]}
         self.options = []
 
+    def get_lifestyle(self, person):
+        for key, value in store.edge_lifestyle_values.items():
+            if value['treshold'] <= person.decade_bill():
+                return encolor_text(value['name'], int(key))
+
     def explore_stash(self, name):
         self.stashes[name][0] = True
         self.options.append('treasure_hunt_%s'%name)
