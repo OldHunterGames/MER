@@ -121,6 +121,9 @@ class Schedule(object):
         self._job.use(user, 'job')
         self._accommodation.use(user, 'accommodation')
         self._ration.use(user, 'ration')
+        for i in self._optional.values():
+            if i is not None:
+                i.use(user, 'optional')
 
     def set_optional(self, slot, schedule_object):
         if slot in self._optional.keys():
