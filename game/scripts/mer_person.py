@@ -1766,7 +1766,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.game_ref.current_world 
 
     def set_energy(self):
-        value = self.count_modifiers('energy')
+        # value = self.count_modifiers('energy')
+        value = 0
         self._energy = max(0, min(5, value))
 
     def drain_energy(self, value=1):
