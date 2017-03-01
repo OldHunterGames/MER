@@ -1,4 +1,12 @@
 init python:
+
+    
+    edge_lifestyle_values = {'0': {'treshold': 0, 'name': __("Miserable poverty")}, 
+    '1': {'treshold': 10, 'name': __("Poverty")}, 
+    '2': {'treshold': 20, 'name': __("Modest lifestyle")}, 
+    '3': {'treshold': 40, 'name': __("Decent lifestyle")}, 
+    '4': {'treshold': 70, 'name': __("Luxury")}, 
+    '5': {'treshold': 100, 'name': __("Filty rich")}, }
     
     edge_locations = {
         'outpost': __('House {0} outpost'),
