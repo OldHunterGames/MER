@@ -147,7 +147,7 @@ screen sc_simplesex_final(simplesex):
         textbutton 'Leave':
             xalign 0.5
             yalign 1.0
-            action Return()
+            action Return(), Function(simplesex.finish)
 
 
 

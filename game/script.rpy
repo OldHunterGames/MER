@@ -17,6 +17,7 @@ init -10 python:
     from mer_metaperson import *
     from anatomy import BodyPart
     from duel_engine import *
+    from mer_command import *
     
 init python:
     outer_worlds = []
@@ -63,7 +64,7 @@ label start:
     call lbl_gen_player
     $ init_taro(core.player)
     # $ fight = SimpleFight([player, g], [p, z])
-    # $ SimpleSex((player, 'controlled'), (p, 'wishful')) sex call example
+    # $ SimpleSex((player, 'controlled'), (p, 'wishful')) # sex call example
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main

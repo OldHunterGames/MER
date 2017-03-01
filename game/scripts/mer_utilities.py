@@ -81,7 +81,7 @@ class Observable(object):
         def __call__(self, *args, **kwargs):
             result = self.func(*args, **kwargs)
             for observer in self.observers:
-                observer(self.instance, *args, **kwargs)
+                observer(self.instance)
             return result
 
         def add_callback(self, callback):
