@@ -52,21 +52,21 @@ init python:
     
     #Relations
     relations_name = {
-        '-1': {
+        -1: {
             'neutral': __('insolent'),
             'hostile': __('agressive'),
             'friendly': __('nagging'),
             'slave': __('rebellious'),      
             'master': __('cruel'),                                          
         }, 
-        '0': {
+        0: {
             'neutral': __('prudent'),
             'hostile': __('cautious'),
             'friendly': __('fellow'),
             'slave': __('forced'),      
             'master': __('oppressive'),                                          
         }, 
-        '1': {
+        1: {
             'neutral': __('cooperative'),
             'hostile': __('frightful'),
             'friendly': __('friend'),
@@ -74,7 +74,7 @@ init python:
             'master': __('rightful'),                                          
         },
         ## По умолчанию, реально даём название в зависимости от типа преданности 
-        '2': {
+        2: {
             'neutral': __('thrustworthy'),
             'hostile': __('humble'),
             'friendly': __('charmed'),

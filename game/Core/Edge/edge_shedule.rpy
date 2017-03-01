@@ -11,44 +11,45 @@ label edge_None_template(actor):
 
          
 ## OVERTIME SLOT
-label edge_overtime_nap(actor):
+label edge_optional_nap(actor):
     python:
         name = actor.name
         actor.add_buff('rested')
     '[name]resting.'
     return      
 
-label edge_overtime_whores(actor):
+label edge_optional_whores(actor):
     python:
         name = actor.name
         actor.satisfy_need('eros', 3)
     "[name]fucks whores."
     return
 
-label edge_overtime_booze(actor):
+label edge_optional_booze(actor):
     python:
         name = actor.name
         actor.satisfy_need('wellness', 3)
     "[name]is drunk. Makes him feel better."
     return
 
-label edge_overtime_maid(actor):
+label edge_optional_maid(actor):
     python:
         name = actor.name
-        actor.satisfy_need('authority', 3)
+        actor.satisfy_need('authority', 2)
+        actor.satisfy_need('comfort', 3)
     "[name]have subservient maid."
     return
     
 ## FEED SLOT    
 
-label edge_feed_starve(actor):
+label edge_ration_starve(actor):
     python:
         name = actor.name
         ration = actor.food_info()    
     '[name]ration is [ration].'    
     return  
 
-label edge_feed_dry_low(actor):
+label edge_ration_dry_low(actor):
     python:
         name = actor.name
         actor.eat(1, 0)        
@@ -56,7 +57,7 @@ label edge_feed_dry_low(actor):
     'Eating some nutrition bars. [name]ration is [ration].'    
     return  
 
-label edge_feed_dry(actor):
+label edge_ration_dry(actor):
     python:
         name = actor.name
         actor.eat(2, 0)        
@@ -64,7 +65,7 @@ label edge_feed_dry(actor):
     'Eating nutrition bars. [name]ration is [ration].'    
     return  
 
-label edge_feed_dry_high(actor):
+label edge_ration_dry_high(actor):
     python:
         name = actor.name
         actor.eat(3, 0)        
@@ -72,7 +73,7 @@ label edge_feed_dry_high(actor):
     'Eating nutrition bars greedily. [name]ration is [ration].'    
     return  
 
-label edge_feed_cooked(actor):
+label edge_ration_cooked(actor):
     python:
         name = actor.name
         actor.eat(2, 4)        
@@ -80,7 +81,7 @@ label edge_feed_cooked(actor):
     'Eating cooked food in a slums pub. [name]ration is [ration].'    
     return  
 
-label edge_feed_cooked_high(actor):
+label edge_ration_cooked_high(actor):
     python:
         name = actor.name
         actor.eat(3, 4)        
@@ -88,7 +89,7 @@ label edge_feed_cooked_high(actor):
     'Feasting on a whole grilled girl. [name]ration is [ration].'    
     return  
                     
-label edge_feed_canibalism(actor):
+label edge_ration_canibalism(actor):
     python:
         name = actor.name
     '[name]is a canibal.'    
@@ -132,6 +133,7 @@ label edge_job_idle(actor):
     python:
         name = actor.name
         actor.add_buff('rested')
+        actor.satisfy_need('comfort', 2)
         txt = encolor_text('some comfort', 2)
     "[name]have no job to do and resting. It's conserves energy and gives [txt]"
     return

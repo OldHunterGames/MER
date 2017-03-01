@@ -159,7 +159,7 @@ label lbl_hungout:
                 $ player.satisfy_need('communication', 2)
                 $ visavis.set_token('contribution')
                 $ visavis.communications_done.append('promenade')                
-            elif result = 0:
+            elif result == 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
                 $ visavis.set_token('antagonism')     
@@ -172,7 +172,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('booze')  
                 $ player.satisfy_need('amusement', 2)
                 $ visavis.set_token('contribution')
-            elif result = 0:
+            elif result == 0:
                 $ player.satisfy_need('amusement', 2)
                 'No progress in relationship. At least you get some amusement.' 
             else:
@@ -191,7 +191,7 @@ label lbl_hungout:
                         $ visavis.set_token('convention')
                     "Let's just relax":
                         $ visavis.set_token('contribution')    
-            elif result = 0:
+            elif result == 0:
                 $ player.satisfy_need('nutrition', 4) 
                 'No progress in relationship. The food is good newertheless.' 
             else:
@@ -204,7 +204,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('discussion') 
                 $ visavis.set_token('convention')
                 $ player.satisfy_need('authority', 2) 
-            elif result = 0:
+            elif result == 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
                 $ visavis.communications_done.append('discussion') 
@@ -230,7 +230,7 @@ label lbl_hungout:
                         $ visavis.set_token('convention')
                     "The plasure is all mine":
                         $ visavis.set_token('contribution')    
-            elif result = 0:
+            elif result == 0:
                 visavis 'Yah-yah... wathever.' 
             else:
                 $ visavis.communications_done.append('favor') 
@@ -241,7 +241,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'agility', dif)
             if result > 0:
                 $ visavis.set_token('contribution')
-            elif result = 0:
+            elif result == 0:
                 visavis 'Not impressed.'
             else:
                 $ visavis.set_token('antagonism')      
@@ -253,7 +253,7 @@ label lbl_hungout:
                 $ visavis.communications_done.append('dance') 
                 $ visavis.set_token('contribution')
                 $ player.satisfy_need('activity', 2) 
-            elif result = 0:
+            elif result == 0:
                 player 'Waste of a time. Next time, maybe.'
             else:
                 $ visavis.communications_done.append('dance') 
@@ -264,7 +264,7 @@ label lbl_hungout:
             $ result = core.skillcheck(player, 'physique', dif)
             if result > 0:
                 $ visavis.set_token('convention')
-            elif result = 0:
+            elif result == 0:
                 visavis 'Not impressed.'
             else:
                 $ visavis.set_token('antagonism')        

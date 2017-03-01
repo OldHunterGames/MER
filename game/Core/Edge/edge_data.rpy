@@ -159,20 +159,20 @@ init python:
     }
 
     edge_feeds_data = {
-        'forage': {"name": __("Starving"), 'description': __("Starve. No cost."), 'cost': 0, 'quality': 0, 'amount': 0, 'world': 'edge'},
-        'dry_low': {"name": __("5 bars"), 'description': __("Eat 5 nutrition bars."), 'cost': 5, 'world': 'edge'},
-        'dry': {"name": __("10 bars"), 'description': __("Eat 10 nutrition bars."), 'cost': 10, 'world': 'edge'},
-        'dry_high': {"name": __("15 bars"), 'description': __("Eat 15 nutrition bars."), 'cost': 15, 'world': 'edge'},
-        'cooked': {"name": __("Cooked food (20)"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'world': 'edge'},
-        'cooked_high': {"name": __("Grilled girl (30)"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'world': 'edge'},
-        'canibalism': {"name": __('"Long pig"'), 'description': __("Deth for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True, 'world': 'edge'},                                                
+        'forage': {"name": __("Forage"), 'description': __("Eat any food you can get at the slums. IF you can get it."), 'cost': 0, 'quality': 0, 'amount': 0, 'world': 'edge'},
+        'dry_low': {"name": __("5 bars"), 'description': __("Eat 5 nutrition bars/decade."), 'cost': 5, 'world': 'edge'},
+        'dry': {"name": __("10 bars"), 'description': __("Eat 10 nutrition bars/decade."), 'cost': 10, 'world': 'edge'},
+        'dry_high': {"name": __("15 bars"), 'description': __("Eat 15 nutrition bars/decade."), 'cost': 15, 'world': 'edge'},
+        'cooked': {"name": __("Cooked food"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'world': 'edge'},
+        'cooked_high': {"name": __("Grilled girl"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'world': 'edge'},
+        'canibalism': {"name": __('"Long pig"'), 'description': __("Death for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True, 'world': 'edge'},                                                
     }
 
     edge_overtimes_data = {
         'rest': {"name": __("Nap"), 'description': __("Overtime nap is free."), 'cost': 0, 'world': 'edge'},  
-        'booze': {"name": __("Pub"), 'description': __("Hung in a pub and drink some crappy booze. 5 bars/decade. Wellness +3"), 'cost': 5},  
-        'whores': {"name": __("Whore service"), 'description': __("Get a pro-hooker for a sexual relief. 5 bars/decade. Eros +3."), 'cost': 5},          
-        'maid': {"name": __("Maid service"), 'description': __("Hire a subservient maid to do a chores for you. 10 bars/decade. Authority +2, comfort +2."), 'cost': 5},          
+        'booze': {"name": __("Pub"), 'description': __("Hung in a pub and drink some crappy booze. 5 bars/decade. Wellness +3"), 'cost': 5, 'world': 'edge'},  
+        'whores': {"name": __("Whore service"), 'description': __("Get a pro-hooker for a sexual relief. 5 bars/decade. Eros +3."), 'cost': 5, 'world': 'edge'},          
+        'maid': {"name": __("Maid service"), 'description': __("Hire a subservient maid to do a chores for you. 10 bars/decade. Authority +2, comfort +2."), 'cost': 5, 'world': 'edge'},          
     }
 
     edge_nameset = {
