@@ -78,7 +78,11 @@ class Stance(object):
         return Stance._types[self._type][self.value + 1]
 
     def show_stance(self):
-        return store.stance_translation[self._type][self.value + 1]
+        if self.type == 'slave' or self.type == 'master':
+            return store.stance_translation[self.value][self.type]
+        else:
+            value = self.npc.attitude_tendency()
+            return store.relation_name[self.value][value]
 
     def show_type(self):
         return store.stance_types_translation[self.type]

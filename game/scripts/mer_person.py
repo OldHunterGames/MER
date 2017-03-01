@@ -1513,15 +1513,16 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def attitude_tendency(self):
         if self.player_controlled:
             raise Exception("attitude_tendency called at player character")
+        dict_ = {'contribution': 'friendly', 'convention': 'complicated', 'conquest': 'hostile'}
         n = 0
         token = None
         for k, v in self.relations_tendency.items():
             if v > n:
                 n = v
                 token = k
-        if self.relations_tendency.values().count(n) > 1:
+        if self.relations_tendency.values().count(n):
             return 'complicated'
-        return token
+        return dict_[token]
 
     #favor methods
     def gain_favor(self, value):
