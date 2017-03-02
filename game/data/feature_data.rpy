@@ -51,15 +51,15 @@ init python:
         'voice_high': {'name': __('high'), 'slot': 'voice', 'modifiers': {}, 'visible': True},  
         'voice_deep': {'name': __('deep'), 'slot': 'voice', 'modifiers': {}, 'visible': True},  
 
-        'skin_silky': {'name': __('silky skin'), 'slot': 'skin', 'modifiers': {'allure': +1}, 'visible': True},  
-        'skin_clear': {'name': __('clear skin'), 'slot': 'skin', 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1}, 'visible': True},  
-        'skin_freckled': {'name': __('freckled skin'), 'slot': 'skin', 'modifiers': {'allure': +0, 'exotic': +0, 'purity': +0,}, 'visible': True},  
-        'skin_pocky': {'name': __('pocky_skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},  
-        'skin_wrinkly': {'name': __('wrinkly skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},          
-        'skin_pigmented': {'name': __('pigmented skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},    
-        'skin_fur': {'name': __('furry'), 'slot': 'skin', 'modifiers': {'allure': +1, 'exotic': +1, 'purity': -1,}, 'visible': True}, 
-        'skin_scales': {'name': __('scaly'), 'slot': 'skin', 'modifiers': {'menace': +1, 'exotic': +1, 'purity': -1,}, 'visible': True},                             
-        'skin_scars': {'name': __('battle scars'), 'slot': 'skin', 'modifiers': {'allure': -1, 'purity': -1, 'menace': +1}, 'visible': True},        
+        'skin_silky': {'name': __('silky skin'), 'description': __('silky skin'), 'slot': 'skin', 'modifiers': {'allure': +1}, 'visible': True},  
+        'skin_clear': {'name': __('clear skin'), 'description': __('clear skin'), 'slot': 'skin', 'modifiers': {'allure': +1, 'exotic': -1, 'purity': +1}, 'visible': True},  
+        'skin_freckled': {'name': __('freckled skin'), 'description': __('freckled skin'), 'slot': 'skin', 'modifiers': {'allure': +0, 'exotic': +0, 'purity': +0,}, 'visible': True},  
+        'skin_pocky': {'name': __('pocky_skin'), 'description': __('pocky skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},  
+        'skin_wrinkly': {'name': __('wrinkly skin'), 'description': __('wrinkly skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},          
+        'skin_pigmented': {'name': __('pigmented skin'), 'description': __('pigmented skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},    
+        'skin_fur': {'name': __('furry'), 'description': __('dense fur'), 'slot': 'skin', 'modifiers': {'allure': +1, 'exotic': +1, 'purity': -1,}, 'visible': True}, 
+        'skin_scales': {'name': __('scaly'), 'description': __('covered in scales'), 'slot': 'skin', 'modifiers': {'menace': +1, 'exotic': +1, 'purity': -1,}, 'visible': True},                             
+        'skin_scars': {'name': __('battle scars'), 'description': __('has battle scars'), 'slot': 'skin', 'modifiers': {'allure': -1, 'purity': -1, 'menace': +1}, 'visible': True},        
         
         'hair_soft': {'name': __('soft hair'), 'slot': 'hair', 'modifiers': {'allure': +1, 'exotic': +0, 'purity': +1}, 'visible': True},                      
         'hair_coarse': {'name': __('coarse hair'), 'slot': 'hair', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1}, 'visible': True},      
@@ -67,7 +67,7 @@ init python:
         'hair_dry': {'name': __('dry hair'), 'slot': 'hair', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': +0}, 'visible': True},      
         'hair_shiny': {'name': __('shiny hair'), 'slot': 'hair', 'modifiers': {'allure': +1, 'exotic': +0, 'purity': +0}, 'visible': True},                              
         'hair_colorful': {'name': __('colorful hair'), 'slot': 'hair', 'modifiers': {'allure': +0, 'exotic': +1, 'purity': -1}, 'visible': True},      
-        'hair_bald': {'name': __('bald'), 'slot': 'hair', 'modifiers': {'allure': +0, 'exotic': +0, 'purity': +0}, 'visible': True},  
+        'hair_bald': {'name': __('normal hair'), 'slot': 'hair', 'modifiers': {'allure': +0, 'exotic': +0, 'purity': +0}, 'visible': True},  
         
         # experiences
         'educated': {'name': __('educated'), 'slot': 'exp_mind', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  

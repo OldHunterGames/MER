@@ -82,13 +82,15 @@ init python:
     families_dict = {
         'unknown':{
             'name': __('unknown'),
+            'description': __('origin is mysterious'),
             'available_technical_levels': [0],
             'available_prestige_levels': [0],
             'technical_level': 0,
-            'prestige_level': 0
+            'prestige_level': 0,
         },
         'orphan':{
             'name': __('orphan'),
+            'description': __('do not remember {possesive} parents'),
             'available_technical_levels': [1, 2, 3, 4, 5],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -96,6 +98,7 @@ init python:
         },
         'commune':{
             'name': __('commune'),
+            'description': __('was born in a wild tribe'),
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -103,6 +106,7 @@ init python:
         },    
         'slave':{
             'name': __('slave'),
+            'description': __('was born from a slave mother'),            
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -110,6 +114,7 @@ init python:
         },
         'serf':{
             'name': __('serf'),
+            'description': __('was born in peasant family'),            
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -117,6 +122,7 @@ init python:
         },
         'low':{
             'name': __('low-class'),
+            'description': __('originates from a poor family'),            
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -124,6 +130,7 @@ init python:
         },   
         'middle':{
             'name': __('middle-class'),
+            'description': __('was born in a middle class family'),            
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -131,6 +138,7 @@ init python:
         },
         'high':{
             'name': __('high-class'),
+            'description': __('originates from a rich and well respected family'),            
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -138,6 +146,7 @@ init python:
         },
         'noble':{
             'name': __('noble'),
+            'description': __('is a high-born noble'),     
             'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
             'technical_level': 1,
@@ -151,6 +160,7 @@ init python:
     educations_dict = {
         'carefree':{
             'name': __('carefree'),
+            'description': __('had a carefree childhood'),   
             'available_technical_levels': [0],
             'available_prestige_levels': [0],
             'technical_level': 0,
@@ -158,6 +168,7 @@ init python:
         },
         'urchin':{
             'name': __('urchin'),
+            'description': __('grew up as a street urchin'),   
             'available_technical_levels': [1, 2, 3],
             'available_prestige_levels': [2],
             'technical_level': 1,
@@ -166,6 +177,7 @@ init python:
         },
         'natural':{
             'name': __('natural'),
+            'description': __('grew up in natural environment'),               
             'available_technical_levels': [1],
             'available_prestige_levels': [1],
             'technical_level': 1,
@@ -174,6 +186,7 @@ init python:
         },
         'forced_labor':{
             'name': __('forced labor'),
+            'description': __('were rised as a forced laborer'),                  
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [1],
             'technical_level': 2,
@@ -181,6 +194,7 @@ init python:
         },
         'apprentice':{
             'name': __('apprentice'),
+            'description': __('had started career as an apprentice'),                  
             'available_technical_levels': [2, 3],
             'available_prestige_levels': [2, 3],
             'technical_level': 2,
@@ -188,6 +202,7 @@ init python:
         },
         'domestic':{
             'name': __('domestic'),
+            'description': __('were rised as a domestic child'),                     
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [1, 2, 3, 4],
             'technical_level': 2,
@@ -195,6 +210,7 @@ init python:
         },
         'educated':{
             'name': __('educated'),
+            'description': __('recived a slpelndid education'),                   
             'available_technical_levels': [3, 4, 5],
             'available_prestige_levels': [3, 4],
             'technical_level': 3,
@@ -203,6 +219,7 @@ init python:
         },
         'martial':{
             'name': __('martial'),
+            'description': __('were rised in a martial discipline'),                   
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4, 5],
             'technical_level': 2,
@@ -210,6 +227,7 @@ init python:
         },
          'aristocratic':{
             'name': __('aristocratic'),
+            'description': __('were rised as a noble'),                   
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [4, 5],
             'technical_level': 2,
@@ -217,6 +235,7 @@ init python:
         },
            'artistic':{
             'name': __('artistic'),
+            'description': __('recived a artistic education'),                 
             'available_technical_levels': [2, 3, 4, 5],
             'available_prestige_levels': [2, 3, 4],
             'technical_level': 2,
