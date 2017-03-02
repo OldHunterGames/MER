@@ -184,11 +184,11 @@ class DescriptionMaker(object):
             string += self.relations_text()
 
         string += '{cap_pronoun} behaves as a {alignment[0]}, {alignment[1]} and '\
-            '{alignment[2]} person and {possesive} sexuality is a {sex_suite} {sex_orientation}. '\
-            '{person.firstname} originated from {background.world.name}, {background.world.description}. '\
-            '{person.firstname} {background.family.description}, '\
-            '{background.education.description} and became a {background.occupation.name} eventually. \n'\
-            '{person.firstname} has a {constitution} and {shape} figure. '\
+            '{alignment[2]} person and {possesive} sexuality is a {sex_suite} {sex_orientation}. '
+        string += '{{person.firstname}} originated from {background.world.name}, {background.world.description}. '\
+            '{{person.firstname}} {background.family.description}, ' \
+            '{background.education.description} and became a {background.occupation.name} eventually. \n'.format(background=person.background)
+        string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
             '{person.name} has a {hair} and {skin}. '
@@ -207,9 +207,10 @@ class DescriptionMaker(object):
                 cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
                 hair=get_feature('hair').name, voice=get_feature('voice').name,
                 constitution=get_feature('constitution').name, shape=get_feature('shape').name,
-                look=get_feature('look').name, skin=get_feature('skin').description, background=background,
+                look=get_feature('look').name, skin=get_feature('skin').description,
                 sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name'],
-                pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2())) 
+                pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2()))
+        print string 
         return string
 
     def get_pronoun1(self):
