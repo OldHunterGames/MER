@@ -73,14 +73,15 @@ class Homeworld(BackgroundBase):
 
     def __init__(self, id_, data_dict='homeworlds_dict'):
         super(Homeworld, self).__init__(id_, data_dict)
-        self._desription = random.choice(self.data_dict[id_]['descriptions'])
+        value = self.data_dict[id_]['descriptions']
+        self._description = random.choice(value)
 
 
 class Family(BackgroundBase):
 
     def __init__(self, id_, data_dict='families_dict'):
         super(Family, self).__init__(id_, data_dict)
-
+        self._description = self.data_dict[id_]['description']
 
 class Education(BackgroundBase):
 

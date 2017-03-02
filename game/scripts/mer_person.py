@@ -236,6 +236,8 @@ class DescriptionMaker(object):
             weapon_txt = '{person.name} armed with {weapons[0].name}'.format(weapons=weapons, person=self.person)
         else:
             weapon_txt = ''
+        if self.person.armor is not None:
+            weapon_txt += '. {cap_pronoun} wears a {person.armor.name}'
         return weapon_txt
 
     def relations_text(self):
