@@ -13,7 +13,6 @@ from anatomy import Anatomy
 from psymodel import PsyModel
 from schedule import Schedule
 from relations import Relations
-from stance import Stance
 from genus import available_genuses, Genus
 from schedule import Schedule
 
@@ -241,11 +240,11 @@ class DescriptionMaker(object):
         return weapon_txt
 
     def relations_text(self):
-        stance_type = self.person.player_stance()
-        stance_type = utilities.encolor_text(stance_type.show_stance(), stance_type.value+2, True)
         relations = self.person.player_relations()
+        stance_type = relations.colored_stance(True)
+        
         return '{stance_type} ({relations[0]}, {relations[1]}, {relations[2]}) towards you. '.format(
-            stance_type=stance_type, relations=relations.description())
+            stance_type=stance_type, relations=relations.description(True, True))
 
 
 
@@ -604,7 +603,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.relations_tendency = {'convention': 0,
                                    'conquest': 0, 'contribution': 0}
         # obedience, dependecy and respect stats
-        self._stance = []
         self.avatar_path = ''
 
         self.master = None          # If this person is a slave, the master will be set
@@ -1284,12 +1282,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         if self.overseer is not None:
             return self.relations(self.overseer)
 
-    def overseer_stance(self):
-        if self.overseer is not None:
-            return self.stance(self.overseer)
-
-
-
     def rest(self):
         self._favor.tick_time()
         self.favor_income()
@@ -1344,16 +1336,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         for i in to_remove:
             self._relations.remove(i)
             person._relations.remove(i)
-        
-        for i in self._stance:
-            if person in i.persons:
-                to_remove.append(i)
-        for i in to_remove:
-            if i in self._stance:
-                self._stance.remove(i)
-            if i in person._stance:
-                person._stance.remove(i)
-        
         for i in to_remove:
             i.persons = []
 
@@ -1394,48 +1376,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             raise Exception("relations called with not valid arg: %s" % person)
         if not self.know_person(person):
             relations = self._set_relations(person)
-            self._set_stance(person)
             return relations
         for rel in self._relations:
             if self in rel.persons and person in rel.persons:
                 return rel
-
-    def _set_stance(self, person):
-        stance = Stance(self, person)
-        self._stance.append(stance)
-        person._stance.append(stance)
-        return stance
-
-    def stance(self, person):
-        if person == self:
-            raise Exception("stance: target and caller is same person")
-        if isinstance(person, Faction):
-            self.discover_faction(person)
-            if self.know_person(person.owner):
-                return self.stance(person.owner)
-            else:
-                return
-        elif isinstance(person, Person):
-            if person.faction is not None:
-                self.discover_faction(person.faction)
-        else:
-            raise Exception("relations called with not valid arg: %s" % person)
-        
-        if not self.know_person(person):
-            self._set_relations(person)
-            stance = self._set_stance(person)
-
-        else:
-            for s in self._stance:
-                if self in s.persons and person in s.persons:
-                    stance = s
-        if person in self.slaves:
-            stance._type = 'master'
-        elif person == self.master:
-            stance._type = 'slave'
-        else:
-            stance._type = 'neutral'
-        return stance
 
     def use_token(self):
         if self.token == 'power':
@@ -1446,6 +1390,12 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.token = 'power'
 
     def set_token(self, token, free=False):
+        if self.token == 'antagonism':
+            if token == 'antagonism':
+                self.player_relations.stance -= 1
+            else:
+                self.token = 'power'
+                return
         self.token = token      
         renpy.call_in_new_context('lbl_notify', self, token)
 
@@ -1457,10 +1407,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             'antagonism': 'images/tarot/arcana_moon.jpg'}[self.token]
 
     def player_relations(self):
-        return self.relations(self.game_ref.player)
-
-    def player_stance(self):
-        return self.stance(self.game_ref.player)      
+        return self.relations(self.game_ref.player)     
 
     def enslave(self, target):
         target.master = self
@@ -1476,14 +1423,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def set_supervisor(self, supervisor):
         self.supervisor = supervisor
 
-    def master_stance(self, target):
-        if self.player_controlled:
-            raise Exception('master_stance is only for npc')
-        stance = self.stance(target).level
-        l = ['cruel', 'opressive', 'rightful', 'benevolent']
-        ind = l.index(stance)
-        return ind
-
     def desirable_relations(self):
         d = {'lawful': ('formal', 'loyality'), 'chaotic': ('intimate', 'scum-slave'),
              'timid': ('delicate', 'worship'), 'ardent': ('intense', 'disciple'),
@@ -1493,39 +1432,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return [d.get(x) for x in list_]
 
     def willing_available(self):
-        if not self.master:
-            return []
-        rel_check = False
-        rel = self.desirable_relations()
-        types = [x[1] for x in rel if isinstance(x, tuple)]
-        check = [x[0] for x in rel if isinstance(x, tuple)]
-        relations = self.relations(self.master)
-        for rel in [relations.fervor_str(), relations.distance_str(), relations.congruence_str()]:
-            if rel in check:
-                rel_check = True
-                break
-        if self.stance(self.master).respect() < self.spirit:
-            rel_check = False
-        if not self.has_token('accordance'):
-            rel_check = False
-        if rel_check:
-            return types
-        else:
-            return []
-
-    def attitude_tendency(self):
-        if self.player_controlled:
-            raise Exception("attitude_tendency called at player character")
-        dict_ = {'contribution': 'friendly', 'convention': 'neutral', 'conquest': 'hostile'}
-        n = 0
-        token = None
-        for k, v in self.relations_tendency.items():
-            if v > n:
-                n = v
-                token = k
-        if self.relations_tendency.values().count(n):
-            return 'neutral'
-        return dict_[token]
+        return []
 
     #favor methods
     def gain_favor(self, value):

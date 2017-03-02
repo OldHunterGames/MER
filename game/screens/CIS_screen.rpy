@@ -13,10 +13,8 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
     python:
         if player.know_person(person):
             relations = player.relations(person)
-            stance = player.stance(person)
         else:
             relations = None
-            stance = None
     modal True
     window:
         xfill True
@@ -125,10 +123,8 @@ screen sc_info_popup(person):
     python:
         if player.know_person(person):
             relations = player.relations(person)
-            stance = player.stance(person)
         else:
             relations = None
-            stance = None
     window:  
         xfill False
         xalign 0.5
@@ -140,8 +136,8 @@ screen sc_info_popup(person):
             text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
             text "{0} {1} {2}".format(*person.alignment.description())
             if person != player and relations is not None:
-                text (encolor_text(stance.show_type(), stance.value+2)+
-                    '({0} {1} {2})'.format(*relations.description()))
+                text (relations.colored_stance() + 
+                    '({0} {1} {2})'.format(*relations.description(True, True)))
             for i in person.visible_features():
                 text i.name
             for i in person.equiped_items():

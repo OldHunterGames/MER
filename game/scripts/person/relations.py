@@ -1,6 +1,11 @@
 # -*- coding: UTF-8 -*-
+from copy import copy
+from collections import OrderedDict
+
 import renpy.store as store
 import renpy.exports as renpy
+
+from mer_utilities import encolor_text
 
 
 class Relations(object):
@@ -8,14 +13,28 @@ class Relations(object):
     _distance = {-1: "intimate", 0: "close", 1: "formal"}
     _congruence = {-1: "contradictor", 0: "associate", 1: "supporter"}
 
+    _fervor_alignment = 'activity'
+    _distance_alignment = 'orderliness'
+    _morality_alignment = 'congruence'
+
     def __init__(self, person1, person2):
         self.persons = [person1, person2]
-        self._fervor = 0
-        self._distance = 0
-        self._congruence = 0
+        self._axis = OrderedDict({
+            'fervor': 0,
+            'distance': 0,
+            'congruence': 0
+        })
         self.stability = 0
         self.first_impression = False
         self.is_player_relations()
+        self._type = 'neutral'
+        self._stance = 0
+        self._special_value = None
+        self._used = set()
+
+    @property
+    def axis(self):
+        return copy(self._axis)
 
     def is_player_relations(self):
         if self.persons[0].player_controlled or self.persons[
@@ -30,6 +49,67 @@ class Relations(object):
         else:
             return False
 
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def stance(self):
+        value = self._stance
+        for key in self.axis.keys():
+            if self.dissonance(key):
+                value -= 1
+        return max(-1, min(2, value))
+
+    def colored_stance(self, protected=False):
+        value = self._stance
+        if value == -1:
+            color = 0
+        elif value == 0:
+            color = 2
+        elif value == 1:
+            color = 4
+        else:
+            color = 5
+        return encolor_text(self.show_stance(), color, protected)
+
+    @stance.setter
+    def stance(self, value):
+        self._value = value
+        if self._value < -1:
+            self._value = -1
+
+        elif self._value > 1:
+            self._value = 1
+
+    def make_max_stance(self, value=None):
+        self._value = 2
+        if self.is_player_relations():
+            if value is None:
+                return
+            self._special_value = value
+
+    def show_stance(self):
+        if self.type == 'slave' or self.type == 'master':
+            return store.relations_name[self.stance][self.type]
+        else:
+            value = self.attitude_tendency()
+            return store.relations_name[self.stance][value]
+
+    def attitude_tendency(self):
+        value = 'neutral'
+        if self._axis['congruence'] == 1 and self.npc.token != 'antagonism':
+            value = 'friendly'
+        if self.npc.token == 'contribution':
+            value = 'friendly'
+        if self._axis['congruence'] == -1  or self.npc.token == 'antagonism' or \
+            (self.npc.token == 'conquest' and self._axis['congruence'] != 1):
+            value = 'hostile'
+        return value
+
+    def is_max_stance(self):
+        return self.stance == 2
+
     def is_max(self, axis, border):
         d = {'-': -1, '+': 1}
         if getattr(self, axis) == d[border]:
@@ -38,9 +118,10 @@ class Relations(object):
 
     @property
     def fervor(self):
+        value = self._axis['fervor']
         if self.is_player_relations():
-            return self._fervor
-        fervor = self._fervor + \
+            return value 
+        fervor = value + \
             self.persons[0].alignment.activity + \
             self.persons[1].alignment.activity
         if fervor < -1:
@@ -49,17 +130,21 @@ class Relations(object):
             fervor = 1
         return fervor
 
-    def show_fervor(self):
-        return store.relations_translation['fervor'][self.fervor]
+    def show_fervor(self, colorise=False, protected=False):
+        if colorise:
+            return self._colorise('fervor', protected)
+        else:
+            return self._translate('fervor')
 
     def fervor_str(self):
         return Relations._fervor[self.fervor]
 
     @property
     def distance(self):
+        value = self._axis['distance']
         if self.is_player_relations():
-            return self._distance
-        distance = self._distance + \
+            return value
+        distance = value + \
             self.persons[0].alignment.orderliness + \
             self.persons[1].alignment.orderliness
         if distance < -1:
@@ -71,14 +156,37 @@ class Relations(object):
     def distance_str(self):
         return Relations._distance[self.distance]
 
-    def show_distance(self):
-        return store.relations_translation['distance'][self.distance]
+    def show_distance(self, colorise=False, protected=False):
+        if colorise:
+            return self._colorise('distance', protected)
+        else:
+            return self._translate('distance')
+
+    def _colorise(self, axis, protected=False):
+        color = None
+        if self.dissonance(axis):
+            color = 'red'
+        elif self.used(axis):
+            color = 'cyan'
+        elif self.active(axis):
+            color = 'green'
+        elif self.resonance(axis):
+            color = 'gold'
+        string = self._translate(axis)
+        if color is None:
+            return string
+        else:
+            return encolor_text(string, color, protected)
+
+    def _translate(self, axis):
+        return store.relations_translation[axis][self._axis[axis]]
 
     @property
     def congruence(self):
+        value = self._axis['congruence']
         if self.is_player_relations():
-            return self._congruence
-        congruence = self._distance + \
+            return value
+        congruence = value + \
             self.persons[0].alignment.morality + \
             self.persons[1].alignment.morality
         if congruence < -1:
@@ -90,22 +198,24 @@ class Relations(object):
     def congruence_str(self):
         return Relations._congruence[self.congruence]
 
-    def show_congruence(self):
-        return store.relations_translation['congruence'][self.congruence]
+    def show_congruence(self, colorise=False, protected=False):
+        if colorise:
+            return self._colorise('congruence', protected)
+        else:
+            return self._translate('congruence')
 
-    def description(self):
-        return (self.show_fervor(), self.show_distance(),
-                self.show_congruence())
+    def description(self, colorise=False, protected=False):
+        return (self.show_fervor(colorise, protected), self.show_distance(colorise, protected),
+                self.show_congruence(colorise, protected))
 
     def set_axis(self, axis, value):
-        ax = '_%s' % (axis)
-        if hasattr(self, ax) and value in range(-1, 2):
-            self.__dict__[ax] = value
+        if value in range(-1, 2):
+            self._axis[axis] = value
 
     def change(self, axis, direction):
         if not self.is_player_relations():
             return
-        ax = getattr(self, '_%s' % (axis))
+        ax = self.axis[axis]
         if direction == "+":
             ax += 1
             if ax > 1:
@@ -116,79 +226,35 @@ class Relations(object):
                 ax = -1
         self.set_axis(axis, ax)
 
-    def is_harmony_points(self, *args):
-        points = self.harmony()[1]
-        return any([point in points for point in args])
+    def dissonance(self, axis):
+        value = self._axis[axis]
+        if value == 0:
+            return False
+        alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
+        if abs(value + alignment_value) == 0:
+            return True
+        else:
+            return False
 
-    def harmony(self):
-        value = 0
-        axis = []
-        bad_axis = []
-        if not self.is_player_relations():
-            return value
-        tendence = self.npc.attitude_tendency()
-        activity = self.npc.alignment.activity
-        orderliness = self.npc.alignment.orderliness
-        morality = self.npc.alignment.morality
-        if tendence == 'conquest':
-            if activity == 0:
-                activity = 1
-            if morality == 0:
-                morality = -1
-        if tendence == 'contribution':
-            if orderliness == 0:
-                orderliness = -1
-            if morality == 0:
-                morality = 1
-        if tendence == 'convention':
-            if orderliness == 0:
-                orderliness == 1
-            if activity == 0:
-                activity = -1
 
-        difference = self.fervor + activity
-        if abs(difference) > 1:
-            value += 1
-            axis.append(self.fervor_str())
-        elif difference == 0:
-            if self.fervor != 0:
-                value -= 1
-                bad_axis.append(self.fervor_str())
+    def resonance(self, axis):
+        value = self._axis[axis]
+        if value == 0:
+            return False
+        alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
+        if abs(value + alignment_value) == 2:
+            return True
+        else:
+            return False
 
-        difference = self.distance + orderliness
-        if abs(difference) > 1:
-            value += 1
-            axis.append(self.distance_str())
-        elif difference == 0:
-            if self.distance != 0:
-                value -= 1
-                bad_axis.append(self.distance_str())
+    def used(self, axis):
+        return (axis, self._axis[axis]) in self._used
 
-        difference = self.congruence + morality
-        if abs(difference) > 1:
-            value += 1
-            axis.append(self.congruence_str())
-        elif difference == 0:
-            if self.congruence != 0:
-                value -= 1
-                bad_axis.append(self.congruence_str())
-        return value, axis, bad_axis
+    def use(self, axis):
+        self._used.add((axis, self._axis[axis]))
 
-    def show_harmony_axis(self):
-        bad_list = []
-        list_ = []
-        for value in self.harmony()[1]:
-            if value in Relations._fervor.values():
-                list_.append(self.show_fervor())
-            elif value in Relations._congruence.values():
-                list_.append(self.show_congruence())
-            elif value in Relations._distance.values():
-                list_.append(self.show_distance())
-        for value in self.harmony()[2]:
-            if value in Relations._fervor.values():
-                bad_list.append(self.show_fervor())
-            elif value in Relations._congruence.values():
-                bad_list.append(self.show_congruence())
-            elif value in Relations._distance.values():
-                bad_list.append(self.show_distance())
-        return tuple(list_), tuple(bad_list)
+    def active(self, axis):
+        return self._axis[axis] != 0 and not self.dissonance(axis)
+
+    def neutral(self, axis):
+        return self._axis[axis] == 0

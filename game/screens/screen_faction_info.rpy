@@ -2,10 +2,8 @@ screen sc_faction_info(faction):
     python:
         if player.know_person(faction.owner):
             relations = player.relations(faction)
-            stance = player.stance(faction)
         else:
             relations = None
-            stance = None
     modal True
     hbox:
         frame:
@@ -27,20 +25,13 @@ screen sc_faction_info(faction):
                     text 'orderliness: ' + faction.owner.alignment.show_orderliness()
                     text ' '
                     text 'Relations: '
-                    text 'fervor: ' + relations.show_fervor()
-                    text 'distance: ' + relations.show_distance()
-                    text 'congruence: ' + relations.show_congruence()
+                    text 'fervor: ' + relations.show_fervor(True)
+                    text 'distance: ' + relations.show_distance(True)
+                    text 'congruence: ' + relations.show_congruence(True)
                     text ' '
-                    text 'Stance:'
-                    text 'type: ' + str(stance.show_type())
-                    text 'level: ' + str(stance.show_stance())
+                    text 'Stance:' + str(relations.colored_stance())
+                    # text 'level: ' + str(stance.show_stance())
                     text ' '
-                    text 'Harmony: ' + str(relations.harmony()[0])
-                    $ axis = relations.show_harmony_axis()
-                    if len(axis[0]) > 0:
-                        text 'harmonized_axis: ' + str(axis[0])
-                    if len(axis[1]) > 0:
-                        text 'bad harmony: ' + str(axis[1])
                 else:
                     image im.Scale(default_avatar_path(), 50, 50)
                 

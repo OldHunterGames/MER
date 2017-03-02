@@ -14,9 +14,9 @@ def encolor_text(text, value, protected=False):
         if value > 6:
             value = 6
     if not protected:
-        return '{b}{color=#%s}%s{/color}{/b}' % (colors[value], text)
+        return '{color=#%s}%s{/color}' % (colors[value], text)
     else:
-        return '{{b}}{{color=#%s}}%s{{/color}}{{/b}}' % (colors[value], text)
+        return '{{color=#%s}}%s{{/color}}' % (colors[value], text)
 
 def default_avatar_path():
     return 'images/avatar/none.jpg'
