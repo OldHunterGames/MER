@@ -1473,40 +1473,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self._favor.calculate_consumption(value)
 
     def favor_income(self):
-        if self.player_controlled:
-            return
-        if not self.game_ref.player in self.known_characters:
-            return
-        relations = self.player_relations()
-        value = 0
-        stance = self.player_stance().value
-        actual_relations = [relations.fervor_str(), relations.congruence_str(), relations.distance_str()]
-        tendency = self.attitude_tendency
-        if tendency == 'conquest':
-            needed_relations = ['passionate', 'intimate', 'contradictor']
-            for i in actual_relations:
-                if i in needed_relations:
-                    value += 1
-            value += 2-stance
-        elif tendency == 'contribution':
-            needed_relations = ['passionate', 'intimate', 'supporter']
-            value += stance
-            for i in actual_relations:
-                if i in needed_relations:
-                    value += 1
-        elif tendency == 'convention':
-            needed_relations = ['formal', 'delicate', 'supporter']
-            bad_relations = ['passionate', 'intimate', 'contradictor']
-            value += stance
-            for i in actual_relations:
-                if i in needed_Relations:
-                    value += 1
-                elif i in bad_relations:
-                    value -= 1
-        elif tendency is None:
-            value += stance
-            value += relations.harmony()[0]
-        self.gain_favor(value)
+        pass
     # end of favor methods
     
     def can_tick(self):
