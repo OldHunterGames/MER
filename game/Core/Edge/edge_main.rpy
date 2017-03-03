@@ -42,26 +42,64 @@ label lbl_edge_main:
         garantor = None
         edge_sovereign = core.get_faction('serpis')
         
-        slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
+        def gen_simple_person(inputgenus):
+            genus = Genus(inputgenus)
+            gender = genus.get_gender()
+            age = genus.get_age()
+            candidate = gen_random_person(genus=genus.name, gender=gender, age=age)
+            add_features_common(candidate)
+            return candidate
+            
+        def gen_willed_master(genus):
+            person = gen_simple_person(genus)
+            if person.spirit < 4 and person.skill('spirit') < 1:
+                return gen_willed_master(genus)
+            else:
+                return person
+            
+        def gen_mighty_master(genus):
+            person = gen_simple_person(genus)
+            if person.physique < 4 and person.skill('physique') < 1:
+                return gen_mighty_master(genus)
+            else:
+                return person
+            
+        def gen_wise_master(genus):
+            person = gen_simple_person(genus)
+            if person.mind < 4 and person.skill('mind') < 1:
+                return gen_wise_master(genus)
+            else:
+                return person                               
+            
+        def gen_elegant_master(genus):
+            person = gen_simple_person(genus)
+            if person.agility < 4 and person.skill('agility') < 1:
+                return gen_elegant_master(genus)
+            else:
+                return person         
+                        
+        slums_leader = gen_willed_master('human')        
+        slums_leader.add_feature('confident')        
         slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
         player.relations(slums_faction)
-        ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
-        add_random_feature_genderage(slums_leader, data_appearence_list)
-        slums_champion = gen_random_person(genus='human', occupation=ocpn)
+
+        slums_champion = gen_mighty_master('human')          
         slums_faction.add_member(slums_champion) 
         slums_faction.set_member_to_role(slums_champion, 'champion') 
-        ocpn = choice(['entertainer'], )
-        slums_entertainer = gen_random_person(genus='human', occupation=ocpn)
+
+        slums_entertainer = gen_elegant_master('human')    
         slums_faction.add_member(slums_entertainer)
         slums_faction.set_member_to_role(slums_entertainer, 'entertainer') 
-        ocpn = choice(['medic', ])
-        slums_medic = gen_random_person(genus='human', occupation=ocpn)
+        
+        slums_medic = gen_wise_master('human')    
         slums_faction.add_member(slums_medic)
         slums_faction.set_member_to_role(slums_medic, 'medic') 
-        edge_slaver = gen_random_person(genus='human', occupation='merchant')
+        
+        edge_slaver = gen_willed_master('human')
         slavers = core.get_faction('slavers_guild')
         edge_slaver.add_quest(SlaverQuest)
         slavers.add_member(edge_slaver)
+        
         edge_recruiter = gen_random_person(genus='human', occupation='administrator')
         edge_sovereign.add_member(edge_recruiter)
         
@@ -125,15 +163,17 @@ label lbl_edge_places:
                     pass
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
-        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
-            $ stash = edge.get_stash('hazy_marshes')
-            call screen sc_manage_stash(stash)   
-        'Echoing hills' if edge.is_stash_found('echoing_hills'):
-            $ stash = edge.get_stash('echoing_hills')
-            call screen sc_manage_stash(stash) 
-        'Dying grove' if edge.is_stash_found('dying_grove'):
-            $ stash = edge.get_stash('dying_grove')
-            call screen sc_manage_stash(stash)              
+#        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
+#            $ stash = edge.get_stash('hazy_marshes')
+#            call screen sc_manage_stash(stash)   
+#        'Echoing hills' if edge.is_stash_found('echoing_hills'):
+#            $ stash = edge.get_stash('echoing_hills')
+#            call screen sc_manage_stash(stash) 
+#        'Dying grove' if edge.is_stash_found('dying_grove'):
+#            $ stash = edge.get_stash('dying_grove')
+#            call screen sc_manage_stash(stash)              
+        'Edge of Mists':
+            call lbl_edge_randenc_errant
         'Done':
             jump lbl_edge_manage
     
