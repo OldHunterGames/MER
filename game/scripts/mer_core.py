@@ -13,6 +13,7 @@ from mer_resources import Resources, BarterSystem
 from factions import Faction
 from mer_item import *
 from mer_utilities import encolor_text
+from mer_relations_shift import ShiftRelations
 
 
 remembered_needs = collections.defaultdict(list)
@@ -266,14 +267,8 @@ class MistsOfEternalRome(object):
             target.set_token('antagonism')
         return result
 
-    def call_token_label(self, person):
-        labels = ['conquest', 'convention', 'contribution', 'antagonism']
-        token = person.token
-        if token in labels:
-            token_lbl = 'lbl_%s'%token
-        else:
-            token_lbl = 'lbl_communicate'
-        renpy.call_in_new_context(token_lbl, person)
+    def shift_relations(self, person):
+        ShiftRelations(self.player, person)
 
     def start_tokens_game(self, person):
         if self.tokens_game is None:

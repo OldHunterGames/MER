@@ -91,6 +91,7 @@ class Education(BackgroundBase):
             self.skills = self.data_dict[id_]['skills']
         except KeyError:
             self.skills = None
+        self._description = self.data_dict[id_]['description']
 
 
 
@@ -114,17 +115,19 @@ class Culture(BackgroundBase):
 
 class Background(object):
 
-    def __init__(self, world=None, culture=None, family=None, education=None,
+    def __init__(self, age, world=None, culture=None, family=None, education=None,
                  occupation=None):
         self.world = None
         self.culture = None
         self.family = None
         self.education = None
         self.occupation = None
-        self.make(world, culture, family, education, occupation)
+        self.make(world, culture, family, education, occupation, age)
         self._applied = False
 
     def equip(self, owner):
+        if self.occupation is None:
+            return
         id_ = self.occupation.id
         try:
             equipment = store.background_equipment[id_]
@@ -139,10 +142,13 @@ class Background(object):
                     item = create_item(value, 'weapon')
                     owner.equip_item(item, key)
 
-    def make(self, world, culture, family, education, occupation):
-        default_order = ['world', 'family', 'education', 'occupation']
-        if occupation is not None:
-            default_order.reverse()
+    def make(self, world, culture, family, education, occupation, age):
+        if age != 'junior':
+            default_order = ['world', 'family', 'education', 'occupation']  
+        else:
+            default_order = ['world', 'family', 'education']
+        if occupation is not None and age != 'junior':
+                default_order.reverse()
         elif education is not None:
             default_order = default_order[::-2] + default_order[-1]
         elif family is not None:
@@ -221,6 +227,8 @@ class Background(object):
     def apply(self, owner):
         if not self._applied:
             list_ = ['world', 'culture', 'family', 'education', 'occupation']
+            if owner.age == 'junior':
+                list_.remove('occupation')
             for i in list_:
                 getattr(self, i).apply(owner)
             self.equip(owner)

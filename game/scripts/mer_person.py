@@ -46,7 +46,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     if age is None:
         age = genus.get_age()
     p = Person(age, gender, genus, initial_fatness, initial_tonus)
-    background = Background(world, culture, family, education, occupation)
+    background = Background(age, world, culture, family, education, occupation)
     p.apply_background(background)
     if gender == 'sexless':
         gender = 'male'
@@ -187,7 +187,11 @@ class DescriptionMaker(object):
             '{alignment[2]} person and {possesive} sexuality is a {sex_suite} {sex_orientation}. '
         string += '{{person.firstname}} originated from {background.world.name}, {background.world.description}. '\
             '{{person.firstname}} {background.family.description}, ' \
-            '{background.education.description} and became a {background.occupation.name} eventually. \n'.format(background=person.background)
+            '{background.education.description}'.format(background=person.background)
+        if background.occupation is not None:
+            string += 'and became a {background.occupation.name} eventually. \n'.format(background=person.background)
+        else:
+            string += '.\n'
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
@@ -210,7 +214,6 @@ class DescriptionMaker(object):
                 look=get_feature('look').name, skin=get_feature('skin').description,
                 sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name'],
                 pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2()))
-        print string 
         return string
 
     def get_pronoun1(self):

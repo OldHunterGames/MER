@@ -15,7 +15,7 @@ class Relations(object):
 
     _fervor_alignment = 'activity'
     _distance_alignment = 'orderliness'
-    _morality_alignment = 'congruence'
+    _congruence_alignment = 'morality'
 
     def __init__(self, person1, person2):
         self.persons = [person1, person2]
@@ -130,11 +130,12 @@ class Relations(object):
             fervor = 1
         return fervor
 
-    def show_fervor(self, colorise=False, protected=False):
+    def show_fervor(self, colorise=False, protected=False, value=None):
+        text = self._translate('fervor', value)
         if colorise:
-            return self._colorise('fervor', protected)
+            return self._colorise(text, 'fervor', protected)
         else:
-            return self._translate('fervor')
+            return text
 
     def fervor_str(self):
         return Relations._fervor[self.fervor]
@@ -156,13 +157,14 @@ class Relations(object):
     def distance_str(self):
         return Relations._distance[self.distance]
 
-    def show_distance(self, colorise=False, protected=False):
+    def show_distance(self, colorise=False, protected=False, value=None):
+        text = self._translate('distance', value)
         if colorise:
-            return self._colorise('distance', protected)
+            return self._colorise(text, 'distance', protected)
         else:
-            return self._translate('distance')
+            return text
 
-    def _colorise(self, axis, protected=False):
+    def _colorise(self, text, axis, protected=False):
         color = None
         if self.dissonance(axis):
             color = 'red'
@@ -172,13 +174,14 @@ class Relations(object):
             color = 'green'
         elif self.resonance(axis):
             color = 'gold'
-        string = self._translate(axis)
         if color is None:
-            return string
+            return text
         else:
-            return encolor_text(string, color, protected)
+            return encolor_text(text, color, protected)
 
-    def _translate(self, axis):
+    def _translate(self, axis, value=None):
+        if value is not None:
+            return store.relations_translation[axis][value]
         return store.relations_translation[axis][self._axis[axis]]
 
     @property
@@ -198,11 +201,12 @@ class Relations(object):
     def congruence_str(self):
         return Relations._congruence[self.congruence]
 
-    def show_congruence(self, colorise=False, protected=False):
+    def show_congruence(self, colorise=False, protected=False, value=None):
+        text = self._translate('congruence', value)
         if colorise:
-            return self._colorise('congruence', protected)
+            return self._colorise(text, 'congruence', protected)
         else:
-            return self._translate('congruence')
+            return text
 
     def description(self, colorise=False, protected=False):
         return (self.show_fervor(colorise, protected), self.show_distance(colorise, protected),
@@ -228,10 +232,11 @@ class Relations(object):
 
     def dissonance(self, axis):
         value = self._axis[axis]
-        if value == 0:
-            return False
         alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
-        if abs(value + alignment_value) == 0:
+        if value == 0 or alignment_value == 0:
+            return False
+        
+        if value != alignment_value:
             return True
         else:
             return False
@@ -239,13 +244,11 @@ class Relations(object):
 
     def resonance(self, axis):
         value = self._axis[axis]
-        if value == 0:
-            return False
         alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
-        if abs(value + alignment_value) == 2:
-            return True
-        else:
+        if value == 0 or alignment_value == 0:
             return False
+        
+        return not self.dissonance(axis)
 
     def used(self, axis):
         return (axis, self._axis[axis]) in self._used
