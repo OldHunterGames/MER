@@ -6,30 +6,30 @@ init python:
             'type': 'human',
             'genders': [('male', 3), ('female', 4), ('shemale', 1)],
             'ages': [('junior', 1), ('adolescent', 2), ('mature', 3), ('elder', 1)],
-            'features': []
+            'features': [],
         },
         'vampire':{
             'name': __('vampire'),
             'head_type': 'undead',
             'type': 'undead',
-            'features': []
+            'features': [],
         },
         'werewolf':{
             'name': __('werewolf'),
             'head_type': 'canin',
             'type': 'furry',
-            'features': []
+            'features': [],
         },
         'lupine':{
             'name': __('lupine'),
             'head_type': 'canin',
             'type': 'furry',
-            'features': []
+            'features': [],
         },
         'slime':{
             'name': __('slime'),
             'head_type': 'slime',
             'type': 'xeno',
-            'features': []
+            'features': [],
         }
     }

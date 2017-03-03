@@ -42,11 +42,26 @@ label lbl_edge_main:
         garantor = None
         edge_sovereign = core.get_faction('serpis')
         
-        slums_leader = gen_random_person(genus='human', age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None)
+        def gen_simple_human():
+            genus = Genus('human')
+            gender = genus.get_gender()
+            age = genus.get_age()
+            candidate = gen_random_person(genus=genus.name, gender=gender, age=age)
+            add_features_common(candidate)
+            return candidate
+            
+        slums_leader = gen_simple_human()
+        while slums_leader.spirit < 4 and slums_leader.skill('spirit') < 1:
+            slums_leader = gen_simple_human()
+        
+        slums_leader.add_feature('confident')
+           
+        
+        
         slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
         player.relations(slums_faction)
         ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
-        add_random_feature_genderage(slums_leader, data_appearence_list)
+        
         slums_champion = gen_random_person(genus='human', occupation=ocpn)
         slums_faction.add_member(slums_champion) 
         slums_faction.set_member_to_role(slums_champion, 'champion') 
@@ -125,15 +140,17 @@ label lbl_edge_places:
                     pass
         'House [edge_sovereign.name] outpost':
             call lbl_edge_outpost
-        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
-            $ stash = edge.get_stash('hazy_marshes')
-            call screen sc_manage_stash(stash)   
-        'Echoing hills' if edge.is_stash_found('echoing_hills'):
-            $ stash = edge.get_stash('echoing_hills')
-            call screen sc_manage_stash(stash) 
-        'Dying grove' if edge.is_stash_found('dying_grove'):
-            $ stash = edge.get_stash('dying_grove')
-            call screen sc_manage_stash(stash)              
+#        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
+#            $ stash = edge.get_stash('hazy_marshes')
+#            call screen sc_manage_stash(stash)   
+#        'Echoing hills' if edge.is_stash_found('echoing_hills'):
+#            $ stash = edge.get_stash('echoing_hills')
+#            call screen sc_manage_stash(stash) 
+#        'Dying grove' if edge.is_stash_found('dying_grove'):
+#            $ stash = edge.get_stash('dying_grove')
+#            call screen sc_manage_stash(stash)              
+        'Edge of Mists':
+            call lbl_edge_randenc_errant
         'Done':
             jump lbl_edge_manage
     
