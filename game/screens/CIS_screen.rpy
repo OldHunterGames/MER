@@ -88,7 +88,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     imagebutton:
                         idle im.Scale(person.get_token_image(), 200, 350)
                         hover im.MatrixColor(im.Scale(person.get_token_image(), 200, 350), im.matrix.brightness(0.05))
-                        action Function(core.call_token_label, person) 
+                        action Function(core.shift_relations, person) 
                 else:
                     imagebutton:
                         idle im.Grayscale(im.Scale(person.get_token_image(), 200, 350))
