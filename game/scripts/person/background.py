@@ -143,20 +143,12 @@ class Background(object):
                     owner.equip_item(item, key)
 
     def make(self, world, culture, family, education, occupation, age):
-        if age != 'junior':
-            default_order = ['world', 'family', 'education', 'occupation']  
-        else:
-            default_order = ['world', 'family', 'education']
-        if occupation is not None and age != 'junior':
-                default_order.reverse()
-        elif education is not None:
-            default_order = default_order[::-2] + default_order[-1]
-        elif family is not None:
-            default_order = default_order[::-3] + \
-                default_order[-1] + default_order[-2]
         self._set_culture(culture)
-        for i in default_order:
-            getattr(self, '_set_' + i)(locals()[i])
+        self._set_world(world)
+        self._set_family(family)
+        self._set_education(education)
+        if age != 'junior':
+            self._set_occupation(occupation)
 
     def _set_world(self, world=None):
         if world is None:
@@ -173,14 +165,10 @@ class Background(object):
             families = [Family(family)
                         for family in store.families_dict.keys()]
             available_families = []
-            try:
-                for family in families:
-                    if self.world.is_available(family):
-                        available_families.append(family)
-            except AttributeError:
-                for family in families:
-                    if family.is_available(self.education):
-                        available_families.append(family)
+            for family in families:
+                if self.world.is_available(family):
+                    available_families.append(family)
+
             try:
                 self.family = random.choice(available_families)
             except IndexError:
@@ -193,14 +181,9 @@ class Background(object):
             educations = [Education(education)
                           for education in store.educations_dict.keys()]
             available_educations = []
-            try:
-                for education in educations:
-                    if self.family.is_available(education):
-                        available_educations.append(education)
-            except AttributeError:
-                for education in educations:
-                    if education.is_available(self.occupation):
-                        available_educations.append(education)
+            for education in educations:
+                if self.family.is_available(education):
+                    available_educations.append(education)
             try:
                 self.education = random.choice(available_educations)
             except IndexError:
@@ -213,7 +196,7 @@ class Background(object):
             available_occupations = []
             for occupation in store.occupations_dict.keys():
                 current = Occupation(occupation)
-                if self.education.is_available(current):
+                if self.family.is_available(current):
                     available_occupations.append(current)
             try:
                 self.occupation = random.choice(available_occupations)

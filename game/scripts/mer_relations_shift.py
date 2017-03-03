@@ -35,18 +35,21 @@ class ShiftRelations(object):
 
     def act_left(self):
         self.person.player_relations().change(self.axis, '-')
+        self.person.use_token()
     
     def is_left_active(self):
         return self.person.player_relations().axis[self.axis] != -1
 
     def act_right(self):
         self.person.player_relations().change(self.axis, '+')
+        self.person.use_token()
 
     def is_right_active(self):
         return self.person.player_relations().axis[self.axis] != 1
 
     def act_middle(self):
         self.player.satisfy_need(self._needs[self.token], 4)
+        self.person.use_token()
 
     def left_card(self):
         if self.is_left_active():
