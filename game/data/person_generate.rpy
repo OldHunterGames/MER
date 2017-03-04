@@ -391,109 +391,109 @@ init python:
         'male': {
             'junior': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
-                '11': 'voice_high',                                                                                 
+                '9': 'voice_sweet', 
+                '10': 'voice_clear', 
+                '11': 'voice_soft',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_sweet', 
+                '8': 'voice_stuttering', 
+                '13': 'voice_soft',    
+                '14': 'voice_clear',  
                 #Rare
                 '5': 'voice_high', 
                 '6': 'voice_high', 
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_charming', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',           
+                '3': 'voice_husky', 
+                '18': 'voice_strong',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'voice_deep', 
+                '9': 'voice_high', 
                 '10': 'voice_deep', 
                 '11': 'voice_deep',                                                                                 
                 '12': 'voice_deep',  
                 #Uncommon 
-                '7': 'voice_deep', 
-                '8': 'voice_deep', 
-                '13': 'voice_deep',    
-                '14': 'voice_deep',  
+                '7': 'voice_sweet', 
+                '8': 'voice_clear', 
+                '13': 'voice_charming',    
+                '14': 'voice_high',  
                 #Rare
-                '5': 'voice_deep', 
-                '6': 'voice_deep', 
-                '15': 'voice_deep',   
+                '5': 'voice_soft', 
+                '6': 'voice_high', 
+                '15': 'voice_stuttering',   
                 '16': 'voice_deep',  
                 #SuperRare
-                '4': 'voice_deep', 
-                '17': 'voice_deep',      
+                '4': 'voice_husky', 
+                '17': 'voice_strong',      
                 #UberRare                
-                '3': 'voice_deep', 
+                '3': 'voice_stuttering', 
                 '18': 'voice_deep',                                                                                    
                 }, 
             'mature': {
                 #Common  
-                '9': 'voice_deep', 
+                '9': 'voice_strong', 
                 '10': 'voice_deep', 
                 '11': 'voice_deep',                                                                                 
                 '12': 'voice_deep',  
                 #Uncommon 
-                '7': 'voice_deep', 
+                '7': 'voice_strong', 
                 '8': 'voice_deep', 
                 '13': 'voice_deep',    
-                '14': 'voice_deep',  
+                '14': 'voice_husky',  
                 #Rare
                 '5': 'voice_deep', 
-                '6': 'voice_deep', 
-                '15': 'voice_deep',   
-                '16': 'voice_deep',  
+                '6': 'voice_charming', 
+                '15': 'voice_clear',   
+                '16': 'voice_soft',  
                 #SuperRare
-                '4': 'voice_deep', 
-                '17': 'voice_deep',      
+                '4': 'voice_sweet', 
+                '17': 'voice_high',      
                 #UberRare                
-                '3': 'voice_deep', 
-                '18': 'voice_deep',                                                                                  
+                '3': 'voice_stuttering', 
+                '18': 'voice_high',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'voice_deep', 
-                '10': 'voice_deep', 
+                '9': 'voice_husky', 
+                '10': 'voice_stuttering', 
                 '11': 'voice_deep',                                                                                 
                 '12': 'voice_deep',  
                 #Uncommon 
-                '7': 'voice_deep', 
-                '8': 'voice_deep', 
+                '7': 'voice_stuttering', 
+                '8': 'voice_husky', 
                 '13': 'voice_deep',    
                 '14': 'voice_deep',  
                 #Rare
-                '5': 'voice_deep', 
-                '6': 'voice_deep', 
-                '15': 'voice_deep',   
+                '5': 'voice_strong', 
+                '6': 'voice_soft', 
+                '15': 'voice_sweet',   
                 '16': 'voice_deep',  
                 #SuperRare
-                '4': 'voice_deep', 
+                '4': 'voice_charming', 
                 '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_deep', 
-                '18': 'voice_deep',                                                                                   
+                '3': 'voice_high', 
+                '18': 'voice_clear',                                                                                   
                 },                 
         },
         
         'female': {
             'junior': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
-                '11': 'voice_high',                                                                                 
+                '9': 'voice_sweet', 
+                '10': 'voice_clear', 
+                '11': 'voice_soft',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
+                '7': 'voice_charming', 
+                '8': 'voice_soft', 
+                '13': 'voice_clear',    
                 '14': 'voice_high',  
                 #Rare
                 '5': 'voice_high', 
@@ -501,94 +501,94 @@ init python:
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_stuttering', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',           
+                '3': 'voice_strong', 
+                '18': 'voice_husky',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_clear', 
+                '10': 'voice_charming', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_clear', 
+                '8': 'voice_sweet', 
+                '13': 'voice_soft',    
+                '14': 'voice_charming',  
                 #Rare
-                '5': 'voice_high', 
+                '5': 'voice_deep', 
                 '6': 'voice_high', 
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_strong', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                    
+                '3': 'voice_stuttering', 
+                '18': 'voice_husky',                                                                                    
                 }, 
             'mature': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_deep', 
+                '10': 'voice_charming', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
+                '7': 'voice_deep', 
+                '8': 'voice_charming', 
+                '13': 'voice_soft',    
                 '14': 'voice_high',  
                 #Rare
-                '5': 'voice_high', 
-                '6': 'voice_high', 
-                '15': 'voice_high',   
-                '16': 'voice_high',  
+                '5': 'voice_sweet', 
+                '6': 'voice_strong', 
+                '15': 'voice_soft',   
+                '16': 'voice_deep',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_husky', 
+                '17': 'voice_stuttering',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                  
+                '3': 'voice_husky', 
+                '18': 'voice_stuttering',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_deep', 
+                '10': 'voice_husky', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_husky', 
+                '8': 'voice_stuttering', 
+                '13': 'voice_soft',    
+                '14': 'voice_deep',  
                 #Rare
-                '5': 'voice_high', 
-                '6': 'voice_high', 
-                '15': 'voice_high',   
+                '5': 'voice_sweet', 
+                '6': 'voice_soft', 
+                '15': 'voice_deep',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_charming', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                   
+                '3': 'voice_clear', 
+                '18': 'voice_strong',                                                                                   
                 },                 
         },        
 
         'shemale': {
             'junior': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
-                '11': 'voice_high',                                                                                 
+                '9': 'voice_sweet', 
+                '10': 'voice_clear', 
+                '11': 'voice_soft',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
+                '7': 'voice_charming', 
+                '8': 'voice_soft', 
+                '13': 'voice_clear',    
                 '14': 'voice_high',  
                 #Rare
                 '5': 'voice_high', 
@@ -596,94 +596,94 @@ init python:
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_stuttering', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',           
+                '3': 'voice_strong', 
+                '18': 'voice_husky',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_clear', 
+                '10': 'voice_charming', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_clear', 
+                '8': 'voice_sweet', 
+                '13': 'voice_soft',    
+                '14': 'voice_charming',  
                 #Rare
-                '5': 'voice_high', 
+                '5': 'voice_deep', 
                 '6': 'voice_high', 
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_strong', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                    
+                '3': 'voice_stuttering', 
+                '18': 'voice_husky',                                                                                    
                 }, 
             'mature': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_deep', 
+                '10': 'voice_charming', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
+                '7': 'voice_deep', 
+                '8': 'voice_charming', 
+                '13': 'voice_soft',    
                 '14': 'voice_high',  
                 #Rare
-                '5': 'voice_high', 
-                '6': 'voice_high', 
-                '15': 'voice_high',   
-                '16': 'voice_high',  
+                '5': 'voice_sweet', 
+                '6': 'voice_strong', 
+                '15': 'voice_soft',   
+                '16': 'voice_deep',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_husky', 
+                '17': 'voice_stuttering',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                  
+                '3': 'voice_husky', 
+                '18': 'voice_stuttering',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_deep', 
+                '10': 'voice_husky', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_husky', 
+                '8': 'voice_stuttering', 
+                '13': 'voice_soft',    
+                '14': 'voice_deep',  
                 #Rare
-                '5': 'voice_high', 
-                '6': 'voice_high', 
-                '15': 'voice_high',   
+                '5': 'voice_sweet', 
+                '6': 'voice_soft', 
+                '15': 'voice_deep',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_charming', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                   
-                },                  
-        },
-
+                '3': 'voice_clear', 
+                '18': 'voice_strong',                                                                                   
+                },                 
+        },        
+        
         'sexless': {
             'junior': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
-                '11': 'voice_high',                                                                                 
+                '9': 'voice_sweet', 
+                '10': 'voice_clear', 
+                '11': 'voice_soft',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
+                '7': 'voice_charming', 
+                '8': 'voice_soft', 
+                '13': 'voice_clear',    
                 '14': 'voice_high',  
                 #Rare
                 '5': 'voice_high', 
@@ -691,109 +691,108 @@ init python:
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_stuttering', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',           
+                '3': 'voice_strong', 
+                '18': 'voice_husky',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'voice_high', 
-                '10': 'voice_high', 
+                '9': 'voice_clear', 
+                '10': 'voice_charming', 
                 '11': 'voice_high',                                                                                 
                 '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_high', 
-                '8': 'voice_high', 
-                '13': 'voice_high',    
-                '14': 'voice_high',  
+                '7': 'voice_clear', 
+                '8': 'voice_sweet', 
+                '13': 'voice_soft',    
+                '14': 'voice_charming',  
                 #Rare
-                '5': 'voice_high', 
+                '5': 'voice_deep', 
                 '6': 'voice_high', 
                 '15': 'voice_high',   
                 '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_high', 
-                '17': 'voice_high',      
+                '4': 'voice_strong', 
+                '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_high', 
-                '18': 'voice_high',                                                                                    
+                '3': 'voice_stuttering', 
+                '18': 'voice_husky',                                                                                    
                 }, 
             'mature': {
                 #Common  
                 '9': 'voice_deep', 
-                '10': 'voice_deep', 
-                '11': 'voice_deep',                                                                                 
-                '12': 'voice_deep',  
+                '10': 'voice_charming', 
+                '11': 'voice_high',                                                                                 
+                '12': 'voice_high',  
                 #Uncommon 
                 '7': 'voice_deep', 
-                '8': 'voice_deep', 
-                '13': 'voice_deep',    
-                '14': 'voice_deep',  
+                '8': 'voice_charming', 
+                '13': 'voice_soft',    
+                '14': 'voice_high',  
                 #Rare
-                '5': 'voice_deep', 
-                '6': 'voice_deep', 
-                '15': 'voice_deep',   
+                '5': 'voice_sweet', 
+                '6': 'voice_strong', 
+                '15': 'voice_soft',   
                 '16': 'voice_deep',  
                 #SuperRare
-                '4': 'voice_deep', 
-                '17': 'voice_deep',      
+                '4': 'voice_husky', 
+                '17': 'voice_stuttering',      
                 #UberRare                
-                '3': 'voice_deep', 
-                '18': 'voice_deep',                                                                                  
+                '3': 'voice_husky', 
+                '18': 'voice_stuttering',                                                                                  
                 }, 
             'elder': {
                 #Common  
                 '9': 'voice_deep', 
-                '10': 'voice_deep', 
-                '11': 'voice_deep',                                                                                 
-                '12': 'voice_deep',  
+                '10': 'voice_husky', 
+                '11': 'voice_high',                                                                                 
+                '12': 'voice_high',  
                 #Uncommon 
-                '7': 'voice_deep', 
-                '8': 'voice_deep', 
-                '13': 'voice_deep',    
+                '7': 'voice_husky', 
+                '8': 'voice_stuttering', 
+                '13': 'voice_soft',    
                 '14': 'voice_deep',  
                 #Rare
-                '5': 'voice_deep', 
-                '6': 'voice_deep', 
+                '5': 'voice_sweet', 
+                '6': 'voice_soft', 
                 '15': 'voice_deep',   
-                '16': 'voice_deep',  
+                '16': 'voice_high',  
                 #SuperRare
-                '4': 'voice_deep', 
+                '4': 'voice_charming', 
                 '17': 'voice_deep',      
                 #UberRare                
-                '3': 'voice_deep', 
-                '18': 'voice_deep',                                                                                   
-                },        
-        },
-                        
+                '3': 'voice_clear', 
+                '18': 'voice_strong',                                                                                   
+                },                 
+        },        
     }
 
     data_skin_list = {
         'male': {
             'junior': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
                 '5': 'skin_normal', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
-                '16': 'skin_normal',  
+                '16': 'skin_scars',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_pigmented',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',           
+                '3': 'skin_freckled', 
+                '18': 'skin_wrinkly',           
                 }, 
             'adolescent': {
                 #Common  
@@ -802,21 +801,21 @@ init python:
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
-                '6': 'skin_normal', 
+                '5': 'skin_silky', 
+                '6': 'skin_clear', 
                 '15': 'skin_normal',   
-                '16': 'skin_normal',  
+                '16': 'skin_scars',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_pigmented',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                    
+                '3': 'skin_freckled', 
+                '18': 'skin_wrinkly',                                                                                    
                 }, 
             'mature': {
                 #Common  
@@ -825,26 +824,26 @@ init python:
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
+                '7': 'skin_scars', 
                 '8': 'skin_normal', 
                 '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '14': 'skin_freckled',  
                 #Rare
-                '5': 'skin_normal', 
-                '6': 'skin_normal', 
+                '5': 'skin_pigmented', 
+                '6': 'skin_pocky', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_wrinkly', 
+                '17': 'skin_pigmented',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                  
+                '3': 'skin_clear', 
+                '18': 'skin_silky',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_wrinkly', 
+                '10': 'skin_pigmented', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
@@ -853,65 +852,65 @@ init python:
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_scars', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
-                '16': 'skin_normal',  
+                '16': 'skin_pocky',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_freckled', 
+                '17': 'skin_freckled',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                   
+                '3': 'skin_silky', 
+                '18': 'skin_clear',                                                                                   
                 },                 
         },
         
         'female': {
             'junior': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
-                '11': 'skin_normal',                                                                                 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
+                '11': 'skin_clear',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
                 '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '14': 'skin_silky',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',           
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_clear', 
+                '8': 'skin_silky', 
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                    
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                    
                 }, 
             'mature': {
                 #Common  
@@ -920,93 +919,93 @@ init python:
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
+                '13': 'skin_freckled',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
-                '6': 'skin_normal', 
-                '15': 'skin_normal',   
+                '5': 'skin_wrinkly', 
+                '6': 'skin_pigmented', 
+                '15': 'skin_scars',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_wrinkly',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                  
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_wrinkly', 
+                '10': 'skin_pigmented', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '7': 'skin_freckled', 
+                '8': 'skin_pocky', 
+                '13': 'skin_pigmented',    
+                '14': 'skin_wrinkly',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_scars', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
+                '4': 'skin_scars', 
                 '17': 'skin_normal',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                   
+                '3': 'skin_silky', 
+                '18': 'skin_clear',                                                                                   
                 },                 
         },        
 
         'shemale': {
             'junior': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
-                '11': 'skin_normal',                                                                                 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
+                '11': 'skin_clear',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
                 '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '14': 'skin_silky',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',           
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_clear', 
+                '8': 'skin_silky', 
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                    
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                    
                 }, 
             'mature': {
                 #Common  
@@ -1015,93 +1014,93 @@ init python:
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
+                '13': 'skin_freckled',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
-                '6': 'skin_normal', 
-                '15': 'skin_normal',   
+                '5': 'skin_wrinkly', 
+                '6': 'skin_pigmented', 
+                '15': 'skin_scars',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_wrinkly',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                  
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_wrinkly', 
+                '10': 'skin_pigmented', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '7': 'skin_freckled', 
+                '8': 'skin_pocky', 
+                '13': 'skin_pigmented',    
+                '14': 'skin_wrinkly',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_scars', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
+                '4': 'skin_scars', 
                 '17': 'skin_normal',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                   
-                },                  
-        },
-
+                '3': 'skin_silky', 
+                '18': 'skin_clear',                                                                                   
+                },                 
+        },   
+        
         'sexless': {
             'junior': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
-                '11': 'skin_normal',                                                                                 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
+                '11': 'skin_clear',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
                 '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '14': 'skin_silky',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',           
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_silky', 
+                '10': 'skin_clear', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
+                '7': 'skin_clear', 
+                '8': 'skin_silky', 
                 '13': 'skin_normal',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_freckled', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_scars',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                    
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                    
                 }, 
             'mature': {
                 #Common  
@@ -1110,46 +1109,46 @@ init python:
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
+                '7': 'skin_silky', 
+                '8': 'skin_clear', 
+                '13': 'skin_freckled',    
                 '14': 'skin_normal',  
                 #Rare
-                '5': 'skin_normal', 
-                '6': 'skin_normal', 
-                '15': 'skin_normal',   
+                '5': 'skin_wrinkly', 
+                '6': 'skin_pigmented', 
+                '15': 'skin_scars',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
-                '17': 'skin_normal',      
+                '4': 'skin_pocky', 
+                '17': 'skin_wrinkly',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                  
+                '3': 'skin_wrinkly', 
+                '18': 'skin_pigmented',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'skin_normal', 
-                '10': 'skin_normal', 
+                '9': 'skin_wrinkly', 
+                '10': 'skin_pigmented', 
                 '11': 'skin_normal',                                                                                 
                 '12': 'skin_normal',  
                 #Uncommon 
-                '7': 'skin_normal', 
-                '8': 'skin_normal', 
-                '13': 'skin_normal',    
-                '14': 'skin_normal',  
+                '7': 'skin_freckled', 
+                '8': 'skin_pocky', 
+                '13': 'skin_pigmented',    
+                '14': 'skin_wrinkly',  
                 #Rare
-                '5': 'skin_normal', 
+                '5': 'skin_scars', 
                 '6': 'skin_normal', 
                 '15': 'skin_normal',   
                 '16': 'skin_normal',  
                 #SuperRare
-                '4': 'skin_normal', 
+                '4': 'skin_scars', 
                 '17': 'skin_normal',      
                 #UberRare                
-                '3': 'skin_normal', 
-                '18': 'skin_normal',                                                                                   
-                },        
-        },
+                '3': 'skin_silky', 
+                '18': 'skin_clear',                                                                                   
+                },                 
+        },   
                         
     }
 
@@ -1157,40 +1156,40 @@ init python:
         'male': {
             'junior': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
-                '11': 'hair_normal',                                                                                 
+                '9': 'hair_soft', 
+                '10': 'hair_soft', 
+                '11': 'hair_shiny',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
+                '7': 'hair_shiny', 
+                '8': 'hair_soft', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
+                '5': 'hair_dry', 
                 '6': 'hair_normal', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_dry', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',           
+                '3': 'hair_coarse', 
+                '18': 'hair_greasy',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_shiny', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
+                '7': 'hair_soft', 
+                '8': 'hair_greasy', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
+                '5': 'hair_coarse', 
                 '6': 'hair_normal', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
@@ -1203,12 +1202,12 @@ init python:
                 }, 
             'mature': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
-                '11': 'hair_normal',                                                                                 
+                '9': 'hair_coarse', 
+                '10': 'hair_greasy', 
+                '11': 'hair_dry',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
+                '7': 'hair_shiny', 
                 '8': 'hair_normal', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
@@ -1218,20 +1217,20 @@ init python:
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_soft', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
+                '3': 'hair_soft', 
                 '18': 'hair_normal',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_greasy', 
+                '10': 'hair_dry', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
+                '7': 'hair_coarse', 
                 '8': 'hair_normal', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
@@ -1241,10 +1240,10 @@ init python:
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_soft', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
+                '3': 'hair_shiny', 
                 '18': 'hair_normal',                                                                                   
                 },                 
         },
@@ -1252,42 +1251,42 @@ init python:
         'female': {
             'junior': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
-                '11': 'hair_normal',                                                                                 
+                '9': 'hair_soft', 
+                '10': 'hair_shiny', 
+                '11': 'hair_soft',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
+                '7': 'hair_soft', 
+                '8': 'hair_shiny', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
+                '5': 'hair_soft', 
                 '6': 'hair_normal', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_dry', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',           
+                '3': 'hair_coarse', 
+                '18': 'hair_greasy',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_shiny', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_soft', 
+                '8': 'hair_greasy', 
+                '13': 'hair_shiny',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
-                '15': 'hair_normal',   
+                '5': 'hair_soft', 
+                '6': 'hair_coarse', 
+                '15': 'hair_shiny',   
                 '16': 'hair_normal',  
                 #SuperRare
                 '4': 'hair_normal', 
@@ -1298,37 +1297,37 @@ init python:
                 }, 
             'mature': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_greasy', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
-                '14': 'hair_normal',  
+                '7': 'hair_shiny', 
+                '8': 'hair_soft', 
+                '13': 'hair_greasy',    
+                '14': 'hair_dry',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
+                '5': 'hair_shiny', 
+                '6': 'hair_coarse', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_dry', 
+                '17': 'hair_greasy',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                  
+                '3': 'hair_coarse', 
+                '18': 'hair_coarse',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_greasy', 
+                '10': 'hair_dry', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_coarse', 
+                '8': 'hair_greasy', 
+                '13': 'hair_dry',    
                 '14': 'hair_normal',  
                 #Rare
                 '5': 'hair_normal', 
@@ -1336,53 +1335,53 @@ init python:
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_soft', 
+                '17': 'hair_soft',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                   
+                '3': 'hair_shiny', 
+                '18': 'hair_shiny',                                                                                   
                 },                 
         },        
 
         'shemale': {
             'junior': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
-                '11': 'hair_normal',                                                                                 
+                '9': 'hair_soft', 
+                '10': 'hair_shiny', 
+                '11': 'hair_soft',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
+                '7': 'hair_soft', 
+                '8': 'hair_shiny', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
+                '5': 'hair_soft', 
                 '6': 'hair_normal', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_dry', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',           
+                '3': 'hair_coarse', 
+                '18': 'hair_greasy',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_shiny', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_soft', 
+                '8': 'hair_greasy', 
+                '13': 'hair_shiny',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
-                '15': 'hair_normal',   
+                '5': 'hair_soft', 
+                '6': 'hair_coarse', 
+                '15': 'hair_shiny',   
                 '16': 'hair_normal',  
                 #SuperRare
                 '4': 'hair_normal', 
@@ -1393,37 +1392,37 @@ init python:
                 }, 
             'mature': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_greasy', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
-                '14': 'hair_normal',  
+                '7': 'hair_shiny', 
+                '8': 'hair_soft', 
+                '13': 'hair_greasy',    
+                '14': 'hair_dry',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
+                '5': 'hair_shiny', 
+                '6': 'hair_coarse', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_dry', 
+                '17': 'hair_greasy',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                  
+                '3': 'hair_coarse', 
+                '18': 'hair_coarse',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_greasy', 
+                '10': 'hair_dry', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_coarse', 
+                '8': 'hair_greasy', 
+                '13': 'hair_dry',    
                 '14': 'hair_normal',  
                 #Rare
                 '5': 'hair_normal', 
@@ -1431,53 +1430,53 @@ init python:
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_soft', 
+                '17': 'hair_soft',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                   
-                },                  
-        },
+                '3': 'hair_shiny', 
+                '18': 'hair_shiny',                                                                                   
+                },                 
+        },        
 
         'sexless': {
             'junior': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
-                '11': 'hair_normal',                                                                                 
+                '9': 'hair_soft', 
+                '10': 'hair_shiny', 
+                '11': 'hair_soft',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
+                '7': 'hair_soft', 
+                '8': 'hair_shiny', 
                 '13': 'hair_normal',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
+                '5': 'hair_soft', 
                 '6': 'hair_normal', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
+                '4': 'hair_dry', 
                 '17': 'hair_normal',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',           
+                '3': 'hair_coarse', 
+                '18': 'hair_greasy',           
                 }, 
             'adolescent': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_shiny', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_soft', 
+                '8': 'hair_greasy', 
+                '13': 'hair_shiny',    
                 '14': 'hair_normal',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
-                '15': 'hair_normal',   
+                '5': 'hair_soft', 
+                '6': 'hair_coarse', 
+                '15': 'hair_shiny',   
                 '16': 'hair_normal',  
                 #SuperRare
                 '4': 'hair_normal', 
@@ -1488,37 +1487,37 @@ init python:
                 }, 
             'mature': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_dry', 
+                '10': 'hair_greasy', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
-                '14': 'hair_normal',  
+                '7': 'hair_shiny', 
+                '8': 'hair_soft', 
+                '13': 'hair_greasy',    
+                '14': 'hair_dry',  
                 #Rare
-                '5': 'hair_normal', 
-                '6': 'hair_normal', 
+                '5': 'hair_shiny', 
+                '6': 'hair_coarse', 
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_dry', 
+                '17': 'hair_greasy',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                  
+                '3': 'hair_coarse', 
+                '18': 'hair_coarse',                                                                                  
                 }, 
             'elder': {
                 #Common  
-                '9': 'hair_normal', 
-                '10': 'hair_normal', 
+                '9': 'hair_greasy', 
+                '10': 'hair_dry', 
                 '11': 'hair_normal',                                                                                 
                 '12': 'hair_normal',  
                 #Uncommon 
-                '7': 'hair_normal', 
-                '8': 'hair_normal', 
-                '13': 'hair_normal',    
+                '7': 'hair_coarse', 
+                '8': 'hair_greasy', 
+                '13': 'hair_dry',    
                 '14': 'hair_normal',  
                 #Rare
                 '5': 'hair_normal', 
@@ -1526,13 +1525,13 @@ init python:
                 '15': 'hair_normal',   
                 '16': 'hair_normal',  
                 #SuperRare
-                '4': 'hair_normal', 
-                '17': 'hair_normal',      
+                '4': 'hair_soft', 
+                '17': 'hair_soft',      
                 #UberRare                
-                '3': 'hair_normal', 
-                '18': 'hair_normal',                                                                                   
-                },        
-        },
+                '3': 'hair_shiny', 
+                '18': 'hair_shiny',                                                                                   
+                },                 
+        },        
                         
     }
 
@@ -1607,24 +1606,6 @@ init python:
                 '3': 'smart', 
                 '18': 'dumb',           
                 }
-
-    data_fatness_list = {
-                '1': -2, 
-                '2': -1, 
-                '3': 0,                                                                                 
-                '4': 0,  
-                '5': -1, 
-                '6': 2, 
-                }
-
-    data_tonus_list = {
-                '1': 0, 
-                '2': -1, 
-                '3': 0,                                                                                 
-                '4': 0,  
-                '5': -1, 
-                '6': 0,       
-                }
                                                                 
     def add_random_feature_plain(person, list):
         
@@ -1650,7 +1631,5 @@ init python:
         add_random_feature_genderage(person, data_voice_list)
         add_random_feature_genderage(person, data_hair_list)
         add_random_feature_genderage(person, data_skin_list)
-        person.fatness = data_fatness_list[str(randint(1, 6))]
-        person.tonus = data_tonus_list[str(randint(1, 6))]
         
         return

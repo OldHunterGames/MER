@@ -77,8 +77,8 @@ label lbl_edge_mistmarine:
         for i in range(5):
             enemies.append(generate_warrior('human'))        
 
-    enemies[0] 'Test your might!!!'        
-    call lbl_simple_fight(allies, enemies)
+    enemies[0] 'Test your might!!!' 
+    $ fight = SimpleFight(allies, enemies)           
 
     jump game_over
     return

@@ -52,28 +52,28 @@ label lbl_edge_main:
             
         def gen_willed_master(genus):
             person = gen_simple_person(genus)
-            if person.spirit < 4 and person.skill('spirit') < 1:
+            if (person.spirit < 4 and person.skill('spirit') < 1):
                 return gen_willed_master(genus)
             else:
                 return person
             
         def gen_mighty_master(genus):
             person = gen_simple_person(genus)
-            if person.physique < 4 and person.skill('physique') < 1:
+            if (person.physique < 4 and person.skill('physique') < 1):
                 return gen_mighty_master(genus)
             else:
                 return person
             
         def gen_wise_master(genus):
             person = gen_simple_person(genus)
-            if person.mind < 4 and person.skill('mind') < 1:
+            if (person.mind < 4 and person.skill('mind') < 1):
                 return gen_wise_master(genus)
             else:
                 return person                               
             
         def gen_elegant_master(genus):
             person = gen_simple_person(genus)
-            if person.agility < 4 and person.skill('agility') < 1:
+            if (person.agility < 4 and person.skill('agility') < 1):
                 return gen_elegant_master(genus)
             else:
                 return person         
@@ -100,13 +100,8 @@ label lbl_edge_main:
         edge_slaver.add_quest(SlaverQuest)
         slavers.add_member(edge_slaver)
         
-        edge_recruiter = gen_random_person(genus='human', occupation='administrator')
+        edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
-        
-        ## Exploration variatns
-        #edge_exploration = ['slaver', 'recruiter', 'bukake', 'dying_grove', 'hazy_marshes', 'echoing_hills', 'repair_job', 'scavenge', 'entertain_job', 'brewery', 'machinery']
-        #edge.explorations = edge_exploration
-               
     
     slums_leader 'Hi, I am a leader of the Slums'
     $ player.relations(slums_leader)

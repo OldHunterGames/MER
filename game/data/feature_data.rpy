@@ -59,7 +59,7 @@ init python:
         'skin_wrinkly': {'name': __('wrinkly skin'), 'description': __('wrinkly skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},          
         'skin_pigmented': {'name': __('pigmented skin'), 'description': __('pigmented skin'), 'slot': 'skin', 'modifiers': {'allure': -1, 'exotic': +0, 'purity': -1,}, 'visible': True},    
         'skin_fur': {'name': __('furry'), 'description': __('dense fur'), 'slot': 'skin', 'modifiers': {'allure': +1, 'exotic': +1, 'purity': -1,}, 'visible': True}, 
-        'skin_scales': {'name': __('scaly'), 'description': __('covered in scales'), 'slot': 'skin', 'modifiers': {'menace': +1, 'exotic': +1, 'purity': -1,}, 'visible': True},                             
+        'skin_scales': {'name': __('scaly'), 'description': __('skin covered in scales'), 'slot': 'skin', 'modifiers': {'menace': +1, 'exotic': +1, 'purity': -1,}, 'visible': True},                             
         'skin_scars': {'name': __('battle scars'), 'description': __('has battle scars'), 'slot': 'skin', 'modifiers': {'allure': -1, 'purity': -1, 'menace': +1}, 'visible': True},        
         
         'hair_soft': {'name': __('soft hair'), 'slot': 'hair', 'modifiers': {'allure': +1, 'exotic': +0, 'purity': +1}, 'visible': True},                      
