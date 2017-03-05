@@ -405,10 +405,6 @@ screen sc_deck_style(deck):
 label lbl_gen_player:
     call screen sc_generate_player
     $ player = core.player
-    python:
-        for i in player_generator_garbage:
-            i.destroy()
-        player_generator_garbage = []
     return 
 
 
@@ -419,7 +415,6 @@ init python:
         person.player_controlled = True
         old = core.player
         core.set_player(person)
-        player_generator_garbage.append(old)
 
         
 screen sc_generate_player:
