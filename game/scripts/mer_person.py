@@ -653,7 +653,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.add_feature(gender)
         self.set_avatar()
         self._buffs = []
-        persons_list.append(self)
         self._main_hand = None
         self._other_hand = None
         self.resources_storage = None

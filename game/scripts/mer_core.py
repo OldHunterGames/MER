@@ -200,6 +200,8 @@ class MistsOfEternalRome(object):
         return all([i.can_tick() for i in self.characters])
 
     def new_turn(self, label_to_jump=None):
+        self.player.tick_time()
+        self.player.rest()
         for person in self.characters:
             person.tick_time()
         self.end_turn_event()

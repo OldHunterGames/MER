@@ -313,6 +313,8 @@ class SimpleCombatant(object):
         return
     
     def set_target(self, target):
+        if self.active_maneuver is not None:
+            self.active_maneuver.add_target(target)
         self._target = target
 
     def maneuvers_list(self):
@@ -442,6 +444,8 @@ class SimpleCombatant(object):
         self.select_maneuver(maneuver)
         self.active_maneuver = self.selected_maneuver
         self.selected_maneuver = None
+        if self.target is not None:
+            self.active_maneuver.add_target(self.target)
 
     def damage(self, value, source, ignore_armor=False):
         
@@ -543,6 +547,11 @@ class Maneuver(object):
 
     def add_target(self, target):
         if not self.can_target_more():
+            try:
+                self.targets.pop(0)
+            except IndexError:
+                pass
+            self.targets.append(target)
             return
         if target not in self.targets:
             self.targets.append(target)

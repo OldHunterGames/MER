@@ -41,6 +41,12 @@ class BackgroundBase(object):
         return (background.technical_level in self.available_technical_levels
                 and background.prestige_level in self.available_prestige_levels)
 
+    def is_available_tech(self, background):
+        return background.technical_level in self.available_technical_levels
+
+    def is_available_prestige(self, background):
+        return background.prestige_level in self.available_prestige_levels
+
     def apply(self, owner):
         for feature in self.features:
             owner.add_feature(feature)
@@ -166,7 +172,7 @@ class Background(object):
                         for family in store.families_dict.keys()]
             available_families = []
             for family in families:
-                if self.world.is_available(family):
+                if self.world.is_available_prestige(family):
                     available_families.append(family)
 
             try:
@@ -182,7 +188,7 @@ class Background(object):
                           for education in store.educations_dict.keys()]
             available_educations = []
             for education in educations:
-                if self.family.is_available(education):
+                if self.world.is_available_tech(education) and self.family.is_available_prestige(education):
                     available_educations.append(education)
             try:
                 self.education = random.choice(available_educations)
@@ -196,7 +202,7 @@ class Background(object):
             available_occupations = []
             for occupation in store.occupations_dict.keys():
                 current = Occupation(occupation)
-                if self.family.is_available(current):
+                if self.world.is_available_tech(current) and self.family.is_available_prestige(current):
                     available_occupations.append(current)
             try:
                 self.occupation = random.choice(available_occupations)
