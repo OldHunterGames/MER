@@ -183,6 +183,16 @@ init python:
     'medieval': {'leader': __('Baron of'), 'champion': __('Knight from'), 'agent': __('Jester from'), 'ambassador': __('Merchant from'), 'advisor': __('Bishop of'), 'member': __('Bond from')}, 
     'corporate': {'leader': __('President of'), 'champion': __('Sequrity of'), 'agent': __('Creative officer of'), 'ambassador': __('Vice-president of'), 'advisor': __('Chief engeneer of'), 'member': __('Employee of')}, 
     'tribal': {'leader': __('Chief of'), 'champion': __('Warlord of'), 'agent': __('Fire-keeper of'), 'ambassador': __('Trader from'), 'advisor': __('Shaman of'), 'member': __('Clansman of')}, 
-    'military': {'leader': __('Commander of'), 'champion': __('Chief-sergeant of'), 'agent': __('Scout from'), 'ambassador': __('Quartermaster of'), 'advisor': __('Chief of staff from'), 'member': __('Squaddie from')}, 
-            
+    'military': {'leader': __('Commander of'), 'champion': __('Chief-sergeant of'), 'agent': __('Scout from'), 'ambassador': __('Quartermaster of'), 'advisor': __('Chief of staff from'), 'member': __('Squaddie from')},             
     }
+    
+    edge_option_cards = {'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
+        'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
+        'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'images/miscards/card.png', }, 
+        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
+    }
+    
+    
+    
