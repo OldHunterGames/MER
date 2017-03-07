@@ -1,7 +1,9 @@
 # -*- coding: <UTF-8> -*-
 from random import *
+
 import renpy.store as store
 import renpy.exports as renpy
+
 from mer_utilities import encolor_text, roll
 from factions import Faction
 from mer_person import gen_random_person
@@ -9,6 +11,7 @@ from mer_resources import BarterSystem
 from mer_itemsstorage import ItemsStorage
 from mer_item import create_item
 from schedule import ScheduleObject, ScheduleJob
+from mer_command import Command, MenuCard
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
@@ -18,6 +21,13 @@ def make_menu(location):
 ownerable = ['charity_mission', 'grim_battlefield', 'crimson_pit', 'junk_yard',
     'ruined_factory', 'squatted_slums']
 unique = ['outpost', 'shifting_mist']
+
+class MakeOpportunitiesCards(Command):
+
+    def _run(self):
+
+        return [MenuCard(i['name'], i['description'], i['label'], i['image'])
+            for i in store.edge_option_cards.values()]
 
 class EdgeEngine(object):
     """
