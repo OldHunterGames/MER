@@ -180,10 +180,14 @@ class MistsOfEternalRome(object):
         return self._actor
 
     def set_player(self, person):
+        if self._player is not None:
+            self.characters.remove(self._player)
+        self.characters.append(person)
         self._player = person
         self._actor = person
         person.trade_level = 0
         person.player_controlled = True
+
 
     def set_actor(self, person):
         self._actor = person
@@ -200,8 +204,6 @@ class MistsOfEternalRome(object):
         return all([i.can_tick() for i in self.characters])
 
     def new_turn(self, label_to_jump=None):
-        self.player.tick_time()
-        self.player.rest()
         for person in self.characters:
             person.tick_time()
         self.end_turn_event()
@@ -217,8 +219,7 @@ class MistsOfEternalRome(object):
     def end_turn_event(self, skipcheck=False):
         events = self.events_dict.values()
         shuffle(events)
-        # char = choice([char for char in self.characters if char.calculatable])
-        char = self.player
+        char = choice([char for char in self.characters if char.calculatable])
         for ev in events:
             r = ev.trigger(char, skipcheck)
             if r:

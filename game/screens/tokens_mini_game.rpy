@@ -89,18 +89,26 @@ init python:
             self.person = person
             self.chance = None
             self.chance_value = None
+            self.active_chance = None
             self.blocked = False
             self.revolver = []
             self.free_turn = 0
             self.get_chance()
 
         def start(self):
+            if self.chance is None:
+                return
             renpy.call_in_new_context('lbl_tokens_game', self)
 
 
         def get_chance(self):
             person = self.person
-            chance = choice(person.get_all_chances())
+            try:
+                chance = choice(person.get_all_chances())
+            except IndexError:
+                self.chance = None
+                self.chance_value = 0
+                return
             self.chance = chance
             person.remove_chance(chance.id)
             self.active_chance = chance
@@ -108,7 +116,6 @@ init python:
                 self.chance_value = 3 - chance.value
             else:
                 self.chance_value = chance.value + 2
-            print chance.attributed
 
         @property
         def chances(self):
