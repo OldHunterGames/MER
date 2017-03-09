@@ -4,9 +4,9 @@ import renpy.exports as renpy
 
 from mer_utilities import Observable, empty_card
 
+
 class Command(object):
 
-    
     def _run(self):
         return NotImplemented
 
@@ -21,7 +21,6 @@ class Command(object):
 
 class Card(Command):
 
-
     def image(self):
         return NotImplemented
 
@@ -33,7 +32,6 @@ class Card(Command):
 
 
 class MenuCard(Card):
-
 
     def __init__(self, name, description, label, image, *args, **kwargs):
         self._name = name
@@ -61,7 +59,6 @@ class MenuCard(Card):
 
 class RelationsCard(MenuCard):
 
-
     def __init__(self, target, player, *args, **kwargs):
         super(RelationsCard, self).__init__(*args, **kwargs)
         self.target = target
@@ -70,26 +67,27 @@ class RelationsCard(MenuCard):
 
 class MakeCardsFromDict(Command):
 
-
     def __init__(self, dict):
-        pass        
+        pass
 
 
 class MakeRelationsCards(Command):
-
 
     def __init__(self, target, player):
         self.target = target
         self.player = player
 
     def _run(self):
-        return [RelationsCard(self.target, self.player, 
-            i['name'], i['description'], i['label'], i['image']) for i in store.relations_cards]
-
+        return [
+            RelationsCard(
+                self.target, self.player,
+                i['name'], i['description'], i['label'], i['image']
+            )
+            for i in store.relations_cards
+        ]
 
 
 class SatisfySex(Command):
-
 
     def __init__(self, target, value):
         self.target = target

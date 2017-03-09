@@ -1,26 +1,24 @@
-# -*- coding: <UTF-8> -*-
-__author__ = 'OldHuntsman'
-from random import *
 import collections
-import copy
+from random import *
+
+from mer_person import *
+from mer_event import events_dict, Event
+from factions import Faction
+from mer_item import *
+from mer_relations_shift import ShiftRelations
 
 import renpy.store as store
 import renpy.exports as renpy
 
-from mer_person import *
-from mer_event import events_dict, Event
-from mer_resources import Resources, BarterSystem
-from factions import Faction
-from mer_item import *
-from mer_utilities import encolor_text
-from mer_relations_shift import ShiftRelations
-
+# -*- coding: <UTF-8> -*-
+__author__ = 'OldHuntsman'
 
 remembered_needs = collections.defaultdict(list)
 
 
 def set_event_game_ref(game):
     Event.set_game_ref(game)
+
 
 def get_max_need(target, *args):
     maxn_name = None
@@ -62,15 +60,18 @@ class MistsOfEternalRome(object):
 
     def __init__(self):
         self._player = None  # Our main hero
-        self._actor = None       # Our active character, hero by default but maybe someone else!
+        # Our active character, hero by default but maybe someone else!
+        self._actor = None
         self.sayer = None
         # The number of decades (turns) passed in ERome
         self.decade = 1
         # Number of happiness points player scored through the game
         self.score = 0
-        self.events_seen = []           # Unique events seen by player in this game instance
-        self.events_dict = events_dict  # List of all possible events in this game instance
-        self.menues = []                # For custom RenPy menu screen
+        # Unique events seen by player in this game instance
+        self.events_seen = []
+        # List of all possible events in this game instance
+        self.events_dict = events_dict
+        self.menues = []  # For custom RenPy menu screen
         self.evn_skipcheck = True
         self.resources = BarterSystem()
         self._factions = []
@@ -84,13 +85,23 @@ class MistsOfEternalRome(object):
         self.allow_sexless = True
         self.hero_gender_options = ['male', 'female', 'shemale', 'sexless']
         self.orientation = {
-           'male': ['female', 'incest', 'furry', 'corpses'],
-           'female': ['female', 'male', 'shemale', 'incest', 'elders', 'furry', 'animals', 'monsters'],
-           'shemale': ['female', 'male', 'shemale', 'sexless', 'incest', 'elders', 'furry', 'animals', 'monsters', 'corpses'],
-           'sexless': ['male', 'shemale', 'incest', 'elders', 'furry', 'animals', 'monsters'],
+            'male': ['female', 'incest', 'furry', 'corpses'],
+            'female': [
+                'female', 'male', 'shemale',
+                'incest', 'elders', 'furry', 'animals', 'monsters'
+            ],
+            'shemale': [
+                'female', 'male', 'shemale', 'sexless', 'incest',
+                'elders', 'furry', 'animals', 'monsters', 'corpses'
+            ],
+            'sexless': [
+                'male', 'shemale', 'incest', 'elders',
+                'furry', 'animals', 'monsters'
+            ],
         }
-        ## all partner options: ['female', 'male', 'shemale', 'sexless', 'related', 'underage', 'elders', 'furry', 'animals', 'monsters', 'corpses']
-
+        # all partner options: ['female', 'male', 'shemale', 'sexless',
+        # 'related', 'underage', 'elders', 'furry', 'animals', 'monsters',
+        # 'corpses']
 
     def jobs(self):
         if self.current_world == self:
@@ -127,8 +138,7 @@ class MistsOfEternalRome(object):
         if self.current_world == self:
             return store.feeds_data
         else:
-            return self.current_world.feeds() 
-
+            return self.current_world.feeds()
 
     @property
     def factions(self):
@@ -153,7 +163,7 @@ class MistsOfEternalRome(object):
         return faction
 
     def add_ready_faction(self, faction):
-        if not faction in self._factions:
+        if faction not in self._factions:
             self._factions.append(faction)
 
     def remove_faction(self, faction):
@@ -188,7 +198,6 @@ class MistsOfEternalRome(object):
         person.trade_level = 0
         person.player_controlled = True
 
-
     def set_actor(self, person):
         self._actor = person
 
@@ -199,7 +208,7 @@ class MistsOfEternalRome(object):
             study = False
 
         return study
-    
+
     def can_skip_turn(self):
         return all([i.can_tick() for i in self.characters])
 
@@ -210,7 +219,7 @@ class MistsOfEternalRome(object):
         for person in self.characters:
             person.tick_schedule()
             person.rest()
-        
+
         self.time += 1
         self.player.ap = 1
         self.tokens_game = store.TokensGame(self.player)
@@ -240,29 +249,17 @@ class MistsOfEternalRome(object):
             check += 1
         return check
 
-    def threshold_skillcheck(self, actor, skill, difficulty=0, tense_needs=[], satisfy_needs=[], beneficiar=None,
-                             morality=0, success_threshold=0, special_motivators=[]):
-        # success_threshold += 1
-        result = self.skillcheck(actor, skill, difficulty, tense_needs, satisfy_needs,
-                                 beneficiar, morality, special_motivators, success_threshold)
-        if success_threshold <= result:
-            threshold_result = True
-        else:
-            threshold_result = False
-        return threshold_result, result
-
-
     def skillcheck(self, person, attribute, difficulty):
         difficulty = max(0, difficulty)
-        return renpy.call_in_new_context('lbl_skillcheck_mini', person=person, attribute=attribute, difficulty=difficulty)
-
+        return renpy.call_in_new_context(
+            'lbl_skillcheck_mini', person=person,
+            attribute=attribute, difficulty=difficulty
+        )
 
     def discover_world(self, worlds):
         return choice(worlds)().point_of_arrival
 
-
     def gain_ctoken(self, target, actor, token, skill_name):
-        skill = actor.skill(skill_name)
         difficulty = self.token_difficulty(target, token)
         result = self.skillcheck(actor, skill_name, difficulty)
         if result:
@@ -281,21 +278,17 @@ class MistsOfEternalRome(object):
 
     def is_tokens_game_active(self):
         if self.tokens_game is not None:
-            return self.tokens_game.chance is not None and not self.tokens_game.blocked
+            return (self.tokens_game.chance is not None and
+                    not self.tokens_game.blocked)
         else:
             return self.player.chances_left() > 0
 
-
-    def make_sex(actor, target, type_):
-        data = store.sex_types[type_]
-        actor_value = get_sex_value(actor, 'actor')
-        target_value = get_sex_value(target, 'target')
     def get_sex_value(data, target, target_type):
         value = 0
         for i in data[target_type]:
             value += i(target)
         if value > 0:
             target.satisfy_need('eros', value)
-        #elif value < 0:
-            #target.tense_need('eros', '?')
+        # elif value < 0:
+        # target.tense_need('eros', '?')
         return value

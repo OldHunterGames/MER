@@ -7,6 +7,7 @@ import renpy.exports as renpy
 from mer_item import create_item
 import mer_utilities
 
+
 class BackgroundBase(object):
 
     def __init__(self, id_, data_dict):
@@ -53,7 +54,7 @@ class BackgroundBase(object):
         dice = mer_utilities.roll(1, 10)
 
         if dice:
-            feature = 'talanted_%s'%self.id
+            feature = 'talanted_%s' % self.id
             if feature not in store.person_features.keys():
                 feature = self.id
             if feature in store.person_features.keys():
@@ -89,6 +90,7 @@ class Family(BackgroundBase):
         super(Family, self).__init__(id_, data_dict)
         self._description = self.data_dict[id_]['description']
 
+
 class Education(BackgroundBase):
 
     def __init__(self, id_, data_dict='educations_dict'):
@@ -98,7 +100,6 @@ class Education(BackgroundBase):
         except KeyError:
             self.skills = None
         self._description = self.data_dict[id_]['description']
-
 
 
 class Occupation(BackgroundBase):
@@ -202,7 +203,8 @@ class Background(object):
             available_occupations = []
             for occupation in store.occupations_dict.keys():
                 current = Occupation(occupation)
-                if self.world.is_available_tech(current) and self.family.is_available_prestige(current):
+                if (self.world.is_available_tech(current) and
+                    self.family.is_available_prestige(current)):
                     available_occupations.append(current)
             try:
                 self.occupation = random.choice(available_occupations)

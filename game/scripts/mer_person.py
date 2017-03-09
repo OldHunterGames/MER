@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
 from random import *
 import collections
-from copy import copy
-from copy import deepcopy
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -14,7 +12,6 @@ from psymodel import PsyModel
 from schedule import Schedule
 from relations import Relations
 from genus import available_genuses, Genus
-from schedule import Schedule
 
 from modifiers import ModifiersStorage, Modifiable
 from factions import Faction
@@ -25,7 +22,7 @@ from mer_item import create_item
 from mer_resources import BarterSystem
 import mer_utilities as utilities
 from mer_event import call_event
-   
+
 
 def get_avatars(path):
     all_ = renpy.list_files()
@@ -33,11 +30,13 @@ def get_avatars(path):
     return avas
 
 
-def gen_random_person(genus=None, age=None, gender=None, world=None, culture=None, family=None, education=None, occupation=None,
-        initial_tonus=0, initial_fatness=0):
-    if genus != None:
+def gen_random_person(genus=None, age=None, gender=None, world=None,
+                      culture=None, family=None, education=None,
+                      occupation=None, initial_tonus=0, initial_fatness=0):
+    if genus is not None:
         if genus not in available_genuses():
-            raise Exception("gen_person with genus '%s' which not exists"%(genus))
+            raise Exception(
+                "gen_person with genus '%s' which not exists" % (genus))
     else:
         genus = choice(available_genuses())
     genus = Genus(genus)
@@ -64,17 +63,18 @@ def gen_random_person(genus=None, age=None, gender=None, world=None, culture=Non
     gen_features(p)
     return p
 
+
 def gen_body_parts(person):
     gender = person.gender
     genus = person.genus.name
     if gender == 'male' or gender == 'sexless':
         sizes = {
-                'micro_penis': 1,
-                'small_penis': 1,
-                'normal_penis': 2,
-                'large_penis': 3,
-                'huge_penis': 3
-                }
+            'micro_penis': 1,
+            'small_penis': 1,
+            'normal_penis': 2,
+            'large_penis': 3,
+            'huge_penis': 3
+        }
         part = person.add_body_part('penis')
         if genus == 'lupine' or genus == 'werewolf':
             size = utilities.weighted_random(
@@ -82,7 +82,7 @@ def gen_body_parts(person):
         else:
             size = choice(sizes.keys())
 
-        part.add_feature(genus+'_penis')
+        part.add_feature(genus + '_penis')
         part.add_feature(size)
 
     else:
@@ -92,30 +92,30 @@ def gen_body_parts(person):
             'normal_vagina': 1,
             'large_vagina': 1,
             'huge_vagina': 1
-            }
+        }
         part = person.add_body_part('vagina')
         size = utilities.weighted_random(sizes)
         part.add_feature(size)
         part.add_feature(choice(['wet_vagina', 'dry_vagina']))
 
         sizes = {'junior':
-            {
-                'micro_boobs': 10,
-                'small_boobs': 10,
-                'normal_boobs': 0,
-                'large_boobs': 0,
-                'huge_boobs': 0
-            },
-            'others':
-            {
-                'micro_boobs': 1,
-                'small_boobs': 1,
-                'normal_boobs': 1,
-                'large_boobs': 1,
-                'huge_boobs': 1
-            }
-            
-        }
+                 {
+                     'micro_boobs': 10,
+                     'small_boobs': 10,
+                     'normal_boobs': 0,
+                     'large_boobs': 0,
+                     'huge_boobs': 0
+                 },
+                 'others':
+                 {
+                     'micro_boobs': 1,
+                     'small_boobs': 1,
+                     'normal_boobs': 1,
+                     'large_boobs': 1,
+                     'huge_boobs': 1
+                 }
+
+                 }
         part = person.add_body_part('boobs')
         try:
             size = utilities.weighted_random(sizes[gender])
@@ -136,8 +136,10 @@ def get_body_part_features(slot):
     data = store.anatomy_features
     return [key for key, value in data.items() if value['slot'] == slot]
 
+
 def get_features_by_slot(slot, dict):
     return [key for key, value in dict.items() if value.get('slot') == slot]
+
 
 def gen_features(person):
     for i in ['voice', 'skin', 'hair', 'look', 'constitution']:
@@ -145,6 +147,7 @@ def gen_features(person):
         person.add_feature(choice(features))
 
 persons_list = []
+
 
 def gen_sex_traits(person):
     person.sexual_suite = choice(store.sexual_type.values())
@@ -163,7 +166,6 @@ def trait_chance(fetish_value, taboo_value):
 
 class DescriptionMaker(object):
 
-
     def __init__(self, person):
         self.person = person
 
@@ -171,12 +173,14 @@ class DescriptionMaker(object):
         person = self.person
         background = self.person.background
         weapon_txt = self.make_weapon_text()
-        alignment_desc = [str.capitalize(i) for i in person.alignment.description()]
+        alignment_desc = [str.capitalize(i)
+                          for i in person.alignment.description()]
         get_feature = person.feature_by_slot
         possesive = self.get_possesive()
         pronoun = self.get_pronoun1()
         pronoun2 = self.get_pronoun2()
-        slots = ['hair', 'voice', 'constitution', 'shape', 'look', 'skin', 'profession', 'gender', 'age']
+        slots = ['hair', 'voice', 'constitution', 'shape',
+                 'look', 'skin', 'profession', 'gender', 'age']
 
         string = '{person.firstname} "{person.nickname}" is a {person.age} {person.genus.name} {person.gender}, '
 
@@ -187,9 +191,11 @@ class DescriptionMaker(object):
             '{alignment[2]} person and {possesive} sexuality is a {sex_suite} {sex_orientation}. '
         string += '{{person.firstname}} originated from {background.world.name}, {background.world.description}. '\
             '{{person.firstname}} {background.family.description}, ' \
-            '{background.education.description}'.format(background=person.background)
+            '{background.education.description}'.format(
+                background=person.background)
         if background.occupation is not None:
-            string += 'and became a {background.occupation.name} eventually. \n'.format(background=person.background)
+            string += 'and became a {background.occupation.name} eventually. \n'.format(
+                background=person.background)
         else:
             string += '.\n'
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
@@ -204,16 +210,20 @@ class DescriptionMaker(object):
                 if not start:
                     string += ' '
                 else:
-                    start = False 
+                    start = False
                 string += i.description
         string = string.format(person=person, pronoun=pronoun,
-                alignment=alignment_desc, possesive=possesive,
-                cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
-                hair=get_feature('hair').name, voice=get_feature('voice').name,
-                constitution=get_feature('constitution').name, shape=get_feature('shape').name,
-                look=get_feature('look').name, skin=get_feature('skin').description,
-                sex_suite=person.sexual_suite['name'], sex_orientation=person.sexual_orientation['name'],
-                pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2()))
+                               alignment=alignment_desc, possesive=possesive,
+                               cap_possesive=str.capitalize(possesive), cap_pronoun=str.capitalize(pronoun),
+                               hair=get_feature('hair').name, voice=get_feature(
+                                   'voice').name,
+                               constitution=get_feature(
+                                   'constitution').name, shape=get_feature('shape').name,
+                               look=get_feature('look').name, skin=get_feature(
+                                   'skin').description,
+                               sex_suite=person.sexual_suite[
+                                   'name'], sex_orientation=person.sexual_orientation['name'],
+                               pronoun2=self.get_pronoun2(), cap_pronoun2=str.capitalize(self.get_pronoun2()))
         return string
 
     def get_pronoun1(self):
@@ -234,9 +244,11 @@ class DescriptionMaker(object):
     def make_weapon_text(self):
         weapons = self.person.weapons()
         if len(weapons) > 1:
-            weapon_txt = '{person.name} armed with {person.main_hand.name} and {person.other_hand.name}'.format(person=self.person)
+            weapon_txt = '{person.name} armed with {person.main_hand.name} and {person.other_hand.name}'.format(
+                person=self.person)
         elif len(weapons) == 1:
-            weapon_txt = '{person.name} armed with {weapons[0].name}'.format(weapons=weapons, person=self.person)
+            weapon_txt = '{person.name} armed with {weapons[0].name}'.format(
+                weapons=weapons, person=self.person)
         else:
             weapon_txt = ''
         if self.person.armor is not None:
@@ -246,10 +258,9 @@ class DescriptionMaker(object):
     def relations_text(self):
         relations = self.person.player_relations()
         stance_type = relations.colored_stance(True)
-        
+
         return '{stance_type} ({relations[0]}, {relations[1]}, {relations[2]}) towards you. '.format(
             stance_type=stance_type, relations=relations.description(True, True))
-
 
 
 class Attributed(Modifiable):
@@ -271,40 +282,47 @@ class Attributed(Modifiable):
     @property
     def physique(self):
         return self._get_modified_attribute('physique')
+
     @physique.setter
     def physique(self, value):
         self.attributes['physique'] = value
-    
+
     @property
     def mind(self):
         return self._get_modified_attribute('mind')
+
     @mind.setter
     def mind(self, value):
         self.attributes['mind'] = value
-    
+
     @property
     def spirit(self):
         return self._get_modified_attribute('spirit')
+
     @spirit.setter
     def spirit(self, value):
         self.attributes['spirit'] = value
-    
+
     @property
     def agility(self):
         return self._get_modified_attribute('agility')
+
     @agility.setter
     def agility(self, value):
         self.attributes['agility'] = value
 
     def vitality_info(self):
-        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'), 'fitness': self.count_modifiers('fitness'),
-            'therapy': self.count_modifiers('therapy')}
+        d = {'physique': self.physique, 'shape': self.count_modifiers('shape'),
+             'fitness': self.count_modifiers('fitness'),
+             'therapy': self.count_modifiers('therapy')}
         list_ = self.modifiers_separate('vitality')
         list_ = [(value.name, value.value) for value in list_]
         return d, list_
+
     @property
     def vitality(self):
-        list_ = [self.physique, self.count_modifiers('shape'), self.count_modifiers('fitness'),
+        list_ = [self.physique, self.count_modifiers('shape'),
+                 self.count_modifiers('fitness'),
                  self.count_modifiers('therapy')]
         vitality_mods = self.modifiers_separate('vitality')
         list_.extend([modifier.value for modifier in vitality_mods])
@@ -333,13 +351,17 @@ class Attributed(Modifiable):
             val = 5
         return val
 
+
 def get_random_combatant():
     return choice(store.combatant_data.keys())
+
 
 def get_random_item_set():
     return choice(store.equip_sets.keys())
 
+
 class Combatant(Skilled, InventoryWielder, Attributed):
+
     def __init__(self, combatant_id='any', equip_set_id='any'):
         super(Combatant, self).__init__()
         self.init_inventorywielder()
@@ -352,13 +374,13 @@ class Combatant(Skilled, InventoryWielder, Attributed):
         try:
             data = store.combatant_data[combatant_id]
         except KeyError:
-            raise Exception("No combatant with id: %s"%combatant_id)
+            raise Exception("No combatant with id: %s" % combatant_id)
         self.name = data['name']
         self.set_avatar(data['avatar_folder'])
         for key, value in data['attributes'].items():
             setattr(self, key, value)
         self._equip(equip_set_id)
-    
+
     def set_avatar(self, avatar_folder):
         path = 'images/avatar/combatants/'
         path += avatar_folder
@@ -367,7 +389,7 @@ class Combatant(Skilled, InventoryWielder, Attributed):
             avatar = choice(avatars)
         except IndexError:
             self.avatar_path = utilities.default_avatar_path()
-            return 
+            return
         else:
             self.avatar_path = avatar
     """
@@ -394,6 +416,7 @@ class FoodSystem(object):
         -1: {0: 'slim', 1: 'wiry', -1: 'frail'},
         -2: 'emaciated'
     }
+
     def __init__(self, owner, fatness=0, tonus=0):
         self.owner = owner
         self.satiety = 0
@@ -424,7 +447,7 @@ class FoodSystem(object):
     def tonus(self, value):
         self._tonus = max(-10, min(10, value))
         self._set_shape()
-        
+
     @property
     def fatness(self):
         return self._fatness
@@ -445,8 +468,6 @@ class FoodSystem(object):
         else:
             self._fatness -= 1
             self._set_shape()
-        
-        
 
     def _set_shape(self):
         data = self._features[self._fatness]
@@ -458,7 +479,6 @@ class FoodSystem(object):
         self.quality = 0
         self.quality_changed = False
         self.amount = 0
-
 
     def ration_status(self):
         ration = self.owner.schedule.find_by_slot('feed')
@@ -480,16 +500,14 @@ class FoodSystem(object):
         amount = store.food_amount_dict[amount]
         colorize_quality = quality
         quality = store.food_quality_dict[quality]
-        text = '%s'%(utilities.encolor_text(quality, colorize_quality))
+        text = '%s' % (utilities.encolor_text(quality, colorize_quality))
         if colorize_amount != 2:
-            amount = utilities.encolor_text(amount, colorize_amount+1)
-            text += '(%s)'%(amount)
+            amount = utilities.encolor_text(amount, colorize_amount + 1)
+            text += '(%s)' % (amount)
         if colorize_amount < 1:
             return utilities.encolor_text(amount, 0)
         else:
             return text
-        
-        
 
     def set_food(self, amount, quality):
         self.amount = max(self.amount, amount)
@@ -506,15 +524,15 @@ class FoodSystem(object):
         else:
             quality_encolor = self.quality
         quality = store.food_quality_dict[self.quality]
-        text = '%s'%(utilities.encolor_text(quality, quality_encolor))
+        text = '%s' % (utilities.encolor_text(quality, quality_encolor))
         if self.amount != 2:
             amount = utilities.encolor_text(amount, self.amount)
-            text += '(%s)'%(amount)
+            text += '(%s)' % (amount)
         if self.amount < 1:
             return utilities.encolor_text(amount, 0)
         else:
             return text
-    
+
     def _increase_shape(self):
         if not self.owner.has_feature('dyspnoea'):
             self.owner.add_feature('dyspnoea')
@@ -529,13 +547,13 @@ class FoodSystem(object):
             self.owner.die()
 
     def is_good_feed(self):
-        return (not self.owner.has_feature('diabetes')
-                or not self.owner.has_feature('obese'))
+        return (not self.owner.has_feature('diabetes') or
+                not self.owner.has_feature('obese'))
 
     def is_bad_feed(self):
         return (self.owner.has_feature('slim') or
                 self.owner.has_feature('emaciated'))
-    
+
     def fatness_change(self):
         if self.owner.has_condition('workout'):
             self.satiety -= 1
@@ -548,7 +566,7 @@ class FoodSystem(object):
         if self.amount < 1:
             total = 0
         elif self.quality < 0:
-            total = 0 
+            total = 0
         else:
             total = max(-1, min(5, self.quality + amount_value))
         if total > 0:
@@ -566,24 +584,25 @@ class FoodSystem(object):
             else:
                 self.satiety += self.satiety - 1
         satiety = self.satiety
-        
+
         if self.satiety > self.owner.physique:
             self.satiety = 0
             self.increase_fatness()
-            
+
         elif self.satiety < -(6 - self.owner.physique):
             self.satiety = 0
             self.decrease_fatness()
-                
-            
+
         if satiety > 0 and self.is_good_feed():
             self.owner.add_buff('overfeed')
         elif satiety < 0 or self.is_bad_feed():
             self.owner.add_buff('underfeed')
         self.set_starvation()
 
+
 class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     game_ref = None
+
     @utilities.Observable
     def __init__(self, age=None, gender=None, genus='human', fatness=0, tonus=0):
         super(Person, self).__init__()
@@ -599,7 +618,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._firstname = u"Anonimous"
         self.surname = u""
         self.nickname = u""
-        
+
         # gets Feature() objects and their child's. Add new Feature only with
         # self.add_feature()
         self.features = []
@@ -693,9 +712,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             'feed': []
         }
         self._default_schedule = {'job': 'idle',
-            'accommodation': 'makeshift',
-            'overtime': 'rest',
-            'feed': 'forage'}
+                                  'accommodation': 'makeshift',
+                                  'overtime': 'rest',
+                                  'feed': 'forage'}
         self.token = 'power'
         self._spoil_number = 1
         self.success = 0
@@ -742,7 +761,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self._energy
 
     def emotional_stability(self):
-        return 3+self.count_modifiers('emotional_stability')
+        return 3 + self.count_modifiers('emotional_stability')
 
     def armor_heavier_than(self, person):
         return self.count_modifiers('armor_weight') > person.count_modifiers('armor_weight')
@@ -759,7 +778,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             if self.faction.owner == self:
                 return self.faction
         return None
-    
+
     def count_modifiers(self, attribute):
         value = super(Person, self).count_modifiers(attribute)
         value += self.inventory.count_modifiers(attribute)
@@ -776,7 +795,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.food_system.ration_status()
 
     def get_combat_style(self):
-        #TODO: add beast combat style
+        # TODO: add beast combat style
         skill_level = self.skill('combat').level
         style = 'noncombatant'
         weapons = self.weapons()
@@ -805,14 +824,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def firstname(self, name):
         self._firstname = name
         self.renpy_character.name = name
-    
+
     def __call__(self, what, interact=True):
         self.game_ref.sayer = self
         self.renpy_character(what, interact=interact)
 
     def predict(self, what):
         self.renpy_character.predict(what)
-
 
     def apply_background(self, background):
         self.background = background
@@ -850,8 +868,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         master_of_player = any([i for i in self.slaves if i.player_controlled])
 
         return (self._calculatable or self.player_controlled or
-            mastered_by_player or master_of_player)
-
+                mastered_by_player or master_of_player)
 
     @calculatable.setter
     def calculatable(self, value):
@@ -961,13 +978,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return list_
 
     def revealed(self, key):
-        return getattr(self, 'revealed_'+key)
+        return getattr(self, 'revealed_' + key)
 
     def reveal(self, type_, name):
-        list_ = getattr(self, '_'+type_)
+        list_ = getattr(self, '_' + type_)
         if name in list_:
             list_.remove(name)
-        getattr(self, 'revealed_%s'%type_).append(name)
+        getattr(self, 'revealed_%s' % type_).append(name)
 
     def reveal_all_taboos(self):
         reveal = []
@@ -982,7 +999,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             reveal.append(i)
         for i in reveal:
             self.reveal('fetishes', i)
-
 
     def random_alignment(self):
         # roll activity
@@ -1060,8 +1076,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             list_ += persons
         return list_
 
-    
-
     def get_buff_storage(self):
         return self._buffs
 
@@ -1072,13 +1086,12 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         for buff in self._buffs:
             if buff.id == id_:
                 buff.remove()
-        
 
     def remove_buff_by_slot(self, slot):
         for buff in self._buffs:
             if buff.slot == slot:
                 buff.remove()
-    
+
     def has_buff(self, id_):
         for buff in self._buffs:
             if buff.id == id_:
@@ -1092,11 +1105,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def get_buffs(self):
         return [i for i in self._buffs]
 
-
-    @property
-    def job(self):
-        return self._job.id
-    
     def job_name(self):
         if self._job.name is None:
             return 'idle'
@@ -1110,7 +1118,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         if not key.startswith('__') and not key.endswith('__'):
             try:
                 genus = super(Person, self).__getattribute__('genus')
-                value = getattr(genus, 'overload_'+key)
+                value = getattr(genus, 'overload_' + key)
                 return value
             except AttributeError:
                 pass
@@ -1135,8 +1143,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._anxiety = value
         if self._anxiety < 0:
             self_anxiety = 0
-
-    
 
     # person gender relies on feature with slot 'gender'
     @property
@@ -1184,32 +1190,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             s += "{0}({1}), ".format(key, value)
         return s
 
-    def show_job(self):
-        job = self.schedule.find_by_slot('job')
-        if not job:
-            return 'idle'
-        else:
-            values = []
-            s = ''
-            for k, v in job.special_values.items():
-                s += '%s: ' % (k)
-                try:
-                    l = [i for i in v]
-                    try:
-                        for i in l:
-                            s += '%s, ' % (i.name())
-                    except AttributeError:
-                        for i in l:
-                            s += '%s, ' % (i)
-                except TypeError:
-                    try:
-                        s += '%s, ' % (v.name())
-                    except AttributeError:
-                        s += '%s, ' % (v)
-                if k not in job.special_values.items()[-1]:
-                    s += '\n'
-            return '%s, %s' % (job.name, s)
-
     @property
     def name(self):
         s = self.firstname + " " + self.surname
@@ -1235,13 +1215,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def add_phobia(self, id_):
         Phobia(self, id_)
 
-    def feature_by_slot(self, slot):        # finds feature which hold needed slot
+    def feature_by_slot(self, slot):  # finds feature which hold needed slot
         for f in self.features:
             if f.slot == slot:
                 return f
         return None
 
-    def feature(self, id_):                # finds feature with needed name if exist
+    def feature(self, id_):  # finds feature with needed name if exist
         for f in self.features:
             if f.id == id_:
                 return f
@@ -1297,10 +1277,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.food_system.fatness_change()
         self.remove_money(self.decade_bill())
         self.set_energy()
-        
+
         if self.pocket_money > 0:
             self.satisfy_need('prosperity', self.pocket_money)
-        
+
         self.ap = 1
         self._stimul = 0
         self.success = 0
@@ -1317,7 +1297,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.conditions = []
         self.tick_buffs_time()
         self.tick_features()
-    
+
     def tick_schedule(self):
         self.bad_markers = []
         self.good_markers = []
@@ -1399,18 +1379,18 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             else:
                 self.token = 'power'
                 return
-        self.token = token      
+        self.token = token
         renpy.call_in_new_context('lbl_notify', self, token)
 
     def get_token_image(self):
         return {'power': 'images/tarot/arcana_lust.jpg',
-            'conquest': 'images/tarot/arcana_charriot.jpg',
-            'convention': 'images/tarot/arcana_justice.jpg',
-            'contribution': 'images/tarot/arcana_lovers.jpg',
-            'antagonism': 'images/tarot/arcana_moon.jpg'}[self.token]
+                'conquest': 'images/tarot/arcana_charriot.jpg',
+                'convention': 'images/tarot/arcana_justice.jpg',
+                'contribution': 'images/tarot/arcana_lovers.jpg',
+                'antagonism': 'images/tarot/arcana_moon.jpg'}[self.token]
 
     def player_relations(self):
-        return self.relations(self.game_ref.player)     
+        return self.relations(self.game_ref.player)
 
     def enslave(self, target):
         target.master = self
@@ -1437,18 +1417,18 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def willing_available(self):
         return []
 
-    #favor methods
+    # favor methods
     def gain_favor(self, value):
         if self.player_controlled:
             return
-        if not self.game_ref.player in self.known_characters:
+        if self.game_ref.player not in self.known_characters:
             return
         value = self.favor + value
         if value < 0:
             self.favor = 0
             return
         hard_max = 5
-        soft_max = 3+self.player_stance().value
+        soft_max = 3 + self.player_stance().value
         favor = min(hard_max, min(soft_max, value))
         self._favor.income(favor)
 
@@ -1474,12 +1454,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def favor_income(self):
         pass
     # end of favor methods
-    
+
     def can_tick(self):
         if not self.calculatable:
             return True
         return self._favor.can_tick() and self.has_money(self.decade_bill())
-
 
     def decade_bill(self):
         value = self.schedule.get_cost()
@@ -1508,7 +1487,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         if self.player_controlled:
             renpy.call('lbl_gameover')
         self.add_feature('dead')
-    
+
     def destroy(self):
         self.remove_relations()
         self._remove_features()
@@ -1529,14 +1508,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         characters = [i for i in self.known_characters]
         for i in characters:
             self.forget_person(i)
-        
 
     def is_dead(self):
         if self.feature('dead') is not None:
             return True
         return False
 
-    #rating methods
+    # rating methods
     def allure(self):
         value = 0
         value += self.count_modifiers('allure')
@@ -1544,7 +1522,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             value += 1
         if self.vitality > value:
             value += 1
-        
+
         return max(0, min(value, 5))
 
     def hardiness(self):
@@ -1556,7 +1534,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             value += 1
         elif self.vitality < value:
             value -= 1
-        
+
         return max(0, min(value, 5))
 
     def succulence(self):
@@ -1585,12 +1563,12 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def menace(self):
         value = self.physique
-        value += self.skill('physique')-3
+        value += self.skill('physique') - 3
         weapons = self.weapon_slots()
         if (weapons['harness'] is None and
-            weapons['belt1'] is None and
-            weapons['belt2'] is None):
-                value -= 1
+                weapons['belt1'] is None and
+                weapons['belt2'] is None):
+            value -= 1
         for i in weapons.values():
             if i is not None:
                 if i.size == 'twohand':
@@ -1640,9 +1618,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def job_productivity(self):
         return
-    
+
     def world(self):
-        return self.game_ref.current_world 
+        return self.game_ref.current_world
 
     def set_energy(self):
         # value = self.count_modifiers('energy')

@@ -1,9 +1,13 @@
 # -*- coding: UTF-8 -*-
 from random import choice
-import renpy.store as store
-import renpy.exports as renpy
+
 from mer_utilities import weighted_random
+
+import renpy.store as store
+
+
 _available_ages_ = ['junior', 'adolescent', 'mature', 'elder']
+
 
 def available_genuses():
     return [name for name in store.genuses_data.keys()]
@@ -28,7 +32,7 @@ class Genus(object):
             if callable(value):
                 return value(self._owner)
             return value
-    
+
     def remove(self):
         for feature in self._features:
             self._owner.remove_feature(feature)
@@ -40,7 +44,7 @@ class Genus(object):
         for feature in self._features:
             self._owner.add_feature(feature)
         self._owner.add_feature(self.head_type)
-    
+
     @property
     def genders(self):
         try:
@@ -70,11 +74,11 @@ class Genus(object):
         except KeyError:
             ages = self._available_ages
         return ages
-    
+
     @property
     def head_type(self):
         return self.data['head_type']
-    
+
     @property
     def _features(self):
         try:
@@ -86,7 +90,7 @@ class Genus(object):
     @property
     def name(self):
         return self.data['name']
-    
+
     @property
     def type(self):
         return self.data['type']

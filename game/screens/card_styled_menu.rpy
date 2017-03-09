@@ -46,6 +46,9 @@ screen sc_card_menu(card_menu):
                             action Function(card_menu.set_card, i)
                         text i.name():
                             xalign 0.5
+                imagebutton:
+                    idle im.Scale(card_back(), 200, 300)
+                    action Return()
         if card_menu.current_card is not None:
             vbox:
                 xpos 900

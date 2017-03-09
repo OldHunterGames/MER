@@ -1,14 +1,13 @@
 # -*- coding: UTF-8 -*-
-import renpy.store as store
-import renpy.exports as renpy
-
 from collections import OrderedDict
 from copy import copy
+
 import mer_utilities as utilities
+
+import renpy.exports as renpy
 
 
 class ScheduleObject(object):
-
 
     def __init__(self, id, data_dict):
         self._data = data_dict
@@ -26,7 +25,7 @@ class ScheduleObject(object):
         if size is None:
             size = (200, 300)
         return renpy.display.im.Scale(self._image_raw(), *size)
-    
+
     @property
     def cost(self):
         try:
@@ -44,7 +43,7 @@ class ScheduleObject(object):
 
     def use(self, person, type):
         self._use(person)
-        lbl = self.world+'_%s'%type+'_%s'%self.id
+        lbl = self.world + '_%s' % type + '_%s' % self.id
         if renpy.has_label(lbl):
             renpy.call_in_new_context(lbl, person)
         self.locked = False
@@ -53,11 +52,10 @@ class ScheduleObject(object):
         self.locked = True
 
     def _use(self, person):
-        return 
+        return
 
 
 class ScheduleJob(ScheduleObject):
-
 
     def __init__(self, *args, **kwargs):
         super(ScheduleJob, self).__init__(*args, **kwargs)
@@ -66,16 +64,17 @@ class ScheduleJob(ScheduleObject):
     def _use(self, person):
         if self.skill is not None:
             if person.player_controlled:
-                renpy.call_in_new_context('lbl_jobcheck', person=person, attribute=self.skill)
+                renpy.call_in_new_context(
+                    'lbl_jobcheck', person=person, attribute=self.skill)
             else:
-                renpy.call_in_new_context('lbl_jobcheck_npc', person=person, attribute=self.skill)
+                renpy.call_in_new_context(
+                    'lbl_jobcheck_npc', person=person, attribute=self.skill)
 
 
 class Schedule(object):
 
-
     def __init__(self):
-        
+
         self._available_rations = {}
         self._available_jobs = {}
         self._available_accommodations = {}
@@ -96,8 +95,9 @@ class Schedule(object):
 
     def get_cost(self):
         return (self._accommodation.cost +
-            self._ration.cost +
-            sum([i.cost for i in self._optional.values() if i is not None]))
+                self._ration.cost +
+                sum([i.cost for i in self._optional.values() if i is not None])
+                )
 
     @property
     def job(self):
@@ -112,7 +112,7 @@ class Schedule(object):
         return self._ration
 
     def description(self, key):
-        return getattr(self, '_'+key).description
+        return getattr(self, '_' + key).description
 
     def remove_buffer(self):
         self._job_buffer = None
@@ -139,8 +139,9 @@ class Schedule(object):
             pass
 
     def available_optionals(self, current_world):
-        return [i for i in self._available_optionals.values() if i.world == current_world and
-            i not in self._optional.values()]
+        return [i for i in self._available_optionals.values()
+                if i.world == current_world and
+                i not in self._optional.values()]
 
     def get_optional(self, key):
         return self._optional[key]
@@ -148,14 +149,12 @@ class Schedule(object):
     def get_all_optionals(self):
         return copy(self._optional)
 
-
     def name(self, key):
-        return getattr(self, '_'+key).name
+        return getattr(self, '_' + key).name
 
     @utilities.Observable
     def set_job(self, job, single=False, **kwargs):
         job.add_data(kwargs)
-        difficulty = job.difficulty
         obj = job
 
         if self._job_buffer is not None:
@@ -165,18 +164,17 @@ class Schedule(object):
                 return
 
         obj.focus = 0
-        
+
         if self._job is None:
-            
+
             self._job = obj
             return
-        
 
         if self._job.productivity > 0:
             self._job_buffer = self._job
         else:
             self._job_buffer = None
-        
+
         self._job = obj
 
     def set_accommodation(self, accommodation, single=False, **kwargs):
@@ -189,7 +187,7 @@ class Schedule(object):
         obj.single = single
         obj.add_data(kwargs)
         setattr(self, attr_name, obj)
-    
+
     def _unlock(self, id_, attr_name, value):
         getattr(self, attr_name)[id_] = value
 
@@ -202,7 +200,7 @@ class Schedule(object):
     def _available(self, attr_name, world):
         value = getattr(self, attr_name)
         return [i for i in value.values() if i.world == world]
-    
+
     def unlock_job(self, job_id, job_object):
         self._unlock(job_id, '_available_jobs', job_object)
 
@@ -213,7 +211,8 @@ class Schedule(object):
         return self._available('_available_jobs', current_world)
 
     def unlock_accommodation(self, accommodation_id, schedule_object):
-        self._unlock(accommodation_id, '_available_accommodations', schedule_object)
+        self._unlock(accommodation_id,
+                     '_available_accommodations', schedule_object)
 
     def remove_accommodation(self, accommodation_id):
         self._remove(accommodation_id, '_available_accommodations')
@@ -231,4 +230,4 @@ class Schedule(object):
         return self._available('_available_rations', current_world)
 
     def get_schedule_object(self, type, world, id):
-        return getattr(self, 'available_'+type+'s')(world).get(id)
+        return getattr(self, 'available_' + type + 's')(world).get(id)
