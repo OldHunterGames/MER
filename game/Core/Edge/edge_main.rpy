@@ -41,42 +41,6 @@ label lbl_edge_main:
         ## Houses & Persons
         garantor = None
         edge_sovereign = core.get_faction('serpis')
-        
-        def gen_simple_person(inputgenus):
-            genus = Genus(inputgenus)
-            gender = genus.get_gender()
-            age = genus.get_age()
-            candidate = gen_random_person(genus=genus.name, gender=gender, age=age)
-            add_features_common(candidate)
-            return candidate
-            
-        def gen_willed_master(genus):
-            person = gen_simple_person(genus)
-            if (person.spirit < 4 and person.skill('spirit') < 1):
-                return gen_willed_master(genus)
-            else:
-                return person
-            
-        def gen_mighty_master(genus):
-            person = gen_simple_person(genus)
-            if (person.physique < 4 and person.skill('physique') < 1):
-                return gen_mighty_master(genus)
-            else:
-                return person
-            
-        def gen_wise_master(genus):
-            person = gen_simple_person(genus)
-            if (person.mind < 4 and person.skill('mind') < 1):
-                return gen_wise_master(genus)
-            else:
-                return person                               
-            
-        def gen_elegant_master(genus):
-            person = gen_simple_person(genus)
-            if (person.agility < 4 and person.skill('agility') < 1):
-                return gen_elegant_master(genus)
-            else:
-                return person         
                         
         slums_leader = gen_willed_master('human')        
         slums_leader.add_feature('confident')        
@@ -127,7 +91,7 @@ label lbl_edge_manage:
            
     menu:
         'Opportunities':
-            if player.energy >= 0:
+            if player.energy > 0:
                 call lbl_edge_opportunities 
             else:
                 'No energy'

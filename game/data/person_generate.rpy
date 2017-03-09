@@ -1633,3 +1633,40 @@ init python:
         add_random_feature_genderage(person, data_skin_list)
         
         return
+        
+    def gen_simple_person(inputgenus):
+        genus = Genus(inputgenus)
+        gender = genus.get_gender()
+        age = genus.get_age()
+        candidate = gen_random_person(genus=genus.name, gender=gender, age=age)
+        add_features_common(candidate)
+        return candidate
+        
+    def gen_willed_master(genus):
+        person = gen_simple_person(genus)
+        if (person.spirit < 4 and person.skill('spirit') < 1):
+            return gen_willed_master(genus)
+        else:
+            return person
+        
+    def gen_mighty_master(genus):
+        person = gen_simple_person(genus)
+        if (person.physique < 4 and person.skill('physique') < 1):
+            return gen_mighty_master(genus)
+        else:
+            return person
+        
+    def gen_wise_master(genus):
+        person = gen_simple_person(genus)
+        if (person.mind < 4 and person.skill('mind') < 1):
+            return gen_wise_master(genus)
+        else:
+            return person                               
+        
+    def gen_elegant_master(genus):
+        person = gen_simple_person(genus)
+        if (person.agility < 4 and person.skill('agility') < 1):
+            return gen_elegant_master(genus)
+        else:
+            return person         
+                

@@ -14,11 +14,11 @@ label lbl_edge_feed_hungry(card):
     else:
         $ player.money -= 5
         'You feed the hungry one.'
-        $ player.moral_action(target=visavis, moral='good') 
+        $ player.moral_action(target=None, moral='good') 
     return
     
 label lbl_edge_look_troble(card):
-    $ player.moral_action(target=visavis, activity='ardent') 
+    $ player.moral_action(target=None, activity='ardent') 
     call edge_job_range(player)
     
     return

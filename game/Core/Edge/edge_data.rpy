@@ -189,9 +189,9 @@ init python:
     edge_option_cards = {'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
         'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'images/miscards/card.png', }, 
-        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Feed the hungry', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
     }
     
     
