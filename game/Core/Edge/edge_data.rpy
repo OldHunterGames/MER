@@ -1,4 +1,4 @@
-init python:
+init -10 python:
 
     
     edge_lifestyle_values = {'0': {'treshold': 0, 'name': __("Miserable poverty")}, 

@@ -11,27 +11,26 @@ from mer_resources import BarterSystem
 from mer_itemsstorage import ItemsStorage
 from mer_item import create_item
 from schedule import ScheduleObject, ScheduleJob
-from mer_command import Command, MenuCard
+from mer_command import MakeCardsFromDict
+
 
 def make_menu(location):
     locations = edge.get_locations('grim_battlefield')
-    menu_list = [(location.name + ' ' + location.owner, location) for location in locations]
+    menu_list = [(location.name + ' ' + location.owner, location)
+                 for location in locations]
     choice = renpy.display_menu(menu_list)
     return edge.go_to(choice)
+
+
 ownerable = ['charity_mission', 'grim_battlefield', 'crimson_pit', 'junk_yard',
-    'ruined_factory', 'squatted_slums']
+             'ruined_factory', 'squatted_slums']
 unique = ['outpost', 'shifting_mist']
 
-class MakeOpportunitiesCards(Command):
-
-    def _run(self):
-
-        return [MenuCard(i['name'], i['description'], i['label'], i['image'])
-            for i in store.edge_option_cards.values()]
 
 class EdgeEngine(object):
     """
-    This is the main script of Edge of Mists core module for Mists of Eternal Rome.
+    This is the main script of Edge of Mists core module
+    for Mists of Eternal Rome.
     """
 
     def __init__(self):
@@ -41,26 +40,30 @@ class EdgeEngine(object):
         self.loc_max = 0
         self.slums_mode = False
         self.faction_mode = False
+        self.opportunities = MakeCardsFromDict(store.edge_option_cards)
         self.resources = BarterSystem()
         self.gang_list = []
         self.explorations = None
         self.factions = self.gang_list
-        self.stashes = {'echoing_hills': [False, ItemsStorage(), 0], 'hazy_marshes': [False, ItemsStorage(), 0],
-            'dying_grove': [False, ItemsStorage(), 0]}
+        self.stashes = {'echoing_hills': [False, ItemsStorage(), 0],
+                        'hazy_marshes': [False, ItemsStorage(), 0],
+                        'dying_grove': [False, ItemsStorage(), 0]}
         self.options = []
 
     def get_lifestyle(self, person):
         keys = sorted([int(i) for i in store.edge_lifestyle_values.keys()])
         for i in keys:
-            if store.edge_lifestyle_values[str(i)]['treshold'] <= person.decade_bill():
-                value = encolor_text(store.edge_lifestyle_values[str(i)]['name'], i)
+            if (store.edge_lifestyle_values[str(i)]['treshold'] <=
+                    person.decade_bill()):
+                value = encolor_text(
+                    store.edge_lifestyle_values[str(i)]['name'], i)
             else:
                 break
         return value
 
     def explore_stash(self, name):
         self.stashes[name][0] = True
-        self.options.append('treasure_hunt_%s'%name)
+        self.options.append('treasure_hunt_%s' % name)
 
     def unexplore_stash(self, name):
         self.stashes[name][0] = False
@@ -68,7 +71,7 @@ class EdgeEngine(object):
         self.stashes[name][2] = 0
         self.explorations.append(name)
         try:
-            self.options.remove('treasure_hunt_%s'%name)
+            self.options.remove('treasure_hunt_%s' % name)
         except ValueError:
             pass
 
@@ -86,7 +89,6 @@ class EdgeEngine(object):
 
     def feeds(self):
         return store.edge_feeds_data
-
 
     def unexplore_all_stahses(self):
         for key in self.stashes.keys():
@@ -117,12 +119,12 @@ class EdgeEngine(object):
         storage.remove_money(storage.money)
 
     def gen_treasures(self):
-        chances = [(('gem', 'treasure'), 20), 
-            (('notes', 'treasure'), 50), 
-            (('knife', 'weapon'), 25),
-            (('sword', 'weapon'), 20),
-            (('shield', 'weapon'), 15),
-            (('strudy_axe', 'weapon'), 20)]
+        chances = [(('gem', 'treasure'), 20),
+                   (('notes', 'treasure'), 50),
+                   (('knife', 'weapon'), 25),
+                   (('sword', 'weapon'), 20),
+                   (('shield', 'weapon'), 15),
+                   (('strudy_axe', 'weapon'), 20)]
         generated = []
         can_break = False
         while True:
@@ -136,7 +138,8 @@ class EdgeEngine(object):
                 break
         return generated
 
-    def _init_player_schedule(self, unlock_func, data_dict, setter_func, default_name, default_obj_id, cls):
+    def _init_player_schedule(self, unlock_func, data_dict,
+                              setter_func, default_name, default_obj_id, cls):
         for i in data_dict:
             obj = ScheduleObject(i, data_dict[i])
             if not obj.hidden:
@@ -145,15 +148,24 @@ class EdgeEngine(object):
                 setter_func(default_name, obj)
 
     def init_player_schedule(self, player):
-        self._init_player_schedule(player.schedule.unlock_accommodation, store.edge_accomodations_data,
-                player.schedule.set_default, 'accommodation' , 'makeshift', ScheduleObject)
-        self._init_player_schedule(player.schedule.unlock_ration, store.edge_feeds_data,
-                player.schedule.set_default, 'ration', 'forage', ScheduleObject)
-        self._init_player_schedule(player.schedule.unlock_job, store.edge_jobs_data, 
-            player.schedule.set_default, 'job', 'idle', ScheduleJob)
-        self._init_player_schedule(player.schedule.unlock_optional, store.edge_overtimes_data,
-            None, None, None, ScheduleObject)
-
+        self._init_player_schedule(
+            player.schedule.unlock_accommodation,
+            store.edge_accomodations_data,
+            player.schedule.set_default, 'accommodation',
+            'makeshift', ScheduleObject
+        )
+        self._init_player_schedule(
+            player.schedule.unlock_ration, store.edge_feeds_data,
+            player.schedule.set_default, 'ration', 'forage', ScheduleObject
+        )
+        self._init_player_schedule(
+            player.schedule.unlock_job, store.edge_jobs_data,
+            player.schedule.set_default, 'job', 'idle', ScheduleJob
+        )
+        self._init_player_schedule(
+            player.schedule.unlock_optional, store.edge_overtimes_data,
+            None, None, None, ScheduleObject
+        )
 
     def explore_all(self):
         for i in store.edge_locations.items():
@@ -162,7 +174,7 @@ class EdgeEngine(object):
                 self.locations.append(location)
             if location.id in ownerable:
                 location.gen_owner()
-    
+
     def explore_location(self):
         """
         location = choice(renpy.store.edge_locations.items())
@@ -175,7 +187,7 @@ class EdgeEngine(object):
         return location
         """
         pass
-        
+
     def get_encounter(self, encounter=None):
 
         if encounter is None:
@@ -184,13 +196,12 @@ class EdgeEngine(object):
             encounter = store.edge_encounters[encounter]
 
         return encounter
-    
+
     def has_location(self, location_id):
         for location in self.locations:
             if location.id == location_id:
                 return True
         return False
-    
 
     def get_locations(self, location_id):
         list_ = []
@@ -244,7 +255,7 @@ class EdgeEngine(object):
         self.locations.append(trade_loc)
         self.locations.append(mist_loc)
         self.explore_all()
-    
+
     def in_any_gang(self, person):
         return any([gang for gang in self.gang_list if person in gang.members])
 
@@ -255,14 +266,15 @@ class EdgeEngine(object):
         for i in self.active_stashes():
             self.increase_stash_quality(i)
 
-    
     def add_faction(self, owner, name, location, id=None):
         gang = Gang(owner, name, location, id=id)
         self.gang_list.append(gang)
         self.core.add_ready_faction(gang)
         return gang
 
+
 cache_locations = ['echoing_hills', 'hazy_marsh', 'dying_grove']
+
 
 class EdgeLocation(object):
     def __init__(self, id_, permanent=False, engine_ref=None):
@@ -276,7 +288,7 @@ class EdgeLocation(object):
         self.has_player_stash = False
         self.just_created = True
         self._engine = engine_ref
-    
+
     @property
     def name(self):
         name = renpy.store.edge_locations[self.id].format(self.show_owner())
@@ -288,7 +300,8 @@ class EdgeLocation(object):
     def gen_owner(self, owner=None):
         if owner is None:
             person = gen_random_person('human')
-            name = choice(store.gang_prefix_names) + ' ' + choice(store.gang_suffix_names)
+            name = choice(store.gang_prefix_names) + ' ' + \
+                choice(store.gang_suffix_names)
             faction = Gang(person, name, self)
             self.owner = faction
         else:
@@ -316,7 +329,7 @@ class EdgeLocation(object):
             self._engine.resources.income(self.stash)
             self._engine.resources.decrease_tendency()
             self.stash = 0
-   
+
     def increase_stash_difficulty(self):
         if self.richness < 5:
             self.richness += 1
@@ -340,6 +353,7 @@ class Gang(Faction):
             'chief': None,
             'madame': None,}
     """
+
     def __init__(self, owner, name, location, id=None):
         super(Gang, self).__init__(owner, name, id=id)
         self.locations_controlled = [location]
@@ -349,4 +363,5 @@ class Gang(Faction):
         self.add_member(person)
 
     def get_common_members(self):
-        return [member for member in self.members if member != self.owner and member not in self.roles.values()]
+        return [member for member in self.members
+                if member != self.owner and member not in self.roles.values()]

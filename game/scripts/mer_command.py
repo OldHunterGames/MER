@@ -33,7 +33,8 @@ class Card(Command):
 
 class MenuCard(Card):
 
-    def __init__(self, name, description, label, image, *args, **kwargs):
+    def __init__(self, name=None, description=None,
+                 label=None, image=None, *args, **kwargs):
         self._name = name
         self._description = description
         self._image = image
@@ -67,24 +68,44 @@ class RelationsCard(MenuCard):
 
 class MakeCardsFromDict(Command):
 
-    def __init__(self, dict):
-        pass
-
-
-class MakeRelationsCards(Command):
-
-    def __init__(self, target, player):
-        self.target = target
-        self.player = player
+    def __init__(self, dict_=None, card_cls=None, *args, **kwargs):
+        self.data = dict()
+        self._args = args
+        self._kwargs = kwargs
+        if card_cls is None:
+            self.card_cls = MenuCard
+        else:
+            self.card_cls = card_cls
+        if dict_ is not None:
+            [self.add_entry(key, value) for key, value in dict_.items()]
 
     def _run(self):
-        return [
-            RelationsCard(
-                self.target, self.player,
-                i['name'], i['description'], i['label'], i['image']
-            )
-            for i in store.relations_cards
-        ]
+        list_ = []
+        for i in self.data.values():
+            kwargs = dict()
+            kwargs.update(i)
+            kwargs.update(self._kwargs)
+            card = self.card_cls(*self._args, **kwargs)
+            list_.append(card)
+        return list_
+
+    def add_entry(self, key, value):
+        self.data[key] = value
+
+    def remove_entry(self, key):
+        try:
+            del self.data[key]
+        except KeyError:
+            print 'No entry named %s' % key
+
+
+class MakeRelationsCards(MakeCardsFromDict):
+
+    def __init__(self, target, player, dict_):
+        super(MakeRelationsCards, self).__init__(
+            dict_, RelationsCard, target, player)
+        self.target = target
+        self.player = player
 
 
 class SatisfySex(Command):
