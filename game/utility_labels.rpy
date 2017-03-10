@@ -30,58 +30,6 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
     '[txt]'
     return
 
-
-init python:
-    class Quest(object):
-        id = None
-
-        @classmethod
-        def description(self):
-            data = quests_data.get(self.id)
-            no_desc = 'No description'
-            if data is not None:
-                return data.get('description', no_desc)
-            else:
-                return no_desc
-
-        @classmethod
-        def name(self):
-            data = quests_data.get(self.id)
-            name = 'Unnamed'
-            if data is not None:
-                return data.get('name', name)
-            else:
-                return name
-
-        def check(self):
-            raise Exception("Not implemented")
-
-        def finish(self):
-            raise Exception("Not implemented")
-    
-    class SlaverQuest(Quest):
-        id = 'slaver_quest'
-        allure = 4
-        
-        def __init__(self, performer):
-            self.performer = performer
-
-        
-
-        def check(self):
-            for i in self.performer.slaves:
-                if i.allure() >= self.allure:
-                    return True
-            return False
-
-        def finish(self):
-            finished = renpy.call_in_new_context('lbl_slaver_quest_end', self)
-            return finished
-
-        def get_available_slaves(self):
-            return [i for i in self.performer.slaves if i.allure() >= self.allure]
-
-
 label lbl_slaver_quest_end(quest):
     $ result = renpy.call_screen('sc_slave_picker', slaver=quest.performer, slaves_list=quest.get_available_slaves())
     if result:

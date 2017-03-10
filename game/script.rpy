@@ -18,6 +18,7 @@ init -10 python:
     from anatomy import BodyPart
     from duel_engine import *
     from mer_command import *
+    from mer_quest import *
     
 init python:
     outer_worlds = []
