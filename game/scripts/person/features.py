@@ -9,9 +9,9 @@ import mer_utilities
 
 
 class Feature(Modifiable):
-    
 
-    def __init__(self, id_, data_dict='person_features', time=None, *args, **kwargs):
+    def __init__(self, id_, data_dict='person_features', time=None,
+                 *args, **kwargs):
         try:
             data_dict = getattr(store, data_dict)
             stats = data_dict[id_]
@@ -31,7 +31,7 @@ class Feature(Modifiable):
             raise AttributeError(key)
         else:
             return value
-    
+
     @property
     def description(self):
         return self.stats.get('description', 'No description')
