@@ -11,7 +11,7 @@ from mer_resources import BarterSystem
 from mer_itemsstorage import ItemsStorage
 from mer_item import create_item
 from schedule import ScheduleObject, ScheduleJob
-from mer_command import MakeCardsFromDict
+from mer_command import CardsMaker
 
 
 def make_menu(location):
@@ -40,7 +40,7 @@ class EdgeEngine(object):
         self.loc_max = 0
         self.slums_mode = False
         self.faction_mode = False
-        self.opportunities = MakeCardsFromDict(store.edge_option_cards)
+        self.opportunities = CardsMaker(store.edge_option_cards)
         self.resources = BarterSystem()
         self.gang_list = []
         self.explorations = None

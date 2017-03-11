@@ -34,11 +34,12 @@ class Card(Command):
 class MenuCard(Card):
 
     def __init__(self, name=None, description=None,
-                 label=None, image=None, *args, **kwargs):
+                 label=None, image=None):
         self._name = name
         self._description = description
         self._image = image
         self._label = label
+        self._context_data = dict()
 
     def image(self):
         if self._image is None or not renpy.exists(self._image):
@@ -57,21 +58,25 @@ class MenuCard(Card):
     def _run(self):
         return renpy.call_in_new_context(self._label, self)
 
+    def __getattr__(self, key):
+        try:
+            value = self._context_data[key]
+        except KeyError:
+            raise AttributeError(key)
+        else:
+            return value
 
-class RelationsCard(MenuCard):
-
-    def __init__(self, target, player, *args, **kwargs):
-        super(RelationsCard, self).__init__(*args, **kwargs)
-        self.target = target
-        self.player = player
+    def set_context(self, **kwargs):
+        for key, value in kwargs.items():
+            self._context_data[key] = value
+        return self
 
 
-class MakeCardsFromDict(Command):
+class CardsMaker(Command):
 
-    def __init__(self, dict_=None, card_cls=None, *args, **kwargs):
+    def __init__(self, dict_=None, card_cls=None):
         self.data = dict()
-        self._args = args
-        self._kwargs = kwargs
+        self._context_data = dict()
         if card_cls is None:
             self.card_cls = MenuCard
         else:
@@ -82,11 +87,8 @@ class MakeCardsFromDict(Command):
     def _run(self):
         list_ = []
         for i in self.data.values():
-            kwargs = dict()
-            kwargs.update(i)
-            kwargs.update(self._kwargs)
-            card = self.card_cls(*self._args, **kwargs)
-            list_.append(card)
+            card = self.card_cls(**i)
+            list_.append(card.set_context(self._context_data))
         return list_
 
     def add_entry(self, key, value):
@@ -98,14 +100,9 @@ class MakeCardsFromDict(Command):
         except KeyError:
             print 'No entry named %s' % key
 
-
-class MakeRelationsCards(MakeCardsFromDict):
-
-    def __init__(self, target, player, dict_):
-        super(MakeRelationsCards, self).__init__(
-            dict_, RelationsCard, target, player)
-        self.target = target
-        self.player = player
+    def set_context(self, **kwargs):
+        for key, value in kwargs.items():
+            self._context_data[key] = value
 
 
 class SatisfySex(Command):
