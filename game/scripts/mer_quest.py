@@ -4,7 +4,9 @@ import renpy.store as store
 
 class Quest(object):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, performer, employer, *args, **kwargs):
+        self.performer = performer
+        self.employer = employer
         self._data = kwargs
 
     def description(self):
@@ -41,11 +43,9 @@ class Quest(object):
 
 
 class SlaverQuest(Quest):
-    id = 'slaver_quest'
 
-    def __init__(self, performer, allure=4, *args, **kwargs):
+    def __init__(self, allure=4, *args, **kwargs):
         super(SlaverQuest, self).__init__(*args, **kwargs)
-        self.performer = performer
         self.allure = allure
 
     def check(self):
@@ -60,3 +60,17 @@ class SlaverQuest(Quest):
 
     def get_available_slaves(self):
         return [i for i in self.performer.slaves if i.allure() >= self.allure]
+
+
+class BringBars(Quest):
+
+    def __init__(self, bars=5, *args, **kwargs):
+        super(BringBars, self).__init__(*args, **kwargs)
+        self.bars = bars
+
+    def check(self):
+        return self.perfromer.money >= self.bars
+
+    def finish(self):
+        finished = renpy.call_in_new_context('lbl_bring_bars_end', self)
+        return finished
