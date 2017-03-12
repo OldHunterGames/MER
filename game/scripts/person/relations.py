@@ -103,7 +103,7 @@ class Relations(object):
         if self.npc.token == 'contribution':
             value = 'friendly'
         if self._axis['congruence'] == -1  or self.npc.token == 'antagonism' or \
-            (self.npc.token == 'conquest' and self._axis['congruence'] != 1):
+                (self.npc.token == 'conquest' and self._axis['congruence'] != 1):
             value = 'hostile'
         return value
 
@@ -120,7 +120,7 @@ class Relations(object):
     def fervor(self):
         value = self._axis['fervor']
         if self.is_player_relations():
-            return value 
+            return value
         fervor = value + \
             self.persons[0].alignment.activity + \
             self.persons[1].alignment.activity
@@ -232,22 +232,23 @@ class Relations(object):
 
     def dissonance(self, axis):
         value = self._axis[axis]
-        alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
+        alignment_value = getattr(
+            self.npc.alignment, getattr(self, '_%s_alignment' % (axis)))
         if value == 0 or alignment_value == 0:
             return False
-        
+
         if value != alignment_value:
             return True
         else:
             return False
 
-
     def resonance(self, axis):
         value = self._axis[axis]
-        alignment_value = getattr(self.npc.alignment, getattr(self, '_%s_alignment'%(axis)))
+        alignment_value = getattr(
+            self.npc.alignment, getattr(self, '_%s_alignment' % (axis)))
         if value == 0 or alignment_value == 0:
             return False
-        
+
         return not self.dissonance(axis)
 
     def used(self, axis):

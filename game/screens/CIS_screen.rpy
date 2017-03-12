@@ -137,7 +137,7 @@ screen sc_info_popup(person):
             text "{0} {1} {2}".format(*person.alignment.description())
             if person != player and relations is not None:
                 text (relations.colored_stance() + 
-                    '({0} {1} {2})'.format(*relations.description(True, True)))
+                    '({0} {1} {2})'.format(*relations.description(True, False)))
             for i in person.visible_features():
                 text i.name
             for i in person.equiped_items():

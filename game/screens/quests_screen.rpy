@@ -5,7 +5,7 @@ screen sc_quests:
         frame:
             vbox:
                 for i in core.quest_tracker.active_quests:
-                    if i.check():
+                    if i.check(player):
                         textbutton encolor_text(i.name(), 'green'):
                             action Function(core.quest_tracker.finish_quest, i)
                             hovered Show('sc_text_popup', text=i.description)

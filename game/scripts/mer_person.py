@@ -18,10 +18,9 @@ from factions import Faction
 from buffs import Buff
 from background import Background
 from inventory import Inventory, InventoryWielder
-from mer_item import create_item
 from mer_resources import BarterSystem
 import mer_utilities as utilities
-from mer_event import call_event
+from mer_command import *
 
 
 def get_avatars(path):
@@ -726,7 +725,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._energy = 0
         self.set_energy()
         self._current_job = None
-        self.quests_to_give = []
+        self.quests_to_give = MakeBasicRelationsQuests(self).run()
+
+    def has_available_quests(self, player):
+        return any(self.available_quests(player))
+
+    def available_quests(self, player):
+        return [i for i in self.quests_to_give if i.available(player)]
 
     def get_body_part(self, name):
         return self.anatomy.get_part(name)
@@ -739,14 +744,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             return True
         return self.get_body_part(name) is not None
 
-    def add_quest(self, quest_cls):
-        self.quests_to_give.append(quest_cls)
+    def add_quest(self, quest):
+        self.quests_to_give.append(quest)
 
-    def remove_quest(self, quest_cls):
-        self.quests_to_give.remove(quest_cls)
-
-    def has_quest(self):
-        return len(self.quests_to_give) > 0
+    def remove_quest(self, quest):
+        self.quests_to_give.remove(quest)
 
     def set_pocket_money(self, level):
         self.pocket_money = level

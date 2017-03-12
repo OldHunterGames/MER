@@ -4,33 +4,43 @@ import renpy.store as store
 
 class Quest(object):
 
-    def __init__(self, performer, employer, *args, **kwargs):
-        self.performer = performer
+    def __init__(self, employer=None, one_time=False, *args, **kwargs):
         self.employer = employer
         self._data = kwargs
+        self._one_time = one_time
+        self._completed = 0
 
     def description(self):
         no_desc = 'No description'
-        try:
-            value = self._data.get('description', no_desc)
-        except AttributeError:
-            return no_desc
-        else:
-            return value
+        return self._data.get('description', no_desc)
 
     def name(self):
         name = 'Unnamed'
-        try:
-            value = self._data.get('name', name)
-        except AttributeError:
-            return name
-        else:
-            return value
+        return self._data.get('name', name)
 
-    def check(self):
+    def end_label(self):
+        return self._data['end_label']
+
+    def check(self, performer):
         raise Exception("Not implemented")
 
-    def finish(self):
+    def finish(self, performer):
+        finished = self._finish(performer)
+        if finished:
+            self._completed += 1
+
+    def _finish(self, performer):
+        finished = renpy.call_in_new_context(self.end_label, self, performer)
+        return finished
+
+    def available(self, performer):
+        if self._one_time:
+            if self._completed > 0:
+                return False
+        else:
+            return self._available(performer)
+
+    def _available(self, performer):
         raise Exception("Not implemented")
 
     def __getattr__(self, key):
@@ -48,15 +58,11 @@ class SlaverQuest(Quest):
         super(SlaverQuest, self).__init__(*args, **kwargs)
         self.allure = allure
 
-    def check(self):
-        for i in self.performer.slaves:
+    def check(self, performer):
+        for i in performer.slaves:
             if i.allure() >= self.allure:
                 return True
         return False
-
-    def finish(self):
-        finished = renpy.call_in_new_context('lbl_slaver_quest_end', self)
-        return finished
 
     def get_available_slaves(self):
         return [i for i in self.performer.slaves if i.allure() >= self.allure]
@@ -68,9 +74,19 @@ class BringBars(Quest):
         super(BringBars, self).__init__(*args, **kwargs)
         self.bars = bars
 
-    def check(self):
-        return self.perfromer.money >= self.bars
+    def check(self, performer):
+        return performer.money >= self.bars
 
-    def finish(self):
-        finished = renpy.call_in_new_context('lbl_bring_bars_end', self)
-        return finished
+    def _available(self, performer):
+        return True
+
+
+class BasicRelationsQuest(BringBars):
+
+    def __init__(self, axis, *args, **kwargs):
+        super(BasicRelationsQuest, self).__init__(*args, **kwargs)
+        self.axis = axis
+
+    def _available(self, performer):
+        relations = performer.relations(self.employer)
+        return relations.active(self.axis)

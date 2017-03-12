@@ -11,7 +11,7 @@ label lbl_communicate(target):
 
     target "I'm here"
     menu:
-        'Be my garantor' if not garantor and visavis.stance(player).value > 0:
+        'Be my garantor' if not garantor and visavis.relations(player).stance > 0:
             visavis 'Ok. I will be your garantor.'
             $ garantor = visavis
                         
@@ -21,7 +21,7 @@ label lbl_communicate(target):
             call lbl_present
         'Sex':
             $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
-        'Take quest' if target.has_quest():
+        'Take quest' if target.has_available_quests(player):
             call lbl_quests(target)
         'Nevermind':
             pass
@@ -289,7 +289,7 @@ label lbl_present:
 
 label lbl_quests(target):
     python:
-        quests = target.quests_to_give
+        quests = target.available_quests(player)
         menu_items = []
         for i in quests:
             menu_items.append((i.name(), i))
@@ -300,7 +300,7 @@ label lbl_quests(target):
     menu:
         '[description]'
         'Take this quest':
-            $ core.quest_tracker.add_quest(choice(player))
+            $ core.quest_tracker.add_quest(choice)
         "Don't interrested":
             return
     return

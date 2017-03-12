@@ -3,6 +3,7 @@ import renpy.store as store
 import renpy.exports as renpy
 
 from mer_utilities import Observable, empty_card
+from mer_quest import *
 
 
 class Command(object):
@@ -113,3 +114,17 @@ class SatisfySex(Command):
 
     def _run(self):
         pass
+
+
+class MakeBasicRelationsQuests(Command):
+
+    def __init__(self, person, *args, **kwargs):
+        self.person = person
+        self.data = kwargs
+
+    def _run(self):
+        list_ = []
+        for key, value in store.basic_quests['relations'].items():
+            list_.append(BasicRelationsQuest(
+                employer=self.person, axis=key, **value))
+        return list_
