@@ -30,7 +30,7 @@ class Quest(object):
             self._completed += 1
 
     def _finish(self, performer):
-        finished = renpy.call_in_new_context(self.end_label, self, performer)
+        finished = renpy.call_in_new_context(self.end_label(), self, performer)
         return finished
 
     def available(self, performer):
