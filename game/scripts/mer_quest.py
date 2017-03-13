@@ -120,3 +120,6 @@ class BasicRelationsQuest(Quest):
         relations = performer.relations(self.employer)
         return (relations.active(self.axis) and
                 relations.axis_str(self.axis) == self.point)
+
+    def _finish(self, performer):
+        performer.relations(self.employer).stance += 1
