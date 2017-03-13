@@ -6,7 +6,8 @@ import renpy.exports as renpy
 
 def encolor_text(text, value, protected=False):
     if isinstance(value, str):
-        colors = {'red': 'ff0000', 'green': '00ff00'}
+        colors = {'red': 'ff0000', 'green': '00ff00', 'cyan': '00ffff',
+                  'gold': 'DAA520'}
     else:
         colors = ['ff0000', 'ff00ff', '00ffff',
                   '0000FF', '00ff00', 'DAA520', '000000']
