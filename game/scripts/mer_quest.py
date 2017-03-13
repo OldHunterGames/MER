@@ -18,6 +18,13 @@ class Quest(object):
         no_desc = 'No description'
         return self._data.get('description', no_desc)
 
+    def activate(self):
+        self._active = True
+        self._activate()
+
+    def _activate(self):
+        return
+
     def add_target(self, quest_target):
         self._targets.append(quest_target)
 
@@ -125,5 +132,7 @@ class BasicRelationsQuest(Quest):
 
     def _finish(self, performer):
         performer.relations(self.employer).stance += 1
-        performer.relations(self.employer).use(self.axis)
         return True
+
+    def _activate(self):
+        self.employer.player_relations().use(self.axis)

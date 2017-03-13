@@ -79,14 +79,16 @@ class Relations(object):
     @stance.setter
     def stance(self, value):
         self._value = value
-        if self._value < -1:
-            self._value = -1
+        if self._stance < -1:
+            self._stance = -1
 
-        elif self._value > 1:
-            self._value = 1
+        elif self._stance > 1:
+            self._stance = 1
+        else:
+            self._stance = value
 
     def make_max_stance(self, value=None):
-        self._value = 2
+        self._stance = 2
         if self.is_player_relations():
             if value is None:
                 return

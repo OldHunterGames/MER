@@ -39,7 +39,7 @@ class QuestTracker(object):
         self.active_quests = []
 
     def add_quest(self, quest):
-        quest.active = True
+        quest.activate()
         self.active_quests.append(quest)
 
     def remove_quest(self, quest):
