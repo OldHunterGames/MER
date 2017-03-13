@@ -123,3 +123,4 @@ class BasicRelationsQuest(Quest):
 
     def _finish(self, performer):
         performer.relations(self.employer).stance += 1
+        return True
