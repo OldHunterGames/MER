@@ -126,5 +126,5 @@ class MakeBasicRelationsQuests(Command):
         list_ = []
         for key, value in store.basic_quests['relations'].items():
             list_.append(BasicRelationsQuest(
-                employer=self.person, axis=key, **value))
+                employer=self.person, point=key, **value))
         return list_

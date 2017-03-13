@@ -110,11 +110,13 @@ class BringBars(QuestTarget):
 
 class BasicRelationsQuest(Quest):
 
-    def __init__(self, axis, *args, **kwargs):
+    def __init__(self, axis, point, *args, **kwargs):
         super(BasicRelationsQuest, self).__init__(*args, **kwargs)
         self.axis = axis
+        self.point = point
         self.add_target(BringBars())
 
     def _available(self, performer):
         relations = performer.relations(self.employer)
-        return relations.active(self.axis)
+        return (relations.active(self.axis) and
+                relations.axis_str(self.axis) == self.point)

@@ -36,6 +36,9 @@ class Relations(object):
     def axis(self):
         return copy(self._axis)
 
+    def axis_str(self, axis):
+        return getattr(self, axis+'_str')()
+
     def is_player_relations(self):
         if self.persons[0].player_controlled or self.persons[
                 1].player_controlled:
@@ -258,7 +261,8 @@ class Relations(object):
         self._used.add((axis, self._axis[axis]))
 
     def active(self, axis):
-        return self._axis[axis] != 0 and not self.dissonance(axis)
+        return (self._axis[axis] != 0 and not self.dissonance(axis) and
+                not self.used(axis))
 
     def neutral(self, axis):
         return self._axis[axis] == 0

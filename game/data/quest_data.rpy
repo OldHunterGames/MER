@@ -5,8 +5,7 @@ init python:
     }
     basic_quests = {
         'relations': {
-            'congruence': {'name': __("No name"), 'description': __("No description"), 'end_label': 'lbl_relations_quest_end'},
-            'fervor': {'name': __("No name"), 'description': __("No description"), 'end_label': 'lbl_relations_quest_end'},
-            'distance': {'name': __("No name"), 'description': __("No description"), 'end_label': 'lbl_relations_quest_end'}
+            'delicate': {'name': __("No name"), 'description': __("No description"), 'end_label': 'lbl_relations_quest_end', 'axis': 'fervor'},
+            'passionate': {'name': __("No name"), 'description': __("No description"), 'end_label': 'lbl_relations_quest_end', 'axis': 'fervor'},
         }
     }
