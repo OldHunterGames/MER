@@ -47,8 +47,8 @@ class QuestTracker(object):
     def quest_targets_achieved(self, quest):
         return quest.check()
 
-    def finish_quest(self, quest):
-        finished = quest.finish()
+    def finish_quest(self, quest, player):
+        finished = quest.finish(player)
         if finished:
             self.remove_quest(quest)
 

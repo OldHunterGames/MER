@@ -7,8 +7,8 @@ screen sc_quests:
                 for i in core.quest_tracker.active_quests:
                     if i.completed(player):
                         textbutton encolor_text(i.name(), 'green'):
-                            action Function(core.quest_tracker.finish_quest, i)
-                            hovered Show('sc_text_popup', text=i.description)
+                            action Function(core.quest_tracker.finish_quest, i, player)
+                            hovered Show('sc_text_popup', text=i.description())
                             unhovered Hide('sc_text_popup')
                     else:
                         textbutton encolor_text(i.name(), 'red'):
