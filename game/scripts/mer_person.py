@@ -1302,6 +1302,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.conditions = []
         self.tick_buffs_time()
         self.tick_features()
+        self.reset_psych()
 
     def tick_schedule(self):
         self.bad_markers = []

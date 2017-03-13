@@ -7,22 +7,22 @@ import mer_utilities
 
 
 needs_names = ["nutrition", "wellness", "comfort", "activity", "communication",
-        "amusement", "prosperity", "authority", "ambition", "eros"]
+               "amusement", "prosperity", "authority", "ambition", "eros"]
 
 DEFAULT_NEED_LEVEL = 2
 
 satisfy_chances = {
-        'nutrition': 'taste',
-        'wellness': 'health',
-        'comfort': 'bliss',
-        'activity': 'adrenaline',
-        'eros': 'orgasm',
-        'communication': 'intimacy',
-        'amusement': 'entertainment',
-        'prosperity': 'gain',
-        'authority': 'respect',
-        'ambition': 'accomplishment'
-    }
+    'nutrition': 'taste',
+    'wellness': 'health',
+    'comfort': 'bliss',
+    'activity': 'adrenaline',
+    'eros': 'orgasm',
+    'communication': 'intimacy',
+    'amusement': 'entertainment',
+    'prosperity': 'gain',
+    'authority': 'respect',
+    'ambition': 'accomplishment'
+}
 
 
 def init_needs():
@@ -31,8 +31,8 @@ def init_needs():
         dict_[name] = (Need(name))
     return dict_
 
-class Chance(object):
 
+class Chance(object):
 
     def __init__(self, id_, value, negative=False, on_remove=None, remove_on_refresh=False, attributed=None):
 
@@ -42,6 +42,7 @@ class Chance(object):
         self.on_remove = on_remove
         self.remove_on_refresh = remove_on_refresh
         self.attributed = attributed
+
 
 class Need(object):
     def __init__(self, name):
@@ -55,7 +56,7 @@ class Need(object):
 
     def token_used(self, token):
         return token in self.tokens
-    
+
     def set_satisfaction(self, value):
         if self.satisfied:
             return False
@@ -104,7 +105,7 @@ class PsyModel(object):
         target = kwargs.get('target')
         action_tones = {
             'activity': act.get(kwargs.get('activity')),
-            'morality': moral.get(kwargs.get('morality')), 
+            'morality': moral.get(kwargs.get('morality')),
             'orderliness': order.get(kwargs.get('orderliness'))
         }
         relation_tones = {}
@@ -116,8 +117,6 @@ class PsyModel(object):
             for key in action_tones.keys():
                 relation_tones[key] = 0
 
-       
-        
         for key, value in action_tones.items():
             if value is not None:
                 valself = getattr(self.alignment, key)
@@ -128,7 +127,7 @@ class PsyModel(object):
                 else:
                     fake_value = None
                 tone = relation_tones[key]
-                
+
                 if tone == 0:
                     if valself + valact == 0:
                         chance_value = 1
@@ -137,7 +136,7 @@ class PsyModel(object):
                         chance_value = 3
                         result = 'good'
                 else:
-                    
+
                     if valself == 0:
                         if tone + valact == 0:
                             chance_value = 2
@@ -155,16 +154,17 @@ class PsyModel(object):
                             result = 'bad'
 
                 if result is not None:
-                    self.add_moral_chance(key, result, chance_value, fake_value)
+                    self.add_moral_chance(
+                        key, result, chance_value, fake_value)
 
     def add_moral_chance(self, axis, kind, chance_value, fake_value=None):
         chance_name = self.alignment.get_chance_name(axis, kind, fake_value)
         negative = {'good': False, 'bad': True}[kind]
         self.add_chance(chance_value, chance_name, negative)
 
-
     def add_chance(self, value, name, negative=False, on_remove=None, remove_on_refresh=True, attributed=None):
-        self._chances[name] = Chance(name, value, negative, on_remove, remove_on_refresh, attributed)
+        self._chances[name] = Chance(
+            name, value, negative, on_remove, remove_on_refresh, attributed)
 
     def remove_chance(self, name):
         try:
@@ -187,8 +187,8 @@ class PsyModel(object):
             return
         else:
             self.add_chance(self.need_level(name), point, True,
-                lambda: need_obj.remove_tension(point),
-                False)
+                            lambda: need_obj.remove_tension(point),
+                            False)
             need_obj.set_tension(point)
 
     def satisfy_need(self, name, value):
@@ -214,7 +214,7 @@ class PsyModel(object):
 
     def reset_psych(self):
         for key, value in self._chances.items():
-            if value.remove_onrefresh:
+            if value.remove_on_refresh:
                 self.remove_chance(key)
         for need in self.needs.values():
             need.reset()
