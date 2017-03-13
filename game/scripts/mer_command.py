@@ -9,7 +9,7 @@ from mer_quest import *
 class Command(object):
 
     def _run(self):
-        return NotImplemented
+        raise NotImplementedError()
 
     @Observable
     def run(self):
@@ -23,13 +23,13 @@ class Command(object):
 class Card(Command):
 
     def image(self):
-        return NotImplemented
+        raise NotImplementedError()
 
     def description(self):
-        return NotImplemented
+        raise NotImplementedError()
 
     def name(self):
-        return NotImplemented
+        raise NotImplementedError()
 
 
 class MenuCard(Card):
