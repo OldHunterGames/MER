@@ -173,10 +173,10 @@ class Relations(object):
             color = 'red'
         elif self.used(axis):
             color = 'cyan'
-        elif self.active(axis):
-            color = 'green'
         elif self.resonance(axis):
             color = 'gold'
+        elif self.active(axis):
+            color = 'green'
         if color is None:
             return text
         else:

@@ -731,7 +731,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return any(self.available_quests(player))
 
     def available_quests(self, player):
-        return [i for i in self.quests_to_give if i.available(player)]
+        return [i for i in self.quests_to_give if i.available(player) and
+                not i.active]
 
     def get_body_part(self, name):
         return self.anatomy.get_part(name)

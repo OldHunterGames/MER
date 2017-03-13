@@ -12,6 +12,7 @@ class Quest(object):
         self._data = kwargs
         self._one_time = one_time
         self._completed = 0
+        self.active = False
 
     def description(self):
         no_desc = 'No description'
@@ -38,6 +39,7 @@ class Quest(object):
         finished = self._finish(performer)
         if finished:
             self._completed += 1
+        return finished
 
     def _finish(self, performer):
         finished = renpy.call_in_new_context(self.end_label(), self, performer)
@@ -123,4 +125,5 @@ class BasicRelationsQuest(Quest):
 
     def _finish(self, performer):
         performer.relations(self.employer).stance += 1
+        performer.relations(self.employer).use(self.axis)
         return True
