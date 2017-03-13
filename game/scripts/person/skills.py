@@ -126,16 +126,14 @@ class Skilled(object):
         self.luck_tokens = []
         self.focus_dict = collections.defaultdict(int)
         self.resources_deck = []
-        self.active_resources = []
+        self.active_resources = set()
 
     def drop_all_resources(self):
         for i in [i for i in self.active_resources]:
-            self.resources_deck.append(i)
             self.active_resources.remove(i)
 
     def activate_resource(self, res):
-        self.resources_deck.remove(res)
-        self.active_resources.append(res)
+        self.active_resources.add(res)
 
     def activate_resource_by_name(self, name):
         for i in self.resources_deck:
@@ -145,14 +143,13 @@ class Skilled(object):
 
     def use_resource(self, res):
         self.active_resources.remove(res)
-        self.resources_deck.append(res)
         if res.attribute == 'physique':
             self.tonus += 1
         elif res.attribute == 'mind':
             self.tonus -= 1
 
     def get_all_resources(self):
-        return self.resources_deck + self.active_resources
+        return self.resources_deck
 
     def get_resource(self, attribute, difficulty, job=False):
         values = [
