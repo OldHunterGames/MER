@@ -119,7 +119,8 @@ from mer_utilities import encolor_text
 
 class Skilled(object):
     tokens_relations = {'physique': 'might', 'mind': 'wisdom', 'spirit': 'spirit',
-        'agility': 'finesse'}
+                        'agility': 'finesse'}
+
     def init_skilled(self):
         self.inner_resources = []
         self.luck_tokens = []
@@ -141,7 +142,6 @@ class Skilled(object):
             if i.name == name:
                 self.activate_resource(i)
                 return
-        
 
     def use_resource(self, res):
         self.active_resources.remove(res)
@@ -155,7 +155,8 @@ class Skilled(object):
         return self.resources_deck + self.active_resources
 
     def get_resource(self, attribute, difficulty, job=False):
-        values = [i.value for i in self.active_resources if i.available(attribute)]
+        values = [
+            i.value for i in self.active_resources if i.available(attribute)]
         if job:
             values = [i for i in values if i > difficulty]
         else:
@@ -163,7 +164,8 @@ class Skilled(object):
         try:
             min_value = min(values)
         except ValueError:
-            values = [i.value for i in self.active_resources if i.available(attribute)]
+            values = [
+                i.value for i in self.active_resources if i.available(attribute)]
             if job:
                 values = [i for i in values if i > difficulty]
             else:
@@ -183,14 +185,13 @@ class Skilled(object):
 
     def skill(self, attribute):
         attr = self.tokens_relations[attribute]
-        value = self.count_modifiers(attr+'_skill')
+        value = self.count_modifiers(attr + '_skill')
         return max(0, min(3, value))
 
     def has_resource(self, id_):
         for i in self.active_resources:
             if i.name == id_:
                 return i
-
 
     def add_card(self, name):
         # for test use

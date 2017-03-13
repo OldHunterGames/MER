@@ -191,9 +191,14 @@ init python:
                     4: ['fool', 'mage', 'emperor', 'justice'],
                     5: ['fool', 'mage', 'sun', 'pope', 'judgement']
                 }
-                for i in self.person.resources_deck:
-                    if i.name in valued[self.chance_value]:
-                        defaults.append(i)
+                if attributed is None:
+                    for i in self.person.resources_deck:
+                        if i.name in valued[self.chance_value]:
+                            defaults.append(i)
+                else:
+                    for i in self.person.resources_deck:
+                        if i.name =='fool' or i.name == 'hermit':
+                            defaults.append(i)
                 return defaults
 
     class TaroCard(object):
