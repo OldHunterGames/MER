@@ -56,8 +56,7 @@ class Quest(object):
         if self._one_time:
             if self._completed > 0:
                 return False
-        else:
-            return self._available(performer)
+        return self._available(performer)
 
     def _available(self, performer):
         raise NotImplementedError()
@@ -88,20 +87,38 @@ class QuestTarget(object):
         raise NotImplementedError()
 
 
-class SlaverQuest(Quest):
+class BringPerson(QuestTarget):
 
-    def __init__(self, allure=4, *args, **kwargs):
-        super(SlaverQuest, self).__init__(*args, **kwargs)
-        self.allure = allure
+    def __init__(self, stats_dict, *args, **kwargs):
+        self.stats = stats_dict
 
     def completed(self, performer):
-        for i in performer.slaves:
-            if i.allure() >= self.allure:
-                return True
-        return False
+        return any(self.get_available_slaves(performer))
 
-    def get_available_slaves(self):
-        return [i for i in self.performer.slaves if i.allure() >= self.allure]
+    def get_available_slaves(self, performer):
+        list_ = []
+        for i in performer.slaves:
+            for key, value in self.stats.items():
+                if getattr(i, key) < value:
+                    continue
+            list_.append(i)
+        return list_
+
+
+class SlaverQuest(Quest):
+
+    def __init__(self, *args, **kwargs):
+        super(SlaverQuest, self).__init__(
+            end_label='lbl_slaver_quest_end', one_time=True,
+            *args, **kwargs)
+        self.add_target(BringPerson({'allure': 4}))
+
+    def _available(self, performer):
+        print 'here'
+        return True
+
+    def get_available_slaves(self, performer):
+        return self.targets[0].get_available_slaves(performer)
 
 
 class BringBars(QuestTarget):
@@ -112,9 +129,6 @@ class BringBars(QuestTarget):
 
     def completed(self, performer):
         return performer.money >= self.bars
-
-    def _available(self, performer):
-        return True
 
 
 class BasicRelationsQuest(Quest):

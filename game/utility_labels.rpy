@@ -30,22 +30,22 @@ label lbl_skillcheck_info(result, stats, skill, used, threshold=None, difficulty
     '[txt]'
     return
 
-label lbl_slaver_quest_end(quest):
-    $ result = renpy.call_screen('sc_slave_picker', slaver=quest.performer, slaves_list=quest.get_available_slaves())
-    if result:
-        $ quest.performer.activate_resource_by_name('star')
+label lbl_slaver_quest_end(quest, performer):
+    $ slave = renpy.call_screen('sc_slave_picker', slaver=performer, slaves_list=quest.get_available_slaves(performer))
+    if slave is not None:
+        $ performer.activate_resource_by_name('star')
         menu:
             'Choose reward'
             'Assignations':
                 $ pass
             'Nutrition bars':
-                $ quest.performer.add_money(10)
+                $ performer.add_money(10)
             'Protection':
                 $ pass
             "Don't take reward":
-                $ quest.performer.set_token('contribution')
+                $ quest.employer.set_token('contribution')
                 return True
-        $ quest.performer.set_token('convention')
+        $ quest.employer.set_token('contribution')
         return True
     else:
         return False
@@ -70,13 +70,13 @@ screen sc_slave_picker(slaver, slaves_list):
                             
                             imagebutton:
                                 idle im.Scale(i.avatar_path, 100, 100)
-                                action Function(slaver.remove_slave, i), Return(True)
+                                action Function(slaver.remove_slave, i), Return(i)
                                 hovered Show('sc_info_popup', person=i)
                                 unhovered Hide('sc_info_popup')
                             text i.name[0:8]
     on 'hide':
         action Hide('sc_info_popup')
     textbutton "Leave":
-        action Return(False)
+        action Return(None)
 
 

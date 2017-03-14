@@ -746,6 +746,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.get_body_part(name) is not None
 
     def add_quest(self, quest):
+        quest.employer = self
         self.quests_to_give.append(quest)
 
     def remove_quest(self, quest):
@@ -1523,34 +1524,17 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     # rating methods
     def allure(self):
-        value = 0
+        value = self.agility
         value += self.count_modifiers('allure')
-        if self.skill('spirit') > value:
-            value += 1
-        if self.vitality > value:
-            value += 1
-
         return max(0, min(value, 5))
 
     def hardiness(self):
         value = self.physique
         value += self.count_modifiers('hardiness')
-        if self.skill('physique') > value:
-            value += 1
-        if self.vitality > value:
-            value += 1
-        elif self.vitality < value:
-            value -= 1
-
         return max(0, min(value, 5))
 
     def succulence(self):
         value = 3 + self.count_modifiers('succulence')
-        if self.vitality > value:
-            value += 1
-        elif self.vitality < value:
-            value -= 1
-
         return max(0, min(value, 5))
 
     def exotic(self):
@@ -1560,8 +1544,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def style(self):
         value = self.agility
         value += self.count_modifiers('style')
-        if self.skill('agility') > value:
-            value += 1
         return max(0, min(value, 5))
 
     def purity(self):
