@@ -109,13 +109,13 @@ class SlaverQuest(Quest):
 
     def __init__(self, *args, **kwargs):
         super(SlaverQuest, self).__init__(
-            end_label='lbl_slaver_quest_end', one_time=True,
-            *args, **kwargs)
+            end_label='lbl_slaver_quest_end', *args, **kwargs)
         self.add_target(BringPerson({'allure': 4}))
 
     def _available(self, performer):
-        print 'here'
-        return True
+        relations = self.employer.relations(performer)
+        axis = ['fervor', 'congruence', 'distance']
+        return any([relations.active(i) for i in axis])
 
     def get_available_slaves(self, performer):
         return self.targets[0].get_available_slaves(performer)
