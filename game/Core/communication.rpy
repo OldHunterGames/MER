@@ -102,53 +102,70 @@ label lbl_antagonism(target):
             
 label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
-    menu:
-        'Intimidate (ardent, spirit)':
-            $ player.moral_action(target=visavis, activity='ardent') 
-            $ dif = visavis.spirit
-            $ result = core.skillcheck(player, 'spirit', dif)
-            if result > 0:
-                $ visavis.set_token('conquest')
-            elif result < 0:
-                $ visavis.set_token('antagonism')
-        'Get to know (lawful, wisdom)':
-            $ player.moral_action(target=visavis, orderliness='lawful') 
-            $ dif = visavis.mind
-            $ result = core.skillcheck(player, 'mind', dif)
-            '[result]'
-            if result > 0:
-                $ visavis.set_token('convention')
-            elif result < 0:
-                $ visavis.set_token('antagonism')
-        'Flatter (good, finesse)':
-            $ player.moral_action(target=visavis, moral='good') 
-            $ dif = visavis.agility
-            $ result = core.skillcheck(player, 'agility', dif)
-            if result > 0:
-                $ visavis.set_token('contribution')
-            elif result < 0:
-                $ visavis.set_token('antagonism')
-        'Sudden joke (chotic, random)':
-            $ player.moral_action(target=visavis, orderliness='chaotic') 
-            $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
-            if rnd == 'plus':
-                $ visavis.stance(player).value += 1
-                'stance up'
-            elif rnd == 'minus':
-                $ visavis.stance(player).value -= 1
-                'stance down'
-            else:
-                $ visavis.set_token(rnd)                
-        'Mock (evil)':
-            $ player.moral_action(target=visavis, moral='evil') 
-            $ visavis.set_token('antagonism')
-            $ player.satisfy_need('authority', 2)
-        'Reticence (timid)':
-            $ player.moral_action(target=visavis, activity='timid')
-            'No changes' 
+    $ CardMenu(['fi_intimidate', 'fi_getknow', 'fi_flatter', 'fi_joke', 'fi_mock', 'fi_reticence']).show()
                 
     hide card
     return
+
+label lbl_first_impression_intimidate:
+    $ player.moral_action(target=visavis, activity='ardent') 
+    $ dif = visavis.spirit
+    $ result = core.skillcheck(player, 'spirit', dif)
+    if result > 0:
+        $ visavis.set_token('conquest')
+    elif result < 0:
+        $ visavis.set_token('antagonism')    
+            
+    return
+
+label lbl_first_impression_getknow:
+    $ player.moral_action(target=visavis, orderliness='lawful') 
+    $ dif = visavis.mind
+    $ result = core.skillcheck(player, 'mind', dif)
+    '[result]'
+    if result > 0:
+        $ visavis.set_token('convention')
+    elif result < 0:
+        $ visavis.set_token('antagonism')    
+    
+    return
+
+label lbl_first_impression_flatter:
+    $ player.moral_action(target=visavis, moral='good') 
+    $ dif = visavis.agility
+    $ result = core.skillcheck(player, 'agility', dif)
+    if result > 0:
+        $ visavis.set_token('contribution')
+    elif result < 0:
+        $ visavis.set_token('antagonism')    
+    
+    return
+
+label lbl_first_impression_joke:
+    $ player.moral_action(target=visavis, orderliness='chaotic') 
+    $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
+    if rnd == 'plus':
+        $ visavis.stance(player).value += 1
+        'stance up'
+    elif rnd == 'minus':
+        $ visavis.stance(player).value -= 1
+        'stance down'
+    else:
+        $ visavis.set_token(rnd)           
+    
+    return
+
+label lbl_first_impression_mock:
+    $ player.moral_action(target=visavis, moral='evil') 
+    $ visavis.set_token('antagonism')
+    $ player.satisfy_need('authority', 2)    
+    
+    return
+
+label lbl_first_impression_reticence:
+    $ player.moral_action(target=visavis, activity='timid')    
+    
+    return        
     
 label lbl_hungout:
     menu:

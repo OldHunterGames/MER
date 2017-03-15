@@ -189,6 +189,13 @@ init -10 python:
     edge_option_cards = {'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
         'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'images/miscards/card.png', }, 
+        
+        'fi_intimidate': {'name': 'Name', 'Intimidate': __('Ardent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'images/miscards/card.png', }, 
+        'fi_getknow': {'name': 'Name', 'Get to know': __('Lawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'images/miscards/card.png', }, 
+        'fi_flatter': {'name': 'Name', 'Flatter': __('Good deed. Opposed finesse check to succed. Get "Lovers" relations arcane.'), 'label': 'lbl_first_impression_flatter', 'image': 'images/miscards/card.png', }, 
+        'fi_joke': {'name': 'Name', 'Jock': __('Chaotic deed. Unpredictible outcome.'), 'label': 'lbl_first_impression_joke', 'image': 'images/miscards/card.png', }, 
+        'fi_mock': {'name': 'Name', 'Mock': __('Evil deed. Gain "Moon" relations arcane and self-affirm your authority.'), 'label': 'lbl_first_impression_mock', 'image': 'images/miscards/card.png', }, 
+        'fi_reticence': {'name': 'Name', 'Reticence': __('Timid deed. Be patient and quiet. No risk. No reward.'), 'label': 'lbl_first_impression_reticence', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         

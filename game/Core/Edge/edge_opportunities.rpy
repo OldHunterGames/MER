@@ -1,8 +1,6 @@
 ## Opportunities
 
 label lbl_edge_opportunities:
-    
-    #TODO
     $ CardMenu(edge.opportunities.run()).show()
     call lbl_edge_manage
     return
