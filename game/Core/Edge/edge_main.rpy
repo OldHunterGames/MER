@@ -62,6 +62,9 @@ label lbl_edge_main:
         edge_slaver = gen_willed_master('human')
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
+        edge_slaver.clear_quests()
+        edge_slaver.add_quest(SlaverQuest(**quests_data['slaver_quest']))
+        
         
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
