@@ -8,13 +8,14 @@ import renpy.exports as renpy
 
 class SimpleFight(object):
 
-
     def __init__(self, allies_list, enemies_list):
 
         self.allies = [SimpleCombatant(i, self) for i in allies_list]
         self.enemies = [SimpleCombatant(i, self) for i in enemies_list]
-        allies_average_skill = sum([i.combat_level for i in self.allies])/len(self.allies)
-        enemies_average_skill = sum([i.combat_level for i in self.enemies])/len(self.enemies)
+        allies_average_skill = sum(
+            [i.combat_level for i in self.allies]) / len(self.allies)
+        enemies_average_skill = sum(
+            [i.combat_level for i in self.enemies]) / len(self.enemies)
         difference = allies_average_skill - enemies_average_skill
         self.selected_ally = self.allies[0]
         self.escalation = 0
@@ -34,7 +35,6 @@ class SimpleFight(object):
             for i in self.enemies:
                 i.skill_difference = -difference
 
-
         for i in self.allies:
             i.type = 'player'
             i.set_enemies([i for i in self.enemies])
@@ -43,13 +43,13 @@ class SimpleFight(object):
             i.set_enemies([i for i in self.allies])
         self.enemies_turn()
         renpy.call_in_new_context('lbl_simple_fight', self, allies_list)
-    
+
     def select(self, ally):
         self.selected_ally = ally
 
     def clear_log(self):
         try:
-            del self._log[abs(self.round - self.logged_round-1)]
+            del self._log[abs(self.round - self.logged_round - 1)]
         except:
             pass
 
@@ -58,7 +58,7 @@ class SimpleFight(object):
 
     def get_log(self):
         return self._log
-    
+
     def combatants(self):
         list_ = [i for i in self.allies]
         list_.extend(self.enemies)
@@ -131,7 +131,7 @@ class SimpleFight(object):
                 if maneuver.type == 'protection':
                     targets = [i for i in self.active_enemies()]
                     vitalities = [i.vitality() for i in targets]
-                    
+
                 elif maneuver.type == 'attack':
                     targets = [i for i in self.active_allies()]
                     vitalities = [i.vitality() for i in targets]
@@ -146,7 +146,7 @@ class SimpleFight(object):
                         attacks.pop(index)
                         maneuver.add_target(target)
                     continue
-                
+
                 elif maneuver.type == 'restore':
                     targets = [i for i in self.active_enemies()]
                     vitalities = [i.vitality() for i in targets]
@@ -157,7 +157,7 @@ class SimpleFight(object):
                         target = random.choice(targets)
                         targets.remove(target)
                         maneuver.add_target(target)
-                
+
                 while maneuver.can_target_more() and len(targets) > 0:
                     vitality = min(vitalities)
                     index = vitalities.index(vitality)
@@ -222,14 +222,12 @@ class SimpleFight(object):
 
     def get_captives(self):
         return [i for i in self.get_enemies() if not i.has_feature('dead')]
-            
 
 
 class SimpleCombatant(object):
 
-
     def __init__(self, person, fight):
-        
+
         self.fight = fight
         self.person = person
         self.type = None
@@ -249,7 +247,7 @@ class SimpleCombatant(object):
         self._target = None
         self._combat_style = None
         if self.combat_style() == 'shieldbearer':
-            self.protection += 5*self.shield_quality()
+            self.protection += 5 * self.shield_quality()
 
     @property
     def hp(self):
@@ -276,7 +274,6 @@ class SimpleCombatant(object):
                 target = None
             return target
         return self._target
-
 
     def combat_style(self):
         if self._combat_style is not None:
@@ -311,7 +308,7 @@ class SimpleCombatant(object):
         elif self.armor_rate == 'heavy_armor':
             return 'heavy'
         return
-    
+
     def set_target(self, target):
         if self.active_maneuver is not None:
             self.active_maneuver.add_target(target)
@@ -324,7 +321,8 @@ class SimpleCombatant(object):
 
     def get_meneuvers(self):
         self.maneuvers = []
-        maneuvers = [i for i in self.maneuvers_list() if i.can_be_applied(self)]
+        maneuvers = [i for i in self.maneuvers_list()
+                     if i.can_be_applied(self)]
         number = self.max_maneuvers()
         while number > 0:
             maneuver = random.choice(maneuvers)
@@ -336,14 +334,13 @@ class SimpleCombatant(object):
         value = 3
         if self.skill_difference < 0:
             for i in range(0, abs(self.skill_difference)):
-                if i%2 == 0:
+                if i % 2 == 0:
                     value -= 1
         elif self.skill_difference > 0:
             for i in range(0, abs(self.skill_difference)):
-                if i%2 != 0:
+                if i % 2 != 0:
                     value += 1
         return value
-
 
     def knockdown(self):
         self._inactive = True
@@ -355,7 +352,7 @@ class SimpleCombatant(object):
     @property
     def disabled(self):
         return self.inactive or self._disabled
-    
+
     @disabled.setter
     def disabled(self, bool_):
         self._disabled = bool_
@@ -371,7 +368,7 @@ class SimpleCombatant(object):
     @property
     def agility(self):
         return self.person.agility
-    
+
     def set_enemies(self, enemies):
         self.enemies = enemies
 
@@ -398,7 +395,7 @@ class SimpleCombatant(object):
             except AttributeError:
                 pass
         return value
-    
+
     @property
     def attack(self):
         return self.physique + self.weapon_quality() + self.power_up
@@ -411,7 +408,6 @@ class SimpleCombatant(object):
             rate = None
         return rate
 
-
     def max_defence(self):
         armor = self.person.armor
         try:
@@ -420,7 +416,7 @@ class SimpleCombatant(object):
             return self.person.agility * 5
         else:
             if armor.armor_rate == 'light_armor':
-                return (self.person.agility + quality*2) * 3
+                return (self.person.agility + quality * 2) * 3
             elif armor.armor_rate == 'heavy_armor':
                 return quality * 10
 
@@ -448,7 +444,7 @@ class SimpleCombatant(object):
             self.active_maneuver.add_target(self.target)
 
     def damage(self, value, source, ignore_armor=False):
-        
+
         value += self.fight.escalation
         for i in self.incoming_damage_multipliers:
             value *= i
@@ -458,7 +454,7 @@ class SimpleCombatant(object):
             value = i.protect(value, source, self)
         if value > 0:
             self.fight.log("{name} damaged for {value}, source:{source}".format(
-            name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
+                name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
         if ignore_armor:
             self.hp -= value
             return
@@ -484,11 +480,9 @@ class SimpleCombatant(object):
         self.incoming_damage_multipliers = []
         self.protections = []
         self.get_meneuvers()
-        
 
 
 class Maneuver(object):
-
 
     def __init__(self, person):
         self.targets_available = None
@@ -504,6 +498,7 @@ class Maneuver(object):
         except KeyError:
             name = self.id
         return name
+
     @property
     def description(self):
         try:
@@ -524,7 +519,7 @@ class Maneuver(object):
         return can_target and self._can_target_more and not self.self_targeted
 
     def can_be_applied(self, person):
-        # 
+        #
         raise Exception("Not implemented")
 
     def activate(self):
@@ -573,7 +568,6 @@ class Maneuver(object):
 
 class SimpleManeuver(Maneuver):
 
-
     def can_be_applied(self, person):
 
         return True
@@ -599,7 +593,6 @@ class RuledManeuver(Maneuver):
 
 class SwiftStrike(SimpleManeuver):
 
-    
     def __init__(self, person):
 
         super(SwiftStrike, self).__init__(person)
@@ -617,7 +610,6 @@ class SwiftStrike(SimpleManeuver):
 
 class DirectStrike(SimpleManeuver):
 
-    
     def __init__(self, person):
 
         super(DirectStrike, self).__init__(person)
@@ -635,7 +627,6 @@ class DirectStrike(SimpleManeuver):
 
 class HeavyStrike(SimpleManeuver):
 
-
     def __init__(self, person):
         super(HeavyStrike, self).__init__(person)
         self.targets_available = 1
@@ -651,7 +642,6 @@ class HeavyStrike(SimpleManeuver):
 
 
 class WideStrike(SimpleManeuver):
-
 
     def __init__(self, person):
         super(WideStrike, self).__init__(person)
@@ -673,6 +663,7 @@ class WideStrike(SimpleManeuver):
             return False
         return person.combat_style() == 'wrecker'
 
+
 class Dodge(SimpleManeuver):
 
     def __init__(self, person):
@@ -692,8 +683,8 @@ class Dodge(SimpleManeuver):
             self.person.power_up += 1
         return 0
 
-class Block(SimpleManeuver):
 
+class Block(SimpleManeuver):
 
     def __init__(self, person):
 
@@ -706,7 +697,6 @@ class Block(SimpleManeuver):
     def _activate(self, target):
         target.protections.append(self)
 
-
     def _protect(self, value, source):
         if isinstance(source.active_maneuver, HeavyStrike):
             return value
@@ -714,8 +704,8 @@ class Block(SimpleManeuver):
             self.person.power_up += 1
         return 0
 
-class Parry(SimpleManeuver):
 
+class Parry(SimpleManeuver):
 
     def __init__(self, person):
 
@@ -745,30 +735,8 @@ class Parry(SimpleManeuver):
                 return False
         return person.combat_style() == 'swashbuckler'
 
-"""
-class Recovery(SimpleManeuver):
 
-
-    def __init__(self, person):
-
-        super(Recovery, self).__init__(person)
-        self.targets_available = 1
-        self.self_targeted = True
-        self.type = 'recovery'
-        self.name = 'Recovery'
-
-    def _activate(self, target):
-        if target.armor_rate is None:
-            value = target.agility * 3
-        elif target.armor_rate == 'light_armor':
-            value = target.agility * 2
-        else:
-            value = target.physique * 2
-        target.defence = min(target.max_defence(), target.defence+value)
-        self.person.fight.escalation += 1
-"""
 class ShielUp(RuledManeuver):
-
 
     def __init__(self, person):
 
@@ -790,7 +758,7 @@ class ShielUp(RuledManeuver):
                 heal = target.agility * 2
             else:
                 heal = target.physique * 2
-            target.defence = min(target.max_defence(), target.defence+heal)
+            target.defence = min(target.max_defence(), target.defence + heal)
             self.person.fight.escalation += 1
         if value > 0:
             self.p_target.protections.remove(self)
@@ -805,35 +773,9 @@ class ShielUp(RuledManeuver):
             else:
                 return False
         return shield
-"""
-class Grapple(RuledManeuver):
-
-
-    def __init__(self, person):
-
-        super(Grapple, self).__init__(person)
-        self.targets_available = 1
-        self.type = 'disable'
-        self.id = 'grapple'
-
-    def _activate(self, target):
-        target.disabled = True
-        self.person.fight.log(
-            '{0} grappled {1}'.format(self.person.name.encode('utf-8'), target.name.encode('utf-8')))
-
-    def can_be_applied(self, person):
-        npc = True
-        if person.type == 'npc':
-            if len(person.allies) > 1:
-                npc = False
-        two_weapons = len(person.weapons()) > 1
-        twohand = any([i.size == 'twohand' for i in person.weapons()])
-        return (not (twohand and two_weapons)) and npc
-"""
 
 
 class Backstab(RuledManeuver):
-
 
     def __init__(self, person):
 
@@ -849,27 +791,7 @@ class Backstab(RuledManeuver):
         return person.combat_style() == 'cutthroat'
 
 
-"""
-class PowerStrike(RuledManeuver):
-
-
-    def __init__(self, person):
-
-        super(PowerStrike, self).__init__(person)
-        self.targets_available = 1
-        self.type = 'attack'
-        self.id = 'power_strike'
-
-    def _activate(self, target):
-        target.damage(self.person.attack * 3, self.person)
-
-    def can_be_applied(self, person):
-        pass
-"""
-
-
 class PinDown(RuledManeuver):
-
 
     def __init__(self, person):
 
@@ -888,36 +810,12 @@ class PinDown(RuledManeuver):
         amount = len(person.enemies) < 2
         physique = enemy.physique < person.physique
         weapon = len(person.enemies[0].weapons()) < 1
+        armor = enemy.armor_rate is None
         style = person.combat_style() == 'brawler'
-        return amount and physique and weapon and style
+        return amount and physique and weapon and style and armor
 
-"""
-class Flee(RuledManeuver):
-
-    
-    def __init__(self, person):
-
-        super(Flee, self).__init__(person)
-        self.targets_available = 1
-        self.type = 'special'
-        self.id = 'flee'
-        self.self_targeted = True
-
-    def _activate(self, target):
-        target.fight.fleed = True
-
-    def can_be_applied(self, person):
-        if person.type == 'npc':
-            return False
-        armor = person.armor_rate
-        armor = armor is None
-        enemies_armor = all([i.armor_rate is not None for i in person.enemies])
-        allies = len(person.allies) > 1
-        return armor and (enemies_armor or allies)
-"""
 
 class Tank(RuledManeuver):
-
 
     def __init__(self, person):
         super(Tank, self).__init__(person)
@@ -929,9 +827,8 @@ class Tank(RuledManeuver):
     def _activate(self, target):
         for i in self.person.allies:
             if (not isinstance(i.active_maneuver, Tank) and
-                not any(isinstance(n, Tank) for n in i.protections)):
+                    not any(isinstance(n, Tank) for n in i.protections)):
                 i.protections.append(self)
-
 
     def _protect(self, value, source):
         value /= 2
@@ -948,8 +845,8 @@ class Tank(RuledManeuver):
         defence = all([person.defence >= i.defence for i in person.allies])
         return allies and enemies and defence and person.weight() == 'heavy'
 
-class Outflank(RuledManeuver):
 
+class Outflank(RuledManeuver):
 
     def __init__(self, person):
         super(Outflank, self).__init__(person)
@@ -980,4 +877,3 @@ class Outflank(RuledManeuver):
             if len(person.enemies) > 1:
                 return False
         return person.weight() == 'mobile'
-

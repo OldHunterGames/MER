@@ -8,15 +8,15 @@ from mer_utilities import empty_card
 
 class ShiftRelations(object):
     _tokens_relations = {
-        'conquest': 'congruence',
-        'convention': 'distance',
-        'contribution': 'fervor'
+        'conquest': [('congruence', '-'), ('fervor', '+')],
+        'convention': [('fervor', '-'), ('distance', '+')],
+        'contribution': [('distance', '-'), ('congruence', '+')]
     }
     _needs = {
-                'conquest': 'authority',
-                'convention': 'ambition',
-                'contribution': 'communication'
-            }
+        'conquest': 'authority',
+        'convention': 'ambition',
+        'contribution': 'communication'
+    }
 
     def __init__(self, player, person):
 
@@ -26,26 +26,24 @@ class ShiftRelations(object):
         if self.token not in self._tokens_relations.keys():
             renpy.call_in_new_context('lbl_communicate', person)
         else:
-            self.axis = self._tokens_relations[self.token]
-            self.left = empty_card()
-            self.middle = empty_card()
-            self.right = empty_card()
+            self.left_axis = self._tokens_relations[self.token][0]
+            self.right_axis = self._tokens_relations[self.token][1]
             self.relations = person.player_relations()
             renpy.call_in_new_context('lbl_shift_relations', self)
 
     def act_left(self):
-        self.person.player_relations().change(self.axis, '-')
+        self.person.player_relations().change(self.left_axis[0], '-')
         self.person.use_token()
-    
+
     def is_left_active(self):
-        return self.person.player_relations().axis[self.axis] != -1
+        return self.person.player_relations().axis[self.left_axis[0]] != -1
 
     def act_right(self):
-        self.person.player_relations().change(self.axis, '+')
+        self.person.player_relations().change(self.right_axis[0], '+')
         self.person.use_token()
 
     def is_right_active(self):
-        return self.person.player_relations().axis[self.axis] != 1
+        return self.person.player_relations().axis[self.right_axis[0]] != 1
 
     def act_middle(self):
         self.player.satisfy_need(self._needs[self.token], 4)
@@ -69,16 +67,16 @@ class ShiftRelations(object):
     def left_text(self):
         value = self.relations.axis[self.axis]
         if self.is_left_active():
-            return getattr(self.relations, 'show_%s'%self.axis)(False, False, value-1)
+            return getattr(self.relations, 'show_%s' % self.axis)(False, False, value - 1)
         else:
-            return getattr(self.relations, 'show_%s'%self.axis)(False)
+            return getattr(self.relations, 'show_%s' % self.axis)(False)
 
     def right_text(self):
         value = self.relations.axis[self.axis]
         if self.is_right_active():
-            return getattr(self.relations, 'show_%s'%self.axis)(False, False, value+1)
+            return getattr(self.relations, 'show_%s' % self.axis)(False, False, value + 1)
         else:
-            return getattr(self.relations, 'show_%s'%self.axis)(False)
+            return getattr(self.relations, 'show_%s' % self.axis)(False)
 
     def middle_text(self):
         return self.player.get_need(self._needs[self.token]).name

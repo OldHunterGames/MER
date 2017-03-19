@@ -9,9 +9,9 @@ from mer_utilities import encolor_text
 
 
 class Relations(object):
-    _fervor = {-1: "delicate", 0: "plain", 1: "passionate"}
-    _distance = {-1: "intimate", 0: "close", 1: "formal"}
-    _congruence = {-1: "contradictor", 0: "associate", 1: "supporter"}
+    _fervor = {-1: "delicate", 0: "straight", 1: "passionate"}
+    _distance = {-1: "intimate", 0: "fair", 1: "formal"}
+    _congruence = {-1: "hater", 0: "associate", 1: "admirer"}
 
     _fervor_alignment = 'activity'
     _distance_alignment = 'orderliness'

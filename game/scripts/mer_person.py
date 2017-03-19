@@ -669,7 +669,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             self.genus = genus
         else:
             self.genus = Genus(genus)
-        self.genus.invoke(self)
+        self.genus.apply(self)
         self.add_feature(age)
         self.add_feature(gender)
         self.set_avatar()
@@ -1076,7 +1076,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def change_genus(self, genus):
         self.genus.remove()
         self.genus = Genus(genus)
-        self.genus.invoke(self)
+        self.genus.apply(self)
 
     @property
     def known_characters(self):

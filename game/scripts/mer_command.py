@@ -35,12 +35,13 @@ class Card(Command):
 class MenuCard(Card):
 
     def __init__(self, name=None, description=None,
-                 label=None, image=None):
+                 label=None, image=None, **kwargs):
         self._name = name
         self._description = description
         self._image = image
         self._label = label
         self._context_data = dict()
+        self.set_context(**kwargs)
 
     def image(self):
         if self._image is None or not renpy.exists(self._image):
