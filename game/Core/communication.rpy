@@ -102,7 +102,16 @@ label lbl_antagonism(target):
             
 label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
-    $ CardMenu(['fi_intimidate', 'fi_getknow', 'fi_flatter', 'fi_joke', 'fi_mock', 'fi_reticence']).show()
+    
+    python:     
+        options = CardsMaker()
+        options.add_entry('fi_intimidate', edge_option_cards['fi_intimidate'])
+        options.add_entry('fi_getknow', edge_option_cards['fi_getknow'])
+        options.add_entry('fi_flatter', edge_option_cards['fi_flatter'])
+        options.add_entry('fi_joke', edge_option_cards['fi_joke'])
+        options.add_entry('fi_mock', edge_option_cards['fi_mock'])
+        options.add_entry('fi_reticence', edge_option_cards['fi_reticence'])        
+        CardMenu(options.run()).show()
                 
     hide card
     return
