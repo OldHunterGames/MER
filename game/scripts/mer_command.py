@@ -90,7 +90,7 @@ class CardsMaker(Command):
         list_ = []
         for i in self.data.values():
             card = self.card_cls(**i)
-            list_.append(card.set_context(self._context_data))
+            list_.append(card.set_context(**self._context_data))
         return list_
 
     def add_entry(self, key, value):
