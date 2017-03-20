@@ -57,7 +57,7 @@ screen sc_card_menu(card_menu):
                 imagebutton:
                     idle im.Scale(card_menu.current_card.image(), 300, 400)
                     
-                    action Function(card_menu.current_card.run), Hide('sc_card_menu')
+                    action Function(card_menu.current_card.run), Return()
                     xalign 0.5
                 text card_menu.current_card.description():
                     xalign 0.5
