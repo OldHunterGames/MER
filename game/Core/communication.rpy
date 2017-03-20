@@ -116,7 +116,7 @@ label lbl_first_impression:
     hide card
     return
 
-label lbl_first_impression_intimidate:
+label lbl_first_impression_intimidate(card):
     $ player.moral_action(target=visavis, activity='ardent') 
     $ dif = visavis.spirit
     $ result = core.skillcheck(player, 'spirit', dif)
@@ -127,7 +127,7 @@ label lbl_first_impression_intimidate:
             
     return
 
-label lbl_first_impression_getknow:
+label lbl_first_impression_getknow(card):
     $ player.moral_action(target=visavis, orderliness='lawful') 
     $ dif = visavis.mind
     $ result = core.skillcheck(player, 'mind', dif)
@@ -139,7 +139,7 @@ label lbl_first_impression_getknow:
     
     return
 
-label lbl_first_impression_flatter:
+label lbl_first_impression_flatter(card):
     $ player.moral_action(target=visavis, moral='good') 
     $ dif = visavis.agility
     $ result = core.skillcheck(player, 'agility', dif)
@@ -150,7 +150,7 @@ label lbl_first_impression_flatter:
     
     return
 
-label lbl_first_impression_joke:
+label lbl_first_impression_joke(card):
     $ player.moral_action(target=visavis, orderliness='chaotic') 
     $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
     if rnd == 'plus':
@@ -164,7 +164,7 @@ label lbl_first_impression_joke:
     
     return
 
-label lbl_first_impression_mock:
+label lbl_first_impression_mock(card):
     $ player.moral_action(target=visavis, moral='evil') 
     $ visavis.set_token('antagonism')
     $ player.satisfy_need('authority', 2)    
