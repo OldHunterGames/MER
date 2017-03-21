@@ -10,95 +10,67 @@ label lbl_communicate(target):
         jump lbl_first_impression
 
     target "I'm here"
-    menu:
-        'Be my garantor' if not garantor and visavis.relations(player).stance > 0:
-            visavis 'Ok. I will be your garantor.'
-            $ garantor = visavis
-                        
-        'Hung out':
-            call lbl_hungout              
-        'Present':
-            call lbl_present
-        'Sex':
-            $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
-        'Take quest' if target.has_available_quests(player):
-            call lbl_quests(target)
-        'Nevermind':
-            pass
-    
+    python:     
+        options = CardsMaker()
+        if not garantor and visavis.relations(player).stance > 0:
+            options.add_entry('comm_garantor', edge_option_cards['comm_garantor'])
+        options.add_entry('com_hungout', edge_option_cards['com_hungout'])
+        options.add_entry('com_present', edge_option_cards['com_present'])
+        if target.has_available_quests(player):
+            options.add_entry('com_takequest', edge_option_cards['com_takequest'])
+        options.add_entry('nevermind', edge_option_cards['nevermind'])  
+        CardMenu(options.run()).show()
+                
+    hide card
     call lbl_edge_manage
     return
 
-label lbl_conquest(target):
-    python:
-        visavis = target
-        player.drain_energy()
-        chance_to_rise = False
-        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
-            chance_to_rise = True  
-        visavis.use_token()
+label lbl_comm_garantor(card):
+    visavis 'Ok. I will be your garantor.'
+    $ garantor = visavis    
+    
+    return
+
+label lbl_edge_comm_call_quest(card):
+    call lbl_quests(visavis)
+    
+    return
+
+label lbl_edge_comm_nevermind(card):
+    pass
+    
+    return
+
+label lbl_edge_comm_present(card):
     menu:
-        'Influence' if chance_to_rise:
-            $ visavis.stance(player).value += 1
-        'Dominance' if visavis.stance(player).value == 2:
-            $ player.joy('authority', 5)
-        'Hatred' if visavis.relations(player).congruence > -1:
-            $ visavis.relations(player).change('congruence', '+')
-        'Fervor' if visavis.relations(player).fervor < 1:
-            $ visavis.relations(player).change('fervor', '+')       
-        'Connection' if visavis.relations(player).distance > -1:
-            $ visavis.relations(player).change('distance', '-')       
-    return
+                        
+        'Back':
+            jump lbl_communicate
+    
+    $ player.drain_energy()
 
-label lbl_convention(target):
+    return    
+
+
+label lbl_quests(target):
     python:
-        visavis = target
-        visavis.use_token()
-        player.drain_energy()
-        chance_to_rise = False
-        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
-            chance_to_rise = True 
+        quests = target.available_quests(player)
+        menu_items = []
+        for i in quests:
+            menu_items.append((i.name(), i))
+
+        choice = renpy.display_menu(menu_items)
+        description = choice.description()
+
     menu:
-        'Influence' if chance_to_rise:
-            $ visavis.stance(player).value += 1
-        'Control' if visavis.stance(player).value == 2:
-            $ player.joy('ambition', 5)
-        'Politesse' if visavis.relations(player).distance < 1:
-            $ visavis.relations(player).change('distance', '+')    
-        'Temperance' if visavis.relations(player).fervor > -1:
-            $ visavis.relations(player).change('fervor', '-')       
-        'Admiration' if visavis.relations(player).congruence < 1:
-            $ visavis.relations(player).change('congruence', '-')
+        '[description]'
+        'Take this quest':
+            $ core.quest_tracker.add_quest(choice)
+        "Don't interrested":
+            return
+            
+    $ player.drain_energy()
     return
-
-label lbl_contribution(target):
-    python:
-        visavis = target
-        visavis.use_token()
-        player.drain_energy()
-        chance_to_rise = False
-        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
-            chance_to_rise = True 
-    menu:        
-        'Influence' if chance_to_rise:
-            $ visavis.stance(player).value += 1
-        'Fondness' if visavis.stance(player).value == 2:
-            $ player.joy('communication', 5)
-        'Admiration' if visavis.relations(player).congruence < 1:
-            $ visavis.relations(player).change('congruence', '-')
-        'Passion' if visavis.relations(player).fervor < 1:
-            $ visavis.relations(player).change('fervor', '+')       
-        'Connection' if visavis.relations(player).distance > -1:
-            $ visavis.relations(player).change('distance', '-')       
-    return
-
-label lbl_antagonism(target):
-    python:
-        visavis = target
-        visavis.use_token()
-        player.drain_energy()
-        visavis.stance(player).value -= 1
-    visavis 'I hate you'
             
 label lbl_first_impression:
     visavis "You have only one chance for a first expression!"
@@ -171,162 +143,259 @@ label lbl_first_impression_mock(card):
     
     return
 
-label lbl_first_impression_reticence:
+label lbl_first_impression_reticence(card):
     $ player.moral_action(target=visavis, activity='timid')    
     
     return        
+
+label lbl_edge_comm_hungout(card):
     
-label lbl_hungout:
-    menu:
-        'Promenade (spirit, communication)' if 'promenade' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('communication')
-            $ result = core.skillcheck(player, 'spirit', dif)
-            if result > 0:
-                $ player.satisfy_need('communication', 2)
-                $ visavis.set_token('contribution')
-                $ visavis.communications_done.append('promenade')                
-            elif result == 0:
-                player 'Waste of a time. Next time, maybe.'
-            else:
-                $ visavis.set_token('antagonism')     
-                $ visavis.communications_done.append('promenade')                          
-        'Booze (spirit, 1 bar)' if 'booze' not in visavis.communications_done and player.money > 0:
-            $ player.remove_money -= 1
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('amusement')
-            $ result = core.skillcheck(player, 'spirit', dif)
-            if result > 0:
-                $ visavis.communications_done.append('booze')  
-                $ player.satisfy_need('amusement', 2)
-                $ visavis.set_token('contribution')
-            elif result == 0:
-                $ player.satisfy_need('amusement', 2)
-                'No progress in relationship. At least you get some amusement.' 
-            else:
-                $ visavis.communications_done.append('booze')  
-                $ visavis.set_token('antagonism')                                
-        'Dinner treat (spirit, 3 bars)' if 'dinner' not in visavis.communications_done:
-            $ player.remove_money(3)
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('nutrition')
-            $ result = core.skillcheck(player, 'spirit', dif)
-            if result > 0:
-                $ visavis.communications_done.append('dinner') 
-                $ player.satisfy_need('nutrition', 4) 
-                menu:
-                    visavis 'Yum! What shoul we talk about?'
-                    'Discuss serious matters':
-                        $ visavis.set_token('convention')
-                    "Let's just relax":
-                        $ visavis.set_token('contribution')    
-            elif result == 0:
-                $ player.satisfy_need('nutrition', 4) 
-                'No progress in relationship. The food is good newertheless.' 
-            else:
-                $ visavis.communications_done.append('dinner')  
-                $ visavis.set_token('antagonism')                
-        'Discuccion (wisdom, authority)' if 'discussion' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('authority')
-            $ result = core.skillcheck(player, 'mind', dif)
-            if result > 0:
-                $ visavis.communications_done.append('discussion') 
-                $ visavis.set_token('convention')
-                $ player.satisfy_need('authority', 2) 
-            elif result == 0:
-                player 'Waste of a time. Next time, maybe.'
-            else:
-                $ visavis.communications_done.append('discussion') 
-                $ visavis.set_token('antagonism')   
-        'Impressive erudition (wisdom)' if 'impress' not in visavis.communications_done:
-            $ visavis.communications_done.append('impress')
-            $ dif = 2 + visavis.relations(player).stability
-            $ result = core.skillcheck(player, 'mind', dif)
-            if result > 0:
-                $ visavis.set_token('convention')
-            elif result = 0:
-                visavis 'Not impressed.'
-            else:
-                $ visavis.set_token('antagonism')                                        
-        'Carry favor (finesse)' if 'favor' not in visavis.communications_done:
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('authority')
-            $ result = core.skillcheck(player, 'agility', dif)
-            if result > 0:
-                $ visavis.communications_done.append('favor') 
-                menu:
-                    visavis 'Oh, you so nice. Can I do something for you?'
-                    'As a matter of fact, yes':
-                        $ visavis.set_token('convention')
-                    "The plasure is all mine":
-                        $ visavis.set_token('contribution')    
-            elif result == 0:
-                visavis 'Yah-yah... wathever.' 
-            else:
-                $ visavis.communications_done.append('favor') 
-                $ visavis.set_token('antagonism')                
-        'Impressive prank (finesse)' if 'impress' not in visavis.communications_done:
-            $ visavis.communications_done.append('impress')
-            $ dif = 2 + visavis.relations(player).stability
-            $ result = core.skillcheck(player, 'agility', dif)
-            if result > 0:
-                $ visavis.set_token('contribution')
-            elif result == 0:
-                visavis 'Not impressed.'
-            else:
-                $ visavis.set_token('antagonism')      
-        'Dance (might, ardent)' if 'dance' not in visavis.communications_done:
-            $ player.moral_action(activity='ardent') 
-            $ dif = 3 + visavis.relations(player).stability - visavis.need_level('activity')
-            $ result = core.skillcheck(player, 'physique', dif)
-            if result > 0:
-                $ visavis.communications_done.append('dance') 
-                $ visavis.set_token('contribution')
-                $ player.satisfy_need('activity', 2) 
-            elif result == 0:
-                player 'Waste of a time. Next time, maybe.'
-            else:
-                $ visavis.communications_done.append('dance') 
-                $ visavis.set_token('antagonism')  
-        'Impressive might (might)' if 'impress' not in visavis.communications_done:
-            $ visavis.communications_done.append('impress')
-            $ dif = 2 + visavis.relations(player).stability
-            $ result = core.skillcheck(player, 'physique', dif)
-            if result > 0:
-                $ visavis.set_token('convention')
-            elif result == 0:
-                visavis 'Not impressed.'
-            else:
-                $ visavis.set_token('antagonism')        
-        'Back':
-            jump lbl_communicate
+    python:     
+        options = CardsMaker()        
+        if 'promenade' not in visavis.communications_done:
+            options.add_entry('ho_promenade', edge_option_cards['ho_promenade'])
+        if 'booze' not in visavis.communications_done and player.money > 0:
+            options.add_entry('ho_booze', edge_option_cards['ho_booze'])
+        if 'dinner' not in visavis.communications_done and player.money > 2:
+            options.add_entry('ho_dinner', edge_option_cards['ho_dinner'])
+        if 'discussion' not in visavis.communications_done:
+            options.add_entry('ho_discussion', edge_option_cards['ho_discussion'])
+        if 'impress' not in visavis.communications_done:
+            options.add_entry('ho_erudition', edge_option_cards['ho_erudition'])
+            options.add_entry('ho_prank', edge_option_cards['ho_prank'])
+            options.add_entry('ho_might', edge_option_cards['ho_might'])
+        if 'favor' not in visavis.communications_done:
+            options.add_entry('ho_favor', edge_option_cards['ho_favor'])        
+        if 'dance' not in visavis.communications_done:
+            options.add_entry('ho_dance', edge_option_cards['ho_dance'])
+        options.add_entry('makelove', edge_option_cards['makelove'])    
+        options.add_entry('nevermind', edge_option_cards['nevermind'])          
+        CardMenu(options.run()).show()
 
     $ player.drain_energy()
+    hide card
+
     return
 
-label lbl_present:
-    menu:
-        'Get to know (wisdom)':
-            pass
-                        
-        'Back':
-            jump lbl_communicate
+label lbl_edge_ho_promenade(card):
+    $ dif = 2 + visavis.spirit - visavis.need_level('communication')
+    $ result = core.skillcheck(player, 'spirit', dif)
+    if result > 0:
+        $ player.satisfy_need('communication', 2)
+        $ visavis.set_token('contribution')
+        $ visavis.communications_done.append('promenade')                
+    elif result == 0:
+        player 'Waste of a time. Next time, maybe.'
+    else:
+        $ visavis.set_token('antagonism')     
+        $ visavis.communications_done.append('promenade')         
+    return
+
+label lbl_edge_ho_might(card):
+    $ visavis.communications_done.append('impress')
+    $ dif = visavis.phisique
+    $ result = core.skillcheck(player, 'physique', dif)
+    if result > 0:
+        $ visavis.set_token('convention')
+    elif result == 0:
+        visavis 'Not impressed.'
+    else:
+        $ visavis.set_token('antagonism')   
+                    
+    return
+
+label lbl_edge_ho_dance(card):
+    $ player.moral_action(activity='ardent') 
+    $ dif = 2 + visavis.phisique - visavis.need_level('activity')
+    $ result = core.skillcheck(player, 'physique', dif)
+    if result > 0:
+        $ visavis.communications_done.append('dance') 
+        $ visavis.set_token('contribution')
+        $ player.satisfy_need('activity', 2) 
+    elif result == 0:
+        player 'Waste of a time. Next time, maybe.'
+    else:
+        $ visavis.communications_done.append('dance') 
+        $ visavis.set_token('antagonism')      
+    return
+
+label lbl_edge_ho_prank(card):
+    $ visavis.communications_done.append('impress')
+    $ dif = visavis.agility
+    $ result = core.skillcheck(player, 'agility', dif)
+    if result > 0:
+        $ visavis.set_token('contribution')
+    elif result == 0:
+        visavis 'Not impressed.'
+    else:
+        $ visavis.set_token('antagonism')        
+    return
+
+label lbl_edge_ho_favor(card):
+    $ dif = 2 + visavis.agility - visavis.need_level('authority')
+    $ result = core.skillcheck(player, 'agility', dif)
+    if result > 0:
+        $ visavis.communications_done.append('favor') 
+        menu:
+            visavis 'Oh, you so nice. Can I do something for you?'
+            'As a matter of fact, yes':
+                $ visavis.set_token('convention')
+            "The plasure is all mine":
+                $ visavis.set_token('contribution')    
+    elif result == 0:
+        visavis 'Yah-yah... wathever.' 
+    else:
+        $ visavis.communications_done.append('favor') 
+        $ visavis.set_token('antagonism')       
+    return
+
+label lbl_edge_ho_erudition(card):
+    $ visavis.communications_done.append('impress')
+    $ dif = visavis.mind
+    $ result = core.skillcheck(player, 'mind', dif)
+    if result > 0:
+        $ visavis.set_token('convention')
+    elif result = 0:
+        visavis 'Not impressed.'
+    else:
+        $ visavis.set_token('antagonism')      
+    return
+
+label lbl_edge_ho_discussion(card):
+    $ dif = 2 + visavis.mind - visavis.need_level('authority')
+    $ result = core.skillcheck(player, 'mind', dif)
+    if result > 0:
+        $ visavis.communications_done.append('discussion') 
+        $ visavis.set_token('convention')
+        $ player.satisfy_need('authority', 2) 
+    elif result == 0:
+        player 'Waste of a time. Next time, maybe.'
+    else:
+        $ visavis.communications_done.append('discussion') 
+        $ visavis.set_token('antagonism')       
+    return
+
+label lbl_edge_ho_dinner(card):
+    $ player.remove_money(3)
+    $ dif = 2 + visavis.spirit - visavis.need_level('nutrition')
+    $ result = core.skillcheck(player, 'spirit', dif)
+    if result > 0:
+        $ visavis.communications_done.append('dinner') 
+        $ player.satisfy_need('nutrition', 4) 
+        menu:
+            visavis 'Yum! What shoul we talk about?'
+            'Discuss serious matters':
+                $ visavis.set_token('convention')
+            "Let's just relax":
+                $ visavis.set_token('contribution')    
+    elif result == 0:
+        $ player.satisfy_need('nutrition', 4) 
+        'No progress in relationship. The food is good newertheless.' 
+    else:
+        $ visavis.communications_done.append('dinner')  
+        $ visavis.set_token('antagonism')          
+    return
+
+label lbl_edge_ho_booze(card):
+    $ player.remove_money -= 1
+    $ dif = 2 + visavis.spirit - visavis.need_level('amusement')
+    $ result = core.skillcheck(player, 'spirit', dif)
+    if result > 0:
+        $ visavis.communications_done.append('booze')  
+        $ player.satisfy_need('amusement', 2)
+        $ visavis.set_token('contribution')
+    elif result == 0:
+        $ player.satisfy_need('amusement', 2)
+        'No progress in relationship. At least you get some amusement.' 
+    else:
+        $ visavis.communications_done.append('booze')  
+        $ visavis.set_token('antagonism')            
+    return
+
+label lbl_makelove(card):
+    $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
+    return
+
     
-    $ player.drain_energy()
-    return    
-    return    
+    
 
 
-label lbl_quests(target):
+
+
+
+
+
+
+
+                
+label lbl_conquest(target):
     python:
-        quests = target.available_quests(player)
-        menu_items = []
-        for i in quests:
-            menu_items.append((i.name(), i))
-
-        choice = renpy.display_menu(menu_items)
-        description = choice.description()
-
+        visavis = target
+        player.drain_energy()
+        chance_to_rise = False
+        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
+            chance_to_rise = True  
+        visavis.use_token()
     menu:
-        '[description]'
-        'Take this quest':
-            $ core.quest_tracker.add_quest(choice)
-        "Don't interrested":
-            return
+        'Influence' if chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Dominance' if visavis.stance(player).value == 2:
+            $ player.joy('authority', 5)
+        'Hatred' if visavis.relations(player).congruence > -1:
+            $ visavis.relations(player).change('congruence', '+')
+        'Fervor' if visavis.relations(player).fervor < 1:
+            $ visavis.relations(player).change('fervor', '+')       
+        'Connection' if visavis.relations(player).distance > -1:
+            $ visavis.relations(player).change('distance', '-')       
+    return
+
+label lbl_convention(target):
+    python:
+        visavis = target
+        visavis.use_token()
+        player.drain_energy()
+        chance_to_rise = False
+        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
+            chance_to_rise = True 
+    menu:
+        'Influence' if chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Control' if visavis.stance(player).value == 2:
+            $ player.joy('ambition', 5)
+        'Politesse' if visavis.relations(player).distance < 1:
+            $ visavis.relations(player).change('distance', '+')    
+        'Temperance' if visavis.relations(player).fervor > -1:
+            $ visavis.relations(player).change('fervor', '-')       
+        'Admiration' if visavis.relations(player).congruence < 1:
+            $ visavis.relations(player).change('congruence', '-')
+    return
+
+label lbl_contribution(target):
+    python:
+        visavis = target
+        visavis.use_token()
+        player.drain_energy()
+        chance_to_rise = False
+        if visavis.relations(player).harmony()[0] > visavis.stance(player).value + 1:
+            chance_to_rise = True 
+    menu:        
+        'Influence' if chance_to_rise:
+            $ visavis.stance(player).value += 1
+        'Fondness' if visavis.stance(player).value == 2:
+            $ player.joy('communication', 5)
+        'Admiration' if visavis.relations(player).congruence < 1:
+            $ visavis.relations(player).change('congruence', '-')
+        'Passion' if visavis.relations(player).fervor < 1:
+            $ visavis.relations(player).change('fervor', '+')       
+        'Connection' if visavis.relations(player).distance > -1:
+            $ visavis.relations(player).change('distance', '-')       
+    return
+
+label lbl_antagonism(target):
+    python:
+        visavis = target
+        visavis.use_token()
+        player.drain_energy()
+        visavis.stance(player).value -= 1
+    visavis 'I hate you'
     return

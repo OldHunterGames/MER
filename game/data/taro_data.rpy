@@ -22,11 +22,11 @@ init python:
             5:{'name': __('Ace of Wisdom'), 'description': __('Prediction of exceptional effort on wisdom challegne.')},                                               
         },
         'wands':{
-            1:{'name': __('Willed Slave'), 'description': __('Prediction of tiny effort on willpower challegne.')},
-            2:{'name': __('Willed Overseer'), 'description': __('Prediction of light effort on willpower challegne.')},
-            3:{'name': __('Willed Dominatrix'), 'description': __('Prediction of considerable effort on willpower challegne.')},
-            4:{'name': __('Willed Master'), 'description': __('Prediction of great effort on willpower challegne.')},
-            5:{'name': __('Ace of Will'), 'description': __('Prediction of exceptional effort on willpower challegne.')},                     
+            1:{'name': __('Spiritual Slave'), 'description': __('Prediction of tiny effort on willpower challegne.')},
+            2:{'name': __('Spiritual Overseer'), 'description': __('Prediction of light effort on willpower challegne.')},
+            3:{'name': __('Spiritual Dominatrix'), 'description': __('Prediction of considerable effort on willpower challegne.')},
+            4:{'name': __('Spiritual Master'), 'description': __('Prediction of great effort on willpower challegne.')},
+            5:{'name': __('Ace of Spirit'), 'description': __('Prediction of exceptional effort on willpower challegne.')},                     
         }
     }
     

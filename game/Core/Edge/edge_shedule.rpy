@@ -15,21 +15,21 @@ label edge_optional_nap(actor):
     python:
         name = actor.name
         # actor.add_buff('rested')
-    '[name]resting.'
+#    '[name]resting.'
     return      
 
 label edge_optional_whores(actor):
     python:
         name = actor.name
         actor.satisfy_need('eros', 3)
-    "[name]fucks whores."
+#    "[name]fucks whores."
     return
 
 label edge_optional_booze(actor):
     python:
         name = actor.name
         actor.satisfy_need('wellness', 3)
-    "[name]is drunk. Makes him feel better."
+#    "[name]is drunk. Makes him feel better."
     return
 
 label edge_optional_maid(actor):
@@ -37,7 +37,7 @@ label edge_optional_maid(actor):
         name = actor.name
         actor.satisfy_need('authority', 2)
         actor.satisfy_need('comfort', 3)
-    "[name]have subservient maid."
+#    "[name]have subservient maid."
     return
     
 ## FEED SLOT    
@@ -92,9 +92,8 @@ label edge_ration_cooked_high(actor):
 label edge_ration_canibalism(actor):
     python:
         name = actor.name
-    '[name]is a canibal.'    
+    '[name]is a canibal. [name]ration is [ration]'    
     return  
-   
 
 ## ACCOMODATION SLOT    
 label edge_accommodation_makeshift(actor):
@@ -103,7 +102,7 @@ label edge_accommodation_makeshift(actor):
         actor.tense_need('comfort', 'bad_sleep')
         actor.tense_need('prosperity', 'homeless')
         actor.tense_need('wellness', 'bed_of_rocks')
-    "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
+#    "[name]sleeps on a rocky cold ground. It's painful, uncomfortable and reminds of poverty."
     return
 
 label edge_accommodation_mat(actor):
@@ -111,21 +110,21 @@ label edge_accommodation_mat(actor):
         actor.tense_need('comfort', 'bad_sleep')
         actor.tense_need('prosperity', 'poor_accomodation')
         name = actor.name
-    "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
+#    "[name]sleeps on a rugged mat in a common room. It's uncomfortable and reminds of poverty."          
     return 
 
 label edge_accommodation_cot(actor):
     python:
         actor.satisfy_need('comfort', 1)    
         name = actor.name
-    '[name]sleeps on a rough cot under the ruggy blanket. Well, SOME comfort at least...'    
+#    '[name]sleeps on a rough cot under the ruggy blanket. Well, SOME comfort at least...'    
     return 
 
 label edge_accommodation_appartment(actor):
     python:
         actor.satisfy_need('comfort', 3)    
         name = actor.name
-    '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
+#    '[name]sleeps on a real bed in a single apartments. Comfortable and even luxurious by the standards of the border.'    
     return  
 
 ## JOB SLOT        
@@ -135,7 +134,7 @@ label edge_job_idle(actor):
         actor.add_buff('rested')
         actor.satisfy_need('comfort', 2)
         txt = encolor_text('some comfort', 2)
-    "[name]have no job to do and resting. It's conserves energy and gives [txt]"
+#    "[name]have no job to do and resting. It's conserves energy and gives [txt]"
     return
    
 label edge_job_beg(actor):
@@ -151,7 +150,7 @@ label edge_job_beg(actor):
         actor.eat(1, -1)
         ration = actor.food_info()    
       
-    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience. [ration]'
+#    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience. [ration]'
     return
     
 label edge_job_bukake(actor):
@@ -165,7 +164,7 @@ label edge_job_bukake(actor):
         ration = actor.food_info()    
         text = __('')
     '[name]humbly sucks stangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
-    'Ration: [ration]'
+#    'Ration: [ration]'
     return
     
 label edge_job_manual(actor):
