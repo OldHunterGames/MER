@@ -111,7 +111,7 @@ init python:
             __('Brigitte'),__('Valentine'),__('Valerie'),__('Victoria'),__('Virgine'),            
             __('Gabriella'),__('Gvinniver'),__('Godelif'),__('Daniela'),__('Dafna'),        
             __('Denise'),__('Jine'),__('Jinnet'),__('Joel'),__('Josie'),        
-            __('Julie'),__('Juliette'),__('Justine'),__('Diminique'),__('Dorotea'),        
+            __('Julie'),__('Juliette'),__('Justine'),__('Dominique'),__('Dorotea'),        
             __('Jaquline'),__('Jen'),__('Julien'),__('Zoe'),__('Ivette'),     
             __('Ivonne'),__('Inesse'),__('Iren'),__('Izidore'),__('Kamilla'),            
             __('Karol'),__('Kler'),__('Kolette'),__('Katrine'),__('Kristine'),        

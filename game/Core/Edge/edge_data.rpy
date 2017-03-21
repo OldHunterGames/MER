@@ -186,16 +186,36 @@ init -10 python:
     'military': {'leader': __('Commander of'), 'champion': __('Chief-sergeant of'), 'agent': __('Scout from'), 'ambassador': __('Quartermaster of'), 'advisor': __('Chief of staff from'), 'member': __('Squaddie from')},             
     }
     
-    edge_option_cards = {'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
+    edge_option_cards = {'nevermind': {'name': 'Nevermind', 'description': __('Nevermind'), 'label': 'lbl_edge_comm_nevermind', 'image': 'images/miscards/card.png', }, 
+        'makelove': {'name': 'Make love', 'description': __('Make love\n'), 'label': 'lbl_makelove', 'image': 'images/miscards/card.png', }, 
+        
+        'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
         'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'images/miscards/card.png', }, 
         
-        'fi_intimidate': {'name': 'Intimidate', 'description': __('Intimidate/nArdent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'images/miscards/card.png', }, 
-        'fi_getknow': {'name': 'Get to know', 'description': __('Get to know/nLawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'images/miscards/card.png', }, 
-        'fi_flatter': {'name': 'Flatter', 'description': __('Flatter/nGood deed. Opposed finesse check to succed. Get "Lovers" relations arcane.'), 'label': 'lbl_first_impression_flatter', 'image': 'images/miscards/card.png', }, 
-        'fi_joke': {'name': 'Sudden jock', 'description': __('Sudden jock/nChaotic deed. Unpredictible outcome.'), 'label': 'lbl_first_impression_joke', 'image': 'images/miscards/card.png', }, 
+        'fi_intimidate': {'name': 'Intimidate', 'description': __('Intimidate\nArdent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'images/miscards/card.png', }, 
+        'fi_getknow': {'name': 'Get to know', 'description': __('Get to know\nLawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'images/miscards/card.png', }, 
+        'fi_flatter': {'name': 'Flatter', 'description': __('Flatter\nGood deed. Opposed finesse check to succed. Get "Lovers" relations arcane.'), 'label': 'lbl_first_impression_flatter', 'image': 'images/miscards/card.png', }, 
+        'fi_joke': {'name': 'Sudden jock', 'description': __('Sudden jock\nChaotic deed. Unpredictible outcome.'), 'label': 'lbl_first_impression_joke', 'image': 'images/miscards/card.png', }, 
         'fi_mock': {'name': 'Mock', 'description': __('Mock/nEvil deed. Gain "Moon" relations arcane and self-affirm your authority.'), 'label': 'lbl_first_impression_mock', 'image': 'images/miscards/card.png', }, 
-        'fi_reticence': {'name': 'Reticence', 'description': __('Intimidate/nTimid deed. Be patient and quiet. No risk. No reward.'), 'label': 'lbl_first_impression_reticence', 'image': 'images/miscards/card.png', }, 
+        'fi_reticence': {'name': 'Reticence', 'description': __('Reticence\nTimid deed. Be patient and quiet. No risk. No reward.'), 'label': 'lbl_first_impression_reticence', 'image': 'images/miscards/card.png', }, 
+
+        'comm_garantor': {'name': 'Be my garantor', 'description': __('Garantor\nYou need a garantor, to become a major House citisen. This person can help you.'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
+        'com_hungout': {'name': 'Hung out', 'description': __('Hung out\nSpend some quality time together to promote your relationship.'), 'label': 'lbl_edge_comm_hungout', 'image': 'images/miscards/card.png', }, 
+        'com_present': {'name': 'Present', 'description': __('Present\nMake a valuable present as an offering to promote your relationship.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', },         
+        'com_takequest': {'name': 'Quest', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+#        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
+
+        'ho_promenade': {'name': 'Promenade', 'description': __('Promenade\nOpposed Spirit check. Gain communication and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_promenade', 'image': 'images/miscards/card.png', }, 
+        'ho_booze': {'name': 'Booze up', 'description': __('Booze up\nCosts 1 bar. Opposed Spirit check. Gain amusement and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_booze', 'image': 'images/miscards/card.png', }, 
+        'ho_dinner': {'name': 'Dinner treat', 'description': __('Dinner treat\nCosts 3 bars. Opposed Spirit check. Gain nutrition and "Lovers" or "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_dinner', 'image': 'images/miscards/card.png', },         
+        'ho_discussion': {'name': 'Deep conversation', 'description': __('Deep conversation\nOpposed Wisdom check. Gain authority and "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_discussion', 'image': 'images/miscards/card.png', }, 
+        'ho_erudition': {'name': 'Impressive erudition', 'description': __('Imprssive erudition\nOpposed Wisdo, check. Gain "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_erudition', 'image': 'images/miscards/card.png', }, 
+        'ho_prank': {'name': 'Impressive prank', 'description': __('Impressive prank\nOpposed Finesse check. Gain "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_prank', 'image': 'images/miscards/card.png', },         
+        'ho_might': {'name': 'Impressive might', 'description': __('Impressive might\nOpposed Might check. Gain "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_might', 'image': 'images/miscards/card.png', }, 
+        'ho_favor': {'name': 'Carry a favor', 'description': __('Carry a favor\nOpposed Finesse check. Gain "Lovers" or "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_favor', 'image': 'images/miscards/card.png', }, 
+        'ho_dance': {'name': 'Dance all night', 'description': __('Dance all night long\nArdent deed. Opposed Might check. Gain activity and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_dance', 'image': 'images/miscards/card.png', },         
+
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
