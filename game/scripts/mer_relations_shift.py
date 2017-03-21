@@ -67,16 +67,16 @@ class ShiftRelations(object):
     def left_text(self):
         value = self.relations.axis[self.left_axis[0]]
         if self.is_left_active():
-            return getattr(self.relations, 'show_%s' % self.axis)(False, False, value - 1)
+            return getattr(self.relations, 'show_%s' % self.left_axis[0])(False, False, value - 1)
         else:
-            return getattr(self.relations, 'show_%s' % self.axis)(False)
+            return getattr(self.relations, 'show_%s' % self.left_axis[0])(False)
 
     def right_text(self):
         value = self.relations.axis[self.right_axis[0]]
         if self.is_right_active():
-            return getattr(self.relations, 'show_%s' % self.axis)(False, False, value + 1)
+            return getattr(self.relations, 'show_%s' % self.right_axis[0])(False, False, value + 1)
         else:
-            return getattr(self.relations, 'show_%s' % self.axis)(False)
+            return getattr(self.relations, 'show_%s' % self.right_axis[0])(False)
 
     def middle_text(self):
         return self.player.get_need(self._needs[self.token]).name
