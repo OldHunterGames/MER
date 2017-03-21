@@ -65,14 +65,14 @@ class ShiftRelations(object):
         return empty_card()
 
     def left_text(self):
-        value = self.relations.axis[self.axis]
+        value = self.relations.axis[self.left_axis[0]]
         if self.is_left_active():
             return getattr(self.relations, 'show_%s' % self.axis)(False, False, value - 1)
         else:
             return getattr(self.relations, 'show_%s' % self.axis)(False)
 
     def right_text(self):
-        value = self.relations.axis[self.axis]
+        value = self.relations.axis[self.right_axis[0]]
         if self.is_right_active():
             return getattr(self.relations, 'show_%s' % self.axis)(False, False, value + 1)
         else:
