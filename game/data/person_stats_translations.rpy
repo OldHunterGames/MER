@@ -1,7 +1,7 @@
 init python:
     relations_translation = {'fervor': {-1: __("delicate"), 0: __("straight"), 1: __("passionate")},
         'distance': {-1: __("intimate"), 0: __("fair"), 1: __("formal")},
-        'congruence': {-1: __("admirer"), 0: __("associate"), 1: __("hater")}}
+        'congruence': {-1: __("hater"), 0: __("associate"), 1: __("admirer")}}
 
     stance_translation = {'master': [__('cruel'), __('opressive'), __('rightful'), __('benevolent')],
             'slave': [__('rebellious'), __('forced'), __('accustomed'), __('willing')],
