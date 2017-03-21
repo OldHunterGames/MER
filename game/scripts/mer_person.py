@@ -164,6 +164,49 @@ def trait_chance(fetish_value, taboo_value):
         return None
 
 
+class Slave(object):
+
+    def __init__(self, person, master):
+        self._master = master
+        self._slave = person
+        self._slave_relations()
+
+    def __getattr__(self, attr):
+        return getattr(self._slave, attr)
+
+    def _slave_relations(self):
+        self._master.relations(self._slave).change_type('slave')
+
+    def release(self):
+        self._master.relations(self._slave).change_type('neutral')
+
+
+class SlaveStorage(object):
+
+    def __init__(self):
+        self._max_slaves = 1
+        self._slaves = []
+
+    def slaves(self):
+        return [i for i in self._slaves]
+
+    def add_slave(self, person, master):
+        if self.has_space():
+            self._slaves.append(Slave(person, master))
+            return True
+        return False
+
+    def remove_slave(self, slave):
+        slave.release()
+        self._slaves.remove(slave)
+
+    def set_max_slaves(self, value):
+        self._max_slaves = value
+
+    def has_space(self):
+        return len(self._slaves) < self._max_slaves
+
+
 class DescriptionMaker(object):
 
     def __init__(self, person):
@@ -633,7 +676,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.master = None          # If this person is a slave, the master will be set
         self.supervisor = None
         self.overseer = None
-        self.slaves = []
+        self.slaves = SlaveStorage()
         self.subordinates = []
         self.ap = 1
         self.schedule = Schedule()
@@ -1404,15 +1447,17 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.relations(self.game_ref.player)
 
     def enslave(self, target):
-        target.master = self
-        target.set_supervisor(self)
-        self.slaves.append(target)
+        self.slaves.add_slave(target, self)
         self.relations(target)
 
-    def remove_slave(self, target):
-        self.slaves.remove(target)
-        target.master = None
-        target.set_supervisor(None)
+    def remove_slave(self, slave):
+        self.slaves.remove_slave(slave)
+
+    def get_slaves(self):
+        return self.slaves.slaves()
+
+    def has_slaves(self):
+        return len(self.get_slaves()) > 0
 
     def set_supervisor(self, supervisor):
         self.supervisor = supervisor

@@ -204,8 +204,11 @@ screen sc_postfight_win(fight):
                         text 'Captives'
                         for i in fight.captives:
                             textbutton i.name:
-                                action Function(player.enslave, i), Function(fight.captives.remove, i)
-                textbutton 'Take all' action Function(take_all_captives, player, fight.captives)
+                                action [Function(player.enslave, i), Function(fight.captives.remove, i),
+                                    SensitiveIf(player.slaves.has_space())]
+                # textbutton 'Take all':
+                    # action [Function(take_all_captives, player, fight.captives),
+                        # SensitiveIf(player.slaves.has_space())]
 
         textbutton 'Leave' action Return():
             yalign 1.0

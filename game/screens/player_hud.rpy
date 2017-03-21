@@ -12,6 +12,11 @@ screen sc_player_hud:
             action Function(renpy.call_in_new_context, 'lbl_tests')
         textbutton 'quests':
             action Show('sc_quests')
+        if player.has_slaves():
+            textbutton 'Slave':
+                action Show('sc_character_info_screen', person=player.get_slaves()[0], communicate=True)
+            textbutton 'Release Slave':
+                action Function(player.remove_slave, player.get_slaves()[0])
         if core.is_tokens_game_active():
             textbutton 'divination':
                 action Function(core.start_tokens_game, player)

@@ -56,6 +56,9 @@ class Relations(object):
     def type(self):
         return self._type
 
+    def change_type(self, name):
+        self._type = name
+
     @property
     def stance(self):
         value = self._stance
