@@ -222,11 +222,11 @@ class DescriptionMaker(object):
                 background=person.background)
         else:
             string += '.\n'
-        if person.debt:
+        if person.obligation:
             string += '{person.name} %s. \n' % \
-                store.debts_dict.get(
+                store.obligations_dict.get(
                     person.player_relations().attitude_tendency(),
-                    'debt description here')
+                    'obligation description here')
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
@@ -757,7 +757,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._current_job = None
         self.quests_to_give = []
         self._phrases = dict()
-        self.debt = False
+        self.obligation = False
         self.rewards = CardsMaker()
 
     def get_phrase(self, id_, default_value="No phrase"):
