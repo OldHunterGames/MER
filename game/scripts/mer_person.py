@@ -231,7 +231,6 @@ class DescriptionMaker(object):
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
             '{person.name} has a {hair} and {skin}. '
-        string += weapon_txt
         string += '\n'
         start = True
         for i in person.features:
@@ -762,7 +761,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def get_phrase(self, id_, default_value="No phrase"):
         phrase = self._phrases.get(
-            id_, store.default_phrases.get(
+            id_, store.basic_dialogues.get(
                 id_, default_value))
         return phrase
 
@@ -1611,9 +1610,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         value = self.physique
         value += self.skill('physique') - 3
         weapons = self.weapon_slots()
-        if (weapons['harness'] is None and
-                weapons['belt1'] is None and
-                weapons['belt2'] is None):
+        if (self.get_slot('harness') is None and
+                self.get_slot('belt1')is None and
+                self.get_slot('belt2') is None):
             value -= 1
         for i in weapons.values():
             if i is not None:

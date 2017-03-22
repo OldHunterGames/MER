@@ -19,7 +19,8 @@ init python:
         'rusty_axe':{'name': __('rusty axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 1, 'price': 0},
         'rusty_knife':{'name': __('rusty knife'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 1, 'price': 0},
         'knuckles':{'name': __('knuckles'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 1, 'price': 0},            
-        'lancet':{'name': __('lancet'), 'size': 'offhand', 'damage_type': 'slashing', 'quality': 1, 'price': 0}
+        'lancet':{'name': __('lancet'), 'size': 'offhand', 'damage_type': 'slashing', 'quality': 1, 'price': 0},
+        'bare_hands': {'name': __('bare hands'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 1, 'price': -1}
         }
 
     
@@ -28,6 +29,7 @@ init python:
         'soft_armor': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 3, 'price': 2},            
         'leather_coat': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 2, 'price': 1},  
         'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy_armor', 'quality': 1},
+        'nude': {'name': __('nude'), 'armor_rate': 'light_armor', 'quality': 1, 'price': -1}
             }
 
 

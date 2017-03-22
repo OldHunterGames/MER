@@ -3,25 +3,35 @@ import collections
 from mer_itemsstorage import ItemsStorage
 from modifiers import ModifiersStorage
 import mer_utilities as utilities
+from mer_item import create_item
+
 
 class Inventory(ItemsStorage, ModifiersStorage):
 
     def __init__(self):
         super(Inventory, self).__init__()
-        self.carried_weapons = collections.OrderedDict([('harness', None), ('belt1', None),
-                                                        ('belt2', None), ('armband', None), ('ankleband', None)])
+        self.carried_weapons = collections.OrderedDict(
+            [
+                ('harness', None), ('belt1', None),
+                ('belt2', None), ('armband', None), ('ankleband', None)
+            ]
+        )
         self.carried_armor = collections.OrderedDict(
             [('underwear', None), ('garments', None), ('overgarments', None)])
         self._main_hand = None
         self._other_hand = None
         self.storage = []
         self.money = 0
-    
+
     def get_all_modifiers(self):
         list_ = []
         for i in self.equiped_items():
             list_.extend(i.get_all_modifiers())
         return list_
+
+    def get_slot(self, key):
+        return self.carried_weapons.get(
+            key, self.carried_armor.get(key, None))
 
     def remove_modifier(self, source):
         pass
@@ -30,7 +40,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
         return [i for i in self.storage if i.equiped]
 
     def weapon_slots(self):
-        return self.carried_weapons.keys()
+        return self.carried_weapons
 
     def armor_slots(self):
         return self.carried_armor.keys()
@@ -51,7 +61,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
                     break
         self.add_item(weapon)
         weapon.equip()
-        
+
         if weapon.size == 'twohand':
             self.disarm_weapon('other_hand')
             self._other_hand = weapon
@@ -145,7 +155,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
                 setattr(self, '_other_hand', None)
         except AttributeError:
             pass
-        setattr(self, '_'+hand, None)
+        setattr(self, '_' + hand, None)
 
     def equip_armor(self, armor, slot):
         self.add_item(armor)
@@ -208,19 +218,61 @@ class Inventory(ItemsStorage, ModifiersStorage):
         if return_item:
             return returned
 
-    def weapon_slots(self):
-        return self.carried_weapons
+
+class SimplyfiedInventory(Inventory):
+
+    def __init__(self):
+        super(Inventory, self).__init__()
+        self.carried_weapons = collections.OrderedDict(
+            [
+                ('weapon', create_item('bare_hands', 'weapon'))
+            ]
+        )
+        self.carried_armor = collections.OrderedDict(
+            [
+                ('garment', create_item('nude', 'armor')),
+                ('accesories', None),
+                ('overgarments', None)
+            ]
+        )
+        self._main_hand = None
+        self._other_hand = None
+        self.storage = []
+        self.money = 0
+
+    def slots(self):
+        return {'weapon': ['offhand', 'versatile', 'shield', 'twohand']}
+
+    def available_for_slot(self, slot, storage=None):
+        if storage is None:
+            storage = self.storage
+        slots = self.slots()
+        if slot == 'accesories':
+            return [i for i in self.storage if i.type == 'treasure']
+        list_ = []
+        if slot in self.armor_slots():
+            for item in storage:
+                if item.type == 'armor' and not item.equiped:
+                    list_.append(item)
+        else:
+            for item in storage:
+                if item.type != 'armor' and not item.equiped:
+                    if item.size in slots[slot]:
+                        list_.append(item)
+        return list_
+
 
 class InventoryWielder(object):
 
     def init_inventorywielder(self):
-        self.inventory = Inventory()
+        self.inventory = SimplyfiedInventory()
         self.corpse_storage = []
         self.corpse_buffer = None
 
     @property
     def trade_level(self):
         return self.inventory.trade_level
+
     @trade_level.setter
     def trade_level(self, value):
         self.inventory.trade_level = value
@@ -247,7 +299,7 @@ class InventoryWielder(object):
 
     def transfer_money(self, storage, value):
         self.inventory.transfer_money(storage, value)
-    
+
     @utilities.Observable
     def add_corpse(self, person):
         self.corpse_storage.append(person)
@@ -329,9 +381,6 @@ class InventoryWielder(object):
     def disarm_weapon(self, hand='main_hand'):
         self.inventory.disarm_weapon(hand)
 
-    def add_item(self, item):
-        self.inventory.storage.append(item)
-
     def equip_armor(self, item, slot):
         self.inventory.equip_armor(item, slot)
 
@@ -340,6 +389,9 @@ class InventoryWielder(object):
             self.equip_armor(item, slot)
         elif item.type == 'weapon':
             self.equip_weapon(item, slot)
+
+    def available_for_slot(self, slot):
+        return self.inventory.available_for_slot(slot)
 
     def equip_on_slot(self, slot, item):
         self.inventory.equip_on_slot(slot, item)
@@ -368,3 +420,6 @@ class InventoryWielder(object):
 
     def transfer_item(self, item, storage, value=1):
         self.inventory.transfer_item(item, storage, value)
+
+    def get_slot(self, slot):
+        return self.inventory.get_slot(slot)

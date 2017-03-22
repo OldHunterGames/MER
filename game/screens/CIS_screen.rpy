@@ -141,7 +141,7 @@ screen sc_info_popup(person):
             for i in person.visible_features():
                 text i.name
             for i in person.equiped_items():
-                text i.name
+                text i.name()
               
 screen sc_weapon_info(weapon):
     frame:
@@ -150,8 +150,8 @@ screen sc_weapon_info(weapon):
         vbox:
             spacing 5
             text weapon.stats()
-            if weapon.description is not None:
-                text weapon.description
+            if weapon.description() is not None:
+                text weapon.description()
             text 'price: ' + str(weapon.price)
 
 screen sc_vitality_info(person):

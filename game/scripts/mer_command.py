@@ -24,7 +24,7 @@ class Command(object):
 class Card(Command):
 
     def image(self):
-        raise NotImplementedError()
+        return empty_card()
 
     def description(self):
         raise NotImplementedError()

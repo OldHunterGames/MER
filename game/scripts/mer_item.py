@@ -7,9 +7,12 @@ import renpy.exports as renpy
 from features import Feature
 from modifiers import Modifiable
 from mer_utilities import encolor_text
+from mer_command import Card
 
 # sizes 'offhand', 'versatile', 'shield', 'twohand'
-class Item(Modifiable):
+
+
+class Item(Modifiable, Card):
     type_ = 'item'
 
     def __init__(self, data_dict, id_, *args, **kwargs):
@@ -17,7 +20,7 @@ class Item(Modifiable):
         self.id = id_
         self.equiped = False
         self.init_modifiable()
-        
+
         self.features = []
         self.features_data_dict = 'item_features'
         if 'price' in kwargs.keys():
@@ -34,6 +37,12 @@ class Item(Modifiable):
             value += i.count_modifiers(attribute)
         return value
 
+    def run(self, person, slot):
+        person.equip_on_slot(slot, self)
+
+    def sellable(self):
+        return self.price > 0
+
     @property
     def price(self):
         return self.data.get('price', 1)
@@ -47,7 +56,6 @@ class Item(Modifiable):
     def set_quality(self, quality):
         self._quality = quality
 
-    @property
     def name(self):
         if self.new_name is not None:
             return self.new_name
@@ -72,12 +80,11 @@ class Item(Modifiable):
     @property
     def type(self):
         return self.type_
-    
+
     @property
     def amount(self):
         return 1
 
-    @property
     def description(self):
         if self.new_description is not None:
             return self.new_description
@@ -97,7 +104,6 @@ class Item(Modifiable):
 
     def add_feature(self, id_):
         self.features.append(Feature(id_, self.features_data_dict))
-        
 
     def remove_feature(self, feature):
         if isinstance(feature, str):
@@ -124,7 +130,6 @@ class Item(Modifiable):
     def unequip(self):
         self.equiped = False
 
-
     def stats(self):
         return ''
 
@@ -135,7 +140,9 @@ class Item(Modifiable):
     def present(self):
         return self.data.get('present', None)
 
-       
+    def image(self):
+        return self.data.get('image', super(Item, self).image())
+
 
 class Stackable(Item):
 
@@ -147,16 +154,16 @@ class Stackable(Item):
                 setattr(self, key, value)
             return
         super(Stackable, self).__init__(*args, **kwargs)
-        
+
         self._amount = 1
-    
+
     def stackable(self):
         return True
 
     @property
     def amount(self):
         return self._amount
-    
+
     def use(self):
         self._use()
         self._amount -= 1
@@ -179,8 +186,7 @@ class Stackable(Item):
 
 class Treasure(Stackable):
 
-    _type = 'treasure'
-
+    type_ = 'treasure'
 
 
 class Weapon(Item):
@@ -213,7 +219,7 @@ class Weapon(Item):
 
     def set_damage_type(self, wpn_dmg):
         self.add_feature(wpn_dmg)
-    
+
     def stats(self):
         damage_type = self.feature_by_slot('wpn_dmg').name
         size = self.feature_by_slot('wpn_size').name
@@ -223,6 +229,7 @@ class Weapon(Item):
         else:
             text = 'shield'.format(size=size, damage_type=damage_type)
         return encolor_text(text, self.quality)
+
 
 class Armor(Item):
     type_ = 'armor'
@@ -241,7 +248,8 @@ class Armor(Item):
     def stats(self):
         text = '{self.armor_rate}'.format(self=self)
         return encolor_text(text, self.quality)
-    
+
+
 def get_weapon_sizes():
     list_ = []
     for key, value in store.item_features.items():
@@ -249,12 +257,14 @@ def get_weapon_sizes():
             list_.append(key)
     return list_
 
+
 def get_weapon_damage_types():
     list_ = []
     for key, value in store.item_features.items():
         if value['slot'] == 'wpn_dmg':
             list_.append(key)
     return list_
+
 
 def get_armor_rates():
     list_ = []
@@ -266,8 +276,8 @@ def get_armor_rates():
 
 def create_item(id, type):
     types = {'armor': (Armor, store.armor_data),
-        'weapon': (Weapon, store.weapon_data),
-        'treasure': (Treasure, store.treasure_data)}
+             'weapon': (Weapon, store.weapon_data),
+             'treasure': (Treasure, store.treasure_data)}
     item_properties = types[type]
     item = item_properties[0](item_properties[1], id)
     return item
