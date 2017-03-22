@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+    # -*- coding: UTF-8 -*-
 import random
 
 import renpy.store as store
@@ -179,6 +179,7 @@ class Background(object):
             try:
                 self.family = random.choice(available_families)
             except IndexError:
+                print 'family randomed'
                 self.family = random.choice(families)
         else:
             self.family = Family(family)
@@ -194,7 +195,7 @@ class Background(object):
             try:
                 self.education = random.choice(available_educations)
             except IndexError:
-                self.education = random.choice(educations)
+                self.education = Education('carefree')
         else:
             self.education = Education(education)
 
@@ -209,9 +210,7 @@ class Background(object):
             try:
                 self.occupation = random.choice(available_occupations)
             except IndexError:
-                occupation = random.choice(store.occupations_dict.keys())
-                occupation = Occupation(occupation)
-                self.occupation = occupation
+                self.occupation = None
         else:
             self.occupation = Occupation(occupation)
 
@@ -221,6 +220,8 @@ class Background(object):
             if owner.age == 'junior':
                 list_.remove('occupation')
             for i in list_:
-                getattr(self, i).apply(owner)
+                bg = getattr(self, i)
+                if bg is not None:
+                    bg.apply(owner)
             self.equip(owner)
             self._applied = True

@@ -6,7 +6,7 @@ screen sc_quests:
             vbox:
                 for i in core.quest_tracker.active_quests:
                     if i.reminder:
-                        textbutton i.name:
+                        textbutton i.name():
                             style 'hoverable_text'
                             action NullAction()
                             hovered Show('sc_text_popup', text=i.description())
