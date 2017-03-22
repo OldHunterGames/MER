@@ -24,10 +24,15 @@ class QuestTracker(object):
 
     def __init__(self):
         self.active_quests = []
+        self.new_quests = False
 
     def add_quest(self, quest):
         quest.activate()
         self.active_quests.append(quest)
+        self.new_quests = True
+
+    def check(self):
+        self.new_quests = False
 
     def remove_quest(self, quest):
         quest.active = False
@@ -40,6 +45,14 @@ class QuestTracker(object):
         finished = quest.finish(player)
         if finished:
             self.remove_quest(quest)
+            for i in quest.ending_tags:
+                for j in self.active_quests:
+                    if i in j.tags:
+                        self.remove_quest(j)
+
+    def remove_by_tag(self, tags):
+        for i in [i for i in self.active_quests]:
+            pass
 
 
 class MistsOfEternalRome(object):

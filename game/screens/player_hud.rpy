@@ -10,7 +10,11 @@ screen sc_player_hud:
             action Show('sc_schedule', person=player)
         textbutton "tests":
             action Function(renpy.call_in_new_context, 'lbl_tests')
-        textbutton 'quests':
+        python:
+            quest_text = __('quests')
+            if core.quest_tracker.new_quests:
+                quest_text += '{color=#f00}!{/color}'
+        textbutton quest_text:
             action Show('sc_quests')
         if player.has_slaves():
             textbutton 'Slave':

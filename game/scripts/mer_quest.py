@@ -5,15 +5,18 @@ import renpy.store as store
 class Quest(object):
 
     def __init__(self, one_time=False,
-                 targets=None, *args, **kwargs):
+                 targets=None, reminder=False, *args, **kwargs):
         self._targets = []
         if targets is not None:
             self._targets.extend(targets)
         self._data = kwargs
         self._one_time = one_time
         self._completed = 0
+        self.reminder = reminder
         self.employes = None
         self.active = False
+        self.ending_tags = []
+        self.tags = []
 
     def description(self):
         no_desc = 'No description'
@@ -41,6 +44,8 @@ class Quest(object):
         return self._data['end_label']
 
     def completed(self, performer):
+        if self.reminder:
+            return False
         return all([i.completed(performer) for i in self._targets])
 
     def finish(self, performer):
@@ -53,15 +58,6 @@ class Quest(object):
         if self.employer is not None:
             self.employer.debt = True
         return True
-
-    def available(self, performer):
-        if self._one_time:
-            if self._completed > 0:
-                return False
-        return self._available(performer)
-
-    def _available(self, performer):
-        raise NotImplementedError()
 
     def __getattr__(self, key):
         try:
@@ -110,14 +106,8 @@ class BringPerson(QuestTarget):
 class SlaverQuest(Quest):
 
     def __init__(self, *args, **kwargs):
-        super(SlaverQuest, self).__init__(
-            end_label='lbl_slaver_quest_end', *args, **kwargs)
+        super(SlaverQuest, self).__init__(*args, **kwargs)
         self.add_target(BringPerson({'allure': 4}))
-
-    def _available(self, performer):
-        relations = self.employer.relations(performer)
-        axis = ['fervor', 'congruence', 'distance']
-        return any([relations.active(i) for i in axis])
 
     def get_available_slaves(self, performer):
         return self.targets[0].get_available_slaves(performer)
@@ -141,14 +131,19 @@ class BasicRelationsQuest(Quest):
         self.point = point
         self.add_target(BringBars())
 
-    def _available(self, performer):
-        relations = performer.relations(self.employer)
-        return (relations.active(self.axis) and
-                relations.axis_str(self.axis) == self.point)
-
     def _finish(self, performer):
         performer.relations(self.employer).stance += 1
         return True
 
     def _activate(self):
         self.employer.player_relations().use(self.axis)
+
+
+class BecomeSlave(QuestTarget):
+
+
+    def __init__(self, *args, **kwargs):
+        super(BecomeSlave, self).__init__(*args, **kwargs)
+
+    def completed(self, performer):
+        return performer.master is not None

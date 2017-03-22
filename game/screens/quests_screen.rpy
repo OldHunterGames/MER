@@ -5,6 +5,12 @@ screen sc_quests:
         frame:
             vbox:
                 for i in core.quest_tracker.active_quests:
+                    if i.reminder:
+                        textbutton i.name:
+                            style 'hoverable_text'
+                            action NullAction()
+                            hovered Show('sc_text_popup', text=i.description())
+                            unhovered Hide('sc_text_popup')
                     if i.completed(player):
                         textbutton encolor_text(i.name(), 'green'):
                             action Function(core.quest_tracker.finish_quest, i, player)
@@ -18,4 +24,4 @@ screen sc_quests:
                 textbutton 'Leave':
                     action Hide('sc_quests')
     on 'hide':
-        action Hide('sc_text_popup')
+        action Hide('sc_text_popup'), Function(core.quest_tracker.check)

@@ -553,7 +553,7 @@ init python:
 
         def get_player_cards(self):
             person = self.person
-            cards = TokensGame.get_defaults(person)
+            cards = TokensGame.get_defaults(person, attributed=self.attribute)
             cards.append('fool')
             cards.append('tower')
             if any([value.tensed for key, value in person.needs.items() if person.need_level(key) == 1]):

@@ -756,7 +756,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._energy = 0
         self.set_energy()
         self._current_job = None
-        self.quests_to_give = MakeBasicRelationsQuests(self).run()
+        self.quests_to_give = []
         self._phrases = dict()
         self.debt = False
 
@@ -773,8 +773,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return any(self.available_quests(player))
 
     def available_quests(self, player):
-        return [i for i in self.quests_to_give if i.available(player) and
-                not i.active]
+        return [i for i in self.quests_to_give if not i.active]
 
     def clear_quests(self):
         self.quests_to_give = []
@@ -1662,7 +1661,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.productivity_raised = True
 
     def reset_productivity(self):
-        self.schedule.job.productivity = 0
+        self.schedule.job.focus = 0
 
     def job_productivity(self):
         return self.schedule.job.focus
