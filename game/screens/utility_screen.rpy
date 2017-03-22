@@ -477,7 +477,7 @@ screen edge_sell_screen(person, item_type):
     frame:
         has vbox
         for i in person.get_items(item_type):
-            textbutton "%s(%s)"%(i.name, encolor_text(show_resource[i.price], i.price)):
+            textbutton "%s(%s)"%(i.name(), encolor_text(show_resource[i.price], i.price)):
                 action Function(person.remove_item, i, return_item=False), Function(edge.resources.income, i.price)
         textbutton 'Leave':
             action Return()
