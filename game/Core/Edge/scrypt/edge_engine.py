@@ -138,34 +138,35 @@ class EdgeEngine(object):
                 break
         return generated
 
-    def _init_player_schedule(self, unlock_func, data_dict,
-                              setter_func, default_name, default_obj_id, cls):
+    def _init_player_schedule(self, person, data_dict, type_,
+                              default_obj_id, cls):
         for i in data_dict:
-            obj = ScheduleObject(i, data_dict[i])
+            obj = cls(i, data_dict[i])
             if not obj.hidden:
-                unlock_func(i, obj)
+                person.schedule.unlock(i, type_, obj)
             if i == default_obj_id:
-                setter_func(default_name, obj)
+                person.schedule.set_default(type_, obj)
 
     def init_player_schedule(self, player):
         self._init_player_schedule(
-            player.schedule.unlock_accommodation,
-            store.edge_accomodations_data,
-            player.schedule.set_default, 'accommodation',
-            'makeshift', ScheduleObject
+            player, store.edge_accomodations_data,
+            'accommodation', 'makeshift', ScheduleObject
         )
         self._init_player_schedule(
-            player.schedule.unlock_ration, store.edge_feeds_data,
-            player.schedule.set_default, 'ration', 'forage', ScheduleObject
+            player, store.edge_feeds_data,
+            'ration', 'forage', ScheduleObject
         )
         self._init_player_schedule(
-            player.schedule.unlock_job, store.edge_jobs_data,
-            player.schedule.set_default, 'job', 'idle', ScheduleJob
+            player, store.edge_jobs_data,
+            'job', 'idle', ScheduleJob
         )
-        self._init_player_schedule(
-            player.schedule.unlock_optional, store.edge_overtimes_data,
-            None, None, None, ScheduleObject
-        )
+        self._init_overtimes(player, store.edge_overtimes_data)
+
+    def _init_overtimes(self, person, dict):
+        for i in dict:
+            obj = ScheduleObject(i, dict[i])
+            if not obj.hidden:
+                person.schedule.unlock(i, 'optional', obj)
 
     def explore_all(self):
         for i in store.edge_locations.items():

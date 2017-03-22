@@ -91,7 +91,7 @@ class Schedule(object):
     def set_default(self, type, obj, **kwargs):
         setattr(self, '_default_' + type, obj)
         if getattr(self, '_' + type) is None:
-            getattr(self, 'set_' + type)(obj, **kwargs)
+            self.set(type, obj, **kwargs)
 
     def get_cost(self):
         return (self._accommodation.cost +
@@ -129,19 +129,11 @@ class Schedule(object):
         if slot in self._optional.keys():
             self._optional[slot] = schedule_object
 
-    def unlock_optional(self, id, schedule_object):
-        self._available_optionals[id] = schedule_object
-
     def remove_optional(self, id):
         try:
             del self._available_optionals[id]
         except KeyError:
             pass
-
-    def available_optionals(self, current_world):
-        return [i for i in self._available_optionals.values()
-                if i.world == current_world and
-                i not in self._optional.values()]
 
     def get_optional(self, key):
         return self._optional[key]
@@ -177,57 +169,33 @@ class Schedule(object):
 
         self._job = obj
 
-    def set_accommodation(self, accommodation, single=False, **kwargs):
-        self._set('_accommodation', accommodation, single, **kwargs)
-
-    def set_ration(self, ration, single=False, **kwargs):
-        self._set('_ration', ration, single, **kwargs)
-
-    def _set(self, attr_name, obj, single=False, **kwargs):
+    def set(self, attr_name, obj, single=False, **kwargs):
         obj.single = single
         obj.add_data(kwargs)
-        setattr(self, attr_name, obj)
+        if attr_name == 'job':
+            self.set_job(obj, single, **kwargs)
+        else:
+            setattr(self, '_' + attr_name, obj)
 
-    def _unlock(self, id_, attr_name, value):
-        getattr(self, attr_name)[id_] = value
+    def unlock(self, id_, attr_name, value):
+        getattr(self, '_available_' + attr_name + 's')[id_] = value
 
-    def _remove(self, id_, attr_name):
+    def remove(self, id_, attr_name):
         try:
-            del getattr(self, attr_name)[id_]
+            del getattr(self, '_available_' + attr_name + 's')[id_]
         except KeyError:
             pass
 
-    def _available(self, attr_name, world):
-        value = getattr(self, attr_name)
+    def available_optionals(self, current_world):
+        return [i for i in self._available_optionals.values()
+                if i.world == current_world and
+                i not in self._optional.values()]
+
+    def available(self, attr_name, world):
+        if attr_name == 'optional':
+            return self.available_optionals(world)
+        value = getattr(self, '_available_' + attr_name + 's')
         return [i for i in value.values() if i.world == world]
 
-    def unlock_job(self, job_id, job_object):
-        self._unlock(job_id, '_available_jobs', job_object)
-
-    def remove_job(self, job_id):
-        self._remove(job_id, '_available_jobs')
-
-    def available_jobs(self, current_world):
-        return self._available('_available_jobs', current_world)
-
-    def unlock_accommodation(self, accommodation_id, schedule_object):
-        self._unlock(accommodation_id,
-                     '_available_accommodations', schedule_object)
-
-    def remove_accommodation(self, accommodation_id):
-        self._remove(accommodation_id, '_available_accommodations')
-
-    def available_accommodations(self, current_world):
-        return self._available('_available_accommodations', current_world)
-
-    def unlock_ration(self, ration_id, schedule_object):
-        self._unlock(ration_id, '_available_rations', schedule_object)
-
-    def remove_ration(self, ration_id):
-        self._remove(ration_id, '_available_rations')
-
-    def available_rations(self, current_world):
-        return self._available('_available_rations', current_world)
-
     def get_schedule_object(self, type, world, id):
-        return getattr(self, 'available_' + type + 's')(world).get(id)
+        return getattr(self, '_available_' + type + 's')(world).get(id)

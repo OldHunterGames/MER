@@ -7,7 +7,8 @@ from mer_quest import *
 
 
 class Command(object):
-
+    """Basic class for commands in mer"""
+    #Maybe need special allocator for commands created in modules?
     def _run(self):
         raise NotImplementedError()
 
@@ -33,7 +34,7 @@ class Card(Command):
 
 
 class MenuCard(Card):
-
+    """Basic class for card-styled menu cards"""
     def __init__(self, name=None, description=None,
                  label=None, image=None, **kwargs):
         self._name = name
@@ -69,13 +70,15 @@ class MenuCard(Card):
             return value
 
     def set_context(self, **kwargs):
+        # sets not 'static' data if needed in card's label
+        # mostly common called before run()
         for key, value in kwargs.items():
             self._context_data[key] = value
         return self
 
 
 class CardsMaker(Command):
-
+    """Factory for easy cards creation"""
     def __init__(self, dict_=None, card_cls=None):
         self.data = dict()
         self._context_data = dict()
@@ -103,6 +106,8 @@ class CardsMaker(Command):
             print 'No entry named %s' % key
 
     def set_context(self, **kwargs):
+        # sets not 'static' data if needed in card's label
+        # mostly common called before run()
         for key, value in kwargs.items():
             self._context_data[key] = value
 
