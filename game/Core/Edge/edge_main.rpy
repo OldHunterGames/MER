@@ -37,6 +37,9 @@ label lbl_edge_main:
             consumption_text = spendings_text + encolor_text(spending_rate[5-consumption_level], 5-consumption_level)
             return consumption_text
         
+        ## Main quest
+        # core.quest_tracker.add_quest(QuestClass(**quests_data['edge_main_quest']))
+        
         
         ## Houses & Persons
         garantor = None

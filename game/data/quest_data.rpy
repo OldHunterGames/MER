@@ -1,7 +1,9 @@
 init python:
         
     quests_data = {
-        'slaver_quest':{'name': __("Slaver's quest"), 'description': __("Bring a slave")}
+        'edge_main_quest':{'name': __("Get to Eternal Rome"), 'description': __("The Edge of Mists is extremely inhospitable. Only hope for a better life, or even life at all is lies behind the high walls of Eternal Rome. Figure out a way to get inside.")}, 
+        'slaver_quest':{'name': __("Slaver's quest"), 'description': __("Bring a slave")}, 
+        
     }
     basic_quests = {
         'relations': {
