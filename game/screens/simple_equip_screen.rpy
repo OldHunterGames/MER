@@ -13,7 +13,7 @@ screen sc_simple_equip(person, look_mode=False):
             text 'Money: %s'%person.money
         textbutton 'Leave':
             yalign 1.0
-            action Return()
+            action Hide('sc_simple_equip')
         hbox:
             xalign 0.35
             spacing 5
