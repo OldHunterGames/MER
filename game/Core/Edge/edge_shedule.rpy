@@ -163,8 +163,8 @@ label edge_job_bukake(actor):
         actor.eat(3, -1)
         ration = actor.food_info()    
         text = __('')
-    '[name]humbly sucks stangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
-#    'Ration: [ration]'
+#    '[name]humbly sucks strangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
+    'Ration: [ration]'
     return
     
 label edge_job_manual(actor):

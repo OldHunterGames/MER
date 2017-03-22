@@ -188,6 +188,7 @@ init -10 python:
     
     edge_option_cards = {'nevermind': {'name': 'Nevermind', 'description': __('Nevermind'), 'label': 'lbl_edge_comm_nevermind', 'image': 'images/miscards/card.png', }, 
         'makelove': {'name': 'Make love', 'description': __('Make love\n'), 'label': 'lbl_makelove', 'image': 'images/miscards/card.png', }, 
+        'flee': {'name': 'Flee', 'description': __('Flee\nTimid action.'), 'label': 'lbl_edge_enc_flee', 'image': 'images/miscards/card.png', }, 
         
         'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
@@ -203,7 +204,7 @@ init -10 python:
         'comm_garantor': {'name': 'Be my garantor', 'description': __('Garantor\nYou need a garantor, to become a major House citisen. This person can help you.'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
         'com_hungout': {'name': 'Hung out', 'description': __('Hung out\nSpend some quality time together to promote your relationship.'), 'label': 'lbl_edge_comm_hungout', 'image': 'images/miscards/card.png', }, 
         'com_present': {'name': 'Present', 'description': __('Present\nMake a valuable present as an offering to promote your relationship.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', },         
-        'com_takequest': {'name': 'Quest', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
+        'com_takequest': {'name': 'Quest', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', }, 
 #        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
 
         'ho_promenade': {'name': 'Promenade', 'description': __('Promenade\nOpposed Spirit check. Gain communication and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_promenade', 'image': 'images/miscards/card.png', }, 
@@ -215,6 +216,11 @@ init -10 python:
         'ho_might': {'name': 'Impressive might', 'description': __('Impressive might\nOpposed Might check. Gain "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_might', 'image': 'images/miscards/card.png', }, 
         'ho_favor': {'name': 'Carry a favor', 'description': __('Carry a favor\nOpposed Finesse check. Gain "Lovers" or "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_favor', 'image': 'images/miscards/card.png', }, 
         'ho_dance': {'name': 'Dance all night', 'description': __('Dance all night long\nArdent deed. Opposed Might check. Gain activity and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_dance', 'image': 'images/miscards/card.png', },         
+
+        'errant_talk': {'name': 'Talk', 'description': __('Talk'), 'label': 'lbl_edge_errant_talk', 'image': 'images/miscards/card.png', }, 
+        'errant_stalk': {'name': 'Hide & stalk', 'description': __('Hide & Stalk\nTry to stalk the confused wanderer stealthily. Opposed finesse challenge. Get chance to grab or backstab the wanderer.'), 'label': 'lbl_edge_errant_stalk', 'image': 'images/miscards/card.png', }, 
+        'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight or chase (Might challenge) expected.'), 'label': 'lbl_edge_enc_engage', 'image': 'images/miscards/card.png', },         
+        'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic and evil deed. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'images/miscards/card.png', }, 
 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
