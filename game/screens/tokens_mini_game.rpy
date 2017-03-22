@@ -80,6 +80,7 @@ screen sc_taro_description(card):
 
 init python:
     import collections
+    import random as rand
     class TokensGame(object):
 
 
@@ -104,7 +105,7 @@ init python:
         def get_chance(self):
             person = self.person
             try:
-                chance = choice(person.get_all_chances())
+                chance = rand.choice(person.get_all_chances())
             except IndexError:
                 self.chance = None
                 self.chance_value = 0
@@ -132,7 +133,7 @@ init python:
             else:
                 skip = None
             cards = [i for i in self.get_available_cards(skip)]
-            shuffle(cards)
+            rand.shuffle(cards)
             value = 0
             if not self.chance.negative:
                 value = self.chance_value - 2

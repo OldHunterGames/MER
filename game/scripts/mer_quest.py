@@ -12,6 +12,7 @@ class Quest(object):
         self._data = kwargs
         self._one_time = one_time
         self._completed = 0
+        self.employes = None
         self.active = False
 
     def description(self):
@@ -49,8 +50,9 @@ class Quest(object):
         return finished
 
     def _finish(self, performer):
-        finished = renpy.call_in_new_context(self.end_label(), self, performer)
-        return finished
+        if self.employer is not None:
+            self.employer.debt = True
+        return True
 
     def available(self, performer):
         if self._one_time:

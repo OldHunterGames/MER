@@ -222,6 +222,11 @@ class DescriptionMaker(object):
                 background=person.background)
         else:
             string += '.\n'
+        if person.debt:
+            string += '{person.name} %s. \n' % \
+                store.debts_dict.get(
+                    person.player_relations().attitude_tendency(),
+                    'debt description here')
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
@@ -282,6 +287,8 @@ class DescriptionMaker(object):
         return weapon_txt
 
     def relations_text(self):
+        if not self.person.know_player():
+            return ''
         relations = self.person.player_relations()
         stance_type = relations.colored_stance(True)
 
@@ -750,6 +757,17 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.set_energy()
         self._current_job = None
         self.quests_to_give = MakeBasicRelationsQuests(self).run()
+        self._phrases = dict()
+        self.debt = False
+
+    def get_phrase(self, id_, default_value="No phrase"):
+        phrase = self._phrases.get(
+            id_, store.default_phrases.get(
+                id_, default_value))
+        return phrase
+
+    def set_phrases(self, dict_):
+        self._phrases = dict_
 
     def has_available_quests(self, player):
         return any(self.available_quests(player))
@@ -1344,6 +1362,14 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def know_person(self, person):
         if person in self.known_characters:
             return True
+        return False
+
+    def know_player(self):
+        if self.player_controlled:
+            return False
+        for i in self._relations:
+            if i.is_player_relations():
+                return True
         return False
 
     def forget_person(self, person):

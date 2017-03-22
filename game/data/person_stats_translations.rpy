@@ -28,6 +28,7 @@ init python:
         'motivation': __('motivation'),
         'focus': __('focus')
     }
+    debts_dict = {}
 
 
     discipline_translation = {

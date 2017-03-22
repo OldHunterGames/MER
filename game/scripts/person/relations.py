@@ -99,13 +99,12 @@ class Relations(object):
             self._special_value = value
 
     def show_stance(self):
-        if self.type == 'slave' or self.type == 'master':
-            return store.relations_name[self.stance][self.type]
-        else:
-            value = self.attitude_tendency()
-            return store.relations_name[self.stance][value]
+        value = self.attitude_tendency()
+        return store.relations_name[self.stance][value]
 
     def attitude_tendency(self):
+        if self.type == 'master' or self.type == 'slave':
+            return self.type
         value = 'neutral'
         if self._axis['congruence'] == 1 and self.npc.token != 'antagonism':
             value = 'friendly'
