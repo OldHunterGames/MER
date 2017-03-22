@@ -21,7 +21,7 @@ screen sc_simple_equip(person, look_mode=False):
                 python:
                     item = person.get_slot(i)
                     if item is None:
-                        name = 'No name'
+                        name = i
                         img = im.Scale(empty_card(), 200, 300)
                     else:
                         name = item.name()

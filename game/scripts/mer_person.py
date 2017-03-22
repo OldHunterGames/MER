@@ -758,6 +758,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.quests_to_give = []
         self._phrases = dict()
         self.debt = False
+        self.rewards = CardsMaker()
 
     def get_phrase(self, id_, default_value="No phrase"):
         phrase = self._phrases.get(
