@@ -28,7 +28,7 @@ screen sc_schedule(person, return_=False):
                     imagebutton:
                         idle getattr(person, i).image()
                         action Show('sc_pick_schedule', person=person), SetVariable('picker',
-                            ActionPicker(getattr(person.schedule, 'available_'+i+'s')(core.current_world.name), None, i))
+                            ActionPicker(person.schedule.available(i, core.current_world.name), None, i))
                     text getattr(person, i).name:
                         xalign 0.5
         hbox:
@@ -47,7 +47,7 @@ screen sc_schedule(person, return_=False):
                     imagebutton:
                         idle img
                         action Show('sc_pick_schedule', person=person), SetVariable('picker',
-                            ActionPicker(getattr(person.schedule, 'available_'+'optionals')(core.current_world.name), key, 'optional'))
+                            ActionPicker(person.schedule.available('optional', core.current_world.name), key, 'optional'))
                     text txt:
                         xalign 0.5
 
@@ -76,6 +76,9 @@ init python:
 screen sc_pick_schedule(person):
     modal True
     python:
+        setter = person.schedule.set
+        if picker.slot is not None:
+            setter = person.schedule.set_optional
         if picker.current_card is None:
             if picker.slot is None:
                 if getattr(person, picker.type) is not None:
@@ -83,8 +86,8 @@ screen sc_pick_schedule(person):
             else:
                 if person.schedule.get_optional(picker.slot) is not None:
                     picker.set_card(person.schedule.get_optional(picker.slot))
-        available = getattr(person.schedule, 'available_'+picker.type+'s')(core.current_world.name)
-        setter = getattr(person.schedule, 'set_'+picker.type)
+        available = person.schedule.available(picker.type, core.current_world.name)
+        
         if picker.current_card is None:
             img = card_back()
         else:
@@ -123,7 +126,7 @@ screen sc_pick_schedule(person):
             imagebutton:
                 idle im.Scale(img, 300, 400)
                 
-                action [If(picker.slot is None, Function(setter, picker.current_card), 
+                action [If(picker.slot is None, Function(setter, picker.type, picker.current_card), 
                     false=Function(setter, picker.slot, picker.current_card)), Hide('sc_pick_schedule'),
                     SensitiveIf(picker.current_card is not None)]
                 xalign 0.5

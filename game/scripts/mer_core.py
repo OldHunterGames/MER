@@ -20,19 +20,6 @@ def set_event_game_ref(game):
     Event.set_game_ref(game)
 
 
-def get_max_need(target, *args):
-    maxn_name = None
-    maxn = 0
-    needs = target.get_needs()
-    for arg in args:
-        if arg in needs.keys():
-            level = needs[arg].level
-            if level > maxn:
-                maxn = level
-                maxn_name = arg
-    return maxn, maxn_name
-
-
 class QuestTracker(object):
 
     def __init__(self):

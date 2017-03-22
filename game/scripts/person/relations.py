@@ -9,10 +9,11 @@ from mer_utilities import encolor_text
 
 
 class Relations(object):
+    """Represents relations between npc and player"""
     _fervor = {-1: "delicate", 0: "straight", 1: "passionate"}
     _distance = {-1: "intimate", 0: "fair", 1: "formal"}
     _congruence = {-1: "hater", 0: "associate", 1: "admirer"}
-
+    # some things here has strong dependency on npc's alignment
     _fervor_alignment = 'activity'
     _distance_alignment = 'orderliness'
     _congruence_alignment = 'morality'

@@ -150,35 +150,9 @@ persons_list = []
 
 
 def gen_sex_traits(person):
+    # TODO: sex traits generation rules instead of random
     person.sexual_suite = choice(store.sexual_type.values())
     person.sexual_orientation = choice(store.sexual_orientation.values())
-
-
-def trait_chance(fetish_value, taboo_value):
-    roll = randint(1, 10)
-    if roll <= fetish_value:
-        return 'fetish'
-    elif roll <= fetish_value + taboo_value:
-        return 'taboo'
-    else:
-        return None
-
-
-class Slave(object):
-
-    def __init__(self, person, master):
-        self._master = master
-        self._slave = person
-        self._slave_relations()
-
-    def __getattr__(self, attr):
-        return getattr(self._slave, attr)
-
-    def _slave_relations(self):
-        self._master.relations(self._slave).change_type('slave')
-
-    def release(self):
-        self._master.relations(self._slave).change_type('neutral')
 
 
 class SlaveStorage(object):
@@ -190,15 +164,16 @@ class SlaveStorage(object):
     def slaves(self):
         return [i for i in self._slaves]
 
-    def add_slave(self, person, master):
+    def add_slave(self, slave, master):
         if self.has_space():
-            self._slaves.append(Slave(person, master))
+            self._slaves.append(slave)
+            self._slave_relations(slave, master)
             return True
         return False
 
     def remove_slave(self, slave):
-        slave.release()
         self._slaves.remove(slave)
+        slave.set_master(None)
 
     def set_max_slaves(self, value):
         self._max_slaves = value
@@ -206,8 +181,14 @@ class SlaveStorage(object):
     def has_space(self):
         return len(self._slaves) < self._max_slaves
 
+    def _slave_relations(self, slave, master):
+        master.relations(slave).change_type('slave')
+        slave.set_master(master)
+
 
 class DescriptionMaker(object):
+    """Class for complex person description generation"""
+    # TODO: Refactor this as abstract and allocate realizations by game lang?
 
     def __init__(self, person):
         self.person = person
@@ -673,7 +654,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         # obedience, dependecy and respect stats
         self.avatar_path = ''
 
-        self.master = None          # If this person is a slave, the master will be set
+        self._master = None          # If this person is a slave, the master will be set
         self.supervisor = None
         self.overseer = None
         self.slaves = SlaveStorage()
@@ -1459,6 +1440,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def has_slaves(self):
         return len(self.get_slaves()) > 0
 
+    def set_master(self, master):
+        self._master = master
+
     def set_supervisor(self, supervisor):
         self.supervisor = supervisor
 
@@ -1617,6 +1601,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             value += 1
         value += self.count_modifiers('menace')
         return max(0, min(value, 5))
+    # end of rating methods
 
     def focus(self):
         return self.schedule.job.focus
@@ -1654,11 +1639,13 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.schedule.job.productivity = 0
 
     def job_productivity(self):
-        return
+        return self.schedule.job.focus
 
     def world(self):
+        # not sure we need core reference here
         return self.game_ref.current_world
 
+    # energy methods
     def set_energy(self):
         # value = self.count_modifiers('energy')
         value = self.energy
