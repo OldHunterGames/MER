@@ -38,8 +38,7 @@ label lbl_edge_main:
             return consumption_text
         
         ## Main quest
-        # core.quest_tracker.add_quest(QuestClass(**quests_data['edge_main_quest']))
-        
+        core.quest_tracker.add_quest(Quest(**quests_data['edge_main_quest']))
         
         ## Houses & Persons
         garantor = None
