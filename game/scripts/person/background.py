@@ -145,6 +145,10 @@ class Background(object):
                 if key == 'armor':
                     item = create_item(value, 'armor')
                     owner.equip_item(item, 'garment')
+                elif key == 'accesories':
+                    item = create_item(value, 'treasure')
+                    owner.add_item(item)
+                    owner.equip_on_slot('accesories', item)
                 else:
                     item = create_item(value, 'weapon')
                     owner.equip_item(item, key)
