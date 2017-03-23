@@ -7,6 +7,7 @@ init python:
     basic_dialogues = {
     'id' : __("line"), 
 
+    'hello' : __("I'm here!"), 
     'errant_encounter' : __("Where am I? What is this place? Can you help me, please?!"), 
 
     } 

@@ -201,6 +201,7 @@ init -10 python:
         'fi_mock': {'name': 'Mock', 'description': __('Mock/nEvil deed. Gain "Moon" relations arcane and self-affirm your authority.'), 'label': 'lbl_first_impression_mock', 'image': 'images/miscards/card.png', }, 
         'fi_reticence': {'name': 'Reticence', 'description': __('Reticence\nTimid deed. Be patient and quiet. No risk. No reward.'), 'label': 'lbl_first_impression_reticence', 'image': 'images/miscards/card.png', }, 
 
+        'com_obligation': {'name': 'Get favor', 'description': __('Get favor\nThis person is obliged to you, so you may ask for a reward or promote relationship.'), 'label': 'lbl_edge_comm_obligation', 'image': 'images/miscards/card.png', }, 
         'comm_garantor': {'name': 'Be my garantor', 'description': __('Garantor\nYou need a garantor, to become a major House citisen. This person can help you.'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
         'com_hungout': {'name': 'Hung out', 'description': __('Hung out\nSpend some quality time together to promote your relationship.'), 'label': 'lbl_edge_comm_hungout', 'image': 'images/miscards/card.png', }, 
         'com_present': {'name': 'Present', 'description': __('Present\nMake a valuable present as an offering to promote your relationship.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', },         
@@ -227,5 +228,12 @@ init -10 python:
 #        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
     }
     
-    
+    edge_quest_rewards = {
+        'reward_garantor': {'name': 'Garantor', 'description': __('descriptext'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
+        'reward_sparks': {'name': 'Sparks', 'description': __('descriptext'), 'label': 'lbl_edge_reward_sparks', 'image': 'images/miscards/card.png', }, 
+        'reward_banknotes': {'name': 'Banknotes', 'description': __('descriptext'), 'label': 'lbl_edge_reward_banknotes', 'image': 'images/miscards/card.png', },   
+        'reward_bars': {'name': 'Food bars', 'description': __('descriptext'), 'label': 'lbl_edge_reward_bars', 'image': 'images/miscards/card.png', }, 
+        'reward_relations': {'name': 'Relations up', 'description': __('descriptext'), 'label': 'lbl_edge_reward_relations', 'image': 'images/miscards/card.png', },                 
+    }
+        
     
