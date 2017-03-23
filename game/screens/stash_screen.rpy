@@ -23,9 +23,9 @@ screen sc_manage_stash(stash):
                             for i in player.items:
                                 python:
                                     if i.amount > 1:
-                                        name = "%s(%s)"%(i.name, i.amount)
+                                        name = "%s(%s)"%(i.name(), i.amount)
                                     else:
-                                        name = i.name
+                                        name = i.name()
                                 textbutton name:
                                     action Function(player.transfer_item, i, stash)
                 frame:

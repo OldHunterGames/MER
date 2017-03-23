@@ -261,6 +261,9 @@ class SimplyfiedInventory(Inventory):
                         list_.append(item)
         return list_
 
+    def weapons(self):
+        return [self.carried_weapons['weapon']]
+
 
 class InventoryWielder(object):
 

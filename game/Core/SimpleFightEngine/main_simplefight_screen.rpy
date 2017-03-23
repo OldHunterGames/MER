@@ -130,7 +130,7 @@ screen sc_maneuver_info(maneuver):
 
 label lbl_simple_fight(fight, allies):
 
-    call screen sc_simplefight_equip(allies[0])
+    # call screen sc_simplefight_equip(allies[0])
     call screen sc_simple_fight(fight)
     call lbl_postfight(fight)
     return fight
