@@ -86,6 +86,7 @@ class Item(Modifiable, Card):
         return 1
 
     def description(self):
+        return self.name() # temporary
         if self.new_description is not None:
             return self.new_description
         return self.data.get('description', "No description")

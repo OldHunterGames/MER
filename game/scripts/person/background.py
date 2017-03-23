@@ -144,10 +144,12 @@ class Background(object):
             if value is not None:
                 if key == 'armor':
                     item = create_item(value, 'armor')
-                    owner.equip_item(item, 'overgarments')
+                    owner.equip_item(item, 'garment')
                 else:
                     item = create_item(value, 'weapon')
                     owner.equip_item(item, key)
+                    owner.equip_on_slot('weapon', item)
+        print owner.items
 
     def make(self, world, culture, family, education, occupation, age):
         self._set_culture(culture)

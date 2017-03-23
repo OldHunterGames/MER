@@ -161,6 +161,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
         self.add_item(armor)
         if self.carried_armor[slot] is not None:
             self.carried_armor[slot].unequip()
+            self.add_item(self.carried_armor[slot])
         self.carried_armor[slot] = armor
         armor.equip()
 

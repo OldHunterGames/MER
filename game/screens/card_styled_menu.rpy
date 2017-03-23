@@ -24,6 +24,9 @@ init python:
             return sorted(self.cards_list, key=lambda card: card.name)
 
         def set_card(self, card):
+            current = self.current_card
+            if current is not None and current not in self._cards_list:
+                self._cards_list.append(self.current_card)
             self.current_card = card
 
         def show(self, call=True):
