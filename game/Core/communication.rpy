@@ -9,15 +9,17 @@ label lbl_communicate(target):
         $ player.drain_energy()
         jump lbl_first_impression
 
-    target "I'm here"
+    target "[person.get_phrase('hello')]"
     python:     
         options = CardsMaker()
-        if not garantor and visavis.relations(player).stance > 0:
-            options.add_entry('comm_garantor', edge_option_cards['comm_garantor'])
+        #if not garantor and visavis.relations(player).stance > 0:
+        #    options.add_entry('comm_garantor', edge_option_cards['comm_garantor'])
         options.add_entry('com_hungout', edge_option_cards['com_hungout'])
-        options.add_entry('com_present', edge_option_cards['com_present'])
+        #options.add_entry('com_present', edge_option_cards['com_present'])
         if target.has_available_quests(player):
             options.add_entry('com_takequest', edge_option_cards['com_takequest'])
+        if target.obligation:
+            options.add_entry('com_obligation', edge_option_cards['com_obligation'])
         options.add_entry('nevermind', edge_option_cards['nevermind'])  
         CardMenu(options.run()).show()
                 
@@ -36,6 +38,11 @@ label lbl_edge_comm_call_quest(card):
     
     return
 
+label lbl_edge_comm_obligation(card):
+    $ CardMenu(visavis.reward.run()).show()
+    hide card
+    return
+    
 label lbl_edge_comm_nevermind(card):
     pass
     
@@ -51,24 +58,34 @@ label lbl_edge_comm_present(card):
 
     return    
 
+    
+label lbl_edge_reward_sparks(card):
+    pass
+    
+    return
+        
+label lbl_edge_reward_banknotes(card):
+    pass
+    
+    return
+    
+label lbl_edge_reward_bars(card):
+    'You got 100 bars'
+    
+    return
 
+label lbl_edge_reward_relations(card):
+    pass
+    
+    return
+             
 label lbl_quests(target):
     python:
-        quests = target.available_quests(player)
-        menu_items = []
-        for i in quests:
-            menu_items.append((i.name(), i))
-
-        choice = renpy.display_menu(menu_items)
-        description = choice.description()
-
-    menu:
-        '[description]'
-        'Take this quest':
-            $ core.quest_tracker.add_quest(choice)
-        "Don't interrested":
-            return
+        quest = choice.target.available_quests(player)
+        description = quest.description()
+        core.quest_tracker.add_quest(quest)
             
+    visavis '[description]'
     $ player.drain_energy()
     return
             

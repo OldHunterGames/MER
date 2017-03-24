@@ -64,20 +64,24 @@ label lbl_edge_main:
         edge_slaver = gen_willed_master('human')
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
-        edge_slaver.clear_quests()
         edge_slaver.add_quest(SlaverQuest(**quests_data['slaver_quest']))
-        
+        edge_slaver.reward = CardsMaker()
+        edge_slaver.reward.add_entry('reward_garantor', edge_quest_rewards['reward_garantor'])
+        edge_slaver.reward.add_entry('reward_sparks', edge_quest_rewards['reward_sparks'])
+        edge_slaver.reward.add_entry('reward_banknotes', edge_quest_rewards['reward_banknotes'])
+        edge_slaver.reward.add_entry('reward_bars', edge_quest_rewards['reward_bars'])
+        edge_slaver.reward.add_entry('reward_relations', edge_quest_rewards['reward_relations'])                        
         
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
     
-    slums_leader 'Hi, I am a leader of the Slums'
+    #slums_leader 'Hi, I am a leader of the Slums'
     $ player.relations(slums_leader)
-    slums_champion "I'll watch for you"
+    #slums_champion "I'll watch for you"
     $ player.relations(slums_champion)
-    slums_entertainer 'If you need to relax, welcome to my pub.'
+    #slums_entertainer 'If you need to relax, welcome to my pub.'
     $ player.relations(slums_entertainer)
-    slums_medic "I'll patch you if you'l get hurt... for a price!"
+    #slums_medic "I'll patch you if you'l get hurt... for a price!"
     $ player.relations(slums_medic)    
 
     call edge_init_events

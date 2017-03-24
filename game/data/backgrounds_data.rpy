@@ -88,14 +88,6 @@ init python:
             'technical_level': 0,
             'prestige_level': 0,
         },
-        'orphan':{
-            'name': __('orphan'),
-            'description': __('do not remember {possesive} parents'),
-            # 'available_technical_levels': [1, 2, 3, 4, 5],
-            'available_prestige_levels': [1, 2],
-            'technical_level': 1,
-            'prestige_level': 1
-        },
         'commune':{
             'name': __('commune'),
             'description': __('was born in a wild tribe'),
@@ -104,12 +96,20 @@ init python:
             'technical_level': 1,
             'prestige_level': 1
         },    
+        'orphan':{
+            'name': __('orphan'),
+            'description': __('do not remember {possesive} parents'),
+            # 'available_technical_levels': [1, 2, 3, 4, 5],
+            'available_prestige_levels': [1, 2],
+            'technical_level': 2,
+            'prestige_level': 1
+        },
         'slave':{
             'name': __('slave'),
             'description': __('was born from a slave mother'),            
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'technical_level': 1,
+            'technical_level': 2,
             'prestige_level': 1
         },
         'serf':{
@@ -117,7 +117,7 @@ init python:
             'description': __('was born in peasant family'),            
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2],
-            'technical_level': 1,
+            'technical_level': 2,
             'prestige_level': 1
         },
         'low':{
@@ -125,32 +125,32 @@ init python:
             'description': __('originates from a poor family'),            
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [1, 2, 3],
-            'technical_level': 1,
-            'prestige_level': 1
+            'technical_level': 2,
+            'prestige_level': 2
         },   
         'middle':{
             'name': __('middle-class'),
             'description': __('was born in a middle class family'),            
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [2, 3, 4],
-            'technical_level': 1,
-            'prestige_level': 1
+            'technical_level': 3,
+            'prestige_level': 3
         },
         'high':{
             'name': __('high-class'),
             'description': __('originates from a rich and well respected family'),            
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [3, 4],
-            'technical_level': 1,
-            'prestige_level': 1
+            'technical_level': 2,
+            'prestige_level': 4
         },
         'noble':{
             'name': __('noble'),
             'description': __('is a high-born noble'),     
             # 'available_technical_levels': [1, 2],
             'available_prestige_levels': [4, 5],
-            'technical_level': 1,
-            'prestige_level': 1
+            'technical_level': 2,
+            'prestige_level': 5
         },           
     }
     
@@ -171,7 +171,7 @@ init python:
             'description': __('grew up as a street urchin '),   
             # 'available_technical_levels': [1, 2, 3],
             # 'available_prestige_levels': [1, 2],
-            'technical_level': 1,
+            'technical_level': 2,
             'prestige_level': 1,
             'features': ['ignorant'],                        
         },
@@ -180,7 +180,7 @@ init python:
             'description': __('grew up in natural environment '),               
             # 'available_technical_levels': [1],
             # 'available_prestige_levels': [1],
-            'technical_level': 1,
+            'technical_level': 0,
             'prestige_level': 1,          
             'features': ['ignorant'],                        
         },
@@ -213,8 +213,8 @@ init python:
             'description': __('recived a slpelndid education '),                   
             # 'available_technical_levels': [3, 4, 5],
             # 'available_prestige_levels': [3, 4],
-            'technical_level': 3,
-            'prestige_level': 3,          
+            'technical_level': 2,
+            'prestige_level': 4,          
             'features': ['educated'],                        
         },
         'martial':{
@@ -223,7 +223,7 @@ init python:
             # 'available_technical_levels': [2, 3, 4, 5],
             # 'available_prestige_levels': [2, 3, 4, 5],
             'technical_level': 2,
-            'prestige_level': 2,           
+            'prestige_level': 3,           
         },
          'aristocratic':{
             'name': __('aristocratic'),
@@ -231,7 +231,7 @@ init python:
             # 'available_technical_levels': [2, 3, 4, 5],
             # 'available_prestige_levels': [4, 5],
             'technical_level': 2,
-            'prestige_level': 5,            
+            'prestige_level': 4,            
         },
            'artistic':{
             'name': __('artistic'),
@@ -239,7 +239,7 @@ init python:
             # 'available_technical_levels': [2, 3, 4, 5],
             # 'available_prestige_levels': [2, 3, 4],
             'technical_level': 2,
-            'prestige_level': 2,          
+            'prestige_level': 3,          
         },     
     }
     
@@ -247,394 +247,221 @@ init python:
     ## OCCUOPATIONS 
     
     occupations_dict = {
-        'athlete':{
-            'name': __('athlete'),
-            'technical_level': 2,
-            'prestige_level': 2,        
+    
+        ## TEC-lvl 0 - no tecnology at all
+        ## Prestige 0 - no social segregation ar all
+        'savage':{
+            'name': __('savage'),
+            'technical_level': 0,
+            'prestige_level': 0,
+        },          
+
+
+
+        ## TEC-lvl 1 - stone age tecnologies, tribalism culture
+        ## Prestige 1
+        'tribesman':{
+            'name': __('tribesman'),
+            'technical_level': 1,
+            'prestige_level': 1,
         },
-        'daytaler':{
-            'name': __('daytaler'),
+        'wild_hunter':{
+            'name': __('tribal hunter'),
+            'technical_level': 1,
+            'prestige_level': 1,
+        },
+        'wild_outcast':{
+            'name': __('tribe outcast'),
+            'technical_level': 1,
+            'prestige_level': 1,
+        },  
+        'chief':{
+            'name': __('chief of the tribe'),
+            'technical_level': 1,
+            'prestige_level': 1,
+        },
+        'shaman':{
+            'name': __('shaman'),
+            'technical_level': 1,
+            'prestige_level': 1,
+        },
+
+
+        ## TEC-lvl 2 - metal age to high medieval tecnologies, antique or feudal culture
+        ## Prestige 1        
+
+        'peon':{
+            'name': __('peon'),
             'technical_level': 2,
             'prestige_level': 1,
         },
-        'lumberjack':{
-            'name': __('lumberjack'),
+"""        
+        'villain':{
+            'name': __('villain'),
             'technical_level': 2,
             'prestige_level': 1,
         },        
-        'miner':{
-            'name': __('miner'),
+        'thrall':{
+            'name': __('thrall'),
+            'technical_level': 2,
+            'prestige_level': 1,
+        },     
+        'low_serf':{
+            'name': __('miserable serf'),
+            'technical_level': 2,
+            'prestige_level': 1,
+        },     
+        'foot_soldier':{
+            'name': __('foot-soldier'),
+            'technical_level': 2,
+            'prestige_level': 1,
+        },        
+        'hermit':{
+            'name': __('hermit'),
+            'technical_level': 2,
+            'prestige_level': 1,
+        },        
+        'poacher':{
+            'name': __('poacher'),
             'technical_level': 2,
             'prestige_level': 1,
         },
+        'gypsy':{
+            'name': __('gypsy'),
+            'technical_level': 2,
+            'prestige_level': 1,
+        },        
+"""        
+                                        
+        ## Prestige 2      
+        'lumberjack':{
+            'name': __('lumberjack'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },  
+""""        
         'mason':{
             'name': __('mason'),
             'technical_level': 2,
             'prestige_level': 2,
         },
-        'porter':{
-            'name': __('porter'),
-            'technical_level': 2,
-            'prestige_level': 1,
-        },    
         'rower':{
             'name': __('rower'),
             'technical_level': 2,
-            'prestige_level': 1,
-        },
-        'peasant':{
-            'name': __('peasant'),
-            'technical_level': 2,
-            'prestige_level': 1,
-        },
-        'mercenary':{
-            'name': __('mercenary'),
-            'technical_level': 2,
             'prestige_level': 2,
-        },    
+        },
         'sellsword':{
             'name': __('sellsword'),
-            'technical_level': 21,
+            'technical_level': 2,
             'prestige_level': 2,
-        },
+        },        
         'gladiator':{
             'name': __('gladiator'),
             'technical_level': 2,
-            'prestige_level': 1,
-        },
-        'thug':{
-            'name': __('thug'),
-            'technical_level': 2,
-            'prestige_level': 1,
+            'prestige_level': 2,
         },
         'raider':{
             'name': __('raider'),
             'technical_level': 2,
             'prestige_level': 2,
         },
-        'foot_soldier':{
-            'name': __('foot-soldier'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'soldier':{
-            'name': __('soldier'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'rifleman':{
-            'name': __('rifleman'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'marine':{
-            'name': __('marine'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },                
-        'spacemarine':{
-            'name': __('spacemarine'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },          
-        'pirate':{
-            'name': __('pirate'),
+        'smith':{
+            'name': __('blacksmith'),
             'technical_level': 2,
             'prestige_level': 2,
         },        
-        'officer':{
-            'name': __('officer'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
-        'knight':{
-            'name': __('knight'),
+        'carpenter':{
+            'name': __('carpenter'),
             'technical_level': 2,
-            'prestige_level': 4,
-        },
+            'prestige_level': 2,
+        },     
+         'tanner':{
+            'name': __('tanner'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },             
+        'potter':{
+            'name': __('potter'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+        'storyteller':{
+            'name': __('storyteller'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+        'street_actor':{
+            'name': __('street actor'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },           
+        'monk':{
+            'name': __('monk'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },         
+        'ascet':{
+            'name': __('ascet'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },                
+        'herbalist':{
+            'name': __('herbalist'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+        'concubine':{
+            'name': __('concubine'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+        'kunoichi':{
+            'name': __('kunoichi'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+        'watchman':{
+            'name': __('watchman'),
+            'technical_level': 2,
+            'prestige_level': 2,
+        },        
+"""                                                
+        ## Prestige 3      
         'assasin':{
             'name': __('assasin'),
             'technical_level': 2,
             'prestige_level': 3,
         },    
-        'thief':{
-            'name': __('thief'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'scout':{
-            'name': __('scout'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'spy':{
-            'name': __('spy'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
-        'smith':{
-            'name': __('smith'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },
-        'carpenter':{
-            'name': __('carpenter'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'engraver':{
-            'name': __('engraver'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },      
-        'cartwright':{
-            'name': __('cartwright'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'cobbler':{
-            'name': __('cobbler'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'tanner':{
-            'name': __('tanner'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },        
-        'potter':{
-            'name': __('potter'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'plumber':{
-            'name': __('plumber'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },
-        'sculptor':{
-            'name': __('sculptor'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
+        
+"""        
         'glassmaker':{
             'name': __('glassmaker'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
+            'technical_level': 2,
+            'prestige_level': 3,
+        },        
         'artisan':{
             'name': __('artisan'),
             'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'jewler':{
-            'name': __('jewler'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },    
-        'tinker':{
-            'name': __('tinker'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'rethor':{
-            'name': __('rethor'),
-            'technical_level': 2,
-            'prestige_level': 4,
-        },      
-        'lawyer':{
-            'name': __('lawyer'),
-            'technical_level': 3,
-            'prestige_level': 4,
-        },
-        'lobbist':{
-            'name': __('lobbist'),
-            'technical_level': 4,
-            'prestige_level': 4,
-        },
-        'phylosopher':{
-            'name': __('phylosopher'),
-            'technical_level': 2,
-            'prestige_level': 4,
-        },        
-        'salesman':{
-            'name': __('salesman'),
-            'technical_level': 4,
             'prestige_level': 3,
         },
-        'emissary':{
-            'name': __('emissary'),
-            'technical_level': 3,
-            'prestige_level': 4,
-        },
-        'entrepreneur':{
-            'name': __('entrepreneur'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
-        'entertainer':{
-            'name': __('entertainer'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'escort':{
-            'name': __('escort'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'storyteller':{
-            'name': __('storyteller'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },    
-        'bonvivan':{
-            'name': __('bonvivan'),
-            'technical_level': 3,
-            'prestige_level': 5,
-        },
-        'impostor':{
-            'name': __('impostor'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
-        'preacher':{
-            'name': __('preacher'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },      
-        'actor':{
-            'name': __('actor'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },
-        'psychic':{
-            'name': __('psychic'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'monk':{
-            'name': __('monk'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },        
         'yogi':{
             'name': __('yogi'),
             'technical_level': 2,
             'prestige_level': 3,
-        },
-        'hermit':{
-            'name': __('hermit'),
-            'technical_level': 2,
-            'prestige_level': 1,
-        },
-        'ascet':{
-            'name': __('ascet'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },    
-        'manager':{
-            'name': __('manager'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'merchant':{
-            'name': __('merchant'),
-            'technical_level': 3,
-            'prestige_level': 4,
-        },
-        'accountant':{
-            'name': __('accountant'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
-        'clerk':{
-            'name': __('clerk'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
+        },        
         'scribe':{
             'name': __('scribe'),
             'technical_level': 2,
             'prestige_level': 3,
         },
-        'administrator':{
-            'name': __('administrator'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },      
         'quartermaster':{
             'name': __('quartermaster'),
             'technical_level': 2,
             'prestige_level': 3,
-        },
-        'auditor':{
-            'name': __('auditor'),
-            'technical_level': 4,
-            'prestige_level': 4,
-        },
-        'secretary':{
-            'name': __('secretary'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },        
-        'teacher':{
-            'name': __('teacher'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },
-        'director':{
-            'name': __('director'),
-            'technical_level': 4,
-            'prestige_level': 4,
-        },
-        'outcast':{
-            'name': __('outcast'),
-            'technical_level': 2,
-            'prestige_level': 1,
-        },    
-        'pathfinder':{
-            'name': __('pathfinder'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'hunter':{
-            'name': __('hunter'),
-            'technical_level': 1,
-            'prestige_level': 2,
-        },
-        'guide':{
-            'name': __('guide'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },    
-        'explorer':{
-            'name': __('explorer'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
-        'shaman':{
-            'name': __('shaman'),
-            'technical_level': 1,
-            'prestige_level': 2,
-        },
-        'alchemic':{
-            'name': __('alchemist'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },      
+        },       
         'medic':{
             'name': __('medic'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
-        'herbalist':{
-            'name': __('herbalist'),
-            'technical_level': 1,
-            'prestige_level': 2,
-        },
-        'pharmacist':{
-            'name': __('pharmacist'),
-            'technical_level': 4,
+            'technical_level': 2,
             'prestige_level': 3,
         },        
         'apotecary':{
@@ -642,31 +469,404 @@ init python:
             'technical_level': 2,
             'prestige_level': 3,
         },
-        'chemist':{
-            'name': __('chemist'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'surgeon':{
-            'name': __('surgeon'),
-            'technical_level': 4,
-            'prestige_level': 4,
-        },    
         'anatomist':{
             'name': __('anatomist'),
+            'technical_level': 2,
+            'prestige_level': 3,
+        },        
+        'bard':{
+            'name': __('bard'),
+            'technical_level': 2,
+            'prestige_level': 3,
+        },     
+        'sorcerer':{
+            'name': __('sorcerer'),
+            'technical_level': 2,
+            'prestige_level': 3,
+        },
+        'enchanter':{
+            'name': __('enchanter'),
+            'technical_level': 2,
+            'prestige_level': 3,
+        },         
+ """           
+                
+        ## Prestige 4      
+        'knight':{
+            'name': __('knight'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },
+"""        
+        'rethor':{
+            'name': __('rethor'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },      
+        'phylosopher':{
+            'name': __('phylosopher'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },      
+        'emissary':{
+            'name': __('emissary'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },        
+        'alchemic':{
+            'name': __('alchemist'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },        
+        'scholar':{
+            'name': __('scholar'),
+            'technical_level': 2,
+            'prestige_level': 4,
+        },   
+"""                        
+                
+        ## Prestige 5      
+        'lord':{
+            'name': __('lord'),
+            'technical_level': 2,
+            'prestige_level': 5,
+        },
+
+
+
+
+
+
+
+        ## TEC-lvl 3 - renaissance to steam-age tecnologies, imperialism or capitalism culture
+        ## Prestige 1        
+
+        'daytaler':{
+            'name': __('daytaler'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+
+"""        
+        'farmhand':{
+            'name': __('farmhand'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+        'rifleman':{
+            'name': __('rifleman'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+        'thug':{
+            'name': __('thug'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+        'scout':{
+            'name': __('scout'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+        'laundress':{
+            'name': __('laundress'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },        
+        'servant':{
+            'name': __('servant'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },        
+        'faquir':{
+            'name': __('faquir'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },                
+        'fortuneteller':{
+            'name': __('fortuneteller'),
+            'technical_level': 3,
+            'prestige_level': 1,
+        },
+"""            
+                                        
+        ## Prestige 2      
+
+"""                                                
+        'athlete':{
+            'name': __('athlete'),
+            'technical_level': 3,
+            'prestige_level': 2,        
+        },
+        'miner':{
+            'name': __('miner'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },
+        'porter':{
+            'name': __('porter'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },  
+        'mercenary':{
+            'name': __('mercenary'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },    
+        'pirate':{
+            'name': __('pirate'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },       
+        'engraver':{
+            'name': __('engraver'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },         
+        'cartwright':{
+            'name': __('cartwright'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },           
+        'cobbler':{
+            'name': __('cobbler'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },           
+        'tinker':{
+            'name': __('tinker'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },           
+        'salesman':{
+            'name': __('salesman'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },        
+        'clerk':{
+            'name': __('clerk'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },        
+        'pathfinder':{
+            'name': __('pathfinder'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },        
+        'hunter':{
+            'name': __('hunter'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },
+        'guide':{
+            'name': __('guide'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },         
+        'sapper':{
+            'name': __('sapper'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },          
+        'butler':{
+            'name': __('butler'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },            
+        'marksman':{
+            'name': __('marksman'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },            
+        'cannoneer':{
+            'name': __('cannoneer'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },        
+   
+"""             
+        'dancer':{
+            'name': __('dancer'),
+            'technical_level': 3,
+            'prestige_level': 2,
+        },     
+                                                                
+        ## Prestige 3      
+        'officer':{
+            'name': __('officer'),
             'technical_level': 3,
             'prestige_level': 3,
         },
-        'geneticist':{
-            'name': __('geneticist'),
-            'technical_level': 5,
+
+"""        
+        'sculptor':{
+            'name': __('sculptor'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },            
+        'jewler':{
+            'name': __('jewler'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },           
+        'entrepreneur':{
+            'name': __('entrepreneur'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },            
+        'impostor':{
+            'name': __('impostor'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },      
+        'preacher':{
+            'name': __('preacher'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },           
+        'actor':{
+            'name': __('actor'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },     
+        'explorer':{
+            'name': __('explorer'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },        
+        'pharmacist':{
+            'name': __('pharmacist'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },            
+        'investigator':{
+            'name': __('investigator'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },                  
+        'mechanist':{
+            'name': __('mechanist'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },  
+        'artist':{
+            'name': __('artist'),
+            'technical_level': 3,
+            'prestige_level': 3,
+        },         
+"""    
+                        
+        ## Prestige 4      
+        'bonvivan':{
+            'name': __('bonvivan'),
+            'technical_level': 3,
             'prestige_level': 4,
+        },
+        
+"""       
+        'merchant':{
+            'name': __('merchant'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },      
+        'surgeon':{
+            'name': __('surgeon'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },        
+        'chemist':{
+            'name': __('chemist'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },              
+        'naturalist':{
+            'name': __('naturalist'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },
+        'bookworm':{
+            'name': __('bookworm'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },          
+        'inventor':{
+            'name': __('inventor'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },        
+        'architect':{
+            'name': __('architect'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },
+        'paramour':{
+            'name': __('paramour'),
+            'technical_level': 3,
+            'prestige_level': 4,
+        },        
+"""                       
+                                
+        ## Prestige 5      
+        'noble':{
+            'name': __('noble'),
+            'technical_level': 3,
+            'prestige_level': 5,
+        },
+        
+
+        ## TEC-lvl 4 - disel-age to cyber-age tecnologies, multiculturalism
+        ## Prestige 1        
+        'stripper':{
+            'name': __('stripper'),
+            'technical_level': 4,
+            'prestige_level': 1,
+        },  
+"""        
+        'thief':{
+            'name': __('thief'),
+            'technical_level': 4,
+            'prestige_level': 1,
         },
         'pusher':{
             'name': __('pusher'),
             'technical_level': 4,
+            'prestige_level': 1,
+        },          
+        'hooker':{
+            'name': __('hooker'),
+            'technical_level': 4,
+            'prestige_level': 1,
+        },     
+        'webcamwhore':{
+            'name': __('webcamwhore'),
+            'technical_level': 4,
+            'prestige_level': 1,
+        },             
+"""           
+                
+        ## Prestige 2      
+        'secretary':{
+            'name': __('secretary'),
+            'technical_level': 4,
             'prestige_level': 2,
-        },    
+        },  
+
+"""
+        'soldier':{
+            'name': __('soldier'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },
+        'plumber':{
+            'name': __('plumber'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },      
+        'teacher':{
+            'name': __('teacher'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },       
         'biker':{
             'name': __('biker'),
             'technical_level': 4,
@@ -676,244 +876,228 @@ init python:
             'name': __('hippie'),
             'technical_level': 4,
             'prestige_level': 2,
-        },
-        'investigator':{
-            'name': __('investigator'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },      
-        'detective':{
-            'name': __('detective'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
+        },         
         'pimp':{
             'name': __('pimp'),
             'technical_level': 4,
             'prestige_level': 2,
-        },
-        'academic':{
-            'name': __('academic'),
-            'technical_level': 3,
-            'prestige_level': 4,
         },        
-        'scientist':{
-            'name': __('scientist'),
+        'coder':{
+            'name': __('coder'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },        
+        'pornoactor':{
+            'name': __('pornoactor'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },            
+        'cook':{
+            'name': __('cook'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },          
+        'sniper':{
+            'name': __('sniper'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },        
+        'musician':{
+            'name': __('musician'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },        
+        'singer':{
+            'name': __('singer'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },        
+"""     
+                        
+        ## Prestige 3    
+        
+        'hacker':{
+            'name': __('hacker'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },      
+        
+"""                  
+        'marine':{
+            'name': __('marine'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },    
+        'spy':{
+            'name': __('spy'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },      
+        'web_entrepreneur':{
+            'name': __('web-entrepreneur'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },                 
+        'escort':{
+            'name': __('escort'),
             'technical_level': 4,
             'prestige_level': 3,
         },
+        'manager':{
+            'name': __('manager'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },      
+        'accountant':{
+            'name': __('accountant'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },              
+        'administrator':{
+            'name': __('administrator'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },          
+        'auditor':{
+            'name': __('auditor'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },           
+        'detective':{
+            'name': __('detective'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },          
         'researcher':{
             'name': __('researcher'),
-            'technical_level': 5,
+            'technical_level': 4,
             'prestige_level': 3,
-        },
-        'bookworm':{
-            'name': __('bookworm'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },    
-        'scholar':{
-            'name': __('scholar'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },
-        'inventor':{
-            'name': __('inventor'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
-        'mechanist':{
-            'name': __('mechanist'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
+        },       
         'engineer':{
             'name': __('engineer'),
             'technical_level': 4,
             'prestige_level': 3,
-        },
-        'architect':{
-            'name': __('architect'),
-            'technical_level': 3,
-            'prestige_level': 4,
-        },
-        'sapper':{
-            'name': __('sapper'),
-            'technical_level': 3,
-            'prestige_level': 2,
         },      
         'sysadmin':{
             'name': __('sysadmin'),
             'technical_level': 4,
             'prestige_level': 3,
-        },
-        'coder':{
-            'name': __('coder'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
+        },            
         'webmaster':{
             'name': __('webmaster'),
             'technical_level': 4,
             'prestige_level': 2,
         },        
-        'hacker':{
-            'name': __('hacker'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'hooker':{
-            'name': __('hooker'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'pornoactor':{
-            'name': __('pornoactor'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },    
-        'webcamwhore':{
-            'name': __('webcamwhore'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },
-        'paramour':{
-            'name': __('paramour'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },
         'slut':{
             'name': __('slut'),
             'technical_level': 4,
             'prestige_level': 3,
-        },    
-        'concubine':{
-            'name': __('concubine'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },
-        'kunoichi':{
-            'name': __('kunoichi'),
-            'technical_level': 2,
-            'prestige_level': 3,
-        },
-        'stripper':{
-            'name': __('stripper'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },      
+        },          
         'housewife':{
             'name': __('housewife'),
             'technical_level': 4,
             'prestige_level': 3,
-        },
-        'laundress':{
-            'name': __('laundress'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'cook':{
-            'name': __('cook'),
-            'technical_level': 2,
-            'prestige_level': 3,
         },        
-        'butler':{
-            'name': __('butler'),
-            'technical_level': 3,
+        'mystic':{
+            'name': __('mystic'),
+            'technical_level': 4,
             'prestige_level': 3,
+        },              
+"""
+                        
+        ## Prestige 4      
+        'lawyer':{
+            'name': __('lawyer'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },      
+        
+"""          
+        'lobbist':{
+            'name': __('lobbist'),
+            'technical_level': 4,
+            'prestige_level': 4,
         },
-        'servant':{
-            'name': __('servant'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'maid':{
-            'name': __('maid'),
-            'technical_level': 3,
-            'prestige_level': 1,
-        },    
+        'movie_actor':{
+            'name': __('movie actor'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },        
+        'director':{
+            'name': __('director'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },        
+        'geneticist':{
+            'name': __('geneticist'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },        
+        'academic':{
+            'name': __('academic'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },     
+        'scientist':{
+            'name': __('scientist'),
+            'technical_level': 4,
+            'prestige_level': 4,
+        },           
         'chief':{
             'name': __('chief'),
             'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'sniper':{
-            'name': __('sniper'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'marksman':{
-            'name': __('marksman'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
-        'cannoneer':{
-            'name': __('cannoneer'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },
-        'watchman':{
-            'name': __('watchman'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'artist':{
-            'name': __('artist'),
-            'technical_level': 3,
-            'prestige_level': 3,
+            'prestige_level': 4,
         },      
-        'dancer':{
-            'name': __('dancer'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'gypsy':{
-            'name': __('gypsy'),
-            'technical_level': 2,
-            'prestige_level': 1,
-        },
-        'faquir':{
-            'name': __('faquir'),
-            'technical_level': 3,
-            'prestige_level': 2,
-        },        
-        'musician':{
-            'name': __('musician'),
-            'technical_level': 2,
-            'prestige_level': 2,
-        },
-        'singer':{
-            'name': __('singer'),
+"""          
+                        
+        ## Prestige 5      
+        'senator':{
+            'name': __('senator'),
             'technical_level': 4,
-            'prestige_level': 3,
-        },
-        'bard':{
-            'name': __('bard'),
-            'technical_level': 2,
+            'prestige_level': 5,
+        },        
+
+
+
+        ## TEC-lvl 5 - future tecnologies, space empires, strange, utopian, dystopian cultures
+        ## Prestige 1        
+        'hitch':{
+            'name': __('hitch-hiker'),
+            'technical_level': 5,
+            'prestige_level': 1,
+        },      
+
+
+        ## Prestige 2      
+        'spacemarine':{
+            'name': __('spacemarine'),
+            'technical_level': 5,
             'prestige_level': 2,
-        },    
-        'sorcerer':{
-            'name': __('sorcerer'),
-            'technical_level': 2,
+        },       
+                                
+        ## Prestige 3      
+        'mech_pilot':{
+            'name': __('mecha pilot'),
+            'technical_level': 5,
             'prestige_level': 3,
         },
-        'enchanter':{
-            'name': __('enchanter'),
-            'technical_level': 2,
+                
+        ## Prestige 4      
+        'space_merchant':{
+            'name': __('intergalactic merchant'),
+            'technical_level': 5,
             'prestige_level': 4,
         },
-        'mystic':{
-            'name': __('mystic'),
-            'technical_level': 3,
-            'prestige_level': 3,
-        },    
-        'fortuneteller':{
-            'name': __('fortuneteller'),
-            'technical_level': 3,
-            'prestige_level': 2,
+                
+        ## Prestige 5      
+        'space_admiral':{
+            'name': __('spacefleet admiral'),
+            'technical_level': 5,
+            'prestige_level': 5,
         },
-    }
-    
+            
+    }   
+
     
     ## CULTURES 
     
@@ -961,52 +1145,52 @@ init python:
     }
 
     ## EQUIPMENT
-    background_equipment = {'lumberjack': {'main_hand': 'strudy_axe', 'other_hand': None, 'armor': None},
-        'miner': {'main_hand': 'pickaxe', 'other_hand': None, 'armor': None},
-        'daytaler': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'rower': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'peasant': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'mason': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None},
-        'porter': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None},
-        'mercenary': {'main_hand': 'letal_weapon', 'other_hand': 'dagger', 'armor': 'soft_armor'},
-        'sellsword': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'hard_armor'},
-        'gladiator': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'soft_armor'},
-        'thug': {'main_hand': 'club', 'other_hand': None, 'armor': 'soft_armor'},
-        'raider': {'main_hand': 'sword', 'other_hand': 'dagger', 'armor': 'soft_armor'},
-        'soldier': {'main_hand': 'letal_weapon', 'other_hand': None, 'armor': 'hard_armor'},
-        'pirate': {'main_hand': 'sword', 'other_hand': None, 'armor': None},
-        'officer': {'main_hand': 'sdw', 'other_hand': None, 'armor': None},
-        'knight': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'hard_armor'},
-        'assasin': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor'},
-        'thief': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'scout': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor'},
-        'spy': {'main_hand': 'dagger', 'other_hand': None, 'armor': None},
-        'smith': {'main_hand': 'maul', 'other_hand': None, 'armor': None},
-        'carpenter': {'main_hand': 'hand_axe', 'other_hand': None, 'armor': None},
-        'cobbler': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'tanner': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'artisan': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'monk': {'main_hand': 'quarterstaff', 'other_hand': None, 'armor': None},
-        'quartermaster': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'outcast': {'main_hand': 'quarterstaff', 'other_hand': None, 'armor': None},
-        'pathfinder': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor'},
-        'hunter': {'main_hand': 'hunting_weapon', 'other_hand': None, 'armor': None},
-        'guide': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'explorer': {'main_hand': 'dagger', 'other_hand': None, 'armor': None},
-        'medic': {'main_hand': 'lancet', 'other_hand': None, 'armor': None},
-        'herbalist': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'surgeon': {'main_hand': 'lancet', 'other_hand': None, 'armor': None},
-        'anatomist': {'main_hand': 'lancet', 'other_hand': None, 'armor': None},
-        'biker': {'main_hand': 'crowbar', 'other_hand': None, 'armor': 'leather_coat'},
-        'pimp': {'main_hand': 'knuckles', 'other_hand': None, 'armor': None},
-        'mechanist': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None},
-        'sapper': {'main_hand': 'dagger', 'other_hand': None, 'armor': None},
-        'cook': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'chief': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'sniper': {'main_hand': 'long_weapon', 'other_hand': None, 'armor': None},
-        'marksman': {'main_hand': 'long_weapon', 'other_hand': None, 'armor': None},
-        'canoneer': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'watchman': {'main_hand': 'knife', 'other_hand': None, 'armor': None},
-        'bard': {'main_hand': 'dagger', 'other_hand': None, 'armor': None},
-        'mystic': {'main_hand': 'dagger', 'other_hand': None, 'armor': None},
+    background_equipment = {'lumberjack': {'main_hand': 'strudy_axe', 'other_hand': None, 'armor': None, 'accessories': None},
+        'miner': {'main_hand': 'pickaxe', 'other_hand': None, 'armor': None, 'accessories': None},
+        'daytaler': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'rower': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'peasant': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'mason': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None, 'accessories': None},
+        'porter': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None, 'accessories': None},
+        'mercenary': {'main_hand': 'letal_weapon', 'other_hand': 'dagger', 'armor': 'soft_armor', 'accessories': None},
+        'sellsword': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'hard_armor', 'accessories': None},
+        'gladiator': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'soft_armor', 'accessories': None},
+        'thug': {'main_hand': 'club', 'other_hand': None, 'armor': 'soft_armor', 'accessories': None},
+        'raider': {'main_hand': 'sword', 'other_hand': 'dagger', 'armor': 'soft_armor', 'accessories': None},
+        'soldier': {'main_hand': 'letal_weapon', 'other_hand': None, 'armor': 'hard_armor', 'accessories': None},
+        'pirate': {'main_hand': 'sword', 'other_hand': None, 'armor': None, 'accessories': None},
+        'officer': {'main_hand': 'sdw', 'other_hand': None, 'armor': None, 'accessories': None},
+        'knight': {'main_hand': 'sword', 'other_hand': 'shield', 'armor': 'hard_armor', 'accessories': None},
+        'assasin': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor', 'accessories': None},
+        'thief': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'scout': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor', 'accessories': None},
+        'spy': {'main_hand': 'dagger', 'other_hand': None, 'armor': None, 'accessories': None},
+        'smith': {'main_hand': 'maul', 'other_hand': None, 'armor': None, 'accessories': None},
+        'carpenter': {'main_hand': 'hand_axe', 'other_hand': None, 'armor': None, 'accessories': None},
+        'cobbler': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'tanner': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'artisan': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'monk': {'main_hand': 'quarterstaff', 'other_hand': None, 'armor': None, 'accessories': None},
+        'quartermaster': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'outcast': {'main_hand': 'quarterstaff', 'other_hand': None, 'armor': None, 'accessories': None},
+        'pathfinder': {'main_hand': 'dagger', 'other_hand': None, 'armor': 'soft_armor', 'accessories': None},
+        'hunter': {'main_hand': 'hunting_weapon', 'other_hand': None, 'armor': None, 'accessories': None},
+        'guide': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'explorer': {'main_hand': 'dagger', 'other_hand': None, 'armor': None, 'accessories': None},
+        'medic': {'main_hand': 'lancet', 'other_hand': None, 'armor': None, 'accessories': None},
+        'herbalist': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'surgeon': {'main_hand': 'lancet', 'other_hand': None, 'armor': None, 'accessories': None},
+        'anatomist': {'main_hand': 'lancet', 'other_hand': None, 'armor': None, 'accessories': None},
+        'biker': {'main_hand': 'crowbar', 'other_hand': None, 'armor': 'leather_coat', 'accessories': None},
+        'pimp': {'main_hand': 'knuckles', 'other_hand': None, 'armor': None, 'accessories': None},
+        'mechanist': {'main_hand': 'crowbar', 'other_hand': None, 'armor': None, 'accessories': None},
+        'sapper': {'main_hand': 'dagger', 'other_hand': None, 'armor': None, 'accessories': None},
+        'cook': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'chief': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'sniper': {'main_hand': 'long_weapon', 'other_hand': None, 'armor': None, 'accessories': None},
+        'marksman': {'main_hand': 'long_weapon', 'other_hand': None, 'armor': None, 'accessories': None},
+        'canoneer': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'watchman': {'main_hand': 'knife', 'other_hand': None, 'armor': None, 'accessories': None},
+        'bard': {'main_hand': 'dagger', 'other_hand': None, 'armor': None, 'accessories': None},
+        'mystic': {'main_hand': 'dagger', 'other_hand': None, 'armor': None, 'accessories': None},
     }
