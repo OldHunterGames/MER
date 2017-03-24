@@ -880,6 +880,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.game_ref.sayer = self
         self._renpy_character(what, interact=interact)
 
+    def say_phrase(self, phrase_id, default_value='No phrase'):
+        phrase = self.get_phrase(phrase_id, default_value)
+        self(phrase)
+
     def predict(self, what):
         self._renpy_character.predict(what)
 
