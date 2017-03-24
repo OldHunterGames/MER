@@ -79,9 +79,9 @@ label lbl_edge_reward_relations(card):
     
     return
              
-label lbl_quests(target):
+label lbl_quests(card):
     python:
-        quest = choice.target.available_quests(player)
+        quest = viasvis.available_quests(player)
         description = quest.description()
         core.quest_tracker.add_quest(quest)
             
