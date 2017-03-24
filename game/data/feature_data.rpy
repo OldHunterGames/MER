@@ -141,6 +141,65 @@ init python:
         
             
         # backgrounds
+        'savage': {'name': __('savage'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'talanted_savage': {'name': __('mighty savage'), 'slot': 'profession', 'modifiers': {'might_skill': +2}, 'visible': True},  
+
+        'tribesman': {'name': __('tribesman'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_tribesman': {'name': __('honored tribesman'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'wild_hunter': {'name': __('tribal hunter'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'talanted_wild_hunter': {'name': __('cunning huntsman'), 'slot': 'profession', 'modifiers': {'might_skill': +1, 'finesse_skill': +1}, 'visible': True},  
+        'wild_outcast': {'name': __('tribe outcast'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_wild_outcast': {'name': __('sneaky tribe outcast'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
+        'chief': {'name': __('tribe chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_chief': {'name': __('great chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True},  
+        'shaman': {'name': __('shaman'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'talanted_shaman': {'name': __('venerated shaman'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1, 'wisdom_skill': +1}, 'visible': True},  
+
+        'peon': {'name': __('humble peon'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_peon': {'name': __('stout peon'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'lumberjack': {'name': __('lumberjack'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'talanted_lumberjack': {'name': __('stout lumberjack'), 'slot': 'profession', 'modifiers': {'might_skill': +2}, 'visible': True},  
+        'assasin': {'name': __('assasin'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
+        'talanted_assasin': {'name': __('sneaky assasin'), 'slot': 'profession', 'modifiers': {'finesse_skill': +2}, 'visible': True},  
+        'knight': {'name': __('knight'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'talanted_knight': {'name': __('noble knight'), 'slot': 'profession', 'modifiers': {'might_skill': +1, 'spirit_skill': +1}, 'visible': True},  
+        'lord': {'name': __('lord'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_lord': {'name': __('grand lord'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True}, 
+
+        'daytaller': {'name': __('daytaller'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_daytaller': {'name': __('stout daytaller'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},              
+        'dancer': {'name': __('dancer'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
+        'talanted_dancer': {'name': __('talanted dancer'), 'slot': 'profession', 'modifiers': {'finesse_skill': +2}, 'visible': True},               
+        'officer': {'name': __('officer'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_officer': {'name': __('great officer'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True},                    
+        'bonvivan': {'name': __('bonvivan'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_bonvivan': {'name': __('exalted bonvivan'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},        
+        'noble': {'name': __('noble'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_noble': {'name': __('grand noble'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},                                    
+
+        'stripper': {'name': __('stripper'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
+        'talanted_stripper': {'name': __('flashy stripper'), 'slot': 'profession', 'modifiers': {'finesse_skill': +2}, 'visible': True},              
+        'secretary': {'name': __('secretary'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_secretary': {'name': __('personal assistant'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},               
+        'hacker': {'name': __('hacker'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'talanted_hacker': {'name': __('international hacker'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +2}, 'visible': True},                    
+        'lawyer': {'name': __('lawyer'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'talanted_lawyer': {'name': __('established lawyer'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1, 'finesse_skill': +1}, 'visible': True},        
+        'senator': {'name': __('senator'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_senator': {'name': __('minister'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1, 'spirit_skill': +1}, 'visible': True},        
+
+        'hitch': {'name': __('hitch-hiker'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_hitch': {'name': __('intergalactic hitch-hiker'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},              
+        'spacemarine': {'name': __('spacemarine'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
+        'talanted_spacemarine': {'name': __('veteran spacemarine'), 'slot': 'profession', 'modifiers': {'might_skill': +2}, 'visible': True},               
+        'mech_pilot': {'name': __('mecha pilot'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
+        'talanted_mech_pilot': {'name': __('ace mecha pilot'), 'slot': 'profession', 'modifiers': {'finesse_skill': +2}, 'visible': True},                    
+        'space_merchant': {'name': __('space merchant'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_space_merchant': {'name': __('intergalactic merchant'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True},        
+        'space_admiral': {'name': __('spacefleet admiral'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
+        'talanted_space_admiral': {'name': __('glorious spacefleet admiral'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1, 'spirit_skill': +1}, 'visible': True},        
+                                                                    
+        """ 
         'athlete': {'name': __('athlete'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
         'talanted_athlete': {'name': __('talanted athlete'), 'slot': 'profession', 'modifiers': {'might_skill': +2}, 'visible': True},  
         'lumberjack': {'name': __('lumberjack'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},  
@@ -411,7 +470,10 @@ init python:
         'talanted_daytaler': {'name': __('Talanted daytaler'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
         'peasant': {'name': __('peasant'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
         'talanted_peasant': {'name': __('talanted peasant'), 'slot': 'profession', 'modifiers': {}, 'visible': True},      
-
+        """
+        
+        #'profession': {'name': __('profession'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        # spirit_skill  wisdom_skill  finesse_skill   might_skill
     }
 
     item_features = {

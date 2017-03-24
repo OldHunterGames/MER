@@ -250,23 +250,34 @@ init python:
     
         ## TEC-lvl 0 - no tecnology at all
         ## Prestige 0 - no social segregation ar all
-
-
-
+        'savage':{
+            'name': __('savage'),
+            'technical_level': 0,
+            'prestige_level': 0,
+        },          
 
 
 
         ## TEC-lvl 1 - stone age tecnologies, tribalism culture
         ## Prestige 1
-        'outcast':{
-            'name': __('outcast'),
-            'technical_level': 1
+        'tribesman':{
+            'name': __('tribesman'),
+            'technical_level': 1,
             'prestige_level': 1,
-        },  
-        'wildhunter':{
+        },
+        'wild_hunter':{
             'name': __('tribal hunter'),
             'technical_level': 1,
             'prestige_level': 1,
+        },
+        'wild_outcast':{
+            'name': __('tribe outcast'),
+            'technical_level': 1,
+            'prestige_level': 1,
+        },  
+        'chief':{
+            'name': __('chief of the tribe'),
+            'technical_level': 1,
             'prestige_level': 1,
         },
         'shaman':{
@@ -274,7 +285,6 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
         },
-
 
 
         ## TEC-lvl 2 - metal age to high medieval tecnologies, antique or feudal culture
@@ -285,6 +295,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 1,
         },
+"""        
         'villain':{
             'name': __('villain'),
             'technical_level': 2,
@@ -320,7 +331,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 1,
         },        
-        
+"""        
                                         
         ## Prestige 2      
         'lumberjack':{
@@ -328,6 +339,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 2,
         },  
+""""        
         'mason':{
             'name': __('mason'),
             'technical_level': 2,
@@ -413,13 +425,15 @@ init python:
             'technical_level': 2,
             'prestige_level': 2,
         },        
-                                                
+"""                                                
         ## Prestige 3      
         'assasin':{
             'name': __('assasin'),
             'technical_level': 2,
             'prestige_level': 3,
         },    
+        
+"""        
         'glassmaker':{
             'name': __('glassmaker'),
             'technical_level': 2,
@@ -475,7 +489,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 3,
         },         
-            
+ """           
                 
         ## Prestige 4      
         'knight':{
@@ -483,6 +497,7 @@ init python:
             'technical_level': 2,
             'prestige_level': 4,
         },
+"""        
         'rethor':{
             'name': __('rethor'),
             'technical_level': 2,
@@ -507,10 +522,15 @@ init python:
             'name': __('scholar'),
             'technical_level': 2,
             'prestige_level': 4,
-        },                   
+        },   
+"""                        
                 
         ## Prestige 5      
-
+        'lord':{
+            'name': __('lord'),
+            'technical_level': 2,
+            'prestige_level': 5,
+        },
 
 
 
@@ -526,6 +546,8 @@ init python:
             'technical_level': 3,
             'prestige_level': 1,
         },
+
+"""        
         'farmhand':{
             'name': __('farmhand'),
             'technical_level': 3,
@@ -566,10 +588,11 @@ init python:
             'technical_level': 3,
             'prestige_level': 1,
         },
-    }        
+"""            
                                         
         ## Prestige 2      
-                                                    
+
+"""                                                
         'athlete':{
             'name': __('athlete'),
             'technical_level': 3,
@@ -660,18 +683,22 @@ init python:
             'technical_level': 3,
             'prestige_level': 2,
         },        
+   
+"""             
         'dancer':{
             'name': __('dancer'),
             'technical_level': 3,
             'prestige_level': 2,
-        },              
-                                                        
+        },     
+                                                                
         ## Prestige 3      
         'officer':{
             'name': __('officer'),
             'technical_level': 3,
             'prestige_level': 3,
         },
+
+"""        
         'sculptor':{
             'name': __('sculptor'),
             'technical_level': 3,
@@ -727,7 +754,7 @@ init python:
             'technical_level': 3,
             'prestige_level': 3,
         },         
-    
+"""    
                         
         ## Prestige 4      
         'bonvivan':{
@@ -735,6 +762,8 @@ init python:
             'technical_level': 3,
             'prestige_level': 4,
         },
+        
+"""       
         'merchant':{
             'name': __('merchant'),
             'technical_level': 3,
@@ -775,18 +804,24 @@ init python:
             'technical_level': 3,
             'prestige_level': 4,
         },        
+"""                       
                                 
         ## Prestige 5      
-
-
-
-
-
-
-
+        'noble':{
+            'name': __('noble'),
+            'technical_level': 3,
+            'prestige_level': 5,
+        },
+        
 
         ## TEC-lvl 4 - disel-age to cyber-age tecnologies, multiculturalism
         ## Prestige 1        
+        'stripper':{
+            'name': __('stripper'),
+            'technical_level': 4,
+            'prestige_level': 1,
+        },  
+"""        
         'thief':{
             'name': __('thief'),
             'technical_level': 4,
@@ -807,13 +842,16 @@ init python:
             'technical_level': 4,
             'prestige_level': 1,
         },             
-        'stripper':{
-            'name': __('stripper'),
-            'technical_level': 4,
-            'prestige_level': 1,
-        },              
+"""           
                 
         ## Prestige 2      
+        'secretary':{
+            'name': __('secretary'),
+            'technical_level': 4,
+            'prestige_level': 2,
+        },  
+
+"""
         'soldier':{
             'name': __('soldier'),
             'technical_level': 4,
@@ -824,11 +862,6 @@ init python:
             'technical_level': 4,
             'prestige_level': 2,
         },      
-        'secretary':{
-            'name': __('secretary'),
-            'technical_level': 4,
-            'prestige_level': 2,
-        },                
         'teacher':{
             'name': __('teacher'),
             'technical_level': 4,
@@ -879,9 +912,17 @@ init python:
             'technical_level': 4,
             'prestige_level': 2,
         },        
-     
+"""     
                         
-        ## Prestige 3      
+        ## Prestige 3    
+        
+        'hacker':{
+            'name': __('hacker'),
+            'technical_level': 4,
+            'prestige_level': 3,
+        },      
+        
+"""                  
         'marine':{
             'name': __('marine'),
             'technical_level': 4,
@@ -947,11 +988,6 @@ init python:
             'technical_level': 4,
             'prestige_level': 2,
         },        
-        'hacker':{
-            'name': __('hacker'),
-            'technical_level': 4,
-            'prestige_level': 3,
-        },         
         'slut':{
             'name': __('slut'),
             'technical_level': 4,
@@ -967,13 +1003,16 @@ init python:
             'technical_level': 4,
             'prestige_level': 3,
         },              
+"""
                         
         ## Prestige 4      
         'lawyer':{
             'name': __('lawyer'),
             'technical_level': 4,
             'prestige_level': 4,
-        },        
+        },      
+        
+"""          
         'lobbist':{
             'name': __('lobbist'),
             'technical_level': 4,
@@ -1008,15 +1047,26 @@ init python:
             'name': __('chief'),
             'technical_level': 4,
             'prestige_level': 4,
-        },        
+        },      
+"""          
                         
         ## Prestige 5      
-
+        'senator':{
+            'name': __('senator'),
+            'technical_level': 4,
+            'prestige_level': 5,
+        },        
 
 
 
         ## TEC-lvl 5 - future tecnologies, space empires, strange, utopian, dystopian cultures
         ## Prestige 1        
+        'hitch':{
+            'name': __('hitch-hiker'),
+            'technical_level': 5,
+            'prestige_level': 1,
+        },      
+
 
         ## Prestige 2      
         'spacemarine':{
@@ -1024,18 +1074,30 @@ init python:
             'technical_level': 5,
             'prestige_level': 2,
         },       
-        'psychic':{
-            'name': __('psychic'),
-            'technical_level': 5,
-            'prestige_level': 2,
-        },
                                 
         ## Prestige 3      
-        
+        'mech_pilot':{
+            'name': __('mecha pilot'),
+            'technical_level': 5,
+            'prestige_level': 3,
+        },
+                
         ## Prestige 4      
-        
+        'space_merchant':{
+            'name': __('intergalactic merchant'),
+            'technical_level': 5,
+            'prestige_level': 4,
+        },
+                
         ## Prestige 5      
-    
+        'space_admiral':{
+            'name': __('spacefleet admiral'),
+            'technical_level': 5,
+            'prestige_level': 5,
+        },
+            
+    }   
+
     
     ## CULTURES 
     
