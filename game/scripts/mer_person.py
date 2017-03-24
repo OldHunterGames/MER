@@ -723,7 +723,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.revealed_fetishes = []
         self.communications_done = []
 
-        self.renpy_character = store.Character(self.firstname)
+        self._renpy_character = store.Character(self.firstname)
 
         self.pocket_money = 0
         self._job = None
@@ -874,14 +874,14 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     @firstname.setter
     def firstname(self, name):
         self._firstname = name
-        self.renpy_character.name = name
+        self._renpy_character.name = name
 
     def __call__(self, what, interact=True):
         self.game_ref.sayer = self
-        self.renpy_character(what, interact=interact)
+        self._renpy_character(what, interact=interact)
 
     def predict(self, what):
-        self.renpy_character.predict(what)
+        self._renpy_character.predict(what)
 
     def apply_background(self, background):
         self.background = background
