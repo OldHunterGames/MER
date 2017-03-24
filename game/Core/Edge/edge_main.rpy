@@ -9,10 +9,10 @@ init -8 python:
     from edge_camp import *
     edge = EdgeEngine()
     pass
-    def canibalism_unlocker(person):
+    def canibalism_unlocker(person, *args, **kwargs):
         person.allow('feed', 'canibalism')
 
-    def canibalism_locker(person):
+    def canibalism_locker(person, *args, **kwargs):
         if len(person.get_corpses()) < 1:
             person.disallow('feed', 'canibalism')
 
