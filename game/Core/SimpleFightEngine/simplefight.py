@@ -276,12 +276,12 @@ class SimpleCombatant(object):
         return self._target
 
     def combat_style(self):
-        if self._combat_style is not None:
-            return self._combat_style
         style = 'brawler'
         if self.person.main_hand is not None:
             if self.person.main_hand.size == 'offhand':
                 style = 'cutthroat'
+            elif person.main_hand.id == 'bard_hands':
+                return 'brawler'
         elif any([i.size == 'versatile' for i in self.weapons()]):
             style = 'swashbuckler'
         elif any([i.size == 'shield' for i in self.weapons()]):
