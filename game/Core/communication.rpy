@@ -81,12 +81,20 @@ label lbl_edge_reward_relations(card):
              
 label lbl_quests(card):
     python:
-        quest = viasvis.available_quests(player)
-        description = quest.description()
-        core.quest_tracker.add_quest(quest)
-            
-    visavis '[description]'
-    $ player.drain_energy()
+        quests = viasvis.available_quests()
+        if len(quests) > 0:
+            quest = choice(viasvis.available_quests(player))
+            description = quest.description()
+            core.quest_tracker.add_quest(quest)
+        else:
+            quest = None
+    
+    if quest is not None:
+        visavis '[description]'
+        $ player.drain_energy()
+    else:
+        visavis 'I have no quests for you'
+    
     return
             
 label lbl_first_impression:
