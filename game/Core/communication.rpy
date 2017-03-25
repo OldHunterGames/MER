@@ -81,7 +81,7 @@ label lbl_edge_reward_relations(card):
              
 label lbl_quests(card):
     python:
-        quests = viasvis.available_quests()
+        quests = visavis.available_quests()
         if len(quests) > 0:
             quest = choice(viasvis.available_quests(player))
             description = quest.description()
