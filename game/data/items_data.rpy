@@ -1,7 +1,7 @@
 init python:
     # sizes ['offhand', 'versatile', 'shield', 'twohand']
     weapon_data = {
-        'bare_hands': {'name': __('bare hands'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 0, 'price': -1}        
+        'bare_hands': {'name': __('bare hands'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 0, 'price': -1},         
         'stone_knife':{'name': __('stone knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 1},
         'stone_spear': {'name': __('stone spear'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 3},
         'heavy_axe': {'name': __('long axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 3, 'price': 10},
@@ -18,7 +18,7 @@ init python:
 
     
     armor_data = {
-        'nude': {'name': __('nude'), 'armor_rate': 'unarmored', 'quality': 0, 'price': -1}
+        'nude': {'name': __('nude'), 'armor_rate': 'unarmored', 'quality': 0, 'price': -1},
         'hides': {'name': __('hides'), 'armor_rate': 'light_armor', 'quality': 1, 'price': 3},   
         'loincloth': {'name': __('loincloth'), 'armor_rate': 'unarmored', 'quality': 1, 'price': 1},            
         'rags': {'name': __('rags'), 'armor_rate': 'unarmored', 'quality': 1, 'price': 1},  
@@ -45,6 +45,7 @@ init python:
     }
 
     treasure_data = {
+
         'gem':{
             'name': __("clear gem"),
             'description': __('Clear crystal, suited to store the Sparks.'),
