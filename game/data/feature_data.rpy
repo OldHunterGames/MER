@@ -1,4 +1,4 @@
-init python:
+ init python:
     person_features = {
         # Age
         'junior': {'name': __('junior'), 'slot': 'age', 'modifiers': {'physique': -1, 'spirit': -1, 'mind': -1, 'agility': +1, 'succulence': +1}, 'visible': True},
@@ -150,8 +150,8 @@ init python:
         'talanted_wild_hunter': {'name': __('cunning huntsman'), 'slot': 'profession', 'modifiers': {'might_skill': +1, 'finesse_skill': +1}, 'visible': True},  
         'wild_outcast': {'name': __('tribe outcast'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
         'talanted_wild_outcast': {'name': __('sneaky tribe outcast'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
-        'chief': {'name': __('tribe chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
-        'talanted_chief': {'name': __('great chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True},  
+        'tribal_chief': {'name': __('tribe chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
+        'talanted_tribal_chief': {'name': __('great tribe chief'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True},  
         'shaman': {'name': __('shaman'), 'slot': 'profession', 'modifiers': {'wisdom_skill': +1}, 'visible': True},  
         'talanted_shaman': {'name': __('venerated shaman'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1, 'wisdom_skill': +1}, 'visible': True},  
 
@@ -489,6 +489,7 @@ init python:
 
         'light_armor': {'name': __('light armor'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 1}},
         'heavy_armor': {'name': __('heavy armor'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 2}},  
+        'unarmored': {'name': __('unarmored'), 'slot': 'armor_rate', 'visible': True, 'modifiers': {'armor_weight': 0}},  
 
         }
     

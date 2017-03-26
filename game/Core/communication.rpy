@@ -9,7 +9,7 @@ label lbl_communicate(target):
         $ player.drain_energy()
         jump lbl_first_impression
 
-    target "[person.get_phrase('hello')]"
+    $ target.say_phrase('hello')
     python:     
         options = CardsMaker()
         #if not garantor and visavis.relations(player).stance > 0:

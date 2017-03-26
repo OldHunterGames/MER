@@ -1,37 +1,48 @@
 init python:
     # sizes ['offhand', 'versatile', 'shield', 'twohand']
     weapon_data = {
-        'shield':{'name': __('shield'), 'size': 'shield', 'damage_type': 'subdual', 'quality': 3, 'price': 2},    
-        'knife':{'name': __('knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 1},
-        'dagger':{'name': __('dagger'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 3, 'price': 2},
-        'sdw':{'name': __('SDW'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 3, 'price': 2},
-        'crowbar': {'name': __('crowbar'),'size': 'versatile', 'damage_type': 'impact', 'quality': 2, 'price': 1},
-        'maul': {'name': __('maul'),'size': 'versatile', 'damage_type': 'impact', 'quality': 3, 'price': 2},
-        'club': {'name': __('club'),'size': 'versatile', 'damage_type': 'subdual', 'quality': 3, 'price': 2},
+        'bare_hands': {'name': __('bare hands'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 0, 'price': -1}        
+        'stone_knife':{'name': __('stone knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 1},
+        'stone_spear': {'name': __('stone spear'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 3},
+        'heavy_axe': {'name': __('long axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 3, 'price': 10},
+        'dagger':{'name': __('dagger'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 4, 'price': 5},
+        'smallsword': {'name': __('smallsword'),'size': 'versatile', 'damage_type': 'piercing', 'quality': 3, 'price': 5},
+        'sword': {'name': __('sword'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 10},
+        'sabre': {'name': __('sabre'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 10},
+        'shield':{'name': __('shield'), 'size': 'shield', 'damage_type': 'subdual', 'quality': 3, 'price': 10},    
+        'knife':{'name': __('knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 3},
+
         'quarterstaff': {'name': __('quarterstaff'),'size': 'twohand', 'damage_type': 'subdual', 'quality': 3, 'price': 2},
-        'letal_weapon': {'name': __('letal weapon'),'size': 'versatile', 'damage_type': 'impact', 'quality': 3, 'price': 2},
-        'long_weapon': {'name': __('long weapon'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 3, 'price': 2},
-        'sword': {'name': __('sword'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 3, 'price': 2},
-        'hand_axe':{'name': __('hand axe'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 2, 'price': 1},
-        'hunting_weapon': {'name': __('hunting weapon'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 1},
-        'pickaxe': {'name': __('pickaxe'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 1},
-        'strudy_axe':{'name': __('strudy axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 2, 'price': 1},
-        'rusty_axe':{'name': __('rusty axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 1, 'price': 0},
-        'rusty_knife':{'name': __('rusty knife'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 1, 'price': 0},
-        'knuckles':{'name': __('knuckles'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 1, 'price': 0},            
-        'lancet':{'name': __('lancet'), 'size': 'offhand', 'damage_type': 'slashing', 'quality': 1, 'price': 0},
-        'bare_hands': {'name': __('bare hands'), 'size': 'offhand', 'damage_type': 'subdual', 'quality': 1, 'price': -1}
+
         }
 
     
     armor_data = {
+        'nude': {'name': __('nude'), 'armor_rate': 'unarmored', 'quality': 0, 'price': -1}
+        'hides': {'name': __('hides'), 'armor_rate': 'light_armor', 'quality': 1, 'price': 3},   
+        'loincloth': {'name': __('loincloth'), 'armor_rate': 'unarmored', 'quality': 1, 'price': 1},            
+        'rags': {'name': __('rags'), 'armor_rate': 'unarmored', 'quality': 1, 'price': 1},  
+        'simple_clothes': {'name': __('simple clothes'), 'armor_rate': 'unarmored', 'quality': 2, 'price': 3},  
+        'fine_clothes': {'name': __('fine clothes'), 'armor_rate': 'unarmored', 'quality': 3, 'price': 5},  
+        'luxury_clothes': {'name': __('luxury clothes'), 'armor_rate': 'unarmored', 'quality': 4, 'price': 10},          
+        'fullplate': {'name': __('fullplate armor'), 'armor_rate': 'heavy_armor', 'quality': 4, 'price': 50},
+        'body_armor': {'name': __('polymer armor'), 'armor_rate': 'light_armor', 'quality': 4, 'price': 20},  
+
         'hard_armor': {'name': __('hard armor'), 'armor_rate': 'heavy_armor', 'quality': 3, 'price': 2},
         'soft_armor': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 3, 'price': 2},            
         'leather_coat': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 2, 'price': 1},  
         'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy_armor', 'quality': 1},
-        'nude': {'name': __('nude'), 'armor_rate': 'light_armor', 'quality': 1, 'price': -1}
             }
 
+    assesories_data = {
+        'jewel':{
+            'name': __("jewel"),
+            'description': __('This piece of jewelry contains a clear gem, suited to store the Sparks.'),
+            'price': 10,
+            'mutable_name': True,
+            'mutable_description': False
+        },
+    }
 
     treasure_data = {
         'gem':{
