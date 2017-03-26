@@ -1614,14 +1614,15 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def menace(self):
         value = self.physique
         value += self.skill('physique') - 3
-        weapons = self.weapon_slots()
+        weapons = self.weapon_slots().values()
         if (self.get_slot('harness') is None and
                 self.get_slot('belt1')is None and
                 self.get_slot('belt2') is None):
             value -= 1
-        for i in weapons.values():
-            if i is not None:
-                if i.size == 'twohand':
+        for i in weapons:
+            weapon = i.get_item()
+            if weapon is not None:
+                if weapon.size == 'twohand':
                     value += 1
                     break
         if self.armor is None:

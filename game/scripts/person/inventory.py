@@ -6,6 +6,26 @@ import mer_utilities as utilities
 from mer_item import create_item
 
 
+class ItemSlot(object):
+
+    def __init__(self, default):
+
+        self._current = None
+        self._default = default
+
+    @property
+    def current(self):
+        return self._current
+
+    def get_item(self):
+        if self._current is None:
+            return self._default
+        return self._current
+
+    def set_item(self, item):
+        self._current = item
+
+
 class Inventory(ItemsStorage, ModifiersStorage):
 
     def __init__(self):
@@ -31,7 +51,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     def get_slot(self, key):
         return self.carried_weapons.get(
-            key, self.carried_armor.get(key, None))
+            key, self.carried_armor.get(key, ItemSlot(None)))
 
     def remove_modifier(self, source):
         pass
@@ -47,7 +67,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     @property
     def main_hand(self):
-        return self._main_hand
+        return self._main_hand.get_item()
 
     @main_hand.setter
     def main_hand(self, weapon):
@@ -57,19 +77,19 @@ class Inventory(ItemsStorage, ModifiersStorage):
         if not any([i == weapon for i in self.carried_weapons.values()]):
             for key in self.weapon_slots():
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
-                    self.carried_weapons[key] = weapon
+                    self.carried_weapons[key].set_item(weapon)
                     break
         self.add_item(weapon)
         weapon.equip()
 
         if weapon.size == 'twohand':
             self.disarm_weapon('other_hand')
-            self._other_hand = weapon
-        self._main_hand = weapon
+            self._other_hand.set_item(weapon)
+        self._main_hand.set_item(weapon)
 
     @property
     def other_hand(self):
-        return self._other_hand
+        return self._other_hand.get_item()
 
     @other_hand.setter
     def other_hand(self, weapon):
@@ -79,13 +99,13 @@ class Inventory(ItemsStorage, ModifiersStorage):
         if not any([i == weapon for i in self.carried_weapons.values()]):
             for key in self.weapon_slots():
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
-                    self.carried_weapons[key] = weapon
+                    self.carried_weapons[key].set_item(weapon)
                     break
         self.add_item(weapon)
         if weapon.size == 'twohand':
             self.disarm_weapon('main_hand')
-            self._main_hand = weapon
-        self._other_hand = weapon
+            self._main_hand.set_item(weapon)
+        self._other_hand.set_item(weapon)
 
     def weapons(self):
         list_ = []
@@ -123,46 +143,47 @@ class Inventory(ItemsStorage, ModifiersStorage):
     def equip_on_slot(self, slot, item):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         dict_ = getattr(self, slots)
-        current_item = dict_[slot]
+        current_item = dict_[slot].current
         if item is not None:
             item.equip()
         if current_item is not None:
             current_item.unequip()
             self.add_item(current_item)
-        dict_[slot] = item
+        dict_[slot].set_item(item)
 
     def equip_weapon(self, weapon, hand='main_hand'):
-        weapon.equip()
-        self.add_item(weapon)
-        if weapon.size == 'twohand':
-            self.main_hand = weapon
-            self.other_hand = weapon
-        else:
-            other = 'other_hand' if hand == 'main_hand' else 'main_hand'
-            try:
-                if getattr(self, other).size == 'twohand':
-                    setattr(self, other, None)
-            except AttributeError:
-                pass
-            setattr(self, hand, weapon)
+        if weapon is not None:
+            weapon.equip()
+            self.add_item(weapon)
+            if weapon.size == 'twohand':
+                self.main_hand = weapon
+                self.other_hand = weapon
+            else:
+                other = 'other_hand' if hand == 'main_hand' else 'main_hand'
+                try:
+                    if getattr(self, other).size == 'twohand':
+                        setattr(self, other, create_item('bare_hands', 'weapon'))
+                except AttributeError:
+                    pass
+        getattr(self, '_' + hand).set_item(weapon)
 
     def disarm_weapon(self, hand):
-        weapon = getattr(self, hand)
+        weapon = getattr(self, '_' + hand).current
         try:
             weapon.unequip()
             if weapon.size == 'twohand':
-                setattr(self, '_main_hand', None)
-                setattr(self, '_other_hand', None)
+                getattr(self, '_main_hand').set_item(None)
+                getattr(self, '_other_hand').set_item(None)
         except AttributeError:
             pass
-        setattr(self, '_' + hand, None)
+        getattr(self, '_' + hand).set_item(None)
 
     def equip_armor(self, armor, slot):
         self.add_item(armor)
-        if self.carried_armor[slot] is not None:
-            self.carried_armor[slot].unequip()
-            self.add_item(self.carried_armor[slot])
-        self.carried_armor[slot] = armor
+        if self.carried_armor[slot].current is not None:
+            self.carried_armor[slot].current.unequip()
+            self.add_item(self.carried_armor[slot].current)
+        self.carried_armor[slot].set_item(armor)
         armor.equip()
 
     def is_slot_active(self, slot):
@@ -221,28 +242,33 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
 
 class SimplyfiedInventory(Inventory):
+    # a lot of shitty code here, rework this for fucking sure
 
     def __init__(self):
         super(Inventory, self).__init__()
         self.carried_weapons = collections.OrderedDict(
             [
-                ('weapon', create_item('bare_hands', 'weapon'))
+                ('weapon', ItemSlot(create_item('bare_hands', 'weapon'))),
+                ('weapon2', ItemSlot(create_item('bare_hands', 'weapon')))
             ]
         )
         self.carried_armor = collections.OrderedDict(
             [
-                ('garment', create_item('nude', 'armor')),
-                ('accesories', None),
-                ('overgarments', None)
+                ('garment', ItemSlot(create_item('nude', 'armor'))),
+                ('accesories', ItemSlot(None)),
+                ('overgarments', ItemSlot(None))
             ]
         )
-        self._main_hand = None
-        self._other_hand = None
+        self._main_hand = self.carried_weapons['weapon']
+        self._other_hand = self.carried_weapons['weapon2']
         self.storage = []
         self.money = 0
 
     def slots(self):
-        return {'weapon': ['offhand', 'versatile', 'shield', 'twohand']}
+        return {
+            'weapon': ['offhand', 'versatile', 'shield', 'twohand'],
+            'weapon2': ['offhand', 'versatile', 'shield']
+        }
 
     def available_for_slot(self, slot, storage=None):
         if storage is None:
@@ -257,13 +283,31 @@ class SimplyfiedInventory(Inventory):
                     list_.append(item)
         else:
             for item in storage:
-                if item.type != 'armor' and not item.equiped:
+                if item.type == 'weapon' and not item.equiped:
                     if item.size in slots[slot]:
                         list_.append(item)
         return list_
 
     def weapons(self):
-        return [self.carried_weapons['weapon']]
+        return [i.get_item() for i in self.carried_weapons.values()]
+
+    def equip_on_slot(self, slot, item):
+        slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
+        dict_ = getattr(self, slots)
+        current_item = dict_[slot].current
+        if item is not None:
+            item.equip()
+        if current_item is not None:
+            current_item.unequip()
+            self.add_item(current_item)
+        dict_[slot].set_item(item)
+        if slot == 'weapon':
+            self.equip_weapon(item, 'main_hand')
+            if current_item is not None and current_item.size == 'twohand':
+                if item is None:
+                    self.equip_weapon(item, 'other_hand')
+        elif slot == 'weapon2':
+            self.equip_weapon(item, 'other_hand')
 
 
 class InventoryWielder(object):
@@ -363,7 +407,7 @@ class InventoryWielder(object):
 
     @property
     def armor(self):
-        return self.inventory.carried_armor['overgarments']
+        return self.inventory.carried_armor['overgarments'].get_item()
 
     @armor.setter
     def armor(self, armor):
