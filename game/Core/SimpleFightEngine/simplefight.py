@@ -404,6 +404,8 @@ class SimpleCombatant(object):
     def armor_rate(self):
         try:
             rate = self.person.armor.armor_rate
+            if rate == 'unarmored':
+                rate = None
         except AttributeError:
             rate = None
         return rate
