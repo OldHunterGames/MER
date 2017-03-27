@@ -57,9 +57,9 @@ screen sc_manage_stash(stash):
                             for i in stash.items:
                                 python:
                                     if i.amount > 1:
-                                        name = "%s(%s)"%(i.name, i.amount)
+                                        name = "%s(%s)"%(i.name(), i.amount)
                                     else:
-                                        name = i.name
+                                        name = i.name()
                                 textbutton name:
                                     action Function(stash.transfer_item, i, player)
                 frame:
@@ -110,9 +110,9 @@ screen sc_trade(stash):
                             for i in player.items:
                                 python:
                                     if i.amount > 1:
-                                        name = "%s(%s)"%(i.name, i.amount)
+                                        name = "%s(%s)"%(i.name(), i.amount)
                                     else:
-                                        name = i.name
+                                        name = i.name()
                                 if i.amount > 1:
                                     text 'Price for 1: %s'%(int(i.price*sell_multiplier))
                                 else:
@@ -140,9 +140,9 @@ screen sc_trade(stash):
                             for i in stash.items:
                                 python:
                                     if i.amount > 1:
-                                        name = "%s(%s)"%(i.name, i.amount)
+                                        name = "%s(%s)"%(i.name(), i.amount)
                                     else:
-                                        name = i.name
+                                        name = i.name()
                                 if i.amount > 1:
                                     text 'Price for 1: %s'%(int(i.price*buy_multiplier))
                                 else:

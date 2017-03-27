@@ -874,7 +874,7 @@ class Outflank(RuledManeuver):
         if self.hp > target.hp or self.defence > target.defence:
             return
         else:
-            self.person.power_up
+            self.person.power_up += 1
 
     def can_be_applied(self, person):
         if person.type == 'npc':
