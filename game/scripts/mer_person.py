@@ -775,7 +775,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     def has_available_quests(self, player):
         return any(self.available_quests(player))
 
-    def available_quests(self, player):
+    def available_quests(self):
         return [i for i in self.quests_to_give if not i.active]
 
     def clear_quests(self):
