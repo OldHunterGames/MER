@@ -183,7 +183,7 @@ screen sc_postfight_win(fight):
                     vbox:
                         text 'Loot'
                         for item in fight.loot:
-                                textbutton item.name:
+                                textbutton item.name():
                                     action Function(player.add_item, item), Function(fight.loot.remove, item)
                 textbutton 'Take all' action Function(take_all_items, player, fight.loot):
                     xsize 200
