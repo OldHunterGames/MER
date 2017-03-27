@@ -227,12 +227,10 @@ class Inventory(ItemsStorage, ModifiersStorage):
             else:
                 self.storage.remove(get_item)
                 returned = get_item
-        for key, value in self.carried_weapons.items():
-            if value == item:
-                self.carried_weapons[key] = None
-        for key, value in self.carried_armor.items():
-            if value == item:
-                self.carried_armor[key] = None
+        for value in self._slots.values():
+            if value.current == item:
+                value.set_item(None)
+                item.unequip()
         if self.main_hand == item:
             self.main_hand = None
         if self.other_hand == item:
