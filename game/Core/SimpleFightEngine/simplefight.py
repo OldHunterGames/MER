@@ -421,6 +421,7 @@ class SimpleCombatant(object):
                 return (self.person.agility + quality * 2) * 3
             elif armor.armor_rate == 'heavy_armor':
                 return quality * 10
+        return self.person.agility * 5
 
     @property
     def defence(self):
