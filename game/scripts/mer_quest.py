@@ -99,7 +99,7 @@ class BringPerson(QuestTarget):
 
     def get_available_slaves(self, performer):
         list_ = []
-        for i in performer.slaves.slaves:
+        for i in performer.slaves.slaves():
             for key, value in self.stats.items():
                 if getattr(i, key) < value:
                     continue
