@@ -83,7 +83,7 @@ label lbl_quests(card):
     python:
         quests = visavis.available_quests()
         if len(quests) > 0:
-            quest = choice(viasvis.available_quests(player))
+            quest = choice(quests)
             description = quest.description()
             core.quest_tracker.add_quest(quest)
         else:
