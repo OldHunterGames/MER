@@ -47,7 +47,7 @@ screen sc_simple_equip(person, look_mode=False):
         hbox:
             xalign 0.35
             spacing 5
-            for i in ('weapon', 'garment', 'accesories'):
+            for i in ('weapon', 'garment', 'accessories'):
                 python:
                     item = person.get_slot(i).get_item()
                     if item is None:
