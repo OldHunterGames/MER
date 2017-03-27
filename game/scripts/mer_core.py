@@ -24,15 +24,22 @@ class QuestTracker(object):
 
     def __init__(self):
         self.active_quests = []
-        self.new_quests = False
+        self._new_quests = []
 
     def add_quest(self, quest):
         quest.activate()
         self.active_quests.append(quest)
-        self.new_quests = True
+        self._new_quests.append(quest)
+
+    def is_new(self, quest):
+        return quest in self._new_quests
+
+    @property
+    def new_quests(self):
+        return len(self._new_quests) > 0
 
     def check(self):
-        self.new_quests = False
+        self._new_quests = []
 
     def remove_quest(self, quest):
         quest.active = False

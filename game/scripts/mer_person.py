@@ -766,6 +766,9 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
                 id_, default_value))
         return phrase
 
+    def set_nickname(self, string):
+        self.nickname = string
+
     def set_phrases(self, dict_):
         self._phrases = dict_
 

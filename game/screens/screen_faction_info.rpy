@@ -55,10 +55,7 @@ screen sc_faction_info(faction):
                             python:
                                 person = i[0]
                                 role = i[1]
-                                try:
-                                    title = factions_roles[role]
-                                except KeyError:
-                                    title = role
+                                title = faction.get_role_name(role)
                             if title is not None:
                                 text title
                             spacing 2

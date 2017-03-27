@@ -280,7 +280,7 @@ class SimpleCombatant(object):
         if self.person.main_hand is not None:
             if self.person.main_hand.size == 'offhand':
                 style = 'cutthroat'
-            elif person.main_hand.id == 'bard_hands':
+            elif self.person.main_hand.id == 'bard_hands':
                 return 'brawler'
         elif any([i.size == 'versatile' for i in self.weapons()]):
             style = 'swashbuckler'

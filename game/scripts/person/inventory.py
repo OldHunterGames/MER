@@ -78,8 +78,10 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     def get_all_modifiers(self):
         list_ = []
-        for i in self.equiped_items():
-            list_.extend(i.get_all_modifiers())
+        for i in self._slots.values():
+            item = i.get_item()
+            if item is not None:
+                list_.extend(item.get_all_modifiers())
         return list_
 
     def get_slot(self, key):

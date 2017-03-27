@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+import renpy.store as store
 
 class Faction(object):
 
@@ -10,8 +10,8 @@ class Faction(object):
         self.event_type = 'faction'
         self.type = type
         self.roles = {}
+        self.roles_names = {}
         self.set_owner(owner)
-        
 
     def set_owner(self, owner):
         self.add_member(owner)
@@ -69,6 +69,10 @@ class Faction(object):
     def set_member_to_role(self, person, role):
         self.roles[role] = person
         self.add_member(person)
+        person.set_nickname(self.get_rol(role))
+
+    def get_role_name(self, role):
+        return store.factions_roles.get(role, role)
 
     def get_common_members(self):
         return [member for member in self.members if member != self.owner and member not in self.roles.values()]
