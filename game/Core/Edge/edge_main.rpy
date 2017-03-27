@@ -74,6 +74,14 @@ label lbl_edge_main:
         
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
+        edge_recruiter.add_quest(SlaverQuest(**quests_data['slaver_quest']))
+        edge_recruiter.reward = CardsMaker()
+        edge_recruiter.reward.add_entry('reward_garantor', edge_quest_rewards['reward_garantor'])
+        edge_recruiter.reward.add_entry('reward_sparks', edge_quest_rewards['reward_sparks'])
+        edge_recruiter.reward.add_entry('reward_banknotes', edge_quest_rewards['reward_banknotes'])
+        edge_recruiter.reward.add_entry('reward_bars', edge_quest_rewards['reward_bars'])
+        edge_recruiter.reward.add_entry('reward_relations', edge_quest_rewards['reward_relations'])                        
+
     
     #slums_leader 'Hi, I am a leader of the Slums'
     $ player.relations(slums_leader)
@@ -121,9 +129,13 @@ label lbl_edge_places:
                     python:
                         knife = create_item('knife', 'weapon')
                         slums_leader.add_item(knife)
-                        harm = create_item('hard_armor', 'armor')
+                        heavy_axe = create_item('heavy_axe', 'weapon')
+                        slums_leader.add_item(heavy_axe)                        
+                        harm = create_item('fullplate', 'armor')
                         slums_leader.add_item(harm)
-                        sarm = create_item('soft_armor', 'armor')
+                        sarm = create_item('hides', 'armor')
+                        slums_leader.add_item(sarm)
+                        clth = create_item('fine_clothes', 'armor')
                         slums_leader.add_item(sarm)
                     call screen sc_trade(slums_leader) 
                 'Back':
