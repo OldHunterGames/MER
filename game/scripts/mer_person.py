@@ -773,7 +773,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._phrases = dict_
 
     def has_available_quests(self, player):
-        return any(self.available_quests(player))
+        return any(self.available_quests())
 
     def available_quests(self):
         return [i for i in self.quests_to_give if not i.active]
