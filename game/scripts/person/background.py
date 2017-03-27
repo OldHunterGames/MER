@@ -145,14 +145,18 @@ class Background(object):
                 if key == 'armor':
                     item = create_item(value, 'armor')
                     owner.equip_item(item, 'garment')
-                elif key == 'accesories':
-                    item = create_item(value, 'treasure')
                     owner.add_item(item)
-                    owner.equip_on_slot('accesories', item)
+                elif key == 'accessories':
+                    item = create_item(value, 'accessory')
+                    owner.add_item(item)
+                    owner.equip_on_slot('accessories', item)
                 else:
                     item = create_item(value, 'weapon')
-                    owner.equip_item(item, key)
-                    owner.equip_on_slot('weapon', item)
+                    if key == 'main_hand':
+                        owner.equip_on_slot('weapon', item)
+                    elif key == 'other_hand':
+                        owner.equip_on_slot('weapon2', item)
+                    owner.add_item(item)
 
     def make(self, world, culture, family, education, occupation, age):
         self._set_culture(culture)

@@ -3,18 +3,10 @@ init python:
     class CardMenu(object):
 
 
-        def __init__(self, cards_list, current=None, run_args=None, run_kwargs=None):
+        def __init__(self, cards_list, current=None):
 
             self._cards_list = cards_list
             self.current_card = current
-            if run_args is None:
-                self.run_args = []
-            else:
-                self.run_args = run_args
-            if run_kwargs is None:
-                self.run_kwargs = {}
-            else:
-                self.run_kwargs = run_kwargs
 
         @property
         def cards_list(self):
@@ -36,7 +28,7 @@ init python:
                 renpy.show_screen('sc_card_menu', card_menu=self, called=call)
 
         def run(self, card):
-            return card.run(*self.run_args, **self.run_kwargs)
+            return card.run()
 
 
 screen sc_card_menu(card_menu, called=True):

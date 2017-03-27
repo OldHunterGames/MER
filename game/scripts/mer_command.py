@@ -9,12 +9,12 @@ from mer_quest import *
 class Command(object):
     """Basic class for commands in mer"""
     #Maybe need special allocator for commands created in modules?
-    def _run(self, *args, **kwargs):
+    def _run(self):
         raise NotImplementedError()
 
     @Observable
-    def run(self, *args, **kwargs):
-        return self._run(*args, **kwargs)
+    def run(self):
+        return self._run()
 
     @classmethod
     def add_observer(self, func):

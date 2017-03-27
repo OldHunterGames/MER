@@ -34,7 +34,7 @@ init python:
         'bad_plate': {'name': __('bad plate'), 'armor_rate': 'heavy_armor', 'quality': 1},
             }
 
-    assesories_data = {
+    accessories_data = {
         'jewel':{
             'name': __("jewel"),
             'description': __('This piece of jewelry contains a clear gem, suited to store the Sparks.'),

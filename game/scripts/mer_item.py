@@ -6,13 +6,12 @@ import renpy.exports as renpy
 
 from features import Feature
 from modifiers import Modifiable
-from mer_utilities import encolor_text
-from mer_command import Card
+from mer_utilities import encolor_text, empty_card
 
 # sizes 'offhand', 'versatile', 'shield', 'twohand'
 
 
-class Item(Modifiable, Card):
+class Item(Modifiable):
     type_ = 'item'
 
     def __init__(self, data_dict, id_, *args, **kwargs):
@@ -36,9 +35,6 @@ class Item(Modifiable, Card):
         for i in self.features:
             value += i.count_modifiers(attribute)
         return value
-
-    def run(self, person, slot):
-        person.equip_on_slot(slot, self)
 
     def sellable(self):
         return self.price > 0
@@ -142,7 +138,7 @@ class Item(Modifiable, Card):
         return self.data.get('present', None)
 
     def image(self):
-        return self.data.get('image', super(Item, self).image())
+        return self.data.get('image', empty_card())
 
 
 class Stackable(Item):
@@ -188,6 +184,11 @@ class Stackable(Item):
 class Treasure(Stackable):
 
     type_ = 'treasure'
+
+
+class Accessory(Item):
+
+    type_ = 'accessory'
 
 
 class Weapon(Item):
@@ -278,7 +279,8 @@ def get_armor_rates():
 def create_item(id, type):
     types = {'armor': (Armor, store.armor_data),
              'weapon': (Weapon, store.weapon_data),
-             'treasure': (Treasure, store.treasure_data)}
+             'treasure': (Treasure, store.treasure_data),
+             'accessory': (Accessory, store.accessories_data)}
     item_properties = types[type]
     item = item_properties[0](item_properties[1], id)
     return item

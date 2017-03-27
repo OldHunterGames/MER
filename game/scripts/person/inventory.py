@@ -71,6 +71,8 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     @main_hand.setter
     def main_hand(self, weapon):
+        if weapon == self._main_hand.get_item():
+            return
         self.disarm_weapon('main_hand')
         if weapon is None:
             return
@@ -93,6 +95,8 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     @other_hand.setter
     def other_hand(self, weapon):
+        if weapon == self._other_hand.get_item():
+            return
         self.disarm_weapon('other_hand')
         if weapon is None:
             return
@@ -101,7 +105,6 @@ class Inventory(ItemsStorage, ModifiersStorage):
                 if self.carried_weapons[key] is None and weapon.size in self.slots()[key]:
                     self.carried_weapons[key].set_item(weapon)
                     break
-        self.add_item(weapon)
         if weapon.size == 'twohand':
             self.disarm_weapon('main_hand')
             self._main_hand.set_item(weapon)
@@ -144,17 +147,17 @@ class Inventory(ItemsStorage, ModifiersStorage):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         dict_ = getattr(self, slots)
         current_item = dict_[slot].current
+        if item == dict_[slot].get_item():
+            return
         if item is not None:
             item.equip()
         if current_item is not None:
             current_item.unequip()
-            self.add_item(current_item)
         dict_[slot].set_item(item)
 
     def equip_weapon(self, weapon, hand='main_hand'):
         if weapon is not None:
             weapon.equip()
-            self.add_item(weapon)
             if weapon.size == 'twohand':
                 self.main_hand = weapon
                 self.other_hand = weapon
@@ -179,10 +182,8 @@ class Inventory(ItemsStorage, ModifiersStorage):
         getattr(self, '_' + hand).set_item(None)
 
     def equip_armor(self, armor, slot):
-        self.add_item(armor)
         if self.carried_armor[slot].current is not None:
             self.carried_armor[slot].current.unequip()
-            self.add_item(self.carried_armor[slot].current)
         self.carried_armor[slot].set_item(armor)
         armor.equip()
 
@@ -255,7 +256,7 @@ class SimplyfiedInventory(Inventory):
         self.carried_armor = collections.OrderedDict(
             [
                 ('garment', ItemSlot(create_item('nude', 'armor'))),
-                ('accesories', ItemSlot(None)),
+                ('accessories', ItemSlot(None)),
                 ('overgarments', ItemSlot(None))
             ]
         )
@@ -295,11 +296,12 @@ class SimplyfiedInventory(Inventory):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
         dict_ = getattr(self, slots)
         current_item = dict_[slot].current
+        if item == dict_[slot].get_item():
+            return
         if item is not None:
             item.equip()
         if current_item is not None:
             current_item.unequip()
-            self.add_item(current_item)
         dict_[slot].set_item(item)
         if slot == 'weapon':
             self.equip_weapon(item, 'main_hand')
@@ -407,11 +409,11 @@ class InventoryWielder(object):
 
     @property
     def armor(self):
-        return self.inventory.carried_armor['overgarments'].get_item()
+        return self.inventory.carried_armor['garment'].current
 
     @armor.setter
     def armor(self, armor):
-        self.inventory.equip_armor(armor, 'overgarments')
+        self.inventory.equip_armor(armor, 'garment')
 
     def has_shield(self):
         try:
