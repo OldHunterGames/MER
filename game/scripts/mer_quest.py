@@ -12,11 +12,15 @@ class Quest(object):
         self._data = kwargs
         self._one_time = one_time
         self._completed = 0
-        self.reminder = reminder
+        self._reminder = reminder
         self.employes = None
         self.active = False
         self.ending_tags = []
         self.tags = []
+
+    @property
+    def reminder(self):
+        return self._reminder
 
     def description(self):
         no_desc = 'No description'

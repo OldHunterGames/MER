@@ -23,12 +23,16 @@ def set_event_game_ref(game):
 class QuestTracker(object):
 
     def __init__(self):
-        self.active_quests = []
+        self._active_quests = []
         self._new_quests = []
+
+    @property
+    def active_quests(self):
+        return [i for i in self._active_quests]
 
     def add_quest(self, quest):
         quest.activate()
-        self.active_quests.append(quest)
+        self._active_quests.append(quest)
         self._new_quests.append(quest)
 
     def is_new(self, quest):
@@ -43,7 +47,7 @@ class QuestTracker(object):
 
     def remove_quest(self, quest):
         quest.active = False
-        self.active_quests.remove(quest)
+        self._active_quests.remove(quest)
 
     def quest_targets_achieved(self, quest):
         return quest.check()
@@ -58,7 +62,7 @@ class QuestTracker(object):
                         self.remove_quest(j)
 
     def remove_by_tag(self, tags):
-        for i in [i for i in self.active_quests]:
+        for i in [i for i in self._active_quests]:
             pass
 
 
