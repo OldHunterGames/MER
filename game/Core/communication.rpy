@@ -177,10 +177,10 @@ label lbl_first_impression_joke(card):
     $ player.moral_action(target=visavis, orderliness='chaotic') 
     $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
     if rnd == 'plus':
-        $ visavis.stance(player).value += 1
+        $ visavis.relations(player).stance += 1
         'stance up'
     elif rnd == 'minus':
-        $ visavis.stance(player).value -= 1
+        $ visavis.relations(player).stance -= 1
         'stance down'
     else:
         $ visavis.set_token(rnd)           
