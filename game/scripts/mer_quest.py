@@ -60,7 +60,7 @@ class Quest(object):
 
     def _finish(self, performer):
         if self.employer is not None:
-            self.employer.debt = True
+            self.employer.obligation = True
         return True
 
     def __getattr__(self, key):
