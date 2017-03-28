@@ -22,7 +22,7 @@ label lbl_communicate(target):
             options.add_entry('com_obligation', edge_option_cards['com_obligation'])
         if target == edge_slaver:
             options.add_entry('spc_become_slave', edge_option_cards['spc_become_slave'])    
-        if person.quest_completed(player): 
+        if target.quest_completed(player): 
             options.add_entry('com_quest_completed', edge_option_cards['com_quest_completed'])        
         options.add_entry('nevermind', edge_option_cards['nevermind'])  
         CardMenu(options.run()).show()
