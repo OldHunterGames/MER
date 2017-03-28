@@ -9,10 +9,10 @@ import renpy.exports as renpy
 
 class ScheduleObject(object):
 
-    def __init__(self, id, data_dict):
+    def __init__(self, id, data_dict, locked=False):
         self._data = data_dict
         self.id = id
-        self.locked = False
+        self.locked = locked
         self._additional_data = dict()
 
     def add_data(self, dict):
@@ -92,6 +92,9 @@ class Schedule(object):
         setattr(self, '_default_' + type, obj)
         if getattr(self, '_' + type) is None:
             self.set(type, obj, **kwargs)
+
+    def make_default(self, attr_name):
+        self.set(attr_name, getattr(self, '_default_%s'%attr_name))
 
     def get_cost(self):
         return (self._accommodation.cost +

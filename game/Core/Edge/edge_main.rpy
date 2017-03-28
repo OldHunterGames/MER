@@ -10,11 +10,11 @@ init -8 python:
     edge = EdgeEngine()
     pass
     def canibalism_unlocker(person, *args, **kwargs):
-        person.allow('feed', 'canibalism')
+        person.schedule.set('ration', ScheduleObject('canibalism', edge_feeds_data['canibalism'], True))
 
     def canibalism_locker(person, *args, **kwargs):
         if len(person.get_corpses()) < 1:
-            person.disallow('feed', 'canibalism')
+            person.make_default('ration')
 
 label lbl_edge_main:    
     'The Mist gives you a way...'  
