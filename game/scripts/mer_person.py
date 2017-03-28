@@ -224,9 +224,9 @@ class DescriptionMaker(object):
             string += '.\n'
         if person.obligation:
             text = store.obligations_dict.get(
-                    person.player_relations().attitude_tendency().format(
-                        person=person),
-                    'obligation description here')
+                    person.player_relations().attitude_tendency(),
+                    'obligation description here').format(
+                        person=person)
             string += utilities.encolor_text(text, 'green')
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
