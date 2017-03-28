@@ -208,6 +208,8 @@ init -10 python:
         'com_takequest': {'name': 'Quest', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', }, 
 #        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
 
+        'spc_become_slave': {'name': 'Bond to slavery', 'description': __('Bond to slavery\nThe simplest way to get into Eternal Rome is to sell yourself into slavery. Your new master will take you there.'), 'label': 'lbl_edge_slave_auction', 'image': 'images/miscards/card.png', }, 
+
         'ho_promenade': {'name': 'Promenade', 'description': __('Promenade\nOpposed Spirit check. Gain communication and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_promenade', 'image': 'images/miscards/card.png', }, 
         'ho_booze': {'name': 'Booze up', 'description': __('Booze up\nCosts 1 bar. Opposed Spirit check. Gain amusement and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_booze', 'image': 'images/miscards/card.png', }, 
         'ho_dinner': {'name': 'Dinner treat', 'description': __('Dinner treat\nCosts 3 bars. Opposed Spirit check. Gain nutrition and "Lovers" or "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_dinner', 'image': 'images/miscards/card.png', },         
