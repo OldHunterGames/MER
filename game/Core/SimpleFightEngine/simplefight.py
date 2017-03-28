@@ -276,21 +276,21 @@ class SimpleCombatant(object):
         return self._target
 
     def combat_style(self):
-        style = 'brawler'
         if self.person.main_hand is not None:
             if self.person.main_hand.size == 'offhand':
-                style = 'cutthroat'
-            if self.person.main_hand.id == 'bare_hands' and \
-                    self.person.other_hand.id == 'bare_hands':
                 return 'brawler'
-        elif any([i.size == 'versatile' for i in self.weapons()]):
-            style = 'swashbuckler'
-        elif any([i.size == 'shield' for i in self.weapons()]):
-            style = 'shieldbearer'
-        elif any([i.size == 'twohand' for i in self.weapons()]):
-            style = 'wrecker'
-        self._combat_style = style
-        return style
+            if (self.person.main_hand.id == 'bare_hands' and
+                    self.person.other_hand.id == 'bare_hands'):
+                print self.person.main_hand.id
+                print self.person.main_hand.id
+                return 'brawler'
+        if any([i.size == 'shield' for i in self.weapons()]):
+            return 'shieldbearer'
+        if any([i.size == 'versatile' for i in self.weapons()]):
+            return 'swashbuckler'
+        if any([i.size == 'twohand' for i in self.weapons()]):
+            return 'wrecker'
+        return 'brawler'
 
     def get_damage_multiplier(self, source):
         if source.combat_style() == 'versatile':

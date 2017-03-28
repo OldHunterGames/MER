@@ -269,7 +269,7 @@ class SimplyfiedInventory(Inventory):
         return [i for i in storage if slot.allowed(i)]
 
     def weapons(self):
-        return [i.get_item() for i in self._slots if isinstance(i, WeaponSlot)]
+        return [i.get_item() for i in self._slots.values() if isinstance(i, WeaponSlot)]
 
     def equip_on_slot(self, slot, item):
         dict_ = self._slots

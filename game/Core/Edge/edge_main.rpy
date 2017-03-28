@@ -111,6 +111,8 @@ label lbl_edge_manage:
                 call lbl_edge_opportunities 
             else:
                 'No energy'
+        'fight':
+            $ fight = SimpleFight([player, g], [p, z])
         'Places':
             call lbl_edge_places
         'Faction' if edge.faction_mode:

@@ -76,8 +76,8 @@ screen sc_simple_equip(person, look_mode=False):
                         EquipCard(person, j, 'weapon2') for j in person.available_for_slot('weapon2')]
             if person.get_slot('weapon2').current is not None:
                         items.append(
-                            UnequipCard(person, 'weapons2'))
-            if size == 'twohand':
+                            UnequipCard(person, 'weapon2'))
+            if size == 'twohand' and person.main_hand.id != 'bare_hands':
                 name = person.main_hand.name()
                 img = im.Scale(im.Grayscale(person.main_hand.image()), 200, 300)
             else:
@@ -90,7 +90,7 @@ screen sc_simple_equip(person, look_mode=False):
             ypos 330    
             imagebutton:
                 idle img
-                action If(person.main_hand.size=='twohand', NullAction(),
+                action If(person.main_hand.size=='twohand' and person.main_hand.id != 'bare_hands', NullAction(),
                     false=Function(CardMenu(items, current).show, False))
             text name:
                 xalign 0.5
