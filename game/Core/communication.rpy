@@ -60,22 +60,38 @@ label lbl_edge_comm_present(card):
 
     
 label lbl_edge_reward_sparks(card):
-    pass
-    
+    python:
+        flag = False
+        for item in player.items:
+            if item.id == 'jewel':
+                player.remove_item(item)
+                sparkgem = create_item('sparkgem', 'assesory')
+                player.add_item(sparkgem)
+                flag = True
+                break
+    if flag:
+        'Got sparks'
+    else:
+        'You need gem'
+
     return
         
 label lbl_edge_reward_banknotes(card):
-    pass
-    
+    '[player.name] got bundle of banknotes.'
+    $ notes = create_item('notes', 'treasure')
+    $ player.add_item(notes)
+
     return
     
 label lbl_edge_reward_bars(card):
-    'You got 100 bars'
+    '[player.name] got 100 bars'
+    $ player.money += 100
     
     return
 
-label lbl_edge_reward_relations(card):
-    pass
+label lbl_edge_reward_relations(card):  
+    '[visavis.name] is now more inclined to cooperate.'
+    $ player.relations(visavis).stance += 1
     
     return
              

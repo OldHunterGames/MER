@@ -28,7 +28,14 @@ init python:
         'motivation': __('motivation'),
         'focus': __('focus')
     }
-    obligations_dict = {}
+    
+    obligations_dict = {
+    'master': __('{person.name} is pleased with your efforts'), 
+    'slave': __('{person.name} wants to be useful to you'), 
+    'hostile': __('{person.name} offers you a payoff'), 
+    'neutral': __('{person.name} owes you'), 
+    'friendly': __('{person.name} offers you a favor'), 
+    }
 
 
     discipline_translation = {
