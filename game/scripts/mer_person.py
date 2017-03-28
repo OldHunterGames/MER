@@ -227,7 +227,7 @@ class DescriptionMaker(object):
                     person.player_relations().attitude_tendency(),
                     'obligation description here').format(
                         person=person)
-            string += utilities.encolor_text(text, 'green')
+            string += utilities.encolor_text(text, 'green', protected=True)
         string += '{person.firstname} has a {constitution} and {shape} figure. '\
             '{cap_possesive} appearance is {look}. '\
             '{cap_possesive} voice is {voice}. '\
@@ -760,6 +760,20 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._phrases = dict()
         self.obligation = False
         self.rewards = CardsMaker()
+        self._active_quest = None
+
+    def set_active_quest(self, quest):
+        self._active_quest = quest
+
+    @property
+    def active_quest(self):
+        return self._active_quest
+
+    def quest_completed(self, player):
+        if self._active_qeust is None:
+            return False
+        else:
+            return self._active_quest.completed(player)
 
     def get_phrase(self, id_, default_value="No phrase"):
         phrase = self._phrases.get(

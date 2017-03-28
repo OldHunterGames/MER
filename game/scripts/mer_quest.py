@@ -13,7 +13,7 @@ class Quest(object):
         self._one_time = one_time
         self._completed = 0
         self._reminder = reminder
-        self.employes = None
+        self.employer = None
         self.active = False
         self.ending_tags = []
         self.tags = []

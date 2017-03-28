@@ -34,6 +34,11 @@ class QuestTracker(object):
         quest.activate()
         self._active_quests.append(quest)
         self._new_quests.append(quest)
+        if quest.employer is not None:
+            person = quest.employer
+            if person.active_quest is not None:
+                self.remove_quest(person.active_quest)
+            person.set_active_quest(quest)
 
     def is_new(self, quest):
         return quest in self._new_quests
