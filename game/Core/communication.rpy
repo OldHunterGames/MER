@@ -22,7 +22,7 @@ label lbl_communicate(target):
             options.add_entry('com_obligation', edge_option_cards['com_obligation'])
         if target == edge_slaver:
             options.add_entry('spc_become_slave', edge_option_cards['spc_become_slave'])    
-        if person.quest_completed(player): 
+        if target.quest_completed(player): 
             options.add_entry('com_quest_completed', edge_option_cards['com_quest_completed'])        
         options.add_entry('nevermind', edge_option_cards['nevermind'])  
         CardMenu(options.run()).show()
@@ -177,10 +177,10 @@ label lbl_first_impression_joke(card):
     $ player.moral_action(target=visavis, orderliness='chaotic') 
     $ rnd = choice(['conquest', 'convention', 'contribution', 'antagonism', 'plus', 'minus']) 
     if rnd == 'plus':
-        $ visavis.stance(player).value += 1
+        $ visavis.relations(player).stance += 1
         'stance up'
     elif rnd == 'minus':
-        $ visavis.stance(player).value -= 1
+        $ visavis.relations(player).stance -= 1
         'stance down'
     else:
         $ visavis.set_token(rnd)           

@@ -770,7 +770,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self._active_quest
 
     def quest_completed(self, player):
-        if self._active_qeust is None:
+        if self._active_quest is None:
             return False
         else:
             return self._active_quest.completed(player)
