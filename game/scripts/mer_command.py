@@ -2,7 +2,7 @@
 import renpy.store as store
 import renpy.exports as renpy
 
-from mer_utilities import Observable, empty_card
+from mer_utilities import Observable, empty_card, get_files
 from mer_quest import *
 
 
@@ -36,18 +36,30 @@ class Card(Command):
 class MenuCard(Card):
     """Basic class for card-styled menu cards"""
     def __init__(self, name=None, description=None,
-                 label=None, image=None, **kwargs):
+                 label=None, image=None, id=None, **kwargs):
         self._name = name
         self._description = description
         self._image = image
         self._label = label
         self._context_data = dict()
+        self._id = id
         self.set_context(**kwargs)
 
+    def get_image(self):
+        # testing image getting system
+        path = 'images/%s/%s' % (self._image, self._id)
+        images = get_files(path)
+        try:
+            img = images[0]
+        except IndexError:
+            img = None
+        return img
+
     def image(self):
-        if self._image is None or not renpy.exists(self._image):
+        img = self.get_image()
+        if img is None:
             return empty_card()
-        return self._image
+        return img
 
     def description(self):
         return self._description
@@ -91,8 +103,8 @@ class CardsMaker(Command):
 
     def _run(self):
         list_ = []
-        for i in self.data.values():
-            card = self.card_cls(**i)
+        for key, value in self.data.items():
+            card = self.card_cls(id=key, **value)
             list_.append(card.set_context(**self._context_data))
         return list_
 

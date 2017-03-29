@@ -21,6 +21,11 @@ def encolor_text(text, value, protected=False):
         return '{{color=#%s}}%s{{/color}}' % (colors[value], text)
 
 
+def get_files(path):
+    files = renpy.list_files()
+    return [i for i in files if path in i]
+
+
 def default_avatar_path():
     return 'images/avatar/none.jpg'
 
