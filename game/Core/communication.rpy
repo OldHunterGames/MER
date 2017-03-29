@@ -54,7 +54,7 @@ label lbl_edge_comm_nevermind(card):
     
 label lbl_edge_comm_complete_quest(card):
 
-    call lbl_edge_comm_obligation
+    call lbl_edge_comm_obligation(card)
     
     return
 
