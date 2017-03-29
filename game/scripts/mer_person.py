@@ -1347,8 +1347,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         if not self.calculatable:
             return
 
-        if self.energy < 0:
-            self.add_buff('exhausted')
+        #if self.energy < 0:
+        #    self.add_buff('exhausted')
         self.food_system.fatness_change()
         self.remove_money(self.decade_bill())
         self.set_energy()
@@ -1703,8 +1703,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def drain_energy(self, value=1):
         self._energy -= value
-        if self._energy < -1:
-            self._energy = -1
+        if self._energy < 0:
+            self._energy = 0
 
     def gain_energy(self, value=1):
         self._energy += value
@@ -1712,4 +1712,4 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             self._energy = 5
 
     def has_energy(self):
-        return self._energy > -1
+        return self._energy > 0
