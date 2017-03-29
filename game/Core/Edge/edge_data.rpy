@@ -205,7 +205,8 @@ init -10 python:
         'comm_garantor': {'name': 'Be my garantor', 'description': __('Garantor\nYou need a garantor, to become a major House citisen. This person can help you.'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
         'com_hungout': {'name': 'Hung out', 'description': __('Hung out\nSpend some quality time together to promote your relationship.'), 'label': 'lbl_edge_comm_hungout', 'image': 'images/miscards/card.png', }, 
         'com_present': {'name': 'Present', 'description': __('Present\nMake a valuable present as an offering to promote your relationship.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', },         
-        'com_takequest': {'name': 'Quest', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', }, 
+        'com_takequest': {'name': 'Quest aviable', 'description': __('Quest\nAsk if you can do sometng to get your relationship to a whole new level.'), 'label': 'lbl_edge_comm_call_quest', 'image': 'images/miscards/card.png', }, 
+        'com_quest_completed': {'name': 'Quest completed', 'description': __('Quest\nThis person will owe you now.'), 'label': 'lbl_edge_comm_complete_quest', 'image': 'images/miscards/card.png', }, 
 #        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
 
         'spc_become_slave': {'name': 'Bond to slavery', 'description': __('Bond to slavery\nThe simplest way to get into Eternal Rome is to sell yourself into slavery. Your new master will take you there.'), 'label': 'lbl_edge_slave_auction', 'image': 'images/miscards/card.png', }, 
