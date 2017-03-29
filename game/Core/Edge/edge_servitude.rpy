@@ -2,6 +2,7 @@
 
 label lbl_edge_hiring:
     edge_recruiter 'You can apply to become a Major House servitor in the city, but you have only one try to do so. Choose wisely.'
+    $ core.quest_tracker.add_quest(Quest(**quests_data['edge_bond_quest']))
     menu:
         'What kind of job to choose?'
         'Mistmarine':
@@ -23,13 +24,13 @@ label lbl_edge_hiring:
             $ fate = 'host'
             call lbl_edge_skill_exam('spirit')  
         'Free citisen':
-            call lbl_edge_libertine_briefing
+            call lbl_edge_citisen_briefing
         'Not today':
             pass
 
     return
 
-label lbl_edge_libertine_briefing:
+label lbl_edge_citisen_briefing:
     edge_recruiter "So... It's possible, but will cost you dearly. In order to become a [edge_sovereign.name] libertine you must prove yourself worthy."
     edge_recruiter "Firts of all you need a garantor - someone of [edge_sovereign.name], who will stand bail for you."
     edge_recruiter "Debt and poverty is not an option for a free person in Rome, so you must have some financial security in advance. Bundle of banknotes will do."    
@@ -38,6 +39,7 @@ label lbl_edge_libertine_briefing:
     edge_recruiter "Slums are teeming with thieves, so I can save a sparkgem and banknotes for you. Just bring them to me if you whant."     
     edge_recruiter "Questions?"
     player "No. I'll be back."
+    $ core.quest_tracker.add_quest(Quest(**quests_data['edge_citisen_quest']))
         
     return
     
