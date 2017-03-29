@@ -3,6 +3,7 @@
 label lbl_edge_hiring:
     edge_recruiter 'You can apply to become a Major House bond servitor in the city, but you have only one try to do so. Choose wisely.'
     $ core.quest_tracker.add_quest(Quest(**quests_data['edge_bond_quest']))
+    $ fate = None
     menu:
         'Are you interested?'
         "Tell me more":
@@ -12,28 +13,22 @@ label lbl_edge_hiring:
         'I want to be a free citisen':
             call lbl_edge_citisen_briefing
 
-        'Mistmarine':
-            
-            call lbl_edge_mistmarine
-        'Concubine': 
-            
-            call lbl_edge_sexy_exam            
-        'Clerk': 
-            
-            call lbl_edge_skill_exam('mind')
-        'Builder': 
-            $ fate = 'builder'
-            call lbl_edge_skill_exam('physique')   
-        'Servant': 
-            $ fate = 'servant'
-            call lbl_edge_skill_exam('agility')
-        'Host': 
-            $ fate = 'host'
-            call lbl_edge_skill_exam('spirit') 
+    return
+
+
+label lbl_edge_spc_bond_start:
 
     return
 
-label lbl_edge_bond_options:
+label lbl_edge_spc_citisen_start(card):
+    if 'citisen_briefing' in edge.options:
+        call lbl_edge_libertine_exam
+    else:
+        call lbl_edge_citisen_briefing
+
+    return
+
+label lbl_edge_bond_options(card):
     python:     
         options = CardsMaker()
         options.add_entry('bond_mistmarine', edge_option_cards['bond_mistmarine'])
@@ -46,6 +41,7 @@ label lbl_edge_bond_options:
         CardMenu(options.run()).show()    
 
     hide card
+
     return
 
 label lbl_edge_citisen_briefing:
@@ -58,10 +54,11 @@ label lbl_edge_citisen_briefing:
     edge_recruiter "Questions?"
     player "No. I'll be back."
     $ core.quest_tracker.add_quest(Quest(**quests_data['edge_citisen_quest']))
+    $ edge.options.append('citisen_briefing')
         
     return
     
-label lbl_edge_libertine_exam:
+label lbl_edge_libertine_exam(card):
     if 'got_gem' in edge.options:
         jump lbl_edge_libertine_pass
         
@@ -83,7 +80,7 @@ label lbl_edge_libertine_exam:
     call lbl_edge_libertine_exam
     return
 
-label lbl_edge_mistmarine:
+label lbl_edge_mistmarine(card):
     $ fate = 'mistmarine'
     python:
         def generate_warrior(genus):
@@ -104,7 +101,7 @@ label lbl_edge_mistmarine:
     jump game_over
     return
 
-label lbl_edge_sexy_exam:
+label lbl_edge_sexy_exam(card):
     $ fate = 'concubine'
     menu:
         'You need to impress House representatives. What to do?'
@@ -139,27 +136,27 @@ label lbl_edge_fuck_challenge(skill):
     
     return
 
-label lbl_edge_bond_clerk:
+label lbl_edge_bond_clerk(card):
     $ fate = 'clerk'
     call lbl_edge_skill_exam('mind')
 
     return
 
-label lbl_edge_bond_clerk:
-    $ fate = 'clerk'
-    call lbl_edge_skill_exam('mind')
+label lbl_edge_bond_builder(card):
+    $ fate = 'builder'
+    call lbl_edge_skill_exam('physique')
 
     return
 
-label lbl_edge_bond_clerk:
-    $ fate = 'clerk'
-    call lbl_edge_skill_exam('mind')
+label lbl_edge_bond_servitor(card):
+    $ fate = 'servitor'
+    call lbl_edge_skill_exam('agility')
 
     return
 
-label lbl_edge_bond_clerk:
-    $ fate = 'clerk'
-    call lbl_edge_skill_exam('mind')
+label lbl_edge_bond_host(card):
+    $ fate = 'host'
+    call lbl_edge_skill_exam('spirit')
 
     return
             

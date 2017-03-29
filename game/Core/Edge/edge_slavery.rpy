@@ -13,7 +13,7 @@ label lbl_edge_sell_yourself:
     menu:
         'Slaver offers you a food and protection if you become a slave. He will take you to the city and sell you on the untrained slaves auction.'
         'Become a slave': 
-            call lbl_edge_slave_auction
+            call lbl_edge_slave_auction(None)
         'Not today':
             pass
 

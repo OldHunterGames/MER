@@ -112,53 +112,47 @@ label lbl_edge_manage:
                 call lbl_edge_opportunities 
             else:
                 'No energy'
-        'Places':
-            call lbl_edge_places
-        'Faction' if edge.faction_mode:
-            $ pass
+        'Marketplace':
+            python:
+                knife = create_item('knife', 'weapon')
+                slums_leader.add_item(knife)
+                heavy_axe = create_item('heavy_axe', 'weapon')
+                slums_leader.add_item(heavy_axe)                        
+                harm = create_item('fullplate', 'armor')
+                slums_leader.add_item(harm)
+                sarm = create_item('hides', 'armor')
+                slums_leader.add_item(sarm)
+                clth = create_item('fine_clothes', 'armor')
+                slums_leader.add_item(sarm)
+            call screen sc_trade(slums_leader) 
+
         'Стать богатым':            
             $ player.add_money(1000)
     
     jump lbl_edge_manage
     return
 
-label lbl_edge_places:
-    menu:
-        'Marketplace':
-            menu:
-                'Trader':
-                    python:
-                        knife = create_item('knife', 'weapon')
-                        slums_leader.add_item(knife)
-                        heavy_axe = create_item('heavy_axe', 'weapon')
-                        slums_leader.add_item(heavy_axe)                        
-                        harm = create_item('fullplate', 'armor')
-                        slums_leader.add_item(harm)
-                        sarm = create_item('hides', 'armor')
-                        slums_leader.add_item(sarm)
-                        clth = create_item('fine_clothes', 'armor')
-                        slums_leader.add_item(sarm)
-                    call screen sc_trade(slums_leader) 
-                'Back':
-                    pass
-        'House [edge_sovereign.name] outpost':
-            call lbl_edge_outpost
-#        'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
-#            $ stash = edge.get_stash('hazy_marshes')
-#            call screen sc_manage_stash(stash)   
-#        'Echoing hills' if edge.is_stash_found('echoing_hills'):
-#            $ stash = edge.get_stash('echoing_hills')
-#            call screen sc_manage_stash(stash) 
-#        'Dying grove' if edge.is_stash_found('dying_grove'):
-#            $ stash = edge.get_stash('dying_grove')
-#            call screen sc_manage_stash(stash)              
-        'Edge of Mists':
-            call lbl_edge_randenc_errant
-        'Done':
-            jump lbl_edge_manage
+# label lbl_edge_places:
+#     menu:
+#                     pass
+#         'House [edge_sovereign.name] outpost':
+#             call lbl_edge_outpost
+#         'Hazy marsh' if edge.is_stash_found('hazy_marshes'):
+#             $ stash = edge.get_stash('hazy_marshes')
+#             call screen sc_manage_stash(stash)   
+#         'Echoing hills' if edge.is_stash_found('echoing_hills'):
+#             $ stash = edge.get_stash('echoing_hills')
+#             call screen sc_manage_stash(stash) 
+#         'Dying grove' if edge.is_stash_found('dying_grove'):
+#             $ stash = edge.get_stash('dying_grove')
+#             call screen sc_manage_stash(stash)              
+#         'Edge of Mists':
+#             call lbl_edge_randenc_errant
+#         'Done':
+#             jump lbl_edge_manage
     
-    call lbl_edge_places    
-    return
+#     call lbl_edge_places    
+#     return
 
 label lbl_all_gangs:
     python:

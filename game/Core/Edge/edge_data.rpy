@@ -193,7 +193,9 @@ init -10 python:
         'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'images/miscards/card.png', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'images/miscards/card.png', }, 
         'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'images/miscards/card.png', }, 
+        'id': {'name': 'Meet representative', 'description': __('Meet Major House representative\nIt is your chance to get inside the walls Eternal Rome.'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
         
+
         'fi_intimidate': {'name': 'Intimidate', 'description': __('Intimidate\nArdent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'images/miscards/card.png', }, 
         'fi_getknow': {'name': 'Get to know', 'description': __('Get to know\nLawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'images/miscards/card.png', }, 
         'fi_flatter': {'name': 'Flatter', 'description': __('Flatter\nGood deed. Opposed finesse check to succed. Get "Lovers" relations arcane.'), 'label': 'lbl_first_impression_flatter', 'image': 'images/miscards/card.png', }, 
@@ -210,6 +212,9 @@ init -10 python:
 #        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
 
         'spc_become_slave': {'name': 'Bond to slavery', 'description': __('Bond to slavery\nThe simplest way to get into Eternal Rome is to sell yourself into slavery. Your new master will take you there.'), 'label': 'lbl_edge_slave_auction', 'image': 'images/miscards/card.png', }, 
+        'spc_recruiter_bond': {'name': 'Job options', 'description': __('Work for a Major House\nAsk if you can apply for a job for a Major House.'), 'label': 'lbl_edge_hiring', 'image': 'images/miscards/card.png', }, 
+        'spc_recruiter_citisen': {'name': 'Become a citisen', 'description': __('Major House membersip\nYou must prove yourself worthy.'), 'label': 'lbl_edge_spc_citisen_start', 'image': 'images/miscards/card.png', }, 
+
 
         'ho_promenade': {'name': 'Promenade', 'description': __('Promenade\nOpposed Spirit check. Gain communication and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_promenade', 'image': 'images/miscards/card.png', }, 
         'ho_booze': {'name': 'Booze up', 'description': __('Booze up\nCosts 1 bar. Opposed Spirit check. Gain amusement and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_booze', 'image': 'images/miscards/card.png', }, 
@@ -227,15 +232,15 @@ init -10 python:
         'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic and evil deed. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'images/miscards/card.png', }, 
 
         'bond_mistmarine': {'name': 'Mistmarine', 'description': __('Mistmarine\nFight for a House on the Outer Worlds.'), 'label': 'lbl_edge_mistmarine', 'image': 'images/miscards/card.png', }, 
-        'bond_clerk': {'name': 'Clerk' 'description': __('Clerk\nOffice work.'), 'label': 'lbl_edge_bond_clerk', 'image': 'images/miscards/card.png', },         
+        'bond_clerk': {'name': 'Clerk', 'description': __('Clerk\nOffice work.'), 'label': 'lbl_edge_bond_clerk', 'image': 'images/miscards/card.png', },         
         'bond_builder': {'name': 'Builder', 'description': __('Builder\nConstruction work.'), 'label': 'lbl_edge_bond_builder', 'image': 'images/miscards/card.png', }, 
         'bond_concubine': {'name': 'Concubine', 'description': __('Concubine\nBecome a sex toy for a Major House citisens.'), 'label': 'lbl_edge_sexy_exam', 'image': 'images/miscards/card.png', }, 
         'bond_servant': {'name': 'Servitor', 'description': __('Servitor\nBecome a servant in a Major House.'), 'label': 'lbl_edge_bond_servant', 'image': 'images/miscards/card.png', }, 
         'bond_host': {'name': 'Host', 'description': __('Host\nEntertain customers in drinking establishments of the Majpr House.'), 'label': 'lbl_edge_bond_host', 'image': 'images/miscards/card.png', },         
 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', },         
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', },         
     }
     
     edge_quest_rewards = {
