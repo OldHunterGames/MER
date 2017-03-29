@@ -788,6 +788,8 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._phrases = dict_
 
     def has_available_quests(self, player):
+        if self._active_quest is not None:
+            return False
         return any(self.available_quests())
 
     def available_quests(self):
