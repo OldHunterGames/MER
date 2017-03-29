@@ -278,7 +278,7 @@ class SimpleCombatant(object):
     def combat_style(self):
         if self.person.main_hand is not None:
             if self.person.main_hand.size == 'offhand':
-                return 'brawler'
+                return 'cutthroat'
             if (self.person.main_hand.id == 'bare_hands' and
                     self.person.other_hand.id == 'bare_hands'):
                 print self.person.main_hand.id
