@@ -99,7 +99,9 @@ class CardsMaker(Command):
         else:
             self.card_cls = card_cls
         if dict_ is not None:
-            [self.add_entry(key, value) for key, value in dict_.items()]
+            for key, value in dict_.items():
+                if not value.get('hidden', False):
+                    self.add_entry(key, value)
 
     def _run(self):
         list_ = []
@@ -109,7 +111,8 @@ class CardsMaker(Command):
         return list_
 
     def add_entry(self, key, value):
-        self.data[key] = value
+        data = value[key]
+        self.data[key] = data
 
     def remove_entry(self, key):
         try:
