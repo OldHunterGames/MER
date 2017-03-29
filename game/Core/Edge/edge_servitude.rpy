@@ -1,18 +1,25 @@
 ## Major house servitude quest
 
 label lbl_edge_hiring:
-    edge_recruiter 'You can apply to become a Major House servitor in the city, but you have only one try to do so. Choose wisely.'
+    edge_recruiter 'You can apply to become a Major House bond servitor in the city, but you have only one try to do so. Choose wisely.'
     $ core.quest_tracker.add_quest(Quest(**quests_data['edge_bond_quest']))
     menu:
-        'What kind of job to choose?'
+        'Are you interested?'
+        "Tell me more":
+            call lbl_edge_bond_options 
+        'Not today':
+            pass
+        'I want to be a free citisen':
+            call lbl_edge_citisen_briefing
+
         'Mistmarine':
-            $ fate = 'mistmarine'
+            
             call lbl_edge_mistmarine
         'Concubine': 
-            $ fate = 'concubine'
+            
             call lbl_edge_sexy_exam            
         'Clerk': 
-            $ fate = 'clerk'
+            
             call lbl_edge_skill_exam('mind')
         'Builder': 
             $ fate = 'builder'
@@ -22,12 +29,23 @@ label lbl_edge_hiring:
             call lbl_edge_skill_exam('agility')
         'Host': 
             $ fate = 'host'
-            call lbl_edge_skill_exam('spirit')  
-        'Free citisen':
-            call lbl_edge_citisen_briefing
-        'Not today':
-            pass
+            call lbl_edge_skill_exam('spirit') 
 
+    return
+
+label lbl_edge_bond_options:
+    python:     
+        options = CardsMaker()
+        options.add_entry('bond_mistmarine', edge_option_cards['bond_mistmarine'])
+        options.add_entry('bond_concubine', edge_option_cards['bond_concubine'])
+        options.add_entry('bond_clerk', edge_option_cards['bond_clerk'])
+        options.add_entry('bond_builder', edge_option_cards['bond_builder'])
+        options.add_entry('bond_servant', edge_option_cards['bond_servant'])
+        options.add_entry('bond_host', edge_option_cards['bond_host'])        
+        options.add_entry('nevermind', edge_option_cards['nevermind'])  
+        CardMenu(options.run()).show()    
+
+    hide card
     return
 
 label lbl_edge_citisen_briefing:
@@ -66,6 +84,7 @@ label lbl_edge_libertine_exam:
     return
 
 label lbl_edge_mistmarine:
+    $ fate = 'mistmarine'
     python:
         def generate_warrior(genus):
             ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
@@ -86,6 +105,7 @@ label lbl_edge_mistmarine:
     return
 
 label lbl_edge_sexy_exam:
+    $ fate = 'concubine'
     menu:
         'You need to impress House representatives. What to do?'
         'Show your body. (Might)':
@@ -119,6 +139,30 @@ label lbl_edge_fuck_challenge(skill):
     
     return
 
+label lbl_edge_bond_clerk:
+    $ fate = 'clerk'
+    call lbl_edge_skill_exam('mind')
+
+    return
+
+label lbl_edge_bond_clerk:
+    $ fate = 'clerk'
+    call lbl_edge_skill_exam('mind')
+
+    return
+
+label lbl_edge_bond_clerk:
+    $ fate = 'clerk'
+    call lbl_edge_skill_exam('mind')
+
+    return
+
+label lbl_edge_bond_clerk:
+    $ fate = 'clerk'
+    call lbl_edge_skill_exam('mind')
+
+    return
+            
 label lbl_edge_skill_exam(skill):
     edge_recruiter 'I will test your skills'
     $ player.moral_action('timid', 'lawful', edge_recruiter) 

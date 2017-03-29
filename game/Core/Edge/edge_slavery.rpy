@@ -19,7 +19,7 @@ label lbl_edge_sell_yourself:
 
     return
 
-label lbl_edge_slave_auction:
+label lbl_edge_slave_auction(card):
     $ buyer = choice(rawstock_buyers)
     'Unknown [buyer] buys you.'
     jump game_over

@@ -226,17 +226,24 @@ init -10 python:
         'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight or chase (Might challenge) expected.'), 'label': 'lbl_edge_enc_engage', 'image': 'images/miscards/card.png', },         
         'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic and evil deed. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'images/miscards/card.png', }, 
 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', }, 
-#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'images/miscards/card.png', },         
+        'bond_mistmarine': {'name': 'Mistmarine', 'description': __('Mistmarine\nFight for a House on the Outer Worlds.'), 'label': 'lbl_edge_mistmarine', 'image': 'images/miscards/card.png', }, 
+        'bond_clerk': {'name': 'Clerk' 'description': __('Clerk\nOffice work.'), 'label': 'lbl_edge_bond_clerk', 'image': 'images/miscards/card.png', },         
+        'bond_builder': {'name': 'Builder', 'description': __('Builder\nConstruction work.'), 'label': 'lbl_edge_bond_builder', 'image': 'images/miscards/card.png', }, 
+        'bond_concubine': {'name': 'Concubine', 'description': __('Concubine\nBecome a sex toy for a Major House citisens.'), 'label': 'lbl_edge_sexy_exam', 'image': 'images/miscards/card.png', }, 
+        'bond_servant': {'name': 'Servitor', 'description': __('Servitor\nBecome a servant in a Major House.'), 'label': 'lbl_edge_bond_servant', 'image': 'images/miscards/card.png', }, 
+        'bond_host': {'name': 'Host', 'description': __('Host\nEntertain customers in drinking establishments of the Majpr House.'), 'label': 'lbl_edge_bond_host', 'image': 'images/miscards/card.png', },         
+
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', }, 
+#        'id': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_', 'image': 'images/miscards/card.png', },         
     }
     
     edge_quest_rewards = {
-        'reward_garantor': {'name': 'Garantor', 'description': __('descriptext'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
-        'reward_sparks': {'name': 'Sparks', 'description': __('descriptext'), 'label': 'lbl_edge_reward_sparks', 'image': 'images/miscards/card.png', }, 
-        'reward_banknotes': {'name': 'Banknotes', 'description': __('descriptext'), 'label': 'lbl_edge_reward_banknotes', 'image': 'images/miscards/card.png', },   
-        'reward_bars': {'name': 'Food bars', 'description': __('descriptext'), 'label': 'lbl_edge_reward_bars', 'image': 'images/miscards/card.png', }, 
-        'reward_relations': {'name': 'Relations up', 'description': __('descriptext'), 'label': 'lbl_edge_reward_relations', 'image': 'images/miscards/card.png', },                 
+        'reward_garantor': {'name': 'Garantor', 'description': __('Garantor\nThis person will vouch for you for the Major House'), 'label': 'lbl_comm_garantor', 'image': 'images/miscards/card.png', }, 
+        'reward_sparks': {'name': 'Sparks', 'description': __('Sparks\nIf you have a clear gem (jewel for example) it will be infused with the Sparks of Creation. This Sparks is a best curency in Eternal Rome but wortless on the Edge of Mists.'), 'label': 'lbl_edge_reward_sparks', 'image': 'images/miscards/card.png', }, 
+        'reward_banknotes': {'name': 'Banknotes', 'description': __('Bundle of banknotes\nThis paper money signed by a Major House seal is a common currency at the Eternal Rome.'), 'label': 'lbl_edge_reward_banknotes', 'image': 'images/miscards/card.png', },   
+        'reward_bars': {'name': 'Food bars', 'description': __('Nutrition Bars\nBox of 100 nutrition bars. Each bar can feed a human for entire day and do not spoil until the packaging is opened. Used as a common currency at the Edge of Mists.'), 'label': 'lbl_edge_reward_bars', 'image': 'images/miscards/card.png', }, 
+        'reward_relations': {'name': 'Relations', 'description': __('Relations\nYou can reinforce your influence, making this person more inclined to cooperate.'), 'label': 'lbl_edge_reward_relations', 'image': 'images/miscards/card.png', },                 
     }
         
     
