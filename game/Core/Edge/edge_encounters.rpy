@@ -10,11 +10,11 @@ label lbl_edge_randenc_errant:
         
     python:     
         options = CardsMaker()
-        options.add_entry('errant_talk', edge_option_cards['errant_talk'])
-        options.add_entry('errant_stalk', edge_option_cards['errant_stalk'])
-        options.add_entry('errant_engage', edge_option_cards['errant_engage'])
-        options.add_entry('errant_decieve', edge_option_cards['errant_decieve'])
-        options.add_entry('flee', edge_option_cards['flee'])
+        options.add_entry('errant_talk', edge_option_cards)
+        options.add_entry('errant_stalk', edge_option_cards)
+        options.add_entry('errant_engage', edge_option_cards)
+        options.add_entry('errant_decieve', edge_option_cards)
+        options.add_entry('flee', edge_option_cards)
         CardMenu(options.run()).show()
     hide card
     

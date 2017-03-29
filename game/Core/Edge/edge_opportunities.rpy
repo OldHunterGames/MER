@@ -4,11 +4,12 @@ label lbl_edge_opportunities:
    
     python:     
         options = CardsMaker()
-        options.add_entry('feed_hungry', edge_option_cards['feed_hungry'])
-        options.add_entry('observe', edge_option_cards['observe'])
-        options.add_entry('look_troble', edge_option_cards['look_troble'])
-        options.add_entry('opp_find_recruiter', edge_option_cards['opp_find_recruiter'])                        
-        options.add_entry('nevermind', edge_option_cards['nevermind'])  
+        options.add_entry('feed_hungry', edge_option_cards)
+        options.add_entry('observe', edge_option_cards)
+        options.add_entry('look_troble', edge_option_cards)
+        if 'recruiter' not in edge.options:
+            options.add_entry('opp_find_recruiter', edge_option_cards)                        
+        options.add_entry('nevermind', edge_option_cards)  
         CardMenu(options.run()).show()
                 
     hide card
@@ -17,7 +18,7 @@ label lbl_edge_opportunities:
     return
     
 label lbl_edge_find_recruiter(card):
-    $ call_event(evn_edge_recruiter, player, skipcheck)
+    $ call_event('recruiter', player, True)
     
     return
 

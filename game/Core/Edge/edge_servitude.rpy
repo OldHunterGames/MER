@@ -7,7 +7,7 @@ label lbl_edge_hiring:
     menu:
         'Are you interested?'
         "Tell me more":
-            call lbl_edge_bond_options 
+            call lbl_edge_bond_options(None) 
         'Not today':
             pass
         'I want to be a free citisen':
@@ -16,7 +16,8 @@ label lbl_edge_hiring:
     return
 
 
-label lbl_edge_spc_bond_start:
+label lbl_edge_spc_bond_start(card):
+    call lbl_edge_hiring
 
     return
 
@@ -31,13 +32,13 @@ label lbl_edge_spc_citisen_start(card):
 label lbl_edge_bond_options(card):
     python:     
         options = CardsMaker()
-        options.add_entry('bond_mistmarine', edge_option_cards['bond_mistmarine'])
-        options.add_entry('bond_concubine', edge_option_cards['bond_concubine'])
-        options.add_entry('bond_clerk', edge_option_cards['bond_clerk'])
-        options.add_entry('bond_builder', edge_option_cards['bond_builder'])
-        options.add_entry('bond_servant', edge_option_cards['bond_servant'])
-        options.add_entry('bond_host', edge_option_cards['bond_host'])        
-        options.add_entry('nevermind', edge_option_cards['nevermind'])  
+        options.add_entry('bond_mistmarine', edge_option_cards)
+        options.add_entry('bond_concubine', edge_option_cards)
+        options.add_entry('bond_clerk', edge_option_cards)
+        options.add_entry('bond_builder', edge_option_cards)
+        options.add_entry('bond_servant', edge_option_cards)
+        options.add_entry('bond_host', edge_option_cards)        
+        options.add_entry('nevermind', edge_option_cards)  
         CardMenu(options.run()).show()    
 
     hide card

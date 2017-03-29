@@ -12,23 +12,20 @@ label lbl_communicate(target):
     $ target.say_phrase('hello')
     python:     
         options = CardsMaker()
-        #if not garantor and visavis.relations(player).stance > 0:
-        #    options.add_entry('comm_garantor', edge_option_cards['comm_garantor'])
-        options.add_entry('com_hungout', edge_option_cards['com_hungout'])
-        #options.add_entry('com_present', edge_option_cards['com_present'])
+        options.add_entry('com_hungout', edge_option_cards)
         if target.has_available_quests(player):
-            options.add_entry('com_takequest', edge_option_cards['com_takequest'])
+            options.add_entry('com_takequest', edge_option_cards)
         if target.obligation:
-            options.add_entry('com_obligation', edge_option_cards['com_obligation'])
+            options.add_entry('com_obligation', edge_option_cards)
         if target == edge_slaver:
-            options.add_entry('spc_become_slave', edge_option_cards['spc_become_slave'])    
+            options.add_entry('spc_become_slave', edge_option_cards)    
         if target == edge_recruiter:
             if not fate:
-                options.add_entry('spc_recruiter_bond', edge_option_cards['spc_recruiter_bond'])  
-            options.add_entry('spc_recruiter_citisen', edge_option_cards['spc_recruiter_citisen'])                   
+                options.add_entry('spc_recruiter_bond', edge_option_cards)  
+            options.add_entry('spc_recruiter_citisen', edge_option_cards)                   
         if target.quest_completed(player): 
-            options.add_entry('com_quest_completed', edge_option_cards['com_quest_completed'])        
-        options.add_entry('nevermind', edge_option_cards['nevermind'])  
+            options.add_entry('com_quest_completed', edge_option_cards)        
+        options.add_entry('nevermind', edge_option_cards)  
         CardMenu(options.run()).show()
                 
     hide card
@@ -132,12 +129,12 @@ label lbl_first_impression:
     
     python:     
         options = CardsMaker()
-        options.add_entry('fi_intimidate', edge_option_cards['fi_intimidate'])
-        options.add_entry('fi_getknow', edge_option_cards['fi_getknow'])
-        options.add_entry('fi_flatter', edge_option_cards['fi_flatter'])
-        options.add_entry('fi_joke', edge_option_cards['fi_joke'])
-        options.add_entry('fi_mock', edge_option_cards['fi_mock'])
-        options.add_entry('fi_reticence', edge_option_cards['fi_reticence'])        
+        options.add_entry('fi_intimidate', edge_option_cards)
+        options.add_entry('fi_getknow', edge_option_cards)
+        options.add_entry('fi_flatter', edge_option_cards)
+        options.add_entry('fi_joke', edge_option_cards)
+        options.add_entry('fi_mock', edge_option_cards)
+        options.add_entry('fi_reticence', edge_option_cards)        
         CardMenu(options.run()).show()
                 
     hide card
@@ -208,23 +205,23 @@ label lbl_edge_comm_hungout(card):
     python:     
         options = CardsMaker()        
         if 'promenade' not in visavis.communications_done:
-            options.add_entry('ho_promenade', edge_option_cards['ho_promenade'])
+            options.add_entry('ho_promenade', edge_option_cards)
         if 'booze' not in visavis.communications_done and player.money > 0:
-            options.add_entry('ho_booze', edge_option_cards['ho_booze'])
+            options.add_entry('ho_booze', edge_option_cards)
         if 'dinner' not in visavis.communications_done and player.money > 2:
-            options.add_entry('ho_dinner', edge_option_cards['ho_dinner'])
+            options.add_entry('ho_dinner', edge_option_cards)
         if 'discussion' not in visavis.communications_done:
-            options.add_entry('ho_discussion', edge_option_cards['ho_discussion'])
+            options.add_entry('ho_discussion', edge_option_cards)
         if 'impress' not in visavis.communications_done:
-            options.add_entry('ho_erudition', edge_option_cards['ho_erudition'])
-            options.add_entry('ho_prank', edge_option_cards['ho_prank'])
-            options.add_entry('ho_might', edge_option_cards['ho_might'])
+            options.add_entry('ho_erudition', edge_option_cards)
+            options.add_entry('ho_prank', edge_option_cards)
+            options.add_entry('ho_might', edge_option_cards)
         if 'favor' not in visavis.communications_done:
-            options.add_entry('ho_favor', edge_option_cards['ho_favor'])        
+            options.add_entry('ho_favor', edge_option_cards)        
         if 'dance' not in visavis.communications_done:
-            options.add_entry('ho_dance', edge_option_cards['ho_dance'])
-        options.add_entry('makelove', edge_option_cards['makelove'])    
-        options.add_entry('nevermind', edge_option_cards['nevermind'])          
+            options.add_entry('ho_dance', edge_option_cards)
+        options.add_entry('makelove', edge_option_cards)    
+        options.add_entry('nevermind', edge_option_cards)          
         CardMenu(options.run()).show()
 
     $ player.drain_energy()
