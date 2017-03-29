@@ -7,7 +7,7 @@ init -8 python:
     sys.path.append(renpy.loader.transfn("Core/Edge/scrypt"))
     from edge_engine import *
     from edge_camp import *
-    edge = EdgeEngine()
+    
     pass
     def canibalism_unlocker(person, *args, **kwargs):
         person.schedule.set('ration', ScheduleObject('canibalism', edge_feeds_data['canibalism'], True))
@@ -19,6 +19,7 @@ init -8 python:
 label lbl_edge_main:    
     'The Mist gives you a way...'  
     python:
+        edge = EdgeEngine()
         core.set_world(edge)
         edge.go_to_mist()
         edge.init_player_schedule(player)
