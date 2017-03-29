@@ -84,7 +84,8 @@ screen sc_dialog(name='', avatar=None, what=''):
     viewport:
         pos(110, 520)
         xysize(780, 500)
-        text what id "what"
+        text what id "what":
+            xmaximum 680
     on 'hide':
         action Hide('sc_info_popup')
 

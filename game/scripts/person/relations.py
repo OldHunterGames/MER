@@ -69,7 +69,7 @@ class Relations(object):
         return max(-1, min(2, value))
 
     def colored_stance(self, protected=False):
-        value = self._stance
+        value = self.stance
         if value == -1:
             color = 0
         elif value == 0:

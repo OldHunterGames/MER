@@ -20,7 +20,7 @@ init python:
     combat_styles_translation = {
     'brawler': __("brawler"),
     'cutthroat': __("cutthroat"),
-    'swashbuclker': __("swashbuclker"),
+    'swashbuckler': __("swashbuclker"),
     'shieldbearer': __("shieldbearer"),
     'wrecker': __("wrecker"),
     }
