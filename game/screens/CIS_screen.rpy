@@ -84,7 +84,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     idle im.Scale('images/tarot/card_deck.jpg', 200, 350)
                     action Show('sc_tokens', person=player)
             elif communicate:
-                if player.energy > -1:
+                if player.has_energy():
                     imagebutton:
                         idle im.Scale(person.get_token_image(), 200, 350)
                         hover im.MatrixColor(im.Scale(person.get_token_image(), 200, 350), im.matrix.brightness(0.05))
