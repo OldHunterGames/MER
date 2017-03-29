@@ -21,13 +21,14 @@ init -10 python:
     from mer_quest import *
     
 init python:
-    outer_worlds = []
     renpy.block_rollback()
-    core = MistsOfEternalRome()
+    
 
 # The game starts here.
 label start:
     python:
+        core = MistsOfEternalRome()
+        outer_worlds = []
         p = gen_random_person('human', gender='female')
         g = gen_random_person('human')
         z = gen_random_person('human')
