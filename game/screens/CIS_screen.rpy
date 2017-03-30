@@ -23,7 +23,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                 image im.Scale(person.avatar_path, 150, 150)
                 vbox:
                     python:
-                        energy_text = utilities.encolor_text('energy', person.energy)
+                        energy_text = utilities.encolor_text(__('Energy'), person.energy)
                         if person.player_controlled or person.master == core.player:
                             items_look_mode = False
                         else:
@@ -31,7 +31,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     textbutton energy_text: 
                         action SensitiveIf(person.player_controlled and
                             person.energy > 0)
-                    textbutton 'schedule':
+                    textbutton 'Schedule':
                         action [SensitiveIf(person.player_controlled or
                                 person.master == core.player), Show('sc_schedule', person=person)]
                     textbutton 'Equipment':
