@@ -17,7 +17,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
         xfill True
         yfill True
         frame:
-            xsize 1060
+            xsize 960
             ysize 160
             hbox:
                 image im.Scale(person.avatar_path, 150, 150)
@@ -44,8 +44,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     for i in ['physique', 'mind', 'spirit', 'agility']:
                         python:
                             txt = encolor_text(attributes_translation[i], getattr(person, i))
-                        textbutton txt:
-                            action NullAction()
+                        text txt
 
                 vbox:
                     for i in ['physique', 'mind', 'spirit', 'agility']:
@@ -54,18 +53,17 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             txt = encolor_text(attributes_translation[i], getattr(person, i))
                             if skill is not None:
                                 txt = encolor_text(skill, person.skill(i)+2)
-                        textbutton txt:
-                            action NullAction()
-
+                        text txt
         frame:
-            xsize 1060
+            xsize 960
             ypos 161
             ysize 550
             text DescriptionMaker(person).description()
 
         frame:
-            xpos 1061
-            xsize 210
+            xpos 961
+            xsize 310
+            ysize 200
             vbox:
                 text encolor_text(__('Allure'), person.allure())
                 text encolor_text(__('Hardiness'), person.hardiness())
@@ -75,11 +73,11 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                 text encolor_text(__('Style'), person.style())
                 text encolor_text(__('Menace'), person.menace())
         frame:
-            xpos 1061
+            xpos 961
             ypos 201
             python:
-                card_x_size = 198
-                card_y_size = 400
+                card_x_size = 310
+                card_y_size = 500
             if person.player_controlled:
                 imagebutton:  
                     idle im.Scale('images/tarot/card_deck.jpg', card_x_size, card_y_size)
