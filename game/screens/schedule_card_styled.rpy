@@ -17,6 +17,9 @@ screen sc_schedule(person, return_=False):
             text core.get_lifestyle(person)
             text 'Money: %s'%person.money
             text 'Bill: %s'%person.decade_bill()
+        textbutton 'Leave':
+            yalign 1.0
+            action If(return_, Return(), false=Hide('sc_schedule'))
         hbox:
             xalign 0.35
             spacing 5
