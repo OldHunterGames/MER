@@ -101,7 +101,7 @@ class CardsMaker(Command):
         if dict_ is not None:
             for key, value in dict_.items():
                 if not value.get('hidden', False):
-                    self.add_entry(key, value)
+                    self.add_entry(key, dict_)
 
     def _run(self):
         list_ = []
