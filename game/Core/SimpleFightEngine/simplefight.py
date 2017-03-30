@@ -247,7 +247,7 @@ class SimpleCombatant(object):
         self._target = None
         self._combat_style = None
         if self.combat_style() == 'shieldbearer':
-            self.protection += 5 * self.shield_quality()
+            self.defence += 5 * self.shield_quality()
 
     @property
     def hp(self):
