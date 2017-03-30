@@ -128,6 +128,8 @@ class MistsOfEternalRome(object):
             return self.current_world.jobs()
 
     def get_lifestyle(self, person):
+        if self.current_world == self:
+            return "DEFAULT"
         try:
             value = self.current_world.get_lifestyle(person)
         except AttributeError:

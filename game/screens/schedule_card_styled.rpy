@@ -10,16 +10,13 @@ screen sc_schedule(person, return_=False):
         style 'char_info_window'
         vbox:
             imagebutton:
-                idle im.Scale(person.avatar_path, 200, 200)
-                action Show('sc_character_info_screen', person=person, communicate=True)
+                idle im.Scale(person.avatar_path, 150, 150)
+                action If(return_, Return(), false=Hide('sc_schedule'))
                 hovered Show('sc_info_popup', person=person)
                 unhovered Hide('sc_info_popup')
             text core.get_lifestyle(person)
             text 'Money: %s'%person.money
             text 'Bill: %s'%person.decade_bill()
-        textbutton 'Leave':
-            yalign 1.0
-            action If(return_, Return(), false=Hide('sc_schedule'))
         hbox:
             xalign 0.35
             spacing 5
@@ -50,6 +47,8 @@ screen sc_schedule(person, return_=False):
                             ActionPicker(person.schedule.available('optional', core.current_world.name), key, 'optional'))
                     text txt:
                         xalign 0.5
+    on 'hide':
+        action Hide('sc_info_popup')
 
 init python:
     class ActionPicker(object):
