@@ -18,9 +18,16 @@ screen sc_show_turn(simplesex):
         image simplesex.target_picker.avatar():
             xalign 0.75
             ypos 80
-        text simplesex.get_actor_rating():
+        text simplesex.target_picker.name:
             xalign 0.75
             ypos 285
+
+        text simplesex.target_picker.sexual_orientation['description']:
+            xalign 0.75
+            ypos 295
+        text simplesex.get_actor_rating():
+            xalign 0.75
+            ypos 305
 
         textbutton 'Forward':
             action Return()

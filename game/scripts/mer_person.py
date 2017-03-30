@@ -762,6 +762,10 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.rewards = CardsMaker()
         self._active_quest = None
 
+    @property
+    def master(self):
+        return self._master
+
     def set_active_quest(self, quest):
         self._active_quest = quest
 

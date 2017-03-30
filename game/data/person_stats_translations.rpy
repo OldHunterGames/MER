@@ -17,8 +17,8 @@ init python:
         2: 'Content', 3: 'Serene', 4: 'Jouful', 5: 'Enthusiastic'}
 
     attributes_translation = {
-        'physique': __('Might'),
-        'agility': __('Finesse'),
+        'physique': __('Endurance'),
+        'agility': __('Grace'),
         'mind': __('Wisdom'),
         'spirit': __('Spirit'),
         'anxiety': __('anxiety'),
@@ -27,6 +27,12 @@ init python:
         'vitality': __('vitality'),
         'motivation': __('motivation'),
         'focus': __('focus')
+    }
+    skills_translation = {
+        'physique': __('Might'),
+        'agility': __('Finesse'),
+        'mind': __('Knowledge'),
+        'spirit': __('Willpower'),
     }
     
     obligations_dict = {

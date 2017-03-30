@@ -9,89 +9,90 @@ style gray_button is button:
     idle_background Frame(im.Grayscale('interface/bg_base.jpg'),0,0)
     hover_background Frame(im.Grayscale('interface/bg_base.jpg'),0,0)
 
+
+
 screen sc_character_info_screen(person, return_l=False, communicate=False):
-    python:
-        if player.know_person(person):
-            relations = player.relations(person)
-        else:
-            relations = None
     modal True
     window:
         xfill True
         yfill True
-        xalign 0.0
-        yalign 0.0
-        style 'char_info_window'
-        hbox:
-            frame:
-                xsize 1000
-                vbox:
-                    
-                    hbox:
-                        if person.has_feature('dead'):
-                            image im.Grayscale(im.Scale(person.avatar_path, 150, 150))
-                        else:  
-                            image im.Scale(person.avatar_path, 150, 150)
-                        vbox:
-                            if person.has_feature('dead'):
-                                textbutton 'Eat':
-                                    action Function(player.eat_corpse, person), If(return_l, Return(), false=Hide('sc_character_info_screen'))
-                            textbutton 'Leave' action If(return_l, Return(),false=Hide('sc_character_info_screen'))
-                    frame:
-                        xmaximum 1000
-                        text DescriptionMaker(person).description()
-                    frame:
-                        hbox:
-                            vbox:
-                                text encolor_text(__('Allure'), person.allure())
-                                text encolor_text(__('Hardiness'), person.hardiness())
-                                text encolor_text(__('Succulence'), person.succulence())
-                                text encolor_text(__('Purity'), person.purity())
-                                text encolor_text(__('Exotic'), person.exotic())
-                                text encolor_text(__('Style'), person.style())
-                                text encolor_text(__('Menace'), person.menace())
-                            vbox:
-                                $ skills = [None, __("able"), __("veteran"), __("expert")]
-                                for i in ['physique', 'mind', 'spirit', 'agility']:
-                                    python:
-                                        skill = skills[person.skill(i)]
-                                        txt = encolor_text(attributes_translation[i], getattr(person, i))
-                                        if skill is not None:
-                                            txt += '(%s)'%encolor_text(skill, person.skill(i)+2)
-                                    text txt
-
-
-            vbox:       
-                if any([person.get_buffs()]) or person.bad_markers or person.good_markers:
-                    frame:
-                        vbox:
-                            for i in person.get_buffs():
-                                text encolor_text(i.name, i.color())
-                            for i in person.bad_markers:
-                                text encolor_text(bad_markers_translation[i], 'red')
-                            for i in person.good_markers:
-                                text encolor_text(good_markers_translation[i], 'green')
-        
-
-                
         frame:
-            xsize 200
-            ysize 350
-            xalign 1.0
-            yalign 1.0
+            xsize 1060
+            ysize 160
+            hbox:
+                image im.Scale(person.avatar_path, 150, 150)
+                vbox:
+                    python:
+                        energy_text = utilities.encolor_text('energy', person.energy)
+                        if person.player_controlled or person.master == core.player:
+                            items_look_mode = False
+                        else:
+                            items_look_mode = True
+                    textbutton energy_text: 
+                        action SensitiveIf(person.player_controlled and
+                            person.energy > 0)
+                    textbutton 'schedule':
+                        action [SensitiveIf(person.player_controlled or
+                                person.master == core.player), Show('sc_schedule', person=person)]
+                    textbutton 'Equipment':
+                        action [SensitiveIf(person.player_controlled or 
+                                person.any_equiped()), Show('sc_simple_equip', person=person, look_mode=items_look_mode)]
+                    textbutton 'Done': 
+                        action If(return_l, Return(), false=Hide('sc_character_info_screen'))
+
+                vbox:
+                    for i in ['physique', 'mind', 'spirit', 'agility']:
+                        python:
+                            txt = encolor_text(attributes_translation[i], getattr(person, i))
+                        textbutton txt:
+                            action NullAction()
+
+                vbox:
+                    for i in ['physique', 'mind', 'spirit', 'agility']:
+                        python:
+                            skill = skills_translation[i]
+                            txt = encolor_text(attributes_translation[i], getattr(person, i))
+                            if skill is not None:
+                                txt = encolor_text(skill, person.skill(i)+2)
+                        textbutton txt:
+                            action NullAction()
+
+        frame:
+            xsize 1060
+            ypos 161
+            ysize 550
+            text DescriptionMaker(person).description()
+
+        frame:
+            xpos 1061
+            xsize 210
+            vbox:
+                text encolor_text(__('Allure'), person.allure())
+                text encolor_text(__('Hardiness'), person.hardiness())
+                text encolor_text(__('Succulence'), person.succulence())
+                text encolor_text(__('Purity'), person.purity())
+                text encolor_text(__('Exotic'), person.exotic())
+                text encolor_text(__('Style'), person.style())
+                text encolor_text(__('Menace'), person.menace())
+        frame:
+            xpos 1061
+            ypos 201
+            python:
+                card_x_size = 198
+                card_y_size = 400
             if person.player_controlled:
                 imagebutton:  
-                    idle im.Scale('images/tarot/card_deck.jpg', 200, 350)
+                    idle im.Scale('images/tarot/card_deck.jpg', card_x_size, card_y_size)
                     action Show('sc_tokens', person=player)
             elif communicate:
                 if player.has_energy():
                     imagebutton:
-                        idle im.Scale(person.get_token_image(), 200, 350)
-                        hover im.MatrixColor(im.Scale(person.get_token_image(), 200, 350), im.matrix.brightness(0.05))
+                        idle im.Scale(person.get_token_image(), card_x_size, card_y_size)
+                        hover im.MatrixColor(im.Scale(person.get_token_image(), card_x_size, card_y_size), im.matrix.brightness(0.05))
                         action Function(core.shift_relations, person) 
                 else:
                     imagebutton:
-                        idle im.Grayscale(im.Scale(person.get_token_image(), 200, 350))
+                        idle im.Grayscale(im.Scale(person.get_token_image(), card_x_size, card_y_size))
                         hovered Show('sc_text_popup', text=__("Not enough energy"))
                         unhovered Hide('sc_text_popup')
                         action NullAction()

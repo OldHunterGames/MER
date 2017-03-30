@@ -8,7 +8,7 @@ init python:
         def _run(self, *args, **kwargs):
             self.person.equip_on_slot(self.slot, None)
 
-    class EquipCard(Card):
+    class EquipCard(Card, Command):
 
         def __init__(self, person, item, slot, *args, **kwargs):
             self._person = person
@@ -66,8 +66,8 @@ screen sc_simple_equip(person, look_mode=False):
                 vbox:
                     imagebutton:
                         idle img
-                        action Function(CardMenu(items,
-                            item).show, False)
+                        action If(look_mode, NullAction(), false=Function(CardMenu(items,
+                            item).show, False))
                     text name:
                         xalign 0.5
         python:
@@ -90,8 +90,8 @@ screen sc_simple_equip(person, look_mode=False):
             ypos 330    
             imagebutton:
                 idle img
-                action If(person.main_hand.size=='twohand' and person.main_hand.id != 'bare_hands', NullAction(),
-                    false=Function(CardMenu(items, current).show, False))
+                action If(look_mode, NullAction(), false = If(person.main_hand.size=='twohand' and person.main_hand.id != 'bare_hands', NullAction(),
+                    false=Function(CardMenu(items, current).show, False)))
             text name:
                 xalign 0.5
 

@@ -298,6 +298,9 @@ class InventoryWielder(object):
         self.corpse_storage = []
         self.corpse_buffer = None
 
+    def any_equiped(self):
+        return any(self.equiped_items())
+
     @property
     def trade_level(self):
         return self.inventory.trade_level
