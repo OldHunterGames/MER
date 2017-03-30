@@ -98,24 +98,21 @@ label lbl_edge_mistmarine(card):
 
     enemies[0] 'Test your might!!!' 
     $ fight = SimpleFight(allies, enemies)      
-
-    jump game_over
+    if fight.get_winner() == 'allies':
+        jump lbl_edge_fate
+    else:
+        '[player.name] perished in battle.'
+        jump game_over
+  
     return
 
 label lbl_edge_sexy_exam(card):
-    $ fate = 'concubine'
-    menu:
-        'You need to impress House representatives. What to do?'
-        'Show your body. (Might)':
-            $ skill = 'physiqye'
-        'Dance a stiptease. (Finesse)':
-            $ skill = 'agility'
-        'Play a doctor. (Wisdom)':
-            $ skill = 'mind'
-        'Demonstrate a character. (Spirit)':
-            $ skill = 'spirit'                            
     python:
-        result = core.skillcheck(player, skill, 2)        
+        fate = 'concubine'
+        options = CardsMaker(edge_seduce_jury)
+        CardMenu(options.run()).show()                    
+
+    hide card
 
     if result:
         'scuccess'    
@@ -126,14 +123,34 @@ label lbl_edge_sexy_exam(card):
     
     return
 
+label lbl_edge_sexy_exam_might(card):
+    $ result = core.skillcheck(player, 'physique', 3) 
+    return
+
+label lbl_edge_sexy_exam_grace(card):
+    $ result = core.skillcheck(player, 'agility', 3) 
+    return
+
+label lbl_edge_sexy_exam_spirit(card):
+    $ result = core.skillcheck(player, 'spirit', 3) 
+    return
+
+label lbl_edge_sexy_exam_mind(card):
+    $ result = core.skillcheck(player, 'mind', 3) 
+    return
+
 label lbl_edge_fuck_challenge(skill):
-    $ partner = gen_random_person(genus='human', occupation='slut', gender='female')
-    #$ partner2 = gen_random_person(genus='human', occupation='slut', gender='female')
-    #$ partner3 = gen_random_person(genus='human', occupation='slut', gender='female')
-    partner 'Hi there!'
-    $ sex = SexEngine((player, True), [(partner, True)])
-    
-    call screen sc_sexengine_main(sex)
+    $ partner = gen_random_person(genus='human', occupation='stripper', gender='female')
+    #$ partner2 = gen_random_person(genus='human', occupation='stripper', gender='female')
+    #$ partner3 = gen_random_person(genus='human', occupation='stripper', gender='female')
+    partner "Let's fuck already!"
+
+    $ sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
+    $ result = sex.get_results()
+    if result[2] > 3:
+        'WIN'
+    else:
+        'LOSE'
     
     return
 
@@ -163,16 +180,13 @@ label lbl_edge_bond_host(card):
             
 label lbl_edge_skill_exam(skill):
     edge_recruiter 'I will test your skills'
-    $ player.moral_action('timid', 'lawful', edge_recruiter) 
+    $ player.moral_action(target=edge_recruiter, activity='timid') 
     $ result = core.skillcheck(player, skill, 5)
-    
-    player '[result]'
 
     if result:
-        'scuccess'    
+        edge_recruiter 'You a worthy to serve our great House!'    
         jump lbl_edge_fate
     else:
-        'fail'
-        call lbl_edge_outpost
+        edge_recruiter 'No more chances for you!'
         
     return

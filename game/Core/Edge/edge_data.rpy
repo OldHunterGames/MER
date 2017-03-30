@@ -241,6 +241,9 @@ init -10 python:
 #        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
 #        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
 #        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
     }
     
     edge_quest_rewards = {
@@ -251,4 +254,9 @@ init -10 python:
         'reward_relations': {'name': 'Relations', 'description': __('Relations\nYou can reinforce your influence, making this person more inclined to cooperate.'), 'label': 'lbl_edge_reward_relations', 'image': 'miscards', },                 
     }
         
-    
+    edge_seduce_jury = {
+        'seduce_body': {'name': 'Body demonstration', 'description': __('Body demonstration\nTry to impress hury with your natural body health and vigor.'), 'label': 'lbl_edge_sexy_exam_might', 'image': 'miscards', }, 
+        'seduce_grace': {'name': 'Striptease', 'description': __('Striptease\nGraceful strip-dance for a jury.'), 'label': 'lbl_edge_sexy_exam_grace', 'image': 'miscards', }, 
+        'seduce_mind': {'name': 'Dirty talk', 'description': __('Dirty talk\nTell the jury about your most intimate and wicked fantasies.'), 'label': 'lbl_edge_sexy_exam_mind', 'image': 'miscards', },         
+        'seduce_spirit': {'name': 'Passionate seduction', 'description': __('Passionate seduction\nJust show jury your character and seduce them straightforward.'), 'label': 'lbl_edge_sexy_exam_spirit', 'image': 'miscards', }, 
+    }
