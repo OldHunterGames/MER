@@ -130,7 +130,7 @@ init -10 python:
     }
 
     edge_jobs_data = {
-    'idle': {'name': __('Idle'), 'description': 'Just rest and relax.', 'skill': None, 'difficulty': 0, 'world': 'edge', 'image': 'images/miscards/rest.png', },
+    'idle': {'name': __('Idle'), 'description': 'Just rest and relax.', 'skill': None, 'difficulty': 0, 'world': 'edge', 'image': 'miscards', },
     'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 0, 'world': 'edge'},
     'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 0, 'world': 'edge'},
     'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0, 'world': 'edge'},   

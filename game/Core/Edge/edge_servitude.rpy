@@ -85,7 +85,7 @@ label lbl_edge_mistmarine(card):
     $ fate = 'mistmarine'
     python:
         def generate_warrior(genus):
-            ocpn = choice(['outcast', 'pathfinder', 'hunter', 'explorer', 'biker', 'sniper', 'marksman', 'watchman', 'sapper',  'mercenary', 'sellsword', 'gladiator', 'thug', 'raider', 'soldier', 'pirate', 'officer', 'knight', 'assasin'])
+            ocpn = choice(['wild_hunter', 'wild_outcast', 'tribal_chief', 'lumberjack', 'assasin', 'knight', 'officer', 'spacemarine', 'mech_pilot', ])
             
             return gen_random_person(genus=genus, occupation=ocpn)
             
@@ -97,7 +97,7 @@ label lbl_edge_mistmarine(card):
             enemies.append(generate_warrior('human'))        
 
     enemies[0] 'Test your might!!!' 
-    $ fight = SimpleFight(allies, enemies)           
+    $ fight = SimpleFight(allies, enemies)      
 
     jump game_over
     return

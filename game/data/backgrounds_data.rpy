@@ -275,7 +275,7 @@ init python:
             'technical_level': 1,
             'prestige_level': 1,
         },  
-        'chief':{
+        'tribal_chief':{
             'name': __('chief of the tribe'),
             'technical_level': 1,
             'prestige_level': 1,
