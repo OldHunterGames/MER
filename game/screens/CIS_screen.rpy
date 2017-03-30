@@ -20,6 +20,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
             xsize 960
             ysize 160
             hbox:
+                spacing 5
                 image im.Scale(person.avatar_path, 150, 150)
                 vbox:
                     python:
