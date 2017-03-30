@@ -21,7 +21,7 @@ class Command(object):
         self.run.add_callback(func)
 
 
-class Card(Command):
+class Card(object):
 
     def image(self):
         return empty_card()
@@ -33,7 +33,7 @@ class Card(Command):
         raise NotImplementedError()
 
 
-class MenuCard(Card):
+class MenuCard(Card, Command):
     """Basic class for card-styled menu cards"""
     def __init__(self, name=None, description=None,
                  label=None, image=None, id=None, **kwargs):

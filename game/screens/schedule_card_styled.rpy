@@ -29,7 +29,7 @@ screen sc_schedule(person, return_=False):
                         idle getattr(person, i).image()
                         action Show('sc_pick_schedule', person=person), SetVariable('picker',
                             ActionPicker(person.schedule.available(i, core.current_world.name), None, i))
-                    text getattr(person, i).name:
+                    text getattr(person, i).name():
                         xalign 0.5
         hbox:
             xalign 0.35
@@ -42,7 +42,7 @@ screen sc_schedule(person, return_=False):
                         txt = __("Free slot")
                     else:
                         img = value.image()
-                        txt = value.name
+                        txt = value.name()
                 vbox:
                     imagebutton:
                         idle img
@@ -62,7 +62,7 @@ init python:
 
         @property
         def cards_list(self):
-            return sorted(self._cards_list, key=lambda card: card.name)
+            return sorted(self._cards_list, key=lambda card: card.name())
 
         def set_card(self, card):
             if self.current_card is not None:
@@ -111,7 +111,7 @@ screen sc_pick_schedule(person):
                         imagebutton:
                             idle i.image()
                             action Function(picker.set_card, i)
-                        text i.name:
+                        text i.name():
                             xalign 0.5
                 if picker.slot is not None:
                     vbox:
@@ -131,7 +131,7 @@ screen sc_pick_schedule(person):
                     SensitiveIf(picker.current_card is not None)]
                 xalign 0.5
             if picker.current_card is not None:
-                text picker.current_card.description:
+                text picker.current_card.description():
                     xalign 0.5
                     xmaximum 400
 

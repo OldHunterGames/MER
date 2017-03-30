@@ -3,11 +3,12 @@ from collections import OrderedDict
 from copy import copy
 
 import mer_utilities as utilities
+from mer_command import MenuCard
 
 import renpy.exports as renpy
 
 
-class ScheduleObject(object):
+class ScheduleObject(MenuCard):
 
     def __init__(self, id, data_dict, locked=False):
         self._data = data_dict
@@ -19,12 +20,29 @@ class ScheduleObject(object):
         self._additional_data = dict
 
     def _image_raw(self):
-        return self._data.get('image', utilities.empty_card())
+        img = self.get_image()
+        if img is None:
+            return utilities.empty_card()
+        return img
 
     def image(self, size=None):
         if size is None:
             size = (200, 300)
         return renpy.display.im.Scale(self._image_raw(), *size)
+
+    @property
+    def _image(self):
+        return self._data.get('image')
+
+    def get_image(self):
+        # testing image getting system
+        path = 'images/%s/%s' % (self._image, self.id)
+        images = utilities.get_files(path)
+        try:
+            img = images[0]
+        except IndexError:
+            img = None
+        return img
 
     @property
     def cost(self):
@@ -40,6 +58,12 @@ class ScheduleObject(object):
         except KeyError:
             value = self.__dict__['_additional_data'].get(key)
         return value
+
+    def description(self):
+        return self._data.get('description', 'No description')
+
+    def name(self):
+        return self._data.get('name', 'No name')
 
     def use(self, person, type):
         self._use(person)

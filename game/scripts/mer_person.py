@@ -167,7 +167,7 @@ class SlaveStorage(object):
     def add_slave(self, slave, master):
         if self.has_space():
             self._slaves.append(slave)
-            self._slave_relations(slave, master)
+            # self._slave_relations(slave, master)
             return True
         return False
 
