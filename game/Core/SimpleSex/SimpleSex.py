@@ -6,25 +6,28 @@ import renpy.exports as renpy
 from mer_utilities import make_sex_card, encolor_text
 from mer_command import SatisfySex
 
+
 def make_cards(dict_):
     cards = []
     for key, value in dict_.items():
         for i in range(-1, 2):
             for n in value['suite']:
                 cards.append(SexEffect(value['implement'], value['target'],
-                    n, i, value['action_type'], value['name']))
+                                       n, i, value['action_type'], value['name']))
     return cards
+
 
 class SimpleSex(object):
 
     actions = None
+
     def __init__(self, participant_1, participant_2, *args):
         if len(args) > 3:
             raise Exception('Maximum of 5 participants per sexgame exceed')
         if self.actions is None:
             self.actions = make_cards(store.simple_sex_actions_data)
         self.participants = [SexParticipant(participant_1[0], participant_1[1]),
-            SexParticipant(participant_2[0], participant_2[1])]
+                             SexParticipant(participant_2[0], participant_2[1])]
         self.participants.extend([SexParticipant(i[0], i[1]) for i in args])
         self.target_picker = None
         self.target = None
@@ -47,15 +50,13 @@ class SimpleSex(object):
         self.current_actions.remove(new_card)
         self.current_actions.insert(index, self.current_card)
         self.set_card(new_card)
-        
-        
 
     def active_act(self):
         actives = self.get_actives()
         while len(actives) > 0:
             if len(actives) < 2:
                 self.set_target_picker(self.get_actives()[0])
-                    
+
             renpy.call_screen('sc_simplesex_picktarget', self)
             actions = self.get_actions(self.target_picker, self.target)
             self.current_actions = actions[0:4]
@@ -67,10 +68,8 @@ class SimpleSex(object):
             self.target_picker.lock()
             self.clear()
 
-
     def get_actives(self):
         return [i for i in self.participants if i.modus == 'controlled' and not i.acted()]
-
 
     def set_target_picker(self, participant):
         self.target_picker = participant
@@ -96,7 +95,8 @@ class SimpleSex(object):
 
     def get_actions(self, participant, target):
         shuffle(self.actions)
-        actions = [i for i in self.actions if i.can_be_used(participant, target)]
+        actions = [i for i in self.actions if i.can_be_used(
+            participant, target)]
         actions = actions[0:5]
         return actions
 
@@ -124,11 +124,13 @@ class SimpleSex(object):
         self.current_card = card
 
     def get_target_rating(self):
-        value = self.current_card.calc_result(self.target_picker, self.target)[1]
+        value = self.current_card.calc_result(
+            self.target_picker, self.target)[1]
         return self.target.get_rating_description(value)
 
     def get_actor_rating(self):
-        value = self.current_card.calc_result(self.target_picker, self.target)[0]
+        value = self.current_card.calc_result(
+            self.target_picker, self.target)[0]
         return self.target_picker.get_rating_description(value)
 
     def calc_result(self, participant):
@@ -140,12 +142,14 @@ class SimpleSex(object):
         for i in self.participants:
             SatisfySex(i, i.calc_rating()).run()
 
+    def get_results(self):
+        return [(i.person, i.calc_rating()) for i in self.participants]
+
 
 class SexParticipant(object):
 
-
     def __init__(self, person, modus):
-        
+
         self.person = person
         self.modus = modus
         self.ratings = []
@@ -164,7 +168,7 @@ class SexParticipant(object):
 
     def get_rating_description(self, value=0):
         return encolor_text(store.sex_quality_rate[value], value)
-    
+
     def acted(self):
         if self.modus == 'unwilling':
             return True
@@ -204,9 +208,11 @@ class SexParticipant(object):
         else:
             return 'male'
 
+
 class SexEffect(object):
 
     INITIAL_RATING = 0
+
     def __init__(self, active_organ, passive_organ, suite, quality, contact_type, name):
         self.active = active_organ
         self.name = name
@@ -216,7 +222,7 @@ class SexEffect(object):
         self.contact_type = contact_type
 
     def image(self, size=None):
-        return make_sex_card(self.quality+2, self.suite, self.contact_type, size)
+        return make_sex_card(self.quality + 2, self.suite, self.contact_type, size)
 
     def can_be_used(self, actor, taker):
         actor_organ = actor.has_body_part(self.active)
@@ -229,8 +235,10 @@ class SexEffect(object):
         taker.fix_rating(target_rating)
 
     def _calc_orientation(self, actor, taker, actor_rating, target_rating):
-        actor_rating = self._change_rating(actor_rating, actor.sexual_orientation[taker.gender()])
-        target_rating = self._change_rating(target_rating, taker.sexual_orientation[actor.gender()])
+        actor_rating = self._change_rating(
+            actor_rating, actor.sexual_orientation[taker.gender()])
+        target_rating = self._change_rating(
+            target_rating, taker.sexual_orientation[actor.gender()])
         return actor_rating, target_rating
 
     def _calc_suite(self, actor, taker, actor_rating, target_rating):
@@ -239,7 +247,6 @@ class SexEffect(object):
         taker_value = taker.sexual_suite['receiving'][self.suite]
         target_rating = self._change_rating(target_rating, taker_value)
         return actor_rating, target_rating
-
 
     def _calc_penetration(self, actor, taker, actor_rating, target_rating):
         if self.passive is None or self.active is None:
@@ -266,22 +273,26 @@ class SexEffect(object):
 
         if penetrator is not None and receiver is not None:
             if (penetrator.size == 0 or receiver.size == 0) and penetrator.size != receiver.size:
-                value = self._calc_zero_size(penetrator, receiver, penetrator_owner, receiver_owner)
+                value = self._calc_zero_size(
+                    penetrator, receiver, penetrator_owner, receiver_owner)
                 locals()[value] = self._change_rating(locals()[value], 1)
             friction = penetrator.size - receiver.size
-            wetness = max(penetrator, receiver, key=lambda organ: organ.wetness)
+            wetness = max(penetrator, receiver,
+                          key=lambda organ: organ.wetness)
             if friction < 0:
-                locals()[penetrator_owner] = self._change_rating(locals()[penetrator_owner], -1)
+                locals()[penetrator_owner] = self._change_rating(
+                    locals()[penetrator_owner], -1)
             elif friction > 0:
-                locals()[penetrator_owner] = self._change_rating(locals()[penetrator_owner], 1)
+                locals()[penetrator_owner] = self._change_rating(
+                    locals()[penetrator_owner], 1)
                 receiver.stretch += friction
-                if friction < wetness+1:
-                    locals()[receiver_owner] = self._change_rating(locals()[receiver_owner], 1)
-                elif friction > wetness+2:
-                    locals()[receiver_owner] = self._change_rating(locals()[receiver_owner], -1)
+                if friction < wetness + 1:
+                    locals()[receiver_owner] = self._change_rating(
+                        locals()[receiver_owner], 1)
+                elif friction > wetness + 2:
+                    locals()[receiver_owner] = self._change_rating(
+                        locals()[receiver_owner], -1)
         return actor_rating, target_rating
-
-
 
     def _calc_zero_size(self, penetrator, receiver, penetrator_owner, receiver_owner):
         if penetrator.size == 0:
@@ -297,10 +308,13 @@ class SexEffect(object):
 
     def calc_result(self, actor, taker):
         actor_rating = self._change_rating(self.INITIAL_RATING, self.quality)
-        target_rating = self._change_rating(self.INITIAL_RATING, self.quality) 
-        actor_rating, target_rating = self._calc_orientation(actor, taker, actor_rating, target_rating)
-        actor_rating, target_rating = self._calc_suite(actor, taker, actor_rating, target_rating)
-        actor_rating, target_rating = self._calc_penetration(actor, taker, actor_rating, target_rating)
+        target_rating = self._change_rating(self.INITIAL_RATING, self.quality)
+        actor_rating, target_rating = self._calc_orientation(
+            actor, taker, actor_rating, target_rating)
+        actor_rating, target_rating = self._calc_suite(
+            actor, taker, actor_rating, target_rating)
+        actor_rating, target_rating = self._calc_penetration(
+            actor, taker, actor_rating, target_rating)
         return actor_rating, target_rating
 
 test1 = SexEffect('vagina', 'penis', 'bizarre', 0, 'afuck', 'test1')
