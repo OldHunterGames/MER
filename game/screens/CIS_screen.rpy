@@ -30,8 +30,9 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         else:
                             items_look_mode = True
                     textbutton energy_text: 
-                        action SensitiveIf(person.player_controlled and
-                            person.energy > 0)
+                        action [SensitiveIf(person.player_controlled and
+                            person.energy > 0), Function(renpy.call_in_new_context,
+                                'lbl_edge_opportunities')]
                     textbutton 'Schedule':
                         action [SensitiveIf(person.player_controlled or
                                 person.master == core.player), Show('sc_schedule', person=person)]
