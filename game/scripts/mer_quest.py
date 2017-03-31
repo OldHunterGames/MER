@@ -62,9 +62,12 @@ class Quest(object):
             self._completed += 1
             if self.employer is not None:
                 self.employer.obligation = True
+        for i in self._targets:
+            i.finish(performer)
         return finished
 
     def _finish(self, performer):
+        # override this in child classes
         return True
 
     def __getattr__(self, key):
@@ -91,6 +94,10 @@ class QuestTarget(object):
 
     def completed(self, performer):
         raise NotImplementedError()
+
+    def finish(self, performer):
+        # override this in child classes
+        return
 
 
 class BringPerson(QuestTarget):
@@ -134,6 +141,9 @@ class BringBars(QuestTarget):
 
     def completed(self, performer):
         return performer.money >= self.bars
+
+    def finish(self, performer):
+        performer.remove_money(self.bars)
 
 
 class SexualPleasure(QuestTarget):
