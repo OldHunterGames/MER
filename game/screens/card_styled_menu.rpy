@@ -21,17 +21,17 @@ init python:
                 self._cards_list.append(self.current_card)
             self.current_card = card
 
-        def show(self, call=True, x_size=200, y_size=300):
+        def show(self, call=True, x_size=200, y_size=300, spacing=5):
             if call:
-                renpy.call_screen('sc_card_menu', self, call, x_size, y_size)
+                renpy.call_screen('sc_card_menu', self, call, x_size, y_size, spacing)
             else:
-                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size)
+                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing)
 
         def run(self, card):
             return card.run()
 
 
-screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300):
+screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5):
     modal True
     python:
         cards = card_menu.get_sorted()
@@ -48,7 +48,7 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300):
             hbox:
                 xmaximum 880
                 box_wrap True
-                spacing 5
+                spacing spacing_
                 for i in cards:
                     vbox:
                         imagebutton:
@@ -65,7 +65,7 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300):
                 xsize 380
                 box_wrap True
                 imagebutton:
-                    idle im.Scale(card_menu.current_card.image(), 300, 400)
+                    idle im.Scale(card_menu.current_card.image(), x_size+100, y_size+100)
                     
                     action [Function(card_menu.run, card_menu.current_card),
                             If(called, Return(), false=Hide('sc_card_menu'))]
