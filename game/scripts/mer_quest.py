@@ -22,6 +22,10 @@ class Quest(object):
     def reminder(self):
         return self._reminder
 
+    @property
+    def one_time(self):
+        return self._one_time
+
     def description(self):
         no_desc = 'No description'
         return self._data.get('description', no_desc)

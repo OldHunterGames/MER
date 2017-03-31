@@ -45,7 +45,7 @@ label lbl_edge_comm_call_quest(card):
 
 label lbl_edge_comm_obligation(card):
     $ CardMenu(visavis.reward.run()).show()
-    $ core.quest_tracker.finish_quest(viasvis.active_quests)
+    $ core.quest_tracker.finish_quest(visavis.active_quest, player)
     hide card
     return
     

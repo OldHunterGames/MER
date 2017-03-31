@@ -1485,7 +1485,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.relations(target)
 
     def remove_slave(self, slave=None):
-        slave = self.slaves.slaves[0]
+        slave = self.slaves.slaves()[0]
         self.slaves.remove_slave(slave)
 
     def get_slaves(self):

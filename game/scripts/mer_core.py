@@ -61,7 +61,10 @@ class QuestTracker(object):
     def finish_quest(self, quest, player):
         finished = quest.finish(player)
         if finished:
-            self.remove_quest(quest)
+            if quest.one_time:
+                self.remove_quest(quest)
+                if quest.employer is not None:
+                    quest.employer.set_active_quest(None)
             for i in quest.ending_tags:
                 for j in [i for i in self.active_quests]:
                     if i in j.tags:
