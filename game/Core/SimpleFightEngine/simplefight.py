@@ -476,6 +476,10 @@ class SimpleCombatant(object):
         else:
             self.defence -= value
 
+    @property
+    def main_hand(self):
+        return self.person.main_hand
+
     def vitality(self):
         return self.defence + self.hp
 

@@ -25,7 +25,7 @@ init python:
             if call:
                 renpy.call_screen('sc_card_menu', self, call, x_size, y_size, spacing)
             else:
-                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing)
+                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing_=spacing)
 
         def run(self, card):
             return card.run()
