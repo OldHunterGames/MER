@@ -290,6 +290,9 @@ class SimplyfiedInventory(Inventory):
     def items(self):
         return [i for i in self.storage if not i.equiped]
 
+    def all_items(self):
+        return [i for i in self.storage]
+
 
 class InventoryWielder(object):
 
@@ -300,6 +303,9 @@ class InventoryWielder(object):
 
     def any_equiped(self):
         return any(self.equiped_items())
+
+    def all_items(self):
+        return self.inventory.all_items()
 
     @property
     def trade_level(self):
