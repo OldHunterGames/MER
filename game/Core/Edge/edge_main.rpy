@@ -39,7 +39,7 @@ label lbl_edge_main:
             return consumption_text
         
         ## Main quest
-        core.quest_tracker.add_quest(Quest(**quests_data['edge_main_quest']))
+        core.quest_tracker.add_quest(Quest(one_time=True, **quests_data['edge_main_quest']))
         
         ## Houses & Persons
         garantor = None
@@ -66,7 +66,7 @@ label lbl_edge_main:
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
         edge_slaver.set_nickname("The Slavedriver")
-        edge_slaver.add_quest(SlaverQuest(**quests_data['slaver_quest']))
+        edge_slaver.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
         npc = ['citisen', edge_slaver]
 
     call lbl_edge_init_questrewards(npc)
@@ -74,7 +74,7 @@ label lbl_edge_main:
     python:
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
-        edge_slaver.set_nickname("Serpis")        
+        edge_recruiter.set_nickname("Serpis")        
 
     
     #slums_leader 'Hi, I am a leader of the Slums'
@@ -123,16 +123,22 @@ label lbl_edge_manage:
         'Marketplace':
             python:
                 knife = create_item('knife', 'weapon')
-                slums_leader.add_item(knife)
+                edge_recruiter.add_item(knife)
+                sword = create_item('sword', 'weapon')
+                edge_recruiter.add_item(sword)  
                 heavy_axe = create_item('heavy_axe', 'weapon')
-                slums_leader.add_item(heavy_axe)                        
+                edge_recruiter.add_item(heavy_axe)            
+                shield = create_item('shield', 'weapon')
+                edge_recruiter.add_item(shield)                                        
                 harm = create_item('fullplate', 'armor')
-                slums_leader.add_item(harm)
+                edge_recruiter.add_item(harm)
                 sarm = create_item('hides', 'armor')
-                slums_leader.add_item(sarm)
+                edge_recruiter.add_item(sarm)
                 clth = create_item('fine_clothes', 'armor')
-                slums_leader.add_item(sarm)
-            call screen sc_trade(slums_leader) 
+                edge_recruiter.add_item(clth)
+                jewel = create_item('jewel', 'treasure')
+                edge_recruiter.add_item(jewel)                
+            call screen sc_trade(edge_recruiter) 
 
         'Стать богатым':            
             $ player.add_money(1000)
