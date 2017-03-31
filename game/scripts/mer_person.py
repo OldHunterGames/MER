@@ -169,6 +169,10 @@ class SlaveStorage(object):
             self._slaves.append(slave)
             # self._slave_relations(slave, master)
             return True
+        else:
+            self._slaves.pop()
+            self._slaves.append(slave)
+            return True
         return False
 
     def remove_slave(self, slave):
@@ -1271,7 +1275,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     @property
     def name(self):
-        s = self.firstname + " " + self.surname
+        s = self.firstname + ' %s'%self.nickname + ' %s'%self.surname
         return s
 
     def tick_features(self):
@@ -1481,12 +1485,14 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         return self.relations(self.game_ref.player)
 
     def enslave(self, target):
-        self.slaves.add_slave(target, self)
-        self.relations(target)
+        success = self.slaves.add_slave(target, self)
+        if success:
+            self.relations(target)
 
     def remove_slave(self, slave=None):
         slave = self.slaves.slaves()[0]
         self.slaves.remove_slave(slave)
+        return slave
 
     def get_slaves(self):
         return self.slaves.slaves()

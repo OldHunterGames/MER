@@ -4,8 +4,6 @@ screen sc_player_hud:
             action Show('sc_character_info_screen', person=player)
         textbutton 'contacts':
             action Function(renpy.call_in_new_context, 'lbl_contacts', player)
-        textbutton "tests":
-            action Function(renpy.call_in_new_context, 'lbl_tests')
         python:
             quest_text = __('quests')
             if core.quest_tracker.new_quests:

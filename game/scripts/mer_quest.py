@@ -121,7 +121,8 @@ class SlaverQuest(Quest):
         return self.targets[0].get_available_slaves(performer)
 
     def _finish(self, perfromer):
-        perfromer.remove_slave()
+        slave = perfromer.remove_slave()
+        performer.forget_person(slave)
         return True
 
 
@@ -133,6 +134,12 @@ class BringBars(QuestTarget):
 
     def completed(self, performer):
         return performer.money >= self.bars
+
+
+class SexualPleasure(QuestTarget):
+
+    def __init__(self, pleasure=5):
+        pass
 
 
 class BasicRelationsQuest(Quest):
