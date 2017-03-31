@@ -14,6 +14,7 @@ label edge_None_template(actor):
 label edge_optional_nap(actor):
     python:
         name = actor.name
+        player.gain_energy()
         # actor.add_buff('rested')
 #    '[name]resting.'
     return      

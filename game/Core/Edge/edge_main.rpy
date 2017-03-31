@@ -45,56 +45,64 @@ label lbl_edge_main:
         garantor = None
         edge_sovereign = core.get_faction('serpis')
                         
-        slums_leader = gen_willed_master('human')        
-        slums_leader.add_feature('confident')        
-        slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
-        player.relations(slums_faction)
+        # slums_leader = gen_willed_master('human')        
+        # slums_leader.add_feature('confident')        
+        # slums_faction = edge.add_faction(slums_leader, __('Slums'), 'slums')
+        # player.relations(slums_faction)
 
-        slums_champion = gen_mighty_master('human')          
-        slums_faction.add_member(slums_champion) 
-        slums_faction.set_member_to_role(slums_champion, 'champion') 
+        # slums_champion = gen_mighty_master('human')          
+        # slums_faction.add_member(slums_champion) 
+        # slums_faction.set_member_to_role(slums_champion, 'champion') 
 
-        slums_entertainer = gen_elegant_master('human')    
-        slums_faction.add_member(slums_entertainer)
-        slums_faction.set_member_to_role(slums_entertainer, 'entertainer') 
+        # slums_entertainer = gen_elegant_master('human')    
+        # slums_faction.add_member(slums_entertainer)
+        # slums_faction.set_member_to_role(slums_entertainer, 'entertainer') 
         
-        slums_medic = gen_wise_master('human')    
-        slums_faction.add_member(slums_medic)
-        slums_faction.set_member_to_role(slums_medic, 'medic') 
+        # slums_medic = gen_wise_master('human')    
+        # slums_faction.add_member(slums_medic)
+        # slums_faction.set_member_to_role(slums_medic, 'medic') 
         
         edge_slaver = gen_willed_master('human')
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
+        edge_slaver.set_nickname("The Slavedriver")
         edge_slaver.add_quest(SlaverQuest(**quests_data['slaver_quest']))
-        edge_slaver.reward = CardsMaker()
-        edge_slaver.reward.add_entry('reward_garantor', edge_quest_rewards)
-        edge_slaver.reward.add_entry('reward_sparks', edge_quest_rewards)
-        edge_slaver.reward.add_entry('reward_banknotes', edge_quest_rewards)
-        edge_slaver.reward.add_entry('reward_bars', edge_quest_rewards)
-        edge_slaver.reward.add_entry('reward_relations', edge_quest_rewards)                        
-        
+        npc = ['citisen', edge_slaver]
+
+    call lbl_edge_init_questrewards(npc)
+
+    python:
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
-        edge_recruiter.add_quest(SlaverQuest(**quests_data['slaver_quest']))
-        edge_recruiter.reward = CardsMaker()
-        edge_recruiter.reward.add_entry('reward_garantor', edge_quest_rewards)
-        edge_recruiter.reward.add_entry('reward_sparks', edge_quest_rewards)
-        edge_recruiter.reward.add_entry('reward_banknotes', edge_quest_rewards)
-        edge_recruiter.reward.add_entry('reward_bars', edge_quest_rewards)
-        edge_recruiter.reward.add_entry('reward_relations', edge_quest_rewards)                        
+        edge_slaver.set_nickname("Serpis")        
 
     
     #slums_leader 'Hi, I am a leader of the Slums'
-    $ player.relations(slums_leader)
+    #$ player.relations(slums_leader)
     #slums_champion "I'll watch for you"
-    $ player.relations(slums_champion)
+    #$ player.relations(slums_champion)
     #slums_entertainer 'If you need to relax, welcome to my pub.'
-    $ player.relations(slums_entertainer)
+    #$ player.relations(slums_entertainer)
     #slums_medic "I'll patch you if you'l get hurt... for a price!"
-    $ player.relations(slums_medic)    
+    #$ player.relations(slums_medic)    
 
     call edge_init_events
     call lbl_edge_manage
+    return
+
+label lbl_edge_init_questrewards(argument):
+    python:
+        if argument[0] == 'citisen':
+            argument[1].reward = CardsMaker()
+            argument[1].reward.add_entry('reward_garantor', edge_quest_rewards)
+            argument[1].reward.add_entry('reward_sparks', edge_quest_rewards)
+            argument[1].reward.add_entry('reward_banknotes', edge_quest_rewards)
+            argument[1].reward.add_entry('reward_bars', edge_quest_rewards)
+            argument[1].reward.add_entry('reward_relations', edge_quest_rewards)  
+        if argument[0] == 'freeman':
+            argument[1].reward = CardsMaker()
+            argument[1].reward.add_entry('reward_relations', edge_quest_rewards)  
+
     return
     
 label lbl_edge_manage:
