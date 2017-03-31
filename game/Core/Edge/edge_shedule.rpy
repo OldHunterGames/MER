@@ -16,7 +16,7 @@ label edge_optional_nap(actor):
         name = actor.name
         player.gain_energy()
         # actor.add_buff('rested')
-#    '[name]resting.'
+    '[name]resting. Energy up.'
     return      
 
 label edge_optional_whores(actor):

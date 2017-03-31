@@ -136,7 +136,7 @@ label lbl_edge_manage:
                 edge_recruiter.add_item(sarm)
                 clth = create_item('fine_clothes', 'armor')
                 edge_recruiter.add_item(clth)
-                jewel = create_item('jewel', 'treasure')
+                jewel = create_item('jewel', 'accessory')
                 edge_recruiter.add_item(jewel)                
             call screen sc_trade(edge_recruiter) 
 

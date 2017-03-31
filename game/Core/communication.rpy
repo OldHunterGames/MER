@@ -45,7 +45,7 @@ label lbl_edge_comm_call_quest(card):
 
 label lbl_edge_comm_obligation(card):
     $ CardMenu(visavis.reward.run()).show()
-    visavis.obligation = False
+    $ visavis.obligation = False
     hide card
     return
     
@@ -74,13 +74,14 @@ label lbl_edge_comm_present(card):
 label lbl_edge_reward_sparks(card):
     python:
         flag = False
-        for item in player.items:
+        for item in player.all_items:
             if item.id == 'jewel':
                 player.remove_item(item)
-                sparkgem = create_item('sparkgem', 'assessory')
+                sparkgem = create_item('sparkgem', 'accessory')
                 player.add_item(sparkgem)
                 flag = True
                 break
+
     if flag:
         'Got sparks'
     else:
