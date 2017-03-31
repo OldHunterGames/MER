@@ -21,17 +21,17 @@ init python:
                 self._cards_list.append(self.current_card)
             self.current_card = card
 
-        def show(self, call=True):
+        def show(self, call=True, x_size=200, y_size=300):
             if call:
-                renpy.call_screen('sc_card_menu', self, call)
+                renpy.call_screen('sc_card_menu', self, call, x_size, y_size)
             else:
-                renpy.show_screen('sc_card_menu', card_menu=self, called=call)
+                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size)
 
         def run(self, card):
             return card.run()
 
 
-screen sc_card_menu(card_menu, called=True):
+screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300):
     modal True
     python:
         cards = card_menu.get_sorted()
@@ -52,12 +52,12 @@ screen sc_card_menu(card_menu, called=True):
                 for i in cards:
                     vbox:
                         imagebutton:
-                            idle im.Scale(i.image(), 200, 300)
+                            idle im.Scale(i.image(), x_size, y_size)
                             action Function(card_menu.set_card, i)
                         text i.name():
                             xalign 0.5
                 imagebutton:
-                    idle im.Scale(card_back(), 200, 300)
+                    idle im.Scale(card_back(), x_size, y_size)
                     action If(called, Return(), false=Hide('sc_card_menu'))
         if card_menu.current_card is not None:
             vbox:
