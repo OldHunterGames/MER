@@ -76,7 +76,7 @@ label lbl_edge_reward_sparks(card):
         for item in player.items:
             if item.id == 'jewel':
                 player.remove_item(item)
-                sparkgem = create_item('sparkgem', 'assesory')
+                sparkgem = create_item('sparkgem', 'assessory')
                 player.add_item(sparkgem)
                 flag = True
                 break

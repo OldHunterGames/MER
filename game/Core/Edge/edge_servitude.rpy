@@ -23,7 +23,7 @@ label lbl_edge_spc_bond_start(card):
 
 label lbl_edge_spc_citisen_start(card):
     if 'citisen_briefing' in edge.options:
-        call lbl_edge_libertine_exam
+        call lbl_edge_libertine_exam(None)
     else:
         call lbl_edge_citisen_briefing
 
@@ -60,25 +60,66 @@ label lbl_edge_citisen_briefing:
     return
     
 label lbl_edge_libertine_exam(card):
-    if 'got_gem' in edge.options:
-        jump lbl_edge_libertine_pass
-        
+    python:
+        score = 0
+        if 'got_gem' in edge.options:
+            score += 1
+        if 'got_banknotes' in edge.options:
+            score += 1
+        if 'got_garantor' in edge.options:
+            score += 1
+        check_gem = False
+        check_notes = False
+        for item in player.items:
+            if item.id == 'sparkgem':
+                check_gem = True
+            if item.id == 'notes':
+                check_notes = True
+
+    if score > 2:
+        $ fate = 'citisen'
+        jump lbl_edge_fate
+
     edge_recruiter "What do you need?"
+
+
     menu:
         '[garantor.name] will bail for me!' if 'got_garantor' not in edge.options and garantor:
             $ edge.options.append('got_garantor')
             edge_recruiter "Good for you! Let's settle the formalities."
             
-        'I have a sparkgem!' if 'got_gem' not in edge.options:
+        'I have a sparkgem!' if 'got_gem' not in edge.options and check_gem:
             $ edge.options.append('got_gem')
-            
-        'I have banknotes here!' if 'got_banknotes' not in edge.options:
+            python:  
+                for item in player.items:
+                    if item.id == 'sparkgem':
+                        player.remove_item(item)
+                        break             
+            edge_recruiter "Ouuu... shiny! I'll hold it for you."
+
+        'I have banknotes here!' if 'got_banknotes' not in edge.options and check_notes:
             $ edge.options.append('got_banknotes')
-                        
+            python:  
+                for item in player.items:
+                    if item.id == 'notes':
+                        player.remove_item(item)
+                        break     
+            edge_recruiter "Seems legit! I'll hold it for you."
+
+
+        'Remind me what I need to become a citisen?':
+            if 'got_garantor' not in edge.options:
+                edge_recruiter 'First and above all, you need a garantor - respected citisen of Eternal Rome who will vouch for you.'
+            if 'got_banknotes' not in edge.options:
+                edge_recruiter 'You need some money for a first decades. The bundle of banknotes of our Major House will suffice.'
+            if 'got_gem' not in edge.options:
+                edge_recruiter 'The Rite of Joining requires Sparks of Creation. Bring me a Spark infused gem.'      
+            edge_recruiter "Then I will bring you to Eternal Rome."                
+
         'Newermind':
-            jump lbl_edge_places
+            jump lbl_edge_main
     
-    call lbl_edge_libertine_exam
+    call lbl_edge_libertine_exam(None)
     return
 
 label lbl_edge_mistmarine(card):
@@ -183,7 +224,7 @@ label lbl_edge_skill_exam(skill):
     $ player.moral_action(target=edge_recruiter, activity='timid') 
     $ result = core.skillcheck(player, skill, 5)
 
-    if result:
+    if result > 0:
         edge_recruiter 'You a worthy to serve our great House!'    
         jump lbl_edge_fate
     else:

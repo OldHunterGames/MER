@@ -55,9 +55,7 @@ label evn_edge_slaver(event):
             $ event.skipcheck = True
     if not event.skipcheck:
         return False
-       
-    #edge_slaver 'Hey! Now you know me!'
-    #'You found a slaver, new options in Outpost'
+
     $ edge.options.append('slaver')
     $ player.relations(edge_slaver)
     call lbl_edge_slavery
@@ -75,6 +73,7 @@ label evn_edge_recruiter(event):
     'You found a recruiter, new options in Outpost'
     $ edge.options.append('recruiter')
     $ player.relations(edge_recruiter)
+    call lbl_communicate(edge_recruiter)    
     call lbl_edge_hiring
     return True
       
