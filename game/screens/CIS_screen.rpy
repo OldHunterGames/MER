@@ -20,7 +20,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
             xsize 960
             ysize 160
             hbox:
-                spacing 5
+                spacing 10
                 image im.Scale(person.avatar_path, 150, 150)
                 vbox:
                     python:
@@ -29,10 +29,14 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             items_look_mode = False
                         else:
                             items_look_mode = True
-                    textbutton energy_text: 
-                        action [SensitiveIf(person.player_controlled and
-                            person.energy > 0), Function(renpy.call_in_new_context,
-                                'lbl_edge_opportunities')]
+                    if person.player_controlled:
+                        textbutton energy_text: 
+                            action [SensitiveIf(person.energy > 0), 
+                                    Function(renpy.call_in_new_context, 'lbl_edge_opportunities')]
+                    else:
+                        textbutton 'Energy':
+                            style 'gray_button'
+                            action NullAction()
                     textbutton 'Schedule':
                         action [SensitiveIf(person.player_controlled or
                                 person.master == core.player), Show('sc_schedule', person=person)]
@@ -55,7 +59,8 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                             txt = encolor_text(attributes_translation[i], getattr(person, i))
                             if skill is not None:
                                 txt = encolor_text(skill, person.skill(i)+2)
-                        text txt
+                        if skill > 0:
+                            text txt
         frame:
             xsize 960
             ypos 161

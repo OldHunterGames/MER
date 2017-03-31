@@ -3,7 +3,7 @@ screen sc_player_hud:
         textbutton 'info':
             action Show('sc_character_info_screen', person=player)
         textbutton 'contacts':
-            action Show('sc_player_contacts')
+            action Function(renpy.call_in_new_context, 'lbl_contacts', player)
         textbutton "tests":
             action Function(renpy.call_in_new_context, 'lbl_tests')
         python:

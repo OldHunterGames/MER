@@ -56,11 +56,11 @@ class Quest(object):
         finished = self._finish(performer)
         if finished:
             self._completed += 1
+            if self.employer is not None:
+                self.employer.obligation = True
         return finished
 
     def _finish(self, performer):
-        if self.employer is not None:
-            self.employer.obligation = True
         return True
 
     def __getattr__(self, key):
@@ -115,6 +115,10 @@ class SlaverQuest(Quest):
 
     def get_available_slaves(self, performer):
         return self.targets[0].get_available_slaves(performer)
+
+    def _finish(self, perfromer):
+        perfromer.remove_slave()
+        return True
 
 
 class BringBars(QuestTarget):

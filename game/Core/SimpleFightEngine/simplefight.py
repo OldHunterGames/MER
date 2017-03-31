@@ -468,7 +468,8 @@ class SimpleCombatant(object):
             self.hp -= value
             if self.hp <= 0:
                 if source.combat_style() != 'brawler':
-                    self.person.die()
+                    if not self.person.player_controlled:
+                        self.person.die()
         else:
             self.defence -= value
 

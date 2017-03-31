@@ -2,6 +2,33 @@ init python:
     def withou_faction(player):
         return [i for i in player.known_characters if not i.has_faction()]
 
+    class PersonCard(Card, Command):
+
+        def __init__(self, person):
+            self.person = person
+
+        def image(self):
+            return self.person.avatar_path
+
+        def name(self):
+            return self.person.name
+
+        def description(self):
+            return 'Description here'
+
+        def _run(self):
+            renpy.call_in_new_context('_contacts_glue',
+                self.person, True, True)       
+
+label lbl_contacts(player):
+    $ char_cards = [PersonCard(person) for person in player.known_characters]
+    $ CardMenu(char_cards).show()
+    return
+
+label _contacts_glue(person, _return, communicate):
+    call screen sc_character_info_screen(person, _return, communicate)
+    return
+
 screen sc_player_contacts():
     modal True
     window:
