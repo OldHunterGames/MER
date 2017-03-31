@@ -277,20 +277,21 @@ class SimpleCombatant(object):
 
     def combat_style(self):
         if self.person.main_hand is not None:
-            if self.person.main_hand.size == 'offhand':
-                return 'cutthroat'
             if (self.person.main_hand.id == 'bare_hands' and
                     self.person.other_hand.id == 'bare_hands'):
-                print self.person.main_hand.id
-                print self.person.main_hand.id
                 return 'brawler'
-        if any([i.size == 'shield' for i in self.weapons()]):
+        if self.has_shield():
             return 'shieldbearer'
+        if any([i.size == 'offhand' for i in self.person.weapons()]):
+            return 'cutthroat'
         if any([i.size == 'versatile' for i in self.weapons()]):
             return 'swashbuckler'
         if any([i.size == 'twohand' for i in self.weapons()]):
             return 'wrecker'
         return 'brawler'
+
+    def has_shield(self):
+        return any([i.size == 'shield' for i in self.weapons()])
 
     def damage_type(self):
         return self.main_hand.damage_type
