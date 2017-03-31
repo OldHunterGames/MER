@@ -292,6 +292,9 @@ class SimpleCombatant(object):
             return 'wrecker'
         return 'brawler'
 
+    def damage_type(self):
+        return self.main_hand.damage_type
+
     def get_damage_multiplier(self, source):
         if source.combat_style() == 'versatile':
             return 2
@@ -467,7 +470,7 @@ class SimpleCombatant(object):
             value -= self.defence
             self.hp -= value
             if self.hp <= 0:
-                if source.combat_style() != 'brawler':
+                if source.damage_type() != 'subdual':
                     if not self.person.player_controlled:
                         self.person.die()
         else:

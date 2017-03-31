@@ -120,8 +120,8 @@ class SlaverQuest(Quest):
     def get_available_slaves(self, performer):
         return self.targets[0].get_available_slaves(performer)
 
-    def _finish(self, perfromer):
-        slave = perfromer.remove_slave()
+    def _finish(self, performer):
+        slave = performer.remove_slave()
         performer.forget_person(slave)
         return True
 
