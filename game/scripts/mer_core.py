@@ -63,7 +63,7 @@ class QuestTracker(object):
         if finished:
             self.remove_quest(quest)
             for i in quest.ending_tags:
-                for j in self.active_quests:
+                for j in [i for i in self.active_quests]:
                     if i in j.tags:
                         self.remove_quest(j)
 
