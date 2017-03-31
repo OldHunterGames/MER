@@ -93,6 +93,7 @@ label edge_ration_cooked_high(actor):
 label edge_ration_canibalism(actor):
     python:
         name = actor.name
+        ration = actor.food_info() 
     '[name]is a canibal. [name]ration is [ration]'    
     return  
 

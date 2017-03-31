@@ -9,6 +9,8 @@ label lbl_edge_opportunities:
         options.add_entry('look_troble', edge_option_cards)
         if 'recruiter' not in edge.options:
             options.add_entry('opp_find_recruiter', edge_option_cards)                        
+        if 'slaver' not in edge.options:
+            options.add_entry('opp_find_slaver', edge_option_cards) 
         options.add_entry('nevermind', edge_option_cards)  
         CardMenu(options.run()).show()
                 
@@ -19,6 +21,11 @@ label lbl_edge_opportunities:
     
 label lbl_edge_find_recruiter(card):
     $ call_event('recruiter', player, True)
+    
+    return
+    
+label lbl_edge_find_slaver(card):
+    $ call_event('slaver', player, True)
     
     return
 

@@ -194,7 +194,8 @@ init -10 python:
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'miscards', }, 
         'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'miscards', }, 
         'opp_find_recruiter': {'name': 'Meet representative', 'description': __('Meet Major House representative\nIt is your chance to get inside the walls of Eternal Rome.'), 'label': 'lbl_edge_find_recruiter', 'image': 'miscards', }, 
-        
+        'opp_find_slaver': {'name': 'Slave trade', 'description': __('Meer the slavedriver\nMany poor souls ending up on a slave market, sold to Eternal Rome citisens. Not a worst fate here on the Edge of Mists. You should meet person in charge of slave trade at the Outpost.'), 'label': 'lbl_edge_find_recruiter', 'image': 'miscards', }, 
+       
 
         'fi_intimidate': {'name': 'Intimidate', 'description': __('Intimidate\nArdent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'miscards', }, 
         'fi_getknow': {'name': 'Get to know', 'description': __('Get to know\nLawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'miscards', }, 
