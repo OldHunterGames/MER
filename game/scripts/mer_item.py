@@ -59,7 +59,7 @@ class Item(Modifiable):
         return name
 
     def colored_name(self):
-        return encolor_text(self.name, self.quality)
+        return encolor_text(self.name(), self.quality)
 
     @property
     def mutable_name(self):

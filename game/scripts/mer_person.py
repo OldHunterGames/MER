@@ -204,6 +204,7 @@ class DescriptionMaker(object):
         alignment_desc = [str.capitalize(i)
                           for i in person.alignment.description()]
         get_feature = person.feature_by_slot
+        profession = person.feature_by_slot('profession')
         possesive = self.get_possesive()
         pronoun = self.get_pronoun1()
         pronoun2 = self.get_pronoun2()
@@ -221,9 +222,9 @@ class DescriptionMaker(object):
             '{{person.firstname}} {background.family.description}, ' \
             '{background.education.description}'.format(
                 background=person.background)
-        if background.occupation is not None:
-            string += 'and became a {background.occupation.name} eventually. \n'.format(
-                background=person.background)
+        if profession is not None:
+            string += 'and became a {profession} eventually. \n'.format(
+                profession=profession)
         else:
             string += '.\n'
         if person.obligation:
