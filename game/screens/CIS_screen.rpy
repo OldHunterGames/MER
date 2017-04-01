@@ -133,13 +133,13 @@ screen sc_info_popup(person):
             relations = None
 
     window:
-        xsize 300
-        ysize 300
+        xsize 350
+        ysize 400
         yalign 0.5
         text person.name:
             xalign 0.5
         vbox:
-            yalign 0.15
+            yalign 0.25
             python:
                 line1 = '{person.age} {person.gender} {person.genus.name}'.format(person=person)
                 line2 = '{0} {1} {2}'.format(*person.alignment.description())
@@ -151,6 +151,17 @@ screen sc_info_popup(person):
             text line3
             if relations is not None:
                 text DescriptionMaker(person).relations_text(protected=False)
+            hbox:
+                spacing 10
+                vbox:
+                    for i in ['physique', 'mind', 'spirit', 'agility']:
+                        python:
+                            txt = encolor_text(attributes_translation[i], getattr(person, i))
+                        text txt
+
+                vbox:
+                    for i in person.equiped_items():
+                        text i.colored_name()
 
               
 screen sc_weapon_info(weapon):
