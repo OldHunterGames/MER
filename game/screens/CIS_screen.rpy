@@ -131,23 +131,27 @@ screen sc_info_popup(person):
             relations = player.relations(person)
         else:
             relations = None
-    window:  
-        xfill False
-        xalign 0.5
-        yalign 0.0
-        vbox:
+
+    window:
+        xsize 300
+        ysize 300
+        yalign 0.5
+        text person.name:
             xalign 0.5
-            text person.full_name():
-                size 25
-            text person.age + ' ' + person.gender + ' ' + person.genus.name + ' ' + '(%s)'%person.kink
-            text "{0} {1} {2}".format(*person.alignment.description())
-            if person != player and relations is not None:
-                text (relations.colored_stance() + 
-                    '({0} {1} {2})'.format(*relations.description(True, False)))
-            for i in person.visible_features():
-                text i.name
-            for i in person.equiped_items():
-                text i.name()
+        vbox:
+            yalign 0.15
+            python:
+                line1 = '{person.age} {person.gender} {person.genus.name}'.format(person=person)
+                line2 = '{0} {1} {2}'.format(*person.alignment.description())
+                sexual_suite = person.sexual_suite['name']
+                orientation = person.sexual_orientation['name']
+                line3 = '{0} {1}'.format(sexual_suite, orientation)
+            text line1
+            text line2
+            text line3
+            if relations is not None:
+                text DescriptionMaker(person).relations_text(protected=False)
+
               
 screen sc_weapon_info(weapon):
     frame:
