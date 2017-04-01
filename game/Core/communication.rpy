@@ -45,7 +45,6 @@ label lbl_edge_comm_call_quest(card):
 
 label lbl_edge_comm_obligation(card):
     $ CardMenu(visavis.reward.run()).show()
-    $ visavis.obligation = False
     hide card
     return
     
@@ -74,7 +73,7 @@ label lbl_edge_comm_present(card):
 label lbl_edge_reward_sparks(card):
     python:
         flag = False
-        for item in player.all_items:
+        for item in player.all_items():
             if item.id == 'jewel':
                 player.remove_item(item)
                 sparkgem = create_item('sparkgem', 'accessory')
@@ -83,13 +82,15 @@ label lbl_edge_reward_sparks(card):
                 break
 
     if flag:
-        'Got sparks'
+        $ visavis.obligation = False
+        'Jewel infused with Sparks of Creation turns to a shiny sparkgem!'
     else:
-        'You need gem'
+        'You need a clear gem (jewel for instance) to infuse it with Sparks.'
 
     return
         
 label lbl_edge_reward_banknotes(card):
+    $ visavis.obligation = False
     '[player.name] got bundle of banknotes.'
     $ notes = create_item('notes', 'treasure')
     $ player.add_item(notes)
@@ -97,12 +98,14 @@ label lbl_edge_reward_banknotes(card):
     return
     
 label lbl_edge_reward_bars(card):
+    $ visavis.obligation = False
     '[player.name] got 100 bars'
     $ player.money += 100
     
     return
 
 label lbl_edge_reward_relations(card):  
+    $ visavis.obligation = False
     '[visavis.name] is now more inclined to cooperate.'
     $ player.relations(visavis).stance += 1
     

@@ -10,10 +10,10 @@ label lbl_edge_randenc_errant:
         
     python:     
         options = CardsMaker()
-        options.add_entry('errant_talk', edge_option_cards)
-        options.add_entry('errant_stalk', edge_option_cards)
-        options.add_entry('errant_engage', edge_option_cards)
-        options.add_entry('errant_decieve', edge_option_cards)
+        options.add_entry('errant_talk', edge_errant_options)
+        options.add_entry('errant_stalk', edge_errant_options)
+        options.add_entry('errant_engage', edge_errant_options)
+        options.add_entry('errant_decieve', edge_errant_options)
         options.add_entry('flee', edge_option_cards)
         CardMenu(options.run()).show()
     hide card
@@ -42,30 +42,27 @@ label lbl_edge_enc_engage(card):
     return
 
 label lbl_edge_enc_decieve(card):
-    $ player.moral_action(target=stranger, moral='evil')  
-    $ motivation = player.motivation('charisma', ['order'], ['communication'], player, ['chaotic'])
-    $ difficulty = stranger.mind - 2
-    if difficulty < 0:
-        $ difficulty = 0
-    call lbl_skillcheck(player, 'charisma', motivation, difficulty)
-    $ result = skillcheck.result
-    if result > 0:
-        '[player.name] are lulled wanderer and went behind him.'
-        menu:
-            'Grapple':
-                $ player.moral_action(target=stranger, activity='ardent')   
-                $ fight = SimpleFight([player], [stranger])
-                
-            'Backstab':
-                pass                    
-    else:
-        'The stranger did not believe [player.name] and walkes away'  
-        menu:
-            'Engage':         
-                $ player.moral_action(target=stranger, activity='ardent')   
-                $ fight = SimpleFight([player], [stranger])
-            'Newermind':
-                $ player.moral_action(target=stranger, activity='timid')  
+    python:
+        player.moral_action(target=stranger, activity='chaotic') 
+        difficulty = stranger.mind
+        result = core.skillcheck(player, 'spirit', difficulty) 
+        options = CardsMaker()
+
+        if result > 0:
+            txt = '[player.name] deceived the confidence of the wanderer and got a chance to suddenly attack from behind.'
+            options.add_entry('errant_subdue', edge_errant_options)
+            options.add_entry('errant_backstab', edge_errant_options)
+            options.add_entry('flee', edge_option_cards)
+
+        else:
+            txt = 'The stranger did not believe [player.name] and walkes away.'  
+            options.add_entry('errant_engage', edge_errant_options)
+            options.add_entry('flee', edge_option_cards)
+
+    '[txt]'
+    $ CardMenu(options.run()).show()
+    hide card
+
     return
 
 label lbl_edge_errant_fight(allies, enemies):
@@ -73,19 +70,30 @@ label lbl_edge_errant_fight(allies, enemies):
         fight = SimpleFight(allies, enemies)
         enemies = fight.get_enemies()
         loot = fight.get_loot()
+
     return
 
 label lbl_edge_errant_stalk:
-    $ player.moral_action(target=stranger, activity='timid')      
-    '. '
     python:
-        dif = max(0, stranger.agility - player.agility)
-        result = core.skillcheck(player, 'agility', dif)
-    if result:
-        'BINGO!'
-    else:
-        stranger 'Whos there?'
-    
+        player.moral_action(target=stranger, activity='timid') 
+        difficulty = stranger.agility
+        result = core.skillcheck(player, 'agility', difficulty) 
+        options = CardsMaker()
+
+        if result > 0:
+            txt = '[player.name] stealhily sneaked to the wanderers back.'
+            options.add_entry('errant_subdue', edge_errant_options)
+            options.add_entry('errant_backstab', edge_errant_options)
+            options.add_entry('flee', edge_option_cards)
+        else:
+            txt = 'Errant spots [player.name] sneaking!'
+            options.add_entry('errant_engage', edge_errant_options)
+            options.add_entry('flee', edge_errant_options)
+
+    '[txt]'
+    $ CardMenu(options.run()).show()
+    hide card
+
     return
 
 

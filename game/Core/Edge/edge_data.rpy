@@ -127,6 +127,7 @@ init -10 python:
         'host': __('You become a host at the Major House of Eternal Rome. Game of career developement ecpected...'),   
         'builder': __('You become a builder at the Major House of Eternal Rome. Game of career developement ecpected...'),   
         'mistmarine': __('You become a mistmarine at the Major House of Eternal Rome. Game of epic warfare and violence in Outer Worlds is ecpected...'),   
+        'citisen': __("You become are full fleged citisen of the Eternal Rome. Great feat indeed! Now you on your own, the possibilities are wast."),
     }
 
     edge_jobs_data = {
@@ -145,34 +146,34 @@ init -10 python:
     }   
     
     edge_services_data = {
-        'bukake': {"name": __("Bukake sluts"), 'description': __("Feed bukake sluts with your cum."), 'cost': 0, 'hidden' : True, 'world': 'edge'},
-        'whores': {"name": __("Whores"), 'description': __("Use prostitutes services"), 'cost': 5, 'world': 'edge'},
-        'booze': {"name": __("Booze"), 'description': __("The nutrition bars brew called a Mystshine."), 'cost': 5, 'world': 'edge'},        
-        'maid': {"name": __("Attendant"), 'description': __("Get someone to serve you."), 'cost': 5, 'world': 'edge'},       
+    'bukake': {"name": __("Bukake sluts"), 'description': __("Feed bukake sluts with your cum."), 'cost': 0, 'hidden' : True, 'world': 'edge'},
+    'whores': {"name": __("Whores"), 'description': __("Use prostitutes services"), 'cost': 5, 'world': 'edge'},
+    'booze': {"name": __("Booze"), 'description': __("The nutrition bars brew called a Mystshine."), 'cost': 5, 'world': 'edge'},        
+    'maid': {"name": __("Attendant"), 'description': __("Get someone to serve you."), 'cost': 5, 'world': 'edge'},       
     }
 
     edge_accomodations_data = {
-        'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground. No cost."), 'cost': 0, 'world': 'edge'},
-        'mat': {"name": __("Rag mat"), 'description': __("Thin rag mat in a barracks. 5 bars/decade"), 'cost': 5, 'world': 'edge'},
-        'cot': {"name": __("Humble cot"), 'description': __("Cot and blanket in a common room. 10 bars/decade"), 'cost': 10, 'world': 'edge'},
-        'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet. 25 bars/decade"), 'cost': 25, 'world': 'edge'},                        
+    'makeshift': {"name": __("Homeless"), 'description': __("Sleeps on the ground. No cost."), 'cost': 0, 'world': 'edge'},
+    'mat': {"name": __("Rag mat"), 'description': __("Thin rag mat in a barracks. 5 bars/decade"), 'cost': 5, 'world': 'edge'},
+    'cot': {"name": __("Humble cot"), 'description': __("Cot and blanket in a common room. 10 bars/decade"), 'cost': 10, 'world': 'edge'},
+    'appartment': {"name": __("Appartments"), 'description': __("Rent a flatlet. 25 bars/decade"), 'cost': 25, 'world': 'edge'},                        
     }
 
     edge_feeds_data = {
-        'forage': {"name": __("Forage"), 'description': __("Eat any food you can get at the slums. IF you can get it."), 'cost': 0, 'quality': 0, 'amount': 0, 'world': 'edge'},
-        'dry_low': {"name": __("5 bars"), 'description': __("Eat 5 nutrition bars/decade."), 'cost': 5, 'world': 'edge'},
-        'dry': {"name": __("10 bars"), 'description': __("Eat 10 nutrition bars/decade."), 'cost': 10, 'world': 'edge'},
-        'dry_high': {"name": __("15 bars"), 'description': __("Eat 15 nutrition bars/decade."), 'cost': 15, 'world': 'edge'},
-        'cooked': {"name": __("Cooked food"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'world': 'edge'},
-        'cooked_high': {"name": __("Grilled girl"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'world': 'edge'},
-        'canibalism': {"name": __('"Long pig"'), 'description': __("Death for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True, 'world': 'edge'},                                                
+    'forage': {"name": __("Forage"), 'description': __("Eat any food you can get at the slums. IF you can get it."), 'cost': 0, 'quality': 0, 'amount': 0, 'world': 'edge'},
+    'dry_low': {"name": __("5 bars"), 'description': __("Eat 5 nutrition bars/decade."), 'cost': 5, 'world': 'edge'},
+    'dry': {"name": __("10 bars"), 'description': __("Eat 10 nutrition bars/decade."), 'cost': 10, 'world': 'edge'},
+    'dry_high': {"name": __("15 bars"), 'description': __("Eat 15 nutrition bars/decade."), 'cost': 15, 'world': 'edge'},
+    'cooked': {"name": __("Cooked food"), 'description': __("Eat cooked food in a pub. Don't ask wich meat it is. 20 bars/decade"), 'cost': 20, 'world': 'edge'},
+    'cooked_high': {"name": __("Grilled girl"), 'description': __("Eat grilled human flesh.  30 bars/decade"), 'cost': 30, 'world': 'edge'},
+    'canibalism': {"name": __('"Long pig"'), 'description': __("Death for one is a life for another. This corpse will not root in vine."), 'cost': 0, 'hidden': True, 'world': 'edge'},                                                
     }
 
     edge_overtimes_data = {
-        'rest': {"name": __("Nap"), 'description': __("Overtime nap is free."), 'cost': 0, 'world': 'edge'},  
-        'booze': {"name": __("Pub"), 'description': __("Hung in a pub and drink some crappy booze. 5 bars/decade. Wellness +3"), 'cost': 5, 'world': 'edge'},  
-        'whores': {"name": __("Whore service"), 'description': __("Get a pro-hooker for a sexual relief. 5 bars/decade. Eros +3."), 'cost': 5, 'world': 'edge'},          
-        'maid': {"name": __("Maid service"), 'description': __("Hire a subservient maid to do a chores for you. 10 bars/decade. Authority +2, comfort +2."), 'cost': 5, 'world': 'edge'},          
+    'nap': {"name": __("Nap"), 'description': __("Overtime nap is free."), 'cost': 0, 'world': 'edge'},  
+    'booze': {"name": __("Pub"), 'description': __("Hung in a pub and drink some crappy booze. 5 bars/decade. Wellness +3"), 'cost': 5, 'world': 'edge'},  
+    'whores': {"name": __("Whore service"), 'description': __("Get a pro-hooker for a sexual relief. 5 bars/decade. Eros +3."), 'cost': 5, 'world': 'edge'},          
+    'maid': {"name": __("Maid service"), 'description': __("Hire a subservient maid to do a chores for you. 10 bars/decade. Authority +2, comfort +2."), 'cost': 5, 'world': 'edge'},          
     }
 
     edge_nameset = {
@@ -227,11 +228,6 @@ init -10 python:
         'ho_favor': {'name': 'Carry a favor', 'description': __('Carry a favor\nOpposed Finesse check. Gain "Lovers" or "Justice" relationship arcane.'), 'label': 'lbl_edge_ho_favor', 'image': 'miscards', }, 
         'ho_dance': {'name': 'Dance all night', 'description': __('Dance all night long\nArdent deed. Opposed Might check. Gain activity and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_dance', 'image': 'miscards', },         
 
-        'errant_talk': {'name': 'Talk', 'description': __('Talk'), 'label': 'lbl_edge_errant_talk', 'image': 'miscards', }, 
-        'errant_stalk': {'name': 'Hide & stalk', 'description': __('Hide & Stalk\nTry to stalk the confused wanderer stealthily. Opposed finesse challenge. Get chance to grab or backstab the wanderer.'), 'label': 'lbl_edge_errant_stalk', 'image': 'miscards', }, 
-        'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight or chase (Might challenge) expected.'), 'label': 'lbl_edge_enc_engage', 'image': 'miscards', },         
-        'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic and evil deed. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'miscards', }, 
-
         'bond_mistmarine': {'name': 'Mistmarine', 'description': __('Mistmarine\nFight for a House on the Outer Worlds.'), 'label': 'lbl_edge_mistmarine', 'image': 'miscards', }, 
         'bond_clerk': {'name': 'Clerk', 'description': __('Clerk\nOffice work.'), 'label': 'lbl_edge_bond_clerk', 'image': 'miscards', },         
         'bond_builder': {'name': 'Builder', 'description': __('Builder\nConstruction work.'), 'label': 'lbl_edge_bond_builder', 'image': 'miscards', }, 
@@ -260,4 +256,12 @@ init -10 python:
         'seduce_grace': {'name': 'Striptease', 'description': __('Striptease\nGraceful strip-dance for a jury.'), 'label': 'lbl_edge_sexy_exam_grace', 'image': 'miscards', }, 
         'seduce_mind': {'name': 'Dirty talk', 'description': __('Dirty talk\nTell the jury about your most intimate and wicked fantasies.'), 'label': 'lbl_edge_sexy_exam_mind', 'image': 'miscards', },         
         'seduce_spirit': {'name': 'Passionate seduction', 'description': __('Passionate seduction\nJust show jury your character and seduce them straightforward.'), 'label': 'lbl_edge_sexy_exam_spirit', 'image': 'miscards', }, 
+    }
+
+    edge_errant_options = {
+    'errant_talk': {'name': 'Talk', 'description': __('Talk\nStart a peaceful communication.'), 'label': 'lbl_edge_errant_talk', 'image': 'miscards', }, 
+    'errant_stalk': {'name': 'Hide & stalk', 'description': __('Hide & Stalk\n Timid deed. Opposed finesse challenge. Try to stalk the confused wanderer stealthily. Get chance for a sneak attack.'), 'label': 'lbl_edge_errant_stalk', 'image': 'miscards', }, 
+    'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight or chase is possible.'), 'label': 'lbl_edge_enc_engage', 'image': 'miscards', },         
+    'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic deed. Spirit challenge vs target wisdom. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'miscards', }, 
+
     }
