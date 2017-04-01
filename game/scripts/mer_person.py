@@ -290,14 +290,14 @@ class DescriptionMaker(object):
             weapon_txt += '. {cap_pronoun} wears a {person.armor.name}'
         return weapon_txt
 
-    def relations_text(self):
+    def relations_text(self, colorize=True, protected=True):
         if not self.person.know_player():
             return ''
         relations = self.person.player_relations()
-        stance_type = relations.colored_stance(True)
+        stance_type = relations.colored_stance(protected)
 
         return '{stance_type} ({relations[0]}, {relations[1]}, {relations[2]}) towards you. '.format(
-            stance_type=stance_type, relations=relations.description(True, True))
+            stance_type=stance_type, relations=relations.description(colorize, protected))
 
 
 class Attributed(Modifiable):
@@ -692,7 +692,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._determination = 0
         self._anxiety = 0
         self.rewards = []
-        self.used_rewards = []
         self.merit = 0  # player only var for storing work result
         self.sex_standart = 0
 
@@ -765,6 +764,15 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.obligation = False
         self.rewards = CardsMaker()
         self._active_quest = None
+
+    # def add_reward(self, reward):
+    #     self.rewards.append(reward)
+
+    # def remove_reward(self, reward):
+    #     try:
+    #         self.rewards.remove(reward)
+    #     except ValueError:
+    #         pass
 
     @property
     def master(self):
@@ -1580,6 +1588,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         except ValueError:
             pass
 
+    @utilities.Observable
     def die(self, destroy=False):
         self.remove_relations()
         if destroy:
