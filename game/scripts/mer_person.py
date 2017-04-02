@@ -224,7 +224,7 @@ class DescriptionMaker(object):
                 background=person.background)
         if profession is not None:
             string += 'and became a {profession} eventually. \n'.format(
-                profession=profession)
+                profession=profession.name)
         else:
             string += '.\n'
         if person.obligation:
