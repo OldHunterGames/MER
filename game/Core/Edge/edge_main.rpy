@@ -14,7 +14,7 @@ init -8 python:
 
     def canibalism_locker(person, *args, **kwargs):
         if len(person.get_corpses()) < 1:
-            person.make_default('ration')
+            person.schedule.make_default('ration')
 
 label lbl_edge_main:    
     'The Mist gives you a way...'  

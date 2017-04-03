@@ -288,6 +288,7 @@ class SimplyfiedInventory(Inventory):
 
     @property
     def items(self):
+        # return unequiped items only
         return [i for i in self.storage if not i.equiped]
 
     def all_items(self):

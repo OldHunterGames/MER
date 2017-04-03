@@ -3,7 +3,7 @@ init python:
     class CardMenu(object):
 
 
-        def __init__(self, cards_list, current=None):
+        def __init__(self, cards_list, current=None, cancel=True):
 
             self._cards_list = cards_list
             self.current_card = current
@@ -23,15 +23,16 @@ init python:
 
         def show(self, call=True, x_size=200, y_size=300, spacing=5):
             if call:
-                renpy.call_screen('sc_card_menu', self, call, x_size, y_size, spacing)
+                renpy.call_screen('sc_card_menu', self, call, x_size, y_size, spacing, cancel)
             else:
-                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing_=spacing)
+                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing_=spacing,
+                    cancel=cancel)
 
         def run(self, card):
             return card.run()
 
 
-screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5):
+screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, cancel=True):
     modal True
     python:
         cards = card_menu.get_sorted()
@@ -56,9 +57,10 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5):
                             action Function(card_menu.set_card, i)
                         text i.name():
                             xalign 0.5
-                imagebutton:
-                    idle im.Scale(card_back(), x_size, y_size)
-                    action If(called, Return(), false=Hide('sc_card_menu'))
+                if cancel:
+                    imagebutton:
+                        idle im.Scale(card_back(), x_size, y_size)
+                        action If(called, Return(), false=Hide('sc_card_menu'))
         if card_menu.current_card is not None:
             vbox:
                 xpos 900
