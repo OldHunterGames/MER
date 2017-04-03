@@ -7,6 +7,7 @@ init python:
 
             self._cards_list = cards_list
             self.current_card = current
+            self.cancel = cancel
 
         @property
         def cards_list(self):
