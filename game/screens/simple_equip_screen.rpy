@@ -1,19 +1,8 @@
 init python:
-    class UnequipCard(MenuCard):
-        def __init__(self, person, slot):
-            super(UnequipCard, self).__init__('Unequip', 'Unequip Item')
-            self.slot = slot
-            self.person = person
+    class ItemWrapperCard(Card):
 
-        def _run(self, *args, **kwargs):
-            self.person.equip_on_slot(self.slot, None)
-
-    class EquipCard(Card, Command):
-
-        def __init__(self, person, item, slot, *args, **kwargs):
-            self._person = person
+        def __init__(self, item):
             self._item = item
-            self._slot = slot
 
         def name(self):
             return self._item.name()
@@ -24,9 +13,54 @@ init python:
         def image(self):
             return self._item.image()
 
-        def _run(self):
-            self._person.equip_on_slot(self._slot, self._item)
+        def get_item(self):
+            return self._item
 
+
+    class UnequipCard(MenuCard):
+        def __init__(self, person, slot):
+            super(UnequipCard, self).__init__('Unequip', 'Unequip Item')
+            self.slot = slot
+            self.person = person
+
+        def _run(self, *args, **kwargs):
+            self.person.equip_on_slot(self.slot, None)
+
+
+    class EquipCard(ItemWrapperCard, Command):
+
+        def __init__(self, person, item, slot, *args, **kwargs):
+            super(EquipCard, self).__init__(item)
+            self._person = person
+            self._slot = slot
+
+        def _run(self):
+            self._person.equip_on_slot(self._slot, self.get_item())
+
+    class SellCard(ItemWrapperCard, Command):
+
+        def __init__(self, person, item):
+            super(SellCard, self).__init__(item)
+            self._person = person
+
+        def _run(self):
+            self._person.remove_item(self.get_item())
+            self._person.add_money(self.get_item().price)
+
+        def description(self):
+            text = super(SellCard, self).description()
+            text += '\n price: {price}'.format(price=self.get_item().price)
+            return text
+
+    class SellItems(Command):
+
+        def __init__(self, person, card_menu):
+            self.person = person
+            self.card_menu = card_menu
+        
+        def _run(self):
+            print 'sell called'
+            self.card_menu([SellCard(self.person, i) for i in self.person.items], cancel=True).show()
 
 screen sc_simple_equip(person, look_mode=False):
     modal True

@@ -30,6 +30,18 @@ init python:
                     cancel=self.cancel)
 
         def run(self, card):
+            if self.called:
+                renpy.return_statement()
+            else:
+                renpy.hide('sc_card_menu')
+            return card.run()
+            
+
+    class SellMenu(CardMenu):
+
+        def run(self, card):
+            self.current_card = None
+            self._cards_list.remove(card)
             return card.run()
 
 
@@ -37,6 +49,7 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, 
     modal True
     python:
         cards = card_menu.get_sorted()
+        card_menu.called = called
     window:
         xfill True
         yfill True
@@ -70,8 +83,8 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, 
                 imagebutton:
                     idle im.Scale(card_menu.current_card.image(), x_size+100, y_size+100)
                     
-                    action [Function(card_menu.run, card_menu.current_card),
-                            If(called, Return(), false=Hide('sc_card_menu'))]
+                    action Function(card_menu.run, card_menu.current_card)
+                            
                     xalign 0.5
                 text card_menu.current_card.description():
                     xalign 0.5
