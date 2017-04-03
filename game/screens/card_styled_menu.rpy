@@ -3,7 +3,7 @@ init python:
     class CardMenu(object):
 
 
-        def __init__(self, cards_list, current=None, cancel=True):
+        def __init__(self, cards_list, current=None, cancel=False):
 
             self._cards_list = cards_list
             self.current_card = current
@@ -32,7 +32,7 @@ init python:
             return card.run()
 
 
-screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, cancel=True):
+screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, cancel=False):
     modal True
     python:
         cards = card_menu.get_sorted()
