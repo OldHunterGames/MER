@@ -143,7 +143,7 @@ class EdgeEngine(object):
         for i in data_dict:
             obj = cls(i, data_dict[i])
             if not obj.hidden:
-                person.schedule.unlock(i, type_, obj)
+                person.schedule.unlock(type_, obj)
             if i == default_obj_id:
                 person.schedule.set_default(type_, obj)
 
@@ -166,7 +166,7 @@ class EdgeEngine(object):
         for i in dict:
             obj = ScheduleObject(i, dict[i])
             if not obj.hidden:
-                person.schedule.unlock(i, 'optional', obj)
+                person.schedule.unlock('optional', obj)
 
     def explore_all(self):
         for i in store.edge_locations.items():

@@ -118,7 +118,7 @@ class Schedule(object):
             self.set(type, obj, **kwargs)
 
     def make_default(self, attr_name):
-        self.set(attr_name, getattr(self, '_default_%s'%attr_name))
+        self.set(attr_name, getattr(self, '_default_%s' % attr_name))
 
     def get_cost(self):
         return (self._accommodation.cost +
@@ -204,8 +204,8 @@ class Schedule(object):
         else:
             setattr(self, '_' + attr_name, obj)
 
-    def unlock(self, id_, attr_name, value):
-        getattr(self, '_available_' + attr_name + 's')[id_] = value
+    def unlock(self, attr_name, value):
+        getattr(self, '_available_' + attr_name + 's')[value.id] = value
 
     def remove(self, id_, attr_name):
         try:
