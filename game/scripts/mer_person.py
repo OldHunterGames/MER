@@ -224,7 +224,7 @@ class DescriptionMaker(object):
                 background=person.background)
         if profession is not None:
             string += 'and became a {profession} eventually. \n'.format(
-                profession=profession)
+                profession=profession.name)
         else:
             string += '.\n'
         if person.obligation:
@@ -1204,7 +1204,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             return self._job.name
 
     def job_description(self):
-        return self.job.description
+        return self.job.description()
 
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):
