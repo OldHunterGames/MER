@@ -1053,45 +1053,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.random_features()
         return
 
-    def fetishes(self):
-        list_ = [i for i in self._fetishes]
-        list_.extend(self.revealed('fetishes'))
-        return list_
-
-    def add_taboo(self, taboo):
-        self._taboos.append(taboo)
-
-    def add_fetish(self, fetish):
-        self._fetishes.append(fetish)
-
-    def taboos(self):
-        list_ = [i for i in self._taboos]
-        list_.extend(self.revealed('taboos'))
-        return list_
-
-    def revealed(self, key):
-        return getattr(self, 'revealed_' + key)
-
-    def reveal(self, type_, name):
-        list_ = getattr(self, '_' + type_)
-        if name in list_:
-            list_.remove(name)
-        getattr(self, 'revealed_%s' % type_).append(name)
-
-    def reveal_all_taboos(self):
-        reveal = []
-        for i in self._taboos:
-            reveal.append(i)
-        for i in reveal:
-            self.reveal('taboos', i)
-
-    def reveal_all_fetishes(self):
-        reveal = []
-        for i in self._fetishes:
-            reveal.append(i)
-        for i in reveal:
-            self.reveal('fetishes', i)
-
     def random_alignment(self):
         # roll activity
         roll = randint(1, 100)

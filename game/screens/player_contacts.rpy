@@ -32,7 +32,7 @@ init python:
 
 label lbl_contacts(player):
     $ char_cards = [PersonCard(person, player) for person in player.known_characters]
-    $ CardMenu(char_cards).show(True, 150, 150, 10)
+    $ CardMenu(char_cards, cancel=True).show(True, 150, 150, 10)
     return
 
 label _contacts_glue(person, _return, communicate):
