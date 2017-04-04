@@ -86,10 +86,16 @@ label evn_edge_bukake(event):
         return False
     
     if 'male' not in core.orientation[player.gender]:
-        'Some bukake slut sucks. Work not for you'
+        'Some bukake slut sucks.'
+        $ player.unlock('options', ScheduleObj('bukake', edge_services_data))
     else:
+        $ obj = ScheduleJob('bukake', edge_jobs_data)
+        $ img = obj.image()
+        show expression img at truecenter
         'You can be a bukake slut now'
-        $ edge.options.append('bukake')
+        $ player.unlock('job', ScheduleJob('bukake', edge_jobs_data))
+
+    $ edge.options.append('bukake')
     return True
                               
 label evn_edge_dying_grove(event):

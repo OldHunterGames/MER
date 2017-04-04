@@ -14,7 +14,7 @@ label edge_None_template(actor):
 label edge_optional_nap(actor):
     python:
         name = actor.name
-        player.gain_energy()
+        actor.gain_energy()
         # actor.add_buff('rested')
     return      
 
@@ -131,11 +131,9 @@ label edge_accommodation_appartment(actor):
 ## JOB SLOT        
 label edge_job_idle(actor):
     python:
-        name = actor.name
-        actor.add_buff('rested')
-        actor.satisfy_need('comfort', 2)
-        txt = encolor_text('some comfort', 2)
-#    "[name]have no job to do and resting. It's conserves energy and gives [txt]"
+        actor.gain_energy()
+        #actor.add_buff('rested')
+
     return
    
 label edge_job_beg(actor):
@@ -150,63 +148,66 @@ label edge_job_beg(actor):
 
         actor.eat(1, -1)
         ration = actor.food_info()    
-      
-#    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience. [ration]'
+    '[name]humbly begs for food and gains a few disgustning leftovers. Disgracing, lowly and definetly not healthy experience. [ration]'
     return
     
 label edge_job_bukake(actor):
     python:
         name = actor.name
+        actor.moral_action(activity = 'good') 
         actor.tense_need('wellness', 'unhealthy_job')
         actor.tense_need('comfort', 'tiresome_job')
         actor.tense_need('authority', 'humiliation')    
         actor.tense_need('eros', 'sexplotation')    
         actor.eat(3, -1)
         ration = actor.food_info()    
-        text = __('')
-#    '[name]humbly sucks strangers diks and consume their semen for nutrition. Nutritive but disgusting. This labor is disgracing, uncomfortable and even painful.'
-    'Ration: [ration]'
-    return
-    
-label edge_job_manual(actor):
-    python:
-        name = actor.name
-        result = actor.job_productivity()
-        actor.moral_action(orderliness = 'lawful') 
-    if result > 0:
-        "[name]earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
-        $ player.add_money(10)
-        $ actor.tense_need('amusement', 'boring_job')    
-    elif result < 0: 
-        $ actor.tense_need('ambition', 'failure_at_work')    
 
+    'Cum is your food! Ration: [ration]'
     return
     
-label edge_job_houseservice(actor):
-    python:
-        name = actor.name
-        result = actor.job_productivity()
-        actor.moral_action('lawful') 
-    if result > 0:
-        "[name]earns: 10 nutrition bars for househod services. It's a boring job but brings life to order."
-        $ player.add_money(10)
-        $ actor.tense_need('amusement', 'boring_job')    
-    elif result < 0: 
-        $ actor.tense_need('ambition', 'failure_at_work')    
-    return
+# label edge_job_manual(actor):
+#     python:
+#         name = actor.name
+#         result = actor.job_productivity()
+#         actor.moral_action(orderliness = 'lawful') 
+#     if result > 0:
+#         "[name]earns: 10 nutrition bars for manual labor. It's a boring job but brings life to order"
+#         $ player.add_money(10)
+#         $ actor.tense_need('amusement', 'boring_job')    
+#     elif result < 0: 
+#         $ actor.tense_need('ambition', 'failure_at_work')    
+
+#     return
+
     
 label edge_job_construction(actor):
     python:
         name = actor.name
         yeld = yeld_table[actor.job_productivity()]        
     if yeld > 0:
-        "[name]yelds: [yeld] nutrition bars. It's a tiresome job."
+        "[name]yelds: [yeld] nutrition bars. It's a boring job."
         $ player.add_money(yeld)
-        $ actor.tense_need('comfort', 'tiresome_job') 
+        $ actor.tense_need('amusement', 'boring_job')  
     else: 
+        '[name] have a failure at work wich is bad for buissiness.'
         $ actor.tense_need('prosperity', 'buissiness_fail') 
         $ actor.tense_need('ambition', 'failure_at_work')            
     return
+    
+label edge_job_extraction(actor):
+    python:
+        name = actor.name
+        yeld = yeld_table[actor.job_productivity()]        
+    if yeld > 0:
+        "[name]yelds: [yeld] nutrition bars. It's a unhealthy job."
+        $ player.add_money(yeld)
+        $ actor.tense_need('wellness', 'unhealthy_job')  
+    else: 
+        '[name] have a failure at work wich is bad for buissiness.'
+        $ actor.tense_need('prosperity', 'buissiness_fail') 
+        $ actor.tense_need('ambition', 'failure_at_work')            
+    return
+
     
 label edge_job_entertain(actor):
     python:
@@ -215,13 +216,13 @@ label edge_job_entertain(actor):
     if yeld > 0:
         "[name]yelds: [yeld] nutrition bars. It's a humiliating job."
         $ player.add_money(yeld)
-        $ actor.tense_need('authority', 'humiliation') 
+        $ actor.tense_need('authority', 'humiliating_job') 
     else: 
         $ actor.tense_need('prosperity', 'buissiness_fail') 
         $ actor.tense_need('ambition', 'failure_at_work')            
     return
     
-label edge_job_disassembly(actor):
+label edge_job_houseservice(actor):
     python:
         name = actor.name
         yeld = yeld_table[actor.job_productivity()]        
@@ -233,7 +234,20 @@ label edge_job_disassembly(actor):
         $ actor.tense_need('prosperity', 'buissiness_fail') 
         $ actor.tense_need('ambition', 'failure_at_work')            
     return
-                
+    
+label edge_job_scavenger(actor):
+    python:
+        name = actor.name
+        yeld = yeld_table[actor.job_productivity()]        
+    if yeld > 0:
+        "[name]yelds: [yeld] nutrition bars. It's an unpleasant job."
+        $ player.add_money(yeld)
+        $ actor.tense_need('amusement', 'unpleasant_job')  
+    else: 
+        $ actor.tense_need('prosperity', 'buissiness_fail') 
+        $ actor.tense_need('ambition', 'failure_at_work')            
+    return
+
 label edge_job_range(actor):
     python:
         name = actor.name

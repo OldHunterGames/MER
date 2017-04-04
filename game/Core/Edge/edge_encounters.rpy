@@ -49,13 +49,13 @@ label lbl_edge_enc_decieve(card):
         options = CardsMaker()
 
         if result > 0:
-            txt = '[player.name] deceived the confidence of the wanderer and got a chance to suddenly attack from behind.'
+            txt = 'You deceived the confidence of the wanderer and got a chance to suddenly attack from behind.'
             options.add_entry('errant_subdue', edge_errant_options)
             options.add_entry('errant_backstab', edge_errant_options)
             options.add_entry('flee', edge_option_cards)
 
         else:
-            txt = 'The stranger did not believe [player.name] and walkes away.'  
+            txt = 'The stranger did not believe you and walkes away.'  
             options.add_entry('errant_engage', edge_errant_options)
             options.add_entry('flee', edge_option_cards)
 
@@ -73,7 +73,7 @@ label lbl_edge_errant_fight(allies, enemies):
 
     return
 
-label lbl_edge_errant_stalk:
+label lbl_edge_errant_stalk(card):
     python:
         player.moral_action(target=stranger, activity='timid') 
         difficulty = stranger.agility
@@ -81,14 +81,14 @@ label lbl_edge_errant_stalk:
         options = CardsMaker()
 
         if result > 0:
-            txt = '[player.name] stealhily sneaked to the wanderers back.'
+            txt = 'You stealhily sneaked to the wanderers back.'
             options.add_entry('errant_subdue', edge_errant_options)
             options.add_entry('errant_backstab', edge_errant_options)
             options.add_entry('flee', edge_option_cards)
         else:
-            txt = 'Errant spots [player.name] sneaking!'
+            txt = 'Errant spots you sneaking!'
             options.add_entry('errant_engage', edge_errant_options)
-            options.add_entry('flee', edge_errant_options)
+            options.add_entry('flee', edge_option_cards)
 
     '[txt]'
     $ CardMenu(options.run()).show()
@@ -96,10 +96,21 @@ label lbl_edge_errant_stalk:
 
     return
 
+label lbl_edge_errant_subdue(card):
+    'Gotcha!'
+    $ player.enslave(stranger)
+    return
 
 
-
+label lbl_edge_errant_backstab(card):
+    'Killed!'
+    $ stranger.die()
+    $ player.add_corpse(stranger)
+    return
     
+
+
+
 label lbl_edge_randenc_bandit:
     python:
         enemy = make_combatant('weak_bandit')

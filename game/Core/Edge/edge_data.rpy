@@ -131,18 +131,18 @@ init -10 python:
     }
 
     edge_jobs_data = {
-    'idle': {'name': __('Idle'), 'description': 'Just rest and relax.', 'skill': None, 'difficulty': 0, 'world': 'edge', 'image': 'miscards', },
-    'manual': {'name': __('Manual labor'), 'description': __('Simple manual labor in slums for a fixed salary 10 bars/decade.'), 'skill': 'physique', 'difficulty': 0, 'world': 'edge'},
-    'houseservice': {'name': __('House service'), 'description': __('Provide household services in the slumsfor a fixed salary 10 bars/decade.'), 'skill': 'agility', 'difficulty': 0, 'world': 'edge'},
-    'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0, 'world': 'edge'},   
-    'beg': {'name': __('Beggar'), 'description': 'Humbly beg for a food.', 'skill': None, 'difficulty': 0, 'world': 'edge'},
-    'bukake': {'name': __('Bukake slut'), 'description': 'Suck your dinner out of the slum-scum cocks.', 'skill': None, 'difficulty': 0, 'hidden' : True, 'world': 'edge'},      
-    
-    'construction': {'name': __('Construction worker'), 'description': __('Might challenge. Slums need new shelters, more you can build more bars you get.'), 'skill': 'physique', 'difficulty': 1, 'world': 'edge'},
-    'entertain': {'name': __('Entertain patrons'), 'description': __('Finesse challenge. Entertain the slum-dwellers as a street artist.'), 'skill': 'agility', 'difficulty': 1, 'world': 'edge'},
-    'disassembly': {'name': __('Disassemble wrecks'), 'description': __('Wisdom challenge. Disassemble old machinery in a wrecks and ruins brought by a Mistide.'), 'skill': 'mind', 'difficulty': 1, 'world': 'edge'},
+    'idle': {'name': __('Idle'), 'description': 'Idle\nTimid deed. Just rest and take your time for yourself. Gain enregy.', 'skill': None, 'difficulty': 0, 'world': 'edge', 'image': 'miscards', },
 
-    'treasurehunt': {'name': __('Treasure hunt'), 'description': __('Descriptext'), 'skill': 'mind', 'difficulty': 2, 'hidden' : True, 'world': 'edge'},
+    'beg': {'name': __('Beggar'), 'description': 'Beg for food\nTimid deed. No challenge. Get a bare minimum of worst food, just enough to sustain yourself. Your authority, prosperity and wellness will suffer in a process. ', 'skill': None, 'difficulty': 0, 'world': 'edge'},
+    'bukake': {'name': __('Bukake slut'), 'description': 'Bukkake-slut\nKind deed. No challenge. Suck your dinner out of the slum-scums balls through their dirty cocks. Unhealthy, tiresome job, humiliation and sexplotation treat. Get unlimited but disgusting food.', 'skill': None, 'difficulty': 0, 'hidden' : True, 'world': 'edge'},      
+
+    'construction': {'name': __('Construction work'), 'description': __('Construction work\nLawful deed.\nEndurance productivity.\nBoring job.\nConstruction in the slums is ongoing. While the Mists overflow and make some territories unsuitable for life, stubborn slum dwellers build up other places with their miserable adobe huts. Hardy worker will not be left without business.'), 'skill': 'physique', 'difficulty': 0, 'world': 'edge'},
+    'extraction': {'name': __('Demonblood extraction'), 'description': __('Demonblood extraction.\nLawful deed.\nEndurance productivity.\nUnhealthy job.\nThe tar-like dark crimson "demonblood" is the only source of fuel for slum dwellers as well as for the Eternal Rome itself. This substance is extracted in foul-filled pits and is formed into air-cake pellets which are then sold as solid fuel.'), 'skill': 'physique', 'difficulty': 0, 'world': 'edge'},
+    'entertain': {'name': __('Entertain patrons'), 'description': __('Entertain patrons.\nLawful deed.\nGrace productivity.\nHumiliating job\nIn the grim life of Freeman, there are only two reliable entertainments - sex and a crappy moonshine that is served in a single drinking house for the whole district. The second entertainment by local standards is elite, so regulars are usually entertained with songs and dances. Entertainers suffer pinching and caustic comments in the process, but they get good tips.'), 'skill': 'agility', 'difficulty': 0, 'world': 'edge'},
+    'houseservice': {'name': __('Household service'), 'description': __('Household services.\nLawful deed.\nWisdom productivity.\nBoring job\nEven in the slums there is a daily routine - washing, cleaning and cooking. Happy are those who can afford to hire someone to do the job. However, the workers do not complain, because they can provide their own food.'), 'skill': 'agility', 'difficulty': 0, 'world': 'edge'},
+    'scavenger': {'name': __('Scavenge the Edge'), 'description': __('Scavenger.\nChaotic deed.\nWisdom productivity.\nUnpleasant work\nThe tides of the Mists bring fragments of the Outer Worlds. Fields of battle, strewn with decaying bodies, dead withered forests, abandoned factories with rusted machinery and crashed space ships ... is a paradise of scavengers who are not afraid to get their hands dirty. Here you can find many interesting things to sell them to the junkie from the Outpost.'), 'skill': 'agility', 'difficulty': 0, 'world': 'edge'},
+
+    'range': {'name': __('Range the Edge'), 'description': 'Patrool the Edge of Mists. Encounters with wanderers, marauders and monsters expected.', 'skill': None, 'difficulty': 0, 'world': 'edge'},   
     }   
     
     edge_services_data = {
@@ -189,7 +189,7 @@ init -10 python:
     
     edge_option_cards = {'nevermind': {'name': 'Nevermind', 'description': __('Nevermind'), 'label': 'lbl_edge_comm_nevermind', 'image': 'miscards', }, 
         'makelove': {'name': 'Make love', 'description': __('Make love\n'), 'label': 'lbl_makelove', 'image': 'miscards', }, 
-        'flee': {'name': 'Flee', 'description': __('Flee\nTimid action.'), 'label': 'lbl_edge_enc_flee', 'image': 'miscards', }, 
+        'flee': {'name': 'Flee', 'description': __('Flee\nTimid action. Just get out of here and do not involve.'), 'label': 'lbl_edge_enc_flee', 'image': 'miscards', }, 
         
         'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'miscards', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'miscards', }, 
@@ -261,7 +261,8 @@ init -10 python:
     edge_errant_options = {
     'errant_talk': {'name': 'Talk', 'description': __('Talk\nStart a peaceful communication.'), 'label': 'lbl_edge_errant_talk', 'image': 'miscards', }, 
     'errant_stalk': {'name': 'Hide & stalk', 'description': __('Hide & Stalk\n Timid deed. Opposed finesse challenge. Try to stalk the confused wanderer stealthily. Get chance for a sneak attack.'), 'label': 'lbl_edge_errant_stalk', 'image': 'miscards', }, 
-    'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight or chase is possible.'), 'label': 'lbl_edge_enc_engage', 'image': 'miscards', },         
+    'errant_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Agressive approach. Fight (combat challenge) or chase (opposed might challenge) is possible.'), 'label': 'lbl_edge_enc_engage', 'image': 'miscards', },         
     'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic deed. Spirit challenge vs target wisdom. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'miscards', }, 
-
+    'errant_subdue': {'name': 'Subdue', 'description': __('Subdue\nEvil deed. Hit the errant over the head with a rock. with a rock. Or just grab and pin down if you a strong enough...'), 'label': 'lbl_edge_errant_subdue', 'image': 'miscards', }, 
+    'errant_backstab': {'name': 'Backstab', 'description': __('Backstab\nEvil deed. Killing blow.'), 'label': 'lbl_edge_errant_backstab', 'image': 'miscards', }, 
     }
