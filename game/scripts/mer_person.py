@@ -1165,7 +1165,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             return self._job.name
 
     def job_description(self):
-        return self.job.description()
+        return self.job.full_description()
 
     def __getattribute__(self, key):
         if not key.startswith('__') and not key.endswith('__'):

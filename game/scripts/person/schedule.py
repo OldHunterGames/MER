@@ -6,6 +6,7 @@ import mer_utilities as utilities
 from mer_command import MenuCard
 
 import renpy.exports as renpy
+import renpy.store as store
 
 
 class ScheduleObject(MenuCard):
@@ -83,7 +84,20 @@ class ScheduleJob(ScheduleObject):
 
     def __init__(self, *args, **kwargs):
         super(ScheduleJob, self).__init__(*args, **kwargs)
+        # job's focus controlled by person
         self.focus = 0
+
+    def description(self):
+        string = self.name()
+        string += '\n current effort: %s' % utilities.encolor_text(
+            store.focus_description[self.focus], self.focus)
+        if self.focus != 5:
+            string += '\n needed effort: %s' %\
+                store.effort_quality[self.focus + 1]
+        return string
+
+    def full_description(self):
+        return super(ScheduleJob, self).description()
 
     def _use(self, person):
         if self.skill is not None:
