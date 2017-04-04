@@ -1,11 +1,10 @@
 # -*- coding: <UTF-8> -*-
 
-import renpy.store as store
-import renpy.exports as renpy
 from features import Feature
 
-class BodyPart(object):
 
+class BodyPart(object):
+    """Basic class for any anatomy part"""
 
     def __init__(self, basis):
         self.features = []
@@ -34,13 +33,13 @@ class BodyPart(object):
                 self.remove_feature_by_slot(feature.slot)
             self.features.append(feature)
 
-    def feature_by_slot(self, slot):        # finds feature which hold needed slot
+    def feature_by_slot(self, slot):# finds feature which hold needed slot
         for f in self.features:
             if f.slot == slot:
                 return f
         return None
 
-    def feature(self, id_):                # finds feature with needed name if exist
+    def feature(self, id_):# finds feature with needed name if exist
         for f in self.features:
             if f.id == id_:
                 return f
@@ -85,7 +84,6 @@ class BodyPart(object):
 
 
 class Anatomy(object):
-
 
     def __init__(self):
         self.parts = dict()

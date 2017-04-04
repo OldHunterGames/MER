@@ -79,13 +79,18 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, 
             vbox:
                 xpos 900
                 xsize 380
-                box_wrap True
+                box_wrap False
                 imagebutton:
                     idle im.Scale(card_menu.current_card.image(), x_size+100, y_size+100)
                     
                     action Function(card_menu.run, card_menu.current_card)
                             
                     xalign 0.5
-                text card_menu.current_card.description():
-                    xalign 0.5
-                    xmaximum 400
+                viewport:
+                    scrollbars 'vertical'
+                    draggable True
+                    mousewheel True
+                    xmaximum 380
+                    text card_menu.current_card.description():
+                        xalign 0.5
+                        xmaximum 380

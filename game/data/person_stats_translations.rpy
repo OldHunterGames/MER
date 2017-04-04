@@ -76,27 +76,7 @@ init python:
         'luck': __('luck'),
         'determination': __('determination')
     }
-    bad_markers_translation = {
-        'nutrition': 'hunger',
-        'wellness': 'pain',
-        'comfort': 'discomfort',
-        'activity': 'deprivation',
-        'eros': 'lust',
-        'communication': 'loneliness',
-        'amusement': 'boredom',
-        'prosperity': 'poverty',
-        'authority': 'disdian',
-        'ambition': 'failure'
-    }
-    good_markers_translation = {
-        'nutrition': 'taste',
-        'wellness': 'health',
-        'comfort': 'bliss',
-        'activity': 'adrenaline',
-        'eros': 'orgasm',
-        'communication': 'intimacy',
-        'amusement': 'entertainment',
-        'prosperity': 'gain',
-        'authority': 'respect',
-        'ambition': 'accomplishment'
+
+    chances_names = {
+        
     }

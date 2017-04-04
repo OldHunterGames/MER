@@ -124,7 +124,7 @@ screen sc_pick_schedule(person):
         vbox:
             xpos 900
             xsize 380
-            box_wrap True
+            box_wrap False
             imagebutton:
                 idle im.Scale(img, 300, 400)
                 
@@ -133,9 +133,14 @@ screen sc_pick_schedule(person):
                     SensitiveIf(picker.current_card is not None)]
                 xalign 0.5
             if picker.current_card is not None:
-                text picker.current_card.description():
-                    xalign 0.5
-                    xmaximum 400
+                viewport:
+                    scrollbars 'vertical'
+                    draggable True
+                    mousewheel True
+                    xmaximum 380
+                    text picker.current_card.description():
+                        xalign 0.5
+                        xmaximum 380
 
     vbox:
         xalign 0.5

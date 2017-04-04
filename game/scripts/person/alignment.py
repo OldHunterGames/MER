@@ -3,14 +3,15 @@ import renpy.exports as renpy
 
 
 class Alignment(object):
-
+    """Controlls alignment of a person"""
+    # Strongly coupled with relations
     _orderliness = {-1: "chaotic", 0: "conformal", 1: "lawful"}
     _activity = {-1: "timid", 0: "reasonable", 1: "ardent"}
     _morality = {-1: "evil", 0: "selfish", 1: "good"}
-    
+
     relation_binding = {'activity': 'fervor',
-        'morality': 'congruence', 'orderliness': 'distance'
-    }
+                        'morality': 'congruence', 'orderliness': 'distance'
+                        }
 
     _chance_names = {
         'morality': {
@@ -28,6 +29,7 @@ class Alignment(object):
     }
 
     def __init__(self):
+        # All alignment axis have numeric and string representation
         self._orderliness = 0
         self._activity = 0
         self._morality = 0
@@ -101,6 +103,7 @@ class Alignment(object):
     def description(self):
         return self.show_orderliness(), self.show_activity(), self.show_morality()
 
+    # string representation of axis
     def orderliness_str(self):
         return Alignment._orderliness[self.orderliness]
 
@@ -111,9 +114,8 @@ class Alignment(object):
         return Alignment._activity[self.activity]
 
     def get_chance_name(self, axis, kind, fake_value=None):
+        # chances used in Taro mini game, achieved by morality system
         value = getattr(self, axis) if fake_value is None else fake_value
         kind_value = {'good': 0, 'bad': 1}[kind]
         name = self._chance_names[axis][value][kind_value]
         return name
-
-

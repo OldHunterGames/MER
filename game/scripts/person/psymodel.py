@@ -43,6 +43,9 @@ class Chance(object):
         self.remove_on_refresh = remove_on_refresh
         self.attributed = attributed
 
+    def name(self):
+        return store.chances_names.get(self.id, "'id': %s" % self.id)
+
 
 class Need(object):
     def __init__(self, name):

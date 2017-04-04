@@ -23,7 +23,7 @@ screen sc_chances(tokens_game):
             python:
                 chance = tokens_game.active_chance
                 chance_value = tokens_game.chance_value
-                txt = encolor_text(chance.id, chance_value)
+                txt = encolor_text(chance.name(), chance_value)
             text txt:
                 xalign 0.5
         textbutton 'Leave':
