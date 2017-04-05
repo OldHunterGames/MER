@@ -103,6 +103,7 @@ class QuestTarget(object):
 class BringPerson(QuestTarget):
 
     def __init__(self, stats_dict, *args, **kwargs):
+        super(BringPerson, self).__init__(*args, **kwargs)
         self.stats = stats_dict
 
     def completed(self, performer):
@@ -144,12 +145,6 @@ class BringBars(QuestTarget):
 
     def finish(self, performer):
         performer.remove_money(self.bars)
-
-
-class SexualPleasure(QuestTarget):
-
-    def __init__(self, pleasure=5):
-        pass
 
 
 class BasicRelationsQuest(Quest):

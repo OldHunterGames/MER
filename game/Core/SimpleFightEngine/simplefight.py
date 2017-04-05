@@ -907,6 +907,7 @@ class WinFightWithPerson(QuestTarget):
         return self._completed
 
     def _fight_listener(self, fight, args_list, kwargs_dict):
+        # listening for fight now, but maybe we need separate Win Command?
         if (fight.get_winner() == 'allies' and
                 any([i.person == self.target for i in fight.enemies])):
             self._completed = True
@@ -915,7 +916,7 @@ class WinFightWithPerson(QuestTarget):
 
 
 class FightQuest(Quest):
-
     def __init__(self, person, *args, **kwargs):
+        # takes person we should win as first arg
         super(FightQuest, self).__init__(*args, **kwargs)
         self.add_target(WinFightWithPerson(person))

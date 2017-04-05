@@ -5,6 +5,7 @@ import renpy.exports as renpy
 
 from mer_utilities import make_sex_card, encolor_text
 from mer_command import SatisfySex
+from mer_quest import Quest, QuestTarget
 
 
 def make_cards(dict_):
@@ -318,3 +319,30 @@ class SexEffect(object):
         return actor_rating, target_rating
 
 test1 = SexEffect('vagina', 'penis', 'bizarre', 0, 'afuck', 'test1')
+
+
+class SexualPleasureTarget(QuestTarget):
+    """Target for satisfying person sexual pleasure"""
+    # marks itself as completed if you please person for specified pleasure
+    def __init__(self, person, pleasure=5, *args, **kwargs):
+        super(SexualPleasureTarget, self).__init__(*args, **kwargs)
+        self.target = person
+        self.pleasure = 5
+        self._completed = False
+        SatisfySex.run.add_callback(self._satisfy_listener)
+
+    def _satisfy_listener(self, satisfy, *args, **kwargs):
+        if satisfy.target == self.target and satisfy.value >= self.pleasure:
+            self._completed = True
+        if self.completed(None):
+            SatisfySex.run.remove_callback(self._satisfy_listener)
+
+    def completed(self, performer):
+        return self._completed
+
+
+class SexualPleasureQuest(Quest):
+
+    def __init__(self, person, pleasure=5, *args, **kwargs):
+        super(SexualPleasureQuest, self).__init__(*args, **kwargs)
+        self.add_target(SexualPleasureTarget(person, pleasure))
