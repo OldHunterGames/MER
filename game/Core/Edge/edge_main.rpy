@@ -61,7 +61,14 @@ label lbl_edge_main:
         # slums_medic = gen_wise_master('human')    
         # slums_faction.add_member(slums_medic)
         # slums_faction.set_member_to_role(slums_medic, 'medic') 
-        
+
+    # Special NPC - representative of the Edge        
+        edge_recruiter = gen_wise_master('human')  
+        edge_sovereign.add_member(edge_recruiter)
+        edge_recruiter.set_nickname("Serpis")   
+
+
+    # Special NPC - slaver of the Edge
         edge_slaver = gen_willed_master('human')
         slavers = core.get_faction('slavers_guild')
         slavers.add_member(edge_slaver)
@@ -71,10 +78,26 @@ label lbl_edge_main:
 
     call lbl_edge_init_questrewards(npc)
 
+
+    # Special NPC - junker of the Edge
     python:
-        edge_recruiter = gen_wise_master('human')  
-        edge_sovereign.add_member(edge_recruiter)
-        edge_recruiter.set_nickname("Serpis")        
+        edge_junker = gen_willed_master('human')
+        edge_sovereign.add_member(edge_junker)
+        edge_junker.set_nickname("The Junker")
+        edge_junker.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
+        npc = ['citisen', edge_junker]
+
+    call lbl_edge_init_questrewards(npc)
+
+    # Special NPC - guard of the Edge
+    python:
+        edge_guard = gen_willed_master('human')
+        edge_sovereign.add_member(edge_guard)
+        edge_junker.set_nickname("The Guard")
+        edge_junker.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
+        npc = ['citisen', edge_guard]
+
+    call lbl_edge_init_questrewards(npc)
 
     
     #slums_leader 'Hi, I am a leader of the Slums'
