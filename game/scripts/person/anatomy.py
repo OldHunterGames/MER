@@ -39,7 +39,8 @@ class BodyPart(object):
                 return f
         return None
 
-    def feature(self, id_):# finds feature with needed name if exist
+    def feature(self, id_):
+        # finds feature with needed name if exist
         for f in self.features:
             if f.id == id_:
                 return f
@@ -95,3 +96,6 @@ class Anatomy(object):
         part = BodyPart(name)
         self.parts[name] = part
         return part
+
+    def has_part(self, name):
+        return self.get_part(name) is not None
