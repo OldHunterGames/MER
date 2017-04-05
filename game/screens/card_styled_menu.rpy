@@ -30,11 +30,12 @@ init python:
                     cancel=self.cancel)
 
         def run(self, card):
+            
+            card.run()
             if self.called:
                 renpy.return_statement()
             else:
                 renpy.hide('sc_card_menu')
-            return card.run()
             
 
     class SellMenu(CardMenu):

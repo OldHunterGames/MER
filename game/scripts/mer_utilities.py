@@ -101,6 +101,9 @@ class Observable(object):
     def add_callback(self, callback):
         self.observers.append(callback)
 
+    def remove_callback(self, callback):
+        self.observers.remove(callback)
+
 
 """class DefaultObservable(object):
 

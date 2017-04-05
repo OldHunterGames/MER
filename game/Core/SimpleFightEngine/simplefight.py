@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 import random
 from collections import defaultdict
+from scripts.mer_quest import Quest, QuestTarget
+from scripts.mer_utilities import Observable
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -215,6 +217,7 @@ class SimpleFight(object):
     def get_corpses(self):
         return [i for i in self.get_enemies() if i.has_feature('dead')]
 
+    @Observable
     def end(self):
         self.loot = self.get_loot()
         self.corpses = self.get_corpses()
@@ -890,3 +893,29 @@ class Outflank(RuledManeuver):
             if len(person.enemies) > 1:
                 return False
         return person.weight() == 'mobile'
+
+
+class WinFightWithPerson(QuestTarget):
+
+    def __init__(self, person, *args, **kwargs):
+
+        self.target = person
+        self._completed = False
+        SimpleFight.end.add_callback(self._fight_listener)
+
+    def completed(self, performer):
+        return self._completed
+
+    def _fight_listener(self, fight, args_list, kwargs_dict):
+        if (fight.get_winner() == 'allies' and
+                any([i.person == self.target for i in fight.enemies])):
+            self._completed = True
+        if self.completed(None):
+            SimpleFight.end.remove_callback(self._fight_listener)
+
+
+class FightQuest(Quest):
+
+    def __init__(self, person, *args, **kwargs):
+        super(FightQuest, self).__init__(*args, **kwargs)
+        self.add_target(WinFightWithPerson(person))

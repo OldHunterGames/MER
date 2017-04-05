@@ -1,6 +1,6 @@
 init -10 python:
     sys.path.append(renpy.loader.transfn("Core/SimpleFightEngine"))
-    from simplefight import SimpleFight
+    from simplefight import SimpleFight, FightQuest
 
 screen sc_simple_fight(fight):
     if fight.get_winner() is None:
