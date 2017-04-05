@@ -58,8 +58,6 @@ label start:
         # player.firstname = 'Охотник'
         # player.set_avatar('images/avatar/old_huntsman_ava.jpg')
         # player.skill('survival').training = True
-        player.reveal_all_taboos()
-        player.reveal_all_fetishes()
         player.add_feature('penis')
 
     # call screen sc_faction_info(great_houses[0])
@@ -70,7 +68,6 @@ label start:
     show expression "interface/bg_base.jpg" as bg
     call evn_init
     call lbl_edge_main
-    
     return
     
 label choose_action:
