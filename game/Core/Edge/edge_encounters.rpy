@@ -25,7 +25,7 @@ label lbl_edge_enc_flee(card):
     return
 
 label lbl_edge_errant_talk(card):
-    stranger "Blah"
+    call lbl_communicate_act(stranger)
   
     return
 

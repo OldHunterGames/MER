@@ -2,11 +2,31 @@
 # Communication with NPCs
 #
 
+label lbl_captive(target):
+    python: 
+        visavis = target
+        target.say_phrase('captive_hello')
+        options = CardsMaker()
+        options.add_entry('captive_loot', edge_option_cards)     
+        options.add_entry('captive_sell', edge_option_cards)  
+        options.add_entry('captive_rape', edge_option_cards)          
+        options.add_entry('captive_slay', edge_option_cards)          
+        options.add_entry('captive_capture', edge_option_cards)     
+        options.add_entry('captive_release', edge_option_cards)  
+        CardMenu(options.run()).show()                
+    hide card
+    return
+
 label lbl_communicate(target):
+    $ player.drain_energy()
+    call lbl_communicate_act(target)
+
+    return
+
+label lbl_communicate_act(target):
     $ visavis = target
     if not player.relations(visavis).first_impression:
         $ player.relations(visavis).first_impression = True
-        $ player.drain_energy()
         jump lbl_first_impression
 
     $ target.say_phrase('hello')
@@ -29,8 +49,8 @@ label lbl_communicate(target):
         CardMenu(options.run()).show()
                 
     hide card
-    call lbl_edge_manage
     return
+
 
 label lbl_comm_garantor(card):
     visavis 'Ok. I will be your garantor.'
