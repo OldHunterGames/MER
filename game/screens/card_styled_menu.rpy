@@ -29,13 +29,13 @@ init python:
                 renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing_=spacing,
                     cancel=self.cancel)
 
-        def run(self, card):
-            
+        def run(self):
+            card = self.current_card
             card.run()
             if self.called:
                 renpy.return_statement()
             else:
-                renpy.hide('sc_card_menu')
+                renpy.hide_screen('sc_card_menu')
             
 
     class SellMenu(CardMenu):
@@ -84,7 +84,7 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, 
                 imagebutton:
                     idle im.Scale(card_menu.current_card.image(), x_size+100, y_size+100)
                     
-                    action Function(card_menu.run, card_menu.current_card)
+                    action Function(card_menu.run)
                             
                     xalign 0.5
                 viewport:

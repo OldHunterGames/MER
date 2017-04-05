@@ -148,6 +148,7 @@ class Inventory(ItemsStorage, ModifiersStorage):
 
     def equip_on_slot(self, slot, item):
         slots = 'carried_armor' if slot in self.armor_slots() else 'carried_weapons'
+        self.add_item(item)
         dict_ = getattr(self, slots)
         current_item = dict_[slot].current
         if item == dict_[slot].get_item():
