@@ -10,8 +10,8 @@ import renpy.exports as renpy
 
 class SimpleFight(object):
 
-    def __init__(self, allies_list, enemies_list):
-
+    def __init__(self, allies_list, enemies_list, friendly_fight=False):
+        # if fight is friendly, no one dies and you have no loot/slaves/corpses
         self.allies = [SimpleCombatant(i, self) for i in allies_list]
         self.enemies = [SimpleCombatant(i, self) for i in enemies_list]
         allies_average_skill = sum(
@@ -26,6 +26,7 @@ class SimpleFight(object):
         self.round = 1
         self.logged_round = 1
         self.ended = False
+        self.friendly_fight = friendly_fight
         if difference < 0:
             for i in self.allies:
                 i.skill_difference = difference
@@ -219,6 +220,8 @@ class SimpleFight(object):
 
     @Observable
     def end(self):
+        if self.friendly_fight:
+            return
         self.loot = self.get_loot()
         self.corpses = self.get_corpses()
         self.captives = self.get_captives()
@@ -455,7 +458,6 @@ class SimpleCombatant(object):
             self.active_maneuver.add_target(self.target)
 
     def damage(self, value, source, ignore_armor=False):
-
         value += self.fight.escalation
         for i in self.incoming_damage_multipliers:
             value *= i
@@ -475,7 +477,8 @@ class SimpleCombatant(object):
             self.hp -= value
             if self.hp <= 0:
                 if source.damage_type() != 'subdual':
-                    if not self.person.player_controlled:
+                    # player can't die, no one dies if fight is friendly
+                    if not self.person.player_controlled and not self.fight.friendly_fight:
                         self.person.die()
         else:
             self.defence -= value

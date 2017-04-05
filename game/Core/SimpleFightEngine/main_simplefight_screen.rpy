@@ -140,7 +140,7 @@ label lbl_postfight(fight):
     $ fight.end()
     if winner != 'fleed':
         'fight winner is [winner]'
-        if winner == 'allies':
+        if winner == 'allies' and not fight.friendly_fight:
             call screen sc_postfight_win(fight)
     else:
         'you fleed from fight'
