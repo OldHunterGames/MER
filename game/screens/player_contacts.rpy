@@ -2,7 +2,7 @@ init python:
     def withou_faction(player):
         return [i for i in player.known_characters if not i.has_faction()]
 
-    class PersonCard(Card, Command):
+    class CardPerson(Card, Command):
 
         def __init__(self, person, player):
             self.person = person
@@ -31,7 +31,7 @@ init python:
                 self.person, True, True)       
 
 label lbl_contacts(player):
-    $ char_cards = [PersonCard(person, player) for person in player.known_characters]
+    $ char_cards = [CardPerson(person, player) for person in player.known_characters]
     $ CardMenu(char_cards, cancel=True).show(True, 150, 150, 10)
     return
 

@@ -764,7 +764,18 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self._phrases = dict()
         self.obligation = False
         self.rewards = CardsMaker()
+        self._interactions = CardsMaker()
         self._active_quest = None
+
+    def get_interactions(self):
+        self._interactions.set_context(owner=self)
+        return self._interactions.run()
+
+    def add_interaction(self, key, value):
+        self._interactions.add_entry(key, value)
+
+    def remove_interaction(self, key):
+        self._interactions.remove_entry(key)
 
     # def add_reward(self, reward):
     #     self.rewards.append(reward)

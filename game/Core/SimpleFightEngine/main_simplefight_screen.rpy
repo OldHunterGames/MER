@@ -2,6 +2,18 @@ init -10 python:
     sys.path.append(renpy.loader.transfn("Core/SimpleFightEngine"))
     from simplefight import SimpleFight, FightQuest
 
+init 1 python:
+    class CardCaptive(CardPerson):
+
+        def __init__(self, slaver, captive):
+            super(CardCaptive, self).__init__(captive, slaver)
+            self.slaver = slaver
+            self.captive = captive
+
+        def _run(self):
+            self.slaver.enslave(self.captive)
+            renpy.call_in_new_context('lbl_captive', self.captive)
+
 screen sc_simple_fight(fight):
     if fight.get_winner() is None:
         textbutton 'end_turn':
@@ -141,7 +153,20 @@ label lbl_postfight(fight):
     if winner != 'fleed':
         'fight winner is [winner]'
         if winner == 'allies' and not fight.friendly_fight:
-            call screen sc_postfight_win(fight)
+            python:
+                items = fight.loot
+                corpses = fight.corpses
+                text = 'you get corpses: '
+                for i in corpses:
+                    text += '%s, '%i.name
+                text += '\n you get items: '
+                for i in items:
+                    text += '%s, '%i.name()
+            '[text]'
+            if any(fight.captives):
+                "The remaining enemies are fleeing, you can catch one of them"
+                $ CardMenu([CardCaptive(player, i) for i in fight.captives]).show()
+
     else:
         'you fleed from fight'
     return

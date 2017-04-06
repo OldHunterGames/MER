@@ -17,6 +17,10 @@ class ItemSlot(object):
     def current(self):
         return self._current
 
+    @property
+    def default(self):
+        return self._default
+
     def get_item(self):
         if self._current is None:
             return self._default

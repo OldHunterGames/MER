@@ -42,7 +42,8 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                 person.master == core.player), Show('sc_schedule', person=person)]
                     textbutton 'Equipment':
                         action [SensitiveIf(person.player_controlled or 
-                                person.any_equiped()), Show('sc_simple_equip', person=person, look_mode=items_look_mode)]
+                                person.any_equiped() or person in player.slaves.slaves()),
+                                Show('sc_simple_equip', person=person, look_mode=items_look_mode)]
                     textbutton 'Done': 
                         action If(return_l, Return(), false=Hide('sc_character_info_screen'))
 

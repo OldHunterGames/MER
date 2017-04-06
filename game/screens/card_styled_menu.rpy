@@ -23,19 +23,13 @@ init python:
             self.current_card = card
 
         def show(self, call=True, x_size=200, y_size=300, spacing=5):
-            if call:
-                renpy.call_screen('sc_card_menu', self, call, x_size, y_size, spacing, self.cancel)
-            else:
-                renpy.show_screen('sc_card_menu', card_menu=self, called=call, x_size=x_size, y_size=y_size, spacing_=spacing,
-                    cancel=self.cancel)
+            call = True
+            renpy.call_in_new_context('_lbl_card_menu', self, call, x_size, y_size, spacing, self.cancel)
 
         def run(self):
             card = self.current_card
             card.run()
-            if self.called:
-                renpy.return_statement()
-            else:
-                renpy.hide_screen('sc_card_menu')
+            renpy.return_statement()
             
 
     class SellMenu(CardMenu):
@@ -44,6 +38,10 @@ init python:
             self.current_card = None
             self._cards_list.remove(card)
             return card.run()
+
+label _lbl_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, cancel=False):
+    call screen sc_card_menu(card_menu, called, x_size, y_size, spacing_, cancel)
+    return
 
 
 screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, cancel=False):
