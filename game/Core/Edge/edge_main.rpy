@@ -86,7 +86,7 @@ label lbl_edge_main:
         edge_junker.set_nickname("The Junker")
         edge_junker.add_quest(SexualPleasureQuest(edge_junker, one_time=False, **quests_data['edge_junker_sex']))
 
-        ayer.relations(slums_medic) 
+        player.relations(edge_junker) 
 
         npc = ['citisen', edge_junker]
 
@@ -100,10 +100,10 @@ label lbl_edge_main:
         edge_guard.add_quest(FightQuest(edge_guard, one_time=True, **quests_data['edge_guard_duel']))
         armor = create_item('fullplate', 'armor')
         wpn = create_item('sword', 'weapon')
-        person.equip_on_slot('armor', armor)
-        person.equip_on_slot('weapon', wpn)
+        edge_guard.equip_on_slot('garment', armor)
+        edge_guard.equip_on_slot('weapon', wpn)
 
-        layer.relations(slums_medic)  
+        player.relations(edge_guard)  
 
         npc = ['citisen', edge_guard]
 
