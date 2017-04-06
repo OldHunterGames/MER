@@ -23,7 +23,7 @@ init python:
             self.slot = slot
             self.person = person
 
-        def _run(self, *args, **kwargs):
+        def run(self, *args, **kwargs):
             self.person.equip_on_slot(self.slot, None)
 
 
@@ -34,7 +34,7 @@ init python:
             self._person = person
             self._slot = slot
 
-        def _run(self):
+        def run(self):
             self._person.equip_on_slot(self._slot, self.get_item())
 
     class SellCard(ItemWrapperCard, Command):
@@ -43,7 +43,7 @@ init python:
             super(SellCard, self).__init__(item)
             self._person = person
 
-        def _run(self):
+        def run(self):
             self._person.remove_item(self.get_item())
             self._person.add_money(self.get_item().price)
 
@@ -58,7 +58,7 @@ init python:
             self.person = person
             self.card_menu = card_menu
         
-        def _run(self):
+        def run(self):
             print 'sell called'
             self.card_menu([SellCard(self.person, i) for i in self.person.items], cancel=True).show()
 

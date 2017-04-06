@@ -9,16 +9,8 @@ from mer_quest import *
 class Command(object):
     """Basic class for commands in mer"""
     #Maybe need special allocator for commands created in modules?
-    def _run(self):
-        raise NotImplementedError()
-
-    @Observable
     def run(self):
-        return self._run()
-
-    @classmethod
-    def add_observer(self, func):
-        self.run.add_callback(func)
+        raise NotImplementedError()
 
 
 class Card(object):
@@ -70,7 +62,8 @@ class MenuCard(Card, Command):
     def label(self):
         return self._label
 
-    def _run(self):
+    @Observable
+    def run(self):
         return renpy.call_in_new_context(self._label, self)
 
     def __getattr__(self, key):
@@ -103,7 +96,8 @@ class CardsMaker(Command):
                 if not value.get('hidden', False):
                     self.add_entry(key, dict_)
 
-    def _run(self):
+    @Observable
+    def run(self):
         list_ = []
         for key, value in self.data.items():
             card = self.card_cls(id=key, **value)
@@ -133,7 +127,8 @@ class SatisfySex(Command):
         self.target = target
         self.value = value
 
-    def _run(self):
+    @Observable
+    def run(self):
         pass
 
 
@@ -143,7 +138,8 @@ class MakeBasicRelationsQuests(Command):
         self.person = person
         self.data = kwargs
 
-    def _run(self):
+    @Observable
+    def run(self):
         list_ = []
         for key, value in store.basic_quests['relations'].items():
             list_.append(BasicRelationsQuest(

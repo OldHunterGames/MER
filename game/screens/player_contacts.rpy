@@ -25,8 +25,8 @@ init python:
             line4 = DescriptionMaker(person).relations_text(protected=False)
             final_text = line0 + '\n' + line1 + '\n' + line2 + '\n' + line3 + '\n' + line4
             return final_text
-
-        def _run(self):
+        
+        def run(self):
             renpy.call_in_new_context('_contacts_glue',
                 self.person, True, True)       
 
