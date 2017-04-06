@@ -4,8 +4,8 @@ init python:
         'congruence': {-1: __("hater"), 0: __("associate"), 1: __("admirer")}}
 
     stance_translation = {'master': [__('cruel'), __('opressive'), __('rightful'), __('benevolent')],
-            'slave': [__('rebellious'), __('forced'), __('accustomed'), __('willing')],
-            'neutral': [__('hostile'), __('distrustful'), __('favorable'), __('friendly')]}
+        'slave': [__('rebellious'), __('forced'), __('accustomed'), __('willing')],
+        'neutral': [__('hostile'), __('distrustful'), __('favorable'), __('friendly')]}
     stance_types_translation = {'master': __('master'),
         'slave': __('slave'),
         'neutral': __('neutral')}
@@ -78,5 +78,14 @@ init python:
     }
 
     chances_names = {
-        
+        'unhealthy_job': 'Unhealthy job', 
+        'beggar': 'Beggar life', 
+        'humiliation': 'Humiliation', 
+        'tiresome_job': 'Tiresome job', 
+        'sexplotation': 'Sexual expluatation', 
+        'poor_accomodation': 'Poor accomodation', 
+        'bed_of_rocks': 'Bed of rocks', 
+        'homeless': 'Homeless', 
+        'bad_sleep': 'Bad sleep', 
+
     }
