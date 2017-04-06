@@ -207,10 +207,9 @@ class SimpleFight(object):
         try:
             loot = self.loot
         except AttributeError:
-            enemies = self.get_enemies()
             loot = []
-            for i in enemies:
-                for item in i.get_items('all'):
+            for i in self.get_corpses():
+                for item in i.all_items():
                     loot.append(i.remove_item(item, 'all'))
             self.loot = loot
         return loot
@@ -922,4 +921,10 @@ class FightQuest(Quest):
     def __init__(self, person, *args, **kwargs):
         # takes person we should win as first arg
         super(FightQuest, self).__init__(*args, **kwargs)
+        self.target = person
         self.add_target(WinFightWithPerson(person))
+        # person.add_interaction(key, value)
+
+    def _finish(self):
+        # self.target.remove_interaction(key)
+        return True
