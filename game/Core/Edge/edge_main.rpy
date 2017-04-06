@@ -84,17 +84,27 @@ label lbl_edge_main:
         edge_junker = gen_willed_master('human')
         edge_sovereign.add_member(edge_junker)
         edge_junker.set_nickname("The Junker")
-        edge_junker.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
+        edge_junker.add_quest(SexualPleasureQuest(edge_junker, one_time=False, **quests_data['edge_junker_sex']))
+
+        ayer.relations(slums_medic) 
+
         npc = ['citisen', edge_junker]
 
     call lbl_edge_init_questrewards(npc)
 
     # Special NPC - guard of the Edge
     python:
-        edge_guard = gen_willed_master('human')
+        edge_guard = gen_mighty_master('human')
         edge_sovereign.add_member(edge_guard)
-        edge_junker.set_nickname("The Guard")
-        edge_junker.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
+        edge_guard.set_nickname("The Guard")
+        edge_guard.add_quest(FightQuest(edge_guard, one_time=True, **quests_data['edge_guard_duel']))
+        armor = create_item('fullplate', 'armor')
+        wpn = create_item('sword', 'weapon')
+        person.equip_on_slot('armor', armor)
+        person.equip_on_slot('weapon', wpn)
+
+        layer.relations(slums_medic)  
+
         npc = ['citisen', edge_guard]
 
     call lbl_edge_init_questrewards(npc)

@@ -235,12 +235,12 @@ init -10 python:
         'bond_servant': {'name': 'Servitor', 'description': __('Servitor\nBecome a servant in a Major House.'), 'label': 'lbl_edge_bond_servant', 'image': 'miscards', }, 
         'bond_host': {'name': 'Host', 'description': __('Host\nEntertain customers in drinking establishments of the Majpr House.'), 'label': 'lbl_edge_bond_host', 'image': 'miscards', },         
 
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
-#        'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
+#    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', },         
     }
     
     edge_quest_rewards = {
@@ -265,4 +265,9 @@ init -10 python:
     'errant_decieve': {'name': 'Decieve', 'description': __('Decieve\nChaotic deed. Spirit challenge vs target wisdom. Try to lull targets attention and then suddenly attack.'), 'label': 'lbl_edge_enc_decieve', 'image': 'miscards', }, 
     'errant_subdue': {'name': 'Subdue', 'description': __('Subdue\nEvil deed. Hit the errant over the head with a rock. with a rock. Or just grab and pin down if you a strong enough...'), 'label': 'lbl_edge_errant_subdue', 'image': 'miscards', }, 
     'errant_backstab': {'name': 'Backstab', 'description': __('Backstab\nEvil deed. Killing blow.'), 'label': 'lbl_edge_errant_backstab', 'image': 'miscards', }, 
+    }
+
+    edge_quest_options = {
+    'quest_duel': {'name': 'Duel', 'description': __('Duel\nWin a fight against this character.'), 'label': 'lbl_edge_duel', 'image': 'miscards', }, 
+
     }

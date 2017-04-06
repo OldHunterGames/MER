@@ -393,6 +393,13 @@ label lbl_makelove(card):
     $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
     return
 
+label lbl_edge_duel(card):
+    python:
+        fight = SimpleFight(allies, enemies)
+        enemies = fight.get_enemies()
+        loot = fight.get_loot()
+
+    return
     
     
 

@@ -7,6 +7,9 @@ init python:
         'edge_bond_quest':{'name': __("Rome: bond path"), 'description': __("Major Houses hire valuable employees on terms slightly better than slavish. It's not a bad way to get into Eternal Rome and get a stable job, but you need to prove yourself  worthy to the recruiter of the Major House.")}, 
         'edge_citisen_quest':{'name': __("Rome: citisen path"), 'description': __("Only a select few begin their lives in Eternal Rome as full-fledged citizens. To receive this honorary status, it is necessary to show the recruiter of the Major House that by acting independently you will bring more benefit than doing bonded labor.")}, 
 
+        'edge_guard_duel':{'name': __("Guard's bet"), 'description': __("Defeat the Guard of Outpost in a duel.")}, 
+        'edge_junker_sex':{'name': __("Please the Junker"), 'description': __("Make the junker from the outpost cumlike never before.")}, 
+
 
     }
     basic_quests = {
