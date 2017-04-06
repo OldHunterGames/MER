@@ -632,16 +632,17 @@ label lbl_jobcheck(person, attribute):
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
         attr = person.get_resource(attribute, focus, True)
-        if person.focus() < 5:
-            if not person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort. {person.name} need {resqual} to rise productivity".format(
-                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual)
-            elif person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort. There has been some progress.".format(
-                        person=person, job_description=job_description, focus=focus_desc)
-        else:
-            text = "{person.name} {job_description} with {focus} effort. Perfect!".format(
-                person=person, job_description=job_description, focus=focus_desc)
+        # if person.focus() < 5:
+        #     if not person.productivity_raised:
+        #         text = "{person.name} {job_description} with {focus} effort. {person.name} need {resqual} to rise productivity".format(
+        #                 person=person, job_description=job_description, focus=focus_desc, resqual=resqual)
+        #     elif person.productivity_raised:
+        #         text = "{person.name} {job_description} with {focus} effort. There has been some progress.".format(
+        #                 person=person, job_description=job_description, focus=focus_desc)
+        # else:
+        #     text = "{person.name} {job_description} with {focus} effort. Perfect!".format(
+        #         person=person, job_description=job_description, focus=focus_desc)
+        text = person.job_description()
     if person.focus() < 5 and not person.productivity_raised:
         python:
             check = SkillcheckGame(person, attribute, focus, text, attr, True)
@@ -672,19 +673,20 @@ label lbl_jobcheck_npc(person, attribute):
         focus = person.focus()
         focus_desc = encolor_text(focus_description[focus], focus)
         attr = person.get_resource(attribute, focus, True)
-        if person.focus() < 5:
-            if not person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
-                        person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
-                        productivity=productivity_str)
-            elif person.productivity_raised:
-                text = "{person.name} {job_description} with {focus} effort leading to {productivity}. There has been some progress.".format(
-                        person=person, productivity=productivity_str, job_description=job_description,
-                        focus=focus_desc)
-        else:
-            text = "{person.name} {job_description} with {focus} effort limited by {motivation} and leading to {productivity} productivity".format(
-                person=person, job_description=job_description, productivity=productivity_str,
-                focus=focus_desc, motivation=motivation_text)
+        # if person.focus() < 5:
+        #     if not person.productivity_raised:
+        #         text = "{person.name} {job_description} with {focus} effort leading to {productivity}. {person.name} need {resqual} to rise productivity".format(
+        #                 person=person, job_description=job_description, focus=focus_desc, resqual=resqual,
+        #                 productivity=productivity_str)
+        #     elif person.productivity_raised:
+        #         text = "{person.name} {job_description} with {focus} effort leading to {productivity}. There has been some progress.".format(
+        #                 person=person, productivity=productivity_str, job_description=job_description,
+        #                 focus=focus_desc)
+        # else:
+        #     text = "{person.name} {job_description} with {focus} effort limited by {motivation} and leading to {productivity} productivity".format(
+        #         person=person, job_description=job_description, productivity=productivity_str,
+        #         focus=focus_desc, motivation=motivation_text)
+        text = person.job_description()
     '[text]'
     return
 
