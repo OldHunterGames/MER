@@ -46,7 +46,9 @@ label lbl_communicate_act(target):
         if target.quest_completed(player): 
             options.add_entry('com_quest_completed', edge_option_cards)        
         options.add_entry('nevermind', edge_option_cards)  
-        CardMenu(options.run()).show()
+        cards = options.run()
+        cards.extend(target.get_interactions())
+        CardMenu(cards).show()
                 
     hide card
     return
