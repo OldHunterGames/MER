@@ -10,6 +10,7 @@ init python:
         4: 150,
         5: 500
     }
+    # key: max of exotic or purity
     slave_price_modifiers = {
         0: 1.0,
         1: 1.1,
