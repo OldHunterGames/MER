@@ -203,7 +203,8 @@ class SimpleFight(object):
         else:
             return None
 
-    def get_loot(self):
+    def _get_loot(self):
+        # removes items from corpses, access to loot with fight.loot
         try:
             loot = self.loot
         except AttributeError:
@@ -221,7 +222,7 @@ class SimpleFight(object):
     def end(self):
         if self.friendly_fight:
             return
-        self.loot = self.get_loot()
+        self.loot = self._get_loot()
         self.corpses = self.get_corpses()
         self.captives = self.get_captives()
 
@@ -923,8 +924,10 @@ class FightQuest(Quest):
         super(FightQuest, self).__init__(*args, **kwargs)
         self.target = person
         self.add_target(WinFightWithPerson(person))
-        # person.add_interaction(key, value)
 
     def _finish(self):
-        # self.target.remove_interaction(key)
+        self.target.remove_interaction('quest_duel')
         return True
+
+    def _activate(self):
+        self.target.add_interaction('quest_duel', store.edge_quest_options)
