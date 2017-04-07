@@ -19,7 +19,10 @@ label lbl_captive(target):
 
 label lbl_communicate(target):
     $ player.drain_energy()
-    call lbl_communicate_act(target)
+    if target in player.slaves.slaves():
+        call lbl_captive(target)
+    else:
+        call lbl_communicate_act(target)
 
     return
 

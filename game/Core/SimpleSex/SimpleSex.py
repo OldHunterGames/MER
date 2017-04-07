@@ -345,7 +345,7 @@ class SexualPleasureQuest(Quest):
 
     def __init__(self, person, pleasure=5, *args, **kwargs):
         super(SexualPleasureQuest, self).__init__(*args, **kwargs)
-        self.target = target
+        self.target = person
         self.add_target(SexualPleasureTarget(person, pleasure))
 
     def _activate(self):

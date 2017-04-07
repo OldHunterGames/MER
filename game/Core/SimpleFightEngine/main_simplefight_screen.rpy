@@ -11,8 +11,12 @@ init 1 python:
             self.captive = captive
 
         def _run(self):
-            self.slaver.enslave(self.captive)
-            renpy.call_in_new_context('lbl_captive', self.captive)
+            slaver = self.slaver
+            captive = self.captive
+            slaver.enslave(captive)
+            captive.set_token('conquest')
+            captive.relations(slaver).stance -= 1
+            renpy.call_in_new_context('lbl_captive', captive)
 
 screen sc_simple_fight(fight):
     if fight.get_winner() is None:

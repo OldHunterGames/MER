@@ -1644,6 +1644,16 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
             value += 1
         value += self.count_modifiers('menace')
         return max(0, min(value, 5))
+
+    def get_price(self):
+        # pricing formula for untrained slaves
+        pricing = store.slave_pricing
+        modifiers = store.slave_price_modifiers
+        basic = max([self.allure(), self.hardiness(), self.succulence()])
+        modifier = max([self.purity(), self.exotic()])
+        price = pricing[basic]
+        price *= modifiers[modifier]
+        return int(price)
     # end of rating methods
 
     def focus(self):
