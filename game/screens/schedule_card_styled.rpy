@@ -110,6 +110,8 @@ screen sc_pick_schedule(person):
                 spacing 5
                 for i in picker.cards_list:
                     vbox:
+                        xsize 200
+                        box_wrap True
                         imagebutton:
                             idle i.image()
                             action Function(picker.set_card, i)
