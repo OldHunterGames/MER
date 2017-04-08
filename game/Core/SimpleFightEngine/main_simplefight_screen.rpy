@@ -11,12 +11,7 @@ init 1 python:
             self.captive = captive
 
         def run(self):
-            slaver = self.slaver
-            captive = self.captive
-            slaver.enslave(captive)
-            captive.set_token('conquest')
-            captive.relations(slaver).stance -= 1
-            renpy.call_in_new_context('lbl_captive', captive)
+            renpy.call_in_new_context('lbl_captive', self.captive)
 
 screen sc_simple_fight(fight):
     if fight.get_winner() is None:
@@ -172,8 +167,11 @@ label lbl_postfight(fight):
             if text != '':
                 '[text]'
             if any(fight.captives):
-                "The remaining enemies are fleeing, you can catch one of them"
-                $ CardMenu([CardCaptive(player, i) for i in fight.captives]).show(True, 150, 150)
+                if len(fight.captives) > 1:
+                    "The remaining enemies are fleeing, you can catch one of them"
+                    $ CardMenu([CardCaptive(player, i) for i in fight.captives]).show(True, 150, 150)
+                else:
+                    $ CardCaptive(player, fight.captives[0]).run()
 
     else:
         'you fleed from fight'
