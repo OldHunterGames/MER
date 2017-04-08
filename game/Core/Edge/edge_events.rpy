@@ -94,11 +94,11 @@ label evn_edge_bukake(event):
         $ img = obj.image()
         show expression img at truecenter
         'You can be a bukake slut now'
-        $ player.unlock('job', ScheduleJob('bukake', edge_jobs_data))
+        $ player.schedule.unlock('job', ScheduleJob('bukake', edge_jobs_data))
 
     if True:
         'You can use bukake-sluts now'
-        $ player.unlock('options', ScheduleObj('bukake', edge_services_data))
+        $ player.schedule.unlock('options', ScheduleObj('bukake', edge_services_data))
 
     $ edge.options.append('bukake')
     return True

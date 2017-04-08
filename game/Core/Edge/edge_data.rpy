@@ -267,7 +267,17 @@ init -10 python:
     'errant_backstab': {'name': 'Backstab', 'description': __('Backstab\nEvil deed. Killing blow.'), 'label': 'lbl_edge_errant_backstab', 'image': 'miscards', }, 
     }
 
+    edge_captive_options = {
+    'captive_loot': {'name': 'Loot', 'description': __('Loot\n'), 'label': 'lbl_edge_captive_loot', 'image': 'miscards', }, 
+    'captive_sell': {'name': 'Sell', 'description': __('Sell\n'), 'label': 'lbl_edge_captive_sell', 'image': 'miscards', }, 
+    'captive_rape': {'name': 'Rape', 'description': __('Rape\n'), 'label': 'lbl_edge_captive_rape', 'image': 'miscards', },         
+    'captive_slay': {'name': 'Slay', 'description': __('Slay\n'), 'label': 'lbl_edge_captive_slay', 'image': 'miscards', }, 
+    'captive_capture': {'name': 'Capture', 'description': __('Capture\n'), 'label': 'lbl_edge_captive_capture', 'image': 'miscards', }, 
+    'captive_release': {'name': 'Release', 'description': __('Release\n'), 'label': 'lbl_edge_captive_release', 'image': 'miscards', },         
+    }
+
     edge_quest_options = {
     'quest_duel': {'name': 'Duel', 'description': __('Duel\nWin a fight against this character.'), 'label': 'lbl_edge_duel', 'image': 'miscards', }, 
+    'quest_please': {'name': 'Sexualy please', 'description': __('Sexualy please\nThis character craves for exceptional pleasure.'), 'label': 'lbl_edge_duel', 'image': 'miscards', }, 
 
     }

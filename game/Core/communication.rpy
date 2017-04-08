@@ -7,12 +7,12 @@ label lbl_captive(target):
         visavis = target
         target.say_phrase('captive_hello')
         options = CardsMaker()
-        options.add_entry('captive_loot', edge_option_cards)     
-        options.add_entry('captive_sell', edge_option_cards)  
-        options.add_entry('captive_rape', edge_option_cards)          
-        options.add_entry('captive_slay', edge_option_cards)          
-        options.add_entry('captive_capture', edge_option_cards)     
-        options.add_entry('captive_release', edge_option_cards)  
+        options.add_entry('captive_loot', edge_captive_options)     
+        options.add_entry('captive_sell', edge_captive_options)  
+        options.add_entry('captive_rape', edge_captive_options)          
+        options.add_entry('captive_slay', edge_captive_options)          
+        options.add_entry('captive_capture', edge_captive_options)     
+        options.add_entry('captive_release', edge_captive_options)  
         CardMenu(options.run()).show()                
     hide card
     return
@@ -406,7 +406,17 @@ label lbl_edge_duel(card):
 
     return
     
+
+label lbl_edge_captive_sell(card):
+    python:
+        price = visavis.get_price()
+        player.remove_slave()
+        player.add_money(price)
     
+    edge_slaver "I'll give you [price] bars for this slave."
+
+    return    
+
 
 
 
