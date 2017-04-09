@@ -417,7 +417,13 @@ label lbl_edge_captive_sell(card):
 
     return    
 
-
+label lbl_edge_captive_capture(card):
+    python:
+        slaver = player
+        slaver.enslave(visavis)
+        visavis.set_token('conquest')
+        visavis.relations(slaver).stance -= 1
+    return
 
 
 
