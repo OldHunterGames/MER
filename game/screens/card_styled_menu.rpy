@@ -65,6 +65,8 @@ screen sc_card_menu(card_menu, called=True, x_size=200, y_size=300, spacing_=5, 
                 spacing spacing_
                 for i in cards:
                     vbox:
+                        xsize x_size
+                        box_wrap True
                         imagebutton:
                             idle im.Scale(i.image(), x_size, y_size)
                             action Function(card_menu.set_card, i)

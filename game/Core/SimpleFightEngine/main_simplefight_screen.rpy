@@ -10,13 +10,8 @@ init 1 python:
             self.slaver = slaver
             self.captive = captive
 
-        def _run(self):
-            slaver = self.slaver
-            captive = self.captive
-            slaver.enslave(captive)
-            captive.set_token('conquest')
-            captive.relations(slaver).stance -= 1
-            renpy.call_in_new_context('lbl_captive', captive)
+        def run(self):
+            renpy.call_in_new_context('lbl_captive', self.captive)
 
 screen sc_simple_fight(fight):
     if fight.get_winner() is None:
@@ -160,16 +155,23 @@ label lbl_postfight(fight):
             python:
                 items = fight.loot
                 corpses = fight.corpses
-                text = 'you get corpses: '
-                for i in corpses:
-                    text += '%s, '%i.name
-                text += '\n you get items: '
-                for i in items:
-                    text += '%s, '%i.name()
-            '[text]'
+                text = ''
+                if len(corpses) > 0:
+                    text = 'you get corpses: '
+                    for i in corpses:
+                        text += '%s, '%i.name
+                if len(items) > 0:
+                    text += '\n you get items: '
+                    for i in items:
+                        text += '%s, '%i.name()
+            if text != '':
+                '[text]'
             if any(fight.captives):
-                "The remaining enemies are fleeing, you can catch one of them"
-                $ CardMenu([CardCaptive(player, i) for i in fight.captives]).show()
+                if len(fight.captives) > 1:
+                    "The remaining enemies are fleeing, you can catch one of them"
+                    $ CardMenu([CardCaptive(player, i) for i in fight.captives]).show(True, 150, 150)
+                else:
+                    $ CardCaptive(player, fight.captives[0]).run()
 
     else:
         'you fleed from fight'

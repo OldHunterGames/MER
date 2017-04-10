@@ -69,7 +69,6 @@ label lbl_edge_errant_fight(allies, enemies):
     python:
         fight = SimpleFight(allies, enemies)
         enemies = fight.get_enemies()
-        loot = fight.get_loot()
 
     return
 
