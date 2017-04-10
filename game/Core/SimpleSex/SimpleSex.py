@@ -22,14 +22,12 @@ class SimpleSex(object):
 
     actions = None
 
-    def __init__(self, participant_1, participant_2, *args):
-        if len(args) > 3:
-            raise Exception('Maximum of 5 participants per sexgame exceed')
+    def __init__(self, *args):
+        if len(args) < 2 or len(args) > 5:
+            raise Exception('Incorrect participants count')
         if self.actions is None:
             self.actions = make_cards(store.simple_sex_actions_data)
-        self.participants = [SexParticipant(participant_1[0], participant_1[1]),
-                             SexParticipant(participant_2[0], participant_2[1])]
-        self.participants.extend([SexParticipant(i[0], i[1]) for i in args])
+        self.participants = [SexParticipant(participant[0], participant[1]) for participant in args]
         self.target_picker = None
         self.target = None
         self.current_card = None
@@ -39,9 +37,7 @@ class SimpleSex(object):
         renpy.call_screen('sc_simplesex_final', self)
 
     def get_player(self):
-        for i in self.participants:
-            if i.player_controlled:
-                return i
+        return next((i for i in self.participants if i.player_controlled))
 
     def set_target(self, target):
         self.target = target
