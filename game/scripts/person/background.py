@@ -82,6 +82,7 @@ class Homeworld(BackgroundBase):
         super(Homeworld, self).__init__(id_, data_dict)
         value = self.data_dict[id_]['descriptions']
         self._description = random.choice(value)
+        self.technical_level = random.choice(self.available_technical_levels)
 
 
 class Family(BackgroundBase):
@@ -101,6 +102,9 @@ class Education(BackgroundBase):
             self.skills = None
         self._description = self.data_dict[id_]['description']
 
+    def is_available_tech(self, background):
+        return self.technical_level <= background.technical_level
+
 
 class Occupation(BackgroundBase):
 
@@ -110,6 +114,9 @@ class Occupation(BackgroundBase):
             self.skills = self.data_dict[id_]['skills']
         except KeyError:
             self.skills = None
+
+    def is_available_tech(self, background):
+        return self.technical_level == background.technical_level
 
 
 class Culture(BackgroundBase):
@@ -199,7 +206,7 @@ class Background(object):
                           for education in store.educations_dict.keys()]
             available_educations = []
             for education in educations:
-                if self.world.is_available_tech(education) and self.family.is_available_prestige(education):
+                if education.is_available_tech(self.world) and self.family.is_available_prestige(education):
                     available_educations.append(education)
             try:
                 self.education = random.choice(available_educations)
@@ -213,7 +220,7 @@ class Background(object):
             available_occupations = []
             for occupation in store.occupations_dict.keys():
                 current = Occupation(occupation)
-                if (self.world.is_available_tech(current) and
+                if (current.is_available_tech(self.world) and
                     self.family.is_available_prestige(current)):
                     available_occupations.append(current)
             try:
