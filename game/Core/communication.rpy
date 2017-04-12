@@ -7,7 +7,8 @@ label lbl_captive(target):
         visavis = target
         target.say_phrase('captive_hello')
         options = CardsMaker()
-        options.add_entry('captive_loot', edge_captive_options)     
+        if visavis.has_items():
+            options.add_entry('captive_loot', edge_captive_options)     
         options.add_entry('captive_sell', edge_captive_options)  
         options.add_entry('captive_rape', edge_captive_options)          
         options.add_entry('captive_slay', edge_captive_options)          
@@ -423,6 +424,39 @@ label lbl_edge_captive_capture(card):
         slaver = player
         slaver.enslave(visavis)
     return
+
+label lbl_edge_captive_loot(card):
+    python:
+        loot = visavis.all_items()
+        visavis.transfer_all(player)
+    
+    'looted: [loot]'
+    call lbl_captive(visavis)
+    return
+
+label lbl_edge_captive_rape(card):
+    python:
+        sex = SimpleSex((player, 'controlled'), (visavis, 'forced'))
+        result = sex.get_results()
+
+    call lbl_captive(visavis)
+    return
+
+label lbl_edge_captive_slay(card):
+    "slayed"
+    python:
+        visavis.die()
+
+    return
+
+label lbl_edge_captive_release(card):
+    python:
+        if visavis in player.slaves.slaves():
+            player.remove_slave()
+
+    return
+
+
 
 
 

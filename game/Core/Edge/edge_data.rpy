@@ -278,6 +278,6 @@ init -10 python:
 
     edge_quest_options = {
     'quest_duel': {'name': 'Duel', 'description': __('Duel\nWin a fight against this character.'), 'label': 'lbl_edge_duel', 'image': 'miscards', }, 
-    'quest_please': {'name': 'Sexualy please', 'description': __('Sexualy please\nThis character craves for exceptional pleasure.'), 'label': 'lbl_edge_duel', 'image': 'miscards', }, 
+    'quest_please': {'name': 'Sexualy please', 'description': __('Sexualy please\nThis character craves for exceptional pleasure.'), 'label': 'lbl_makelove', 'image': 'miscards', }, 
 
     }

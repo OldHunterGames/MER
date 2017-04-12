@@ -98,7 +98,7 @@ label evn_edge_bukake(event):
 
     if True:
         'You can use bukake-sluts now'
-        $ player.schedule.unlock('options', ScheduleObj('bukake', edge_services_data))
+        $ player.schedule.unlock('optional', ScheduleObject('bukake', edge_services_data))
 
     $ edge.options.append('bukake')
     return True
