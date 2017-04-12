@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 
+
 class ItemsStorage(object):
-    
+
     def __init__(self):
         self.storage = []
         self.money = 0
@@ -53,7 +54,7 @@ class ItemsStorage(object):
             else:
                 self.storage.remove(get_item)
                 returned = get_item
-        
+
         if return_item:
             return returned
 
@@ -68,10 +69,11 @@ class ItemsStorage(object):
                 current.increase_amount(value)
             else:
                 self.storage.append(item)
-                item.increase_amount(value-1)
+                item.increase_amount(value - 1)
         else:
             if item not in self.storage:
                 self.storage.append(item)
+
     @property
     def items(self):
         return [i for i in self.storage]
@@ -81,9 +83,8 @@ class ItemsStorage(object):
         storage.add_item(item)
 
     def transfer_all(self, storage):
-        for i in self.items:
+        for i in [i for i in self.storage]:
             self.transfer_item(i, storage, 'all')
-
 
     def get_by_id(self, id_):
         for i in self.storage:
