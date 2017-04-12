@@ -20,9 +20,11 @@ screen sc_show_turn(simplesex):
             yalign 0.5
         vbox:
             xalign 0.75
-            ypos 80
+            ypos 50
             image picker.avatar()
             vbox:
+                xsize 200
+                box_wrap True
                 xalign 0.5
                 text picker.name
                 text '%s %s'%(picker.sexual_suite['name'], picker.sexual_orientation['name'])
@@ -34,10 +36,12 @@ screen sc_show_turn(simplesex):
             ypos 360
         vbox:
             xalign 0.75
-            ypos 430
-            image simplesex.target.avatar()
+            ypos 400
+            image target.avatar()
             vbox:
                 xalign 0.5
+                xsize 200
+                box_wrap True
                 text target.name
                 text '%s %s'%(target.sexual_suite['name'], target.sexual_orientation['name'])
                 text simplesex.get_target_rating()
@@ -52,17 +56,33 @@ screen sc_simplesex_picktarget(simplesex):
                 yalign 0.0
                 spacing 10
                 for i in simplesex.available_targets(simplesex.target_picker):
-                    imagebutton:
-                        idle i.avatar((100, 100))
-                        action Function(simplesex.set_target, i)
+                    vbox:
+                        imagebutton:
+                            idle i.avatar((100, 100))
+                            action Function(simplesex.set_target, i)
+                        text i.name
+                        text '%s %s'%(i.sexual_suite['name'], i.sexual_orientation['name'])
+                        text i.get_rating_description(i.calc_rating())
         if simplesex.target_picker is not None:
-            image simplesex.target_picker.avatar():
-                xalign 0.4
-                ypos 140
+            vbox:
+                xalign 0.0
+                ypos 20
+                box_wrap True
+                xmaximum 200
+                image simplesex.target_picker.avatar()
+                text simplesex.target_picker.name
+                text '%s %s'%(simplesex.target_picker.sexual_suite['name'], simplesex.target_picker.sexual_orientation['name'])
+                text simplesex.target_picker.get_rating_description(simplesex.target_picker.calc_rating())
         if simplesex.target is not None:
-            image simplesex.target.avatar():
-                xalign 0.4
-                ypos 380
+            vbox:
+                xalign 0.0
+                ypos 330
+                box_wrap True
+                xmaximum 200
+                image simplesex.target.avatar()
+                text simplesex.target.name
+                text '%s %s'%(simplesex.target.sexual_suite['name'], simplesex.target.sexual_orientation['name'])
+                text simplesex.target.get_rating_description(simplesex.target.calc_rating())
 
         if simplesex.target_picker is None:
             hbox:
@@ -70,9 +90,14 @@ screen sc_simplesex_picktarget(simplesex):
                 yalign 1.0
                 spacing 10
                 for i in simplesex.get_actives():
-                    imagebutton:
-                        idle i.avatar((100, 100))
-                        action Function(simplesex.set_target_picker, i)
+                    vbox:
+                        box_wrap True
+                        imagebutton:
+                            idle i.avatar((100, 100))
+                            action Function(simplesex.set_target_picker, i)
+                        text i.name
+                        text '%s %s'%(i.sexual_suite['name'], i.sexual_orientation['name'])
+                        text i.get_rating_description(i.calc_rating())
 
         textbutton "Choose action":
             xalign 0.6
@@ -84,23 +109,28 @@ screen sc_pick_sexaction(simplesex):
         xfill True
         yfill True
         
-        image simplesex.target.avatar()
+        vbox:
+            xmaximum 200
+            box_wrap True
+            image simplesex.target.avatar()
+            text simplesex.get_target_rating()
+            text '%s %s'%(simplesex.target.sexual_suite['name'], simplesex.target.sexual_orientation['name'])
         
-        image simplesex.target_picker.avatar():
-            ypos 480
-        if simplesex.current_card is not None:
-            text simplesex.get_actor_rating():
-                ypos 690
-            text simplesex.get_target_rating():
-                ypos 210
+        vbox:
+            ypos 380
+            xmaximum 200
+            box_wrap True
+            image simplesex.target_picker.avatar()
+            text simplesex.get_actor_rating()
+            text '%s %s'%(simplesex.target_picker.sexual_suite['name'], simplesex.target_picker.sexual_orientation['name'])
 
-            imagebutton:
-                xalign 0.5
-                idle simplesex.current_card.image()
-                action Return()
-            text simplesex.current_card.name:
-                xalign 0.5
-                ypos 620
+        imagebutton:
+            xalign 0.4
+            idle simplesex.current_card.image()
+            action Return()
+        text simplesex.current_card.name:
+            xalign 0.4
+            ypos 620
 
         hbox:
             xalign 1.0

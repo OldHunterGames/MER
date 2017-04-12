@@ -278,7 +278,7 @@ class SexEffect(object):
                 locals()[value] = self._change_rating(locals()[value], 1)
             friction = penetrator.size - receiver.size
             wetness = max(penetrator, receiver,
-                          key=lambda organ: organ.wetness)
+                          key=lambda organ: organ.wetness).wetness
             if friction < 0:
                 locals()[penetrator_owner] = self._change_rating(
                     locals()[penetrator_owner], -1)
