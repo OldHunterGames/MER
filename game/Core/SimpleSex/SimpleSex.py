@@ -53,8 +53,12 @@ class SimpleSex(object):
         while len(actives) > 0:
             if len(actives) < 2:
                 self.set_target_picker(self.get_actives()[0])
-
-            renpy.call_screen('sc_simplesex_picktarget', self)
+            if len(self.participants) > 2:
+                renpy.call_screen('sc_simplesex_picktarget', self)
+            else:
+                for i in self.participants:
+                    if i != self.target_picker:
+                        self.set_target(i)
             actions = self.get_actions(self.target_picker, self.target)
             self.current_actions = actions[0:4]
             self.set_card(actions[4])

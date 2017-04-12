@@ -15,31 +15,29 @@ screen sc_show_turn(simplesex):
         image simplesex.current_card.image():
             xalign 0.4
             yalign 0.5
-        image simplesex.target_picker.avatar():
+        vbox:
             xalign 0.75
             ypos 80
-        text simplesex.target_picker.name:
-            xalign 0.75
-            ypos 285
-
-        text simplesex.target_picker.sexual_orientation['description']:
-            xalign 0.75
-            ypos 295
-        text simplesex.get_actor_rating():
-            xalign 0.75
-            ypos 305
+            image simplesex.target_picker.avatar()
+            vbox:
+                xalign 0.5
+                text simplesex.target_picker.name
+                text simplesex.target_picker.sexual_orientation['name']
+                text simplesex.get_actor_rating()
 
         textbutton 'Forward':
             action Return()
             xalign 0.75
-            ypos 350
-
-        image simplesex.target.avatar():
+            ypos 360
+        vbox:
             xalign 0.75
-            ypos 440
-        text simplesex.get_target_rating():
-            xalign 0.75
-            ypos 640
+            ypos 430
+            image simplesex.target.avatar()
+            vbox:
+                xalign 0.5
+                text simplesex.target.name
+                text simplesex.get_target_rating()
+                text simplesex.target.sexual_orientation['name']
 
 screen sc_simplesex_picktarget(simplesex):
     window:
