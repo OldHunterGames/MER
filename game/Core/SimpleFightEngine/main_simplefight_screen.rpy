@@ -11,6 +11,8 @@ init 1 python:
             self.captive = captive
 
         def run(self):
+            self.captive.set_token('conquest')
+            self.captive.relations(self.slaver).stance -= 1
             renpy.call_in_new_context('lbl_captive', self.captive)
 
 screen sc_simple_fight(fight):
