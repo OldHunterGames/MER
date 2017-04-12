@@ -201,7 +201,7 @@ class DescriptionMaker(object):
         person = self.person
         background = self.person.background
         weapon_txt = self.make_weapon_text()
-        alignment_desc = [str.capitalize(i)
+        alignment_desc = [i.capitalize()
                           for i in person.alignment.description()]
         get_feature = person.feature_by_slot
         profession = person.feature_by_slot('profession')
