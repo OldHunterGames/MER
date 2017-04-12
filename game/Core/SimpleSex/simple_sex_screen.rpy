@@ -9,6 +9,9 @@ screen sc_simplesex(simplesex):
         yfill True
 
 screen sc_show_turn(simplesex):
+    python:
+        target = simplesex.target
+        picker = simplesex.target_picker
     window:
         xfill True
         yfill True
@@ -18,11 +21,11 @@ screen sc_show_turn(simplesex):
         vbox:
             xalign 0.75
             ypos 80
-            image simplesex.target_picker.avatar()
+            image picker.avatar()
             vbox:
                 xalign 0.5
-                text simplesex.target_picker.name
-                text simplesex.target_picker.sexual_orientation['name']
+                text picker.name
+                text '%s %s'%(picker.sexual_suite['name'], picker.sexual_orientation['name'])
                 text simplesex.get_actor_rating()
 
         textbutton 'Forward':
@@ -35,9 +38,9 @@ screen sc_show_turn(simplesex):
             image simplesex.target.avatar()
             vbox:
                 xalign 0.5
-                text simplesex.target.name
+                text target.name
+                text '%s %s'%(target.sexual_suite['name'], target.sexual_orientation['name'])
                 text simplesex.get_target_rating()
-                text simplesex.target.sexual_orientation['name']
 
 screen sc_simplesex_picktarget(simplesex):
     window:

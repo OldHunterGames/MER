@@ -63,7 +63,6 @@ class SimpleSex(object):
             self.current_actions = actions[0:4]
             self.set_card(actions[4])
             renpy.call_screen('sc_pick_sexaction', self)
-            renpy.call_screen('sc_show_turn', self)
             actives.remove(self.target_picker)
             self.target_picker.act(self.current_card, self.target)
             self.target_picker.lock()
