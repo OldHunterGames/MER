@@ -113,7 +113,7 @@ class Schedule(object):
         self._available_rations = {}
         self._available_jobs = {}
         self._available_accommodations = {}
-        self._available_optionals = {}
+        self._available_options = {}
         self._optional = OrderedDict({0: None, 1: None, 2: None})
         self._job = None
         self._job_buffer = None
