@@ -166,7 +166,7 @@ class EdgeEngine(object):
         for i in dict:
             obj = ScheduleObject(i, dict[i])
             if not obj.hidden:
-                person.schedule.unlock('option', obj)
+                person.schedule.unlock('optional', obj)
 
     def explore_all(self):
         for i in store.edge_locations.items():
