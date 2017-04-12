@@ -410,10 +410,10 @@ label lbl_edge_duel(card):
 label lbl_edge_captive_sell(card):
     python:
         price = visavis.get_price()
-        if slave in player.slaves.slaves():
-            slave = player.remove_slave()
+        if visavis in player.slaves.slaves():
+            player.remove_slave()
         player.add_money(price)
-        player.forget_person(slave)
+        player.forget_person(visavis)
     edge_slaver "I'll give you [price] bars for this slave."
 
     return    
