@@ -167,7 +167,7 @@ class SlaveStorage(object):
     def add_slave(self, slave, master):
         if self.has_space():
             self._slaves.append(slave)
-            # self._slave_relations(slave, master)
+            self._slave_relations(slave, master)
             return True
         else:
             self._slaves.pop()
@@ -186,7 +186,7 @@ class SlaveStorage(object):
         return len(self._slaves) < self._max_slaves
 
     def _slave_relations(self, slave, master):
-        master.relations(slave).change_type('slave')
+        # master.relations(slave).change_type('slave')
         slave.set_master(master)
 
 

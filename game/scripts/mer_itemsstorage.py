@@ -74,11 +74,15 @@ class ItemsStorage(object):
                 self.storage.append(item)
     @property
     def items(self):
-        return self.storage
+        return [i for i in self.storage]
 
     def transfer_item(self, item, storage, value=1):
         item = self.remove_item(item, value)
         storage.add_item(item)
+
+    def transfer_all(self, storage):
+        for i in self.items:
+            self.transfer_item(i, storage, 'all')
 
 
     def get_by_id(self, id_):
