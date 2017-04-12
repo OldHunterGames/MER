@@ -470,3 +470,6 @@ class InventoryWielder(object):
 
     def get_slot(self, slot):
         return self.inventory.get_slot(slot)
+
+    def has_items(self):
+        return len(self.inventory.all_items()) > 0
