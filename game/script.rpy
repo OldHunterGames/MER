@@ -16,6 +16,7 @@ init -10 python:
     from mer_event import *
     from mer_metaperson import *
     from anatomy import BodyPart
+    from schedule import ScheduleObject, ScheduleJob
     from duel_engine import *
     from mer_command import *
     from mer_quest import *
