@@ -465,5 +465,8 @@ class InventoryWielder(object):
     def transfer_item(self, item, storage, value=1):
         self.inventory.transfer_item(item, storage, value)
 
+    def transfer_all(self, storage):
+        self.invetory.transfer_all(storage)
+
     def get_slot(self, slot):
         return self.inventory.get_slot(slot)
