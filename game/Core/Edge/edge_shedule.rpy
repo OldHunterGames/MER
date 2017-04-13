@@ -165,6 +165,37 @@ label edge_job_bukake(actor):
     'Cum is your food! Ration: [ration]'
     return
     
+label edge_job_hooker(actor):
+    python:
+        name = actor.name
+        actor.tense_need('wellness', 'unhealthy_job')
+        actor.tense_need('comfort', 'tiresome_job')
+        actor.tense_need('authority', 'humiliation')    
+        actor.tense_need('eros', 'sexplotation')    
+
+    call edge_jbevent_paysex(actor)
+
+    return
+
+label edge_jbevent_paysex(actor):
+    $ partner = gen_simple_person(gender='male')
+    $ partner.set_nickname("the client") 
+    partner "Let's fuck already!"
+
+    python:
+        name = actor.name
+        player.relations(partner) 
+        sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
+        result = sex.get_results()
+        performance = result[2]
+    'Performance: [performance]'
+    $ yeld = yeld_table[performance]
+
+    'You earned [yeld] bars this decade.'
+
+    return
+
+
 # label edge_job_manual(actor):
 #     python:
 #         name = actor.name

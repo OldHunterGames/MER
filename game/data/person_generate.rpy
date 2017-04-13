@@ -1634,9 +1634,10 @@ init python:
         
         return
         
-    def gen_simple_person(inputgenus):
-        genus = Genus(inputgenus)
-        gender = genus.get_gender()
+    def gen_simple_person(genus='human', gender = None):
+        genus = Genus(genus)
+        if not gender:
+            gender = genus.get_gender()
         age = genus.get_age()
         candidate = gen_random_person(genus=genus.name, gender=gender, age=age)
         add_features_common(candidate)

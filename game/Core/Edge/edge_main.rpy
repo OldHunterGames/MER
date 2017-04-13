@@ -66,7 +66,10 @@ label lbl_edge_main:
         edge_recruiter = gen_wise_master('human')  
         edge_sovereign.add_member(edge_recruiter)
         edge_recruiter.set_nickname("Serpis")   
-
+        armor = create_item('luxury_clothes', 'armor')
+        wpn = create_item('smallsword', 'weapon')
+        edge_recruiter.equip_on_slot('garment', armor)
+        edge_recruiter.equip_on_slot('weapon', wpn)
 
     # Special NPC - slaver of the Edge
         edge_slaver = gen_willed_master('human')
@@ -75,6 +78,10 @@ label lbl_edge_main:
         edge_slaver.set_nickname("The Slavedriver")
         edge_slaver.add_quest(SlaverQuest(one_time=False, **quests_data['slaver_quest']))
         npc = ['citisen', edge_slaver]
+        armor = create_item('luxury_clothes', 'armor')
+        wpn = create_item('smallsword', 'weapon')
+        edge_slaver.equip_on_slot('garment', armor)
+        edge_slaver.equip_on_slot('weapon', wpn)
 
     call lbl_edge_init_questrewards(npc)
 
@@ -85,6 +92,10 @@ label lbl_edge_main:
         edge_sovereign.add_member(edge_junker)
         edge_junker.set_nickname("The Junker")
         edge_junker.add_quest(SexualPleasureQuest(edge_junker, one_time=False, **quests_data['edge_junker_sex']))
+        armor = create_item('luxury_clothes', 'armor')
+        wpn = create_item('smallsword', 'weapon')
+        edge_junker.equip_on_slot('garment', armor)
+        edge_junker.equip_on_slot('weapon', wpn)
 
         player.relations(edge_junker) 
 

@@ -427,7 +427,11 @@ label lbl_edge_captive_capture(card):
 
 label lbl_edge_captive_loot(card):
     python:
-        loot = visavis.all_items()
+        loot = ''
+        for item in visavis.all_items():
+            loot += item.colored_name()
+            loot += ' '
+
         visavis.transfer_all(player)
     
     'looted: [loot]'
