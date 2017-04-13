@@ -95,7 +95,7 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                     imagebutton:
                         idle im.Scale(person.get_token_image(), card_x_size, card_y_size)
                         hover im.MatrixColor(im.Scale(person.get_token_image(), card_x_size, card_y_size), im.matrix.brightness(0.05))
-                        action Function(core.shift_relations, person), Hide('sc_character_info_screen') 
+                        action Function(core.shift_relations, person), If(return_l, Return(), false=Hide('sc_character_info_screen'))
                 else:
                     imagebutton:
                         idle im.Grayscale(im.Scale(person.get_token_image(), card_x_size, card_y_size))

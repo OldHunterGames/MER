@@ -1446,9 +1446,11 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.token = 'power'
 
     def set_token(self, token, free=False):
+        # if we get 2 antagonism in a row, we loose 1 stance point
+        # if we get any token, when antagonism is here, we get power instead
         if self.token == 'antagonism':
             if token == 'antagonism':
-                self.player_relations.stance -= 1
+                self.player_relations().stance -= 1
             else:
                 self.token = 'power'
                 return
