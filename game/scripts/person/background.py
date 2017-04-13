@@ -91,7 +91,8 @@ class Family(BackgroundBase):
         super(Family, self).__init__(id_, data_dict)
         self._description = self.data_dict[id_]['description']
 
-
+    def is_available_tech(self, background):
+        return self.technical_level <= background.technical_level
 class Education(BackgroundBase):
 
     def __init__(self, id_, data_dict='educations_dict'):
@@ -189,7 +190,7 @@ class Background(object):
                         for family in store.families_dict.keys()]
             available_families = []
             for family in families:
-                if self.world.is_available_prestige(family):
+                if self.world.is_available_prestige(family) and family.is_available_tech(self.world):
                     available_families.append(family)
 
             try:

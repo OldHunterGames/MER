@@ -46,15 +46,7 @@ def gen_random_person(genus=None, age=None, gender=None, world=None,
     p = Person(age, gender, genus, initial_fatness, initial_tonus)
     background = Background(age, world, culture, family, education, occupation)
     p.apply_background(background)
-    if gender == 'sexless':
-        gender = 'male'
-    elif gender == 'shemale':
-        gender = 'female'
-    try:
-        names = store.firstname[background.culture.id][gender]
-    except KeyError:
-        names = store.firstname['default'][gender]
-    p.firstname = choice(names)
+    gen_name(p, p.background.culture.id, gender)
     p.random_alignment()
     p.random_features()
     gen_sex_traits(p)
@@ -62,6 +54,16 @@ def gen_random_person(genus=None, age=None, gender=None, world=None,
     gen_features(p)
     return p
 
+def gen_name(person, culture_id, gender):
+    if gender == 'sexless':
+        gender = 'male'
+    elif gender == 'shemale':
+        gender = 'female'
+    try:
+        names = store.firstname[culture_id][gender]
+    except KeyError:
+        names = store.firstname['default'][gender]
+    person.firstname = choice(names)
 
 def gen_body_parts(person):
     gender = person.gender
