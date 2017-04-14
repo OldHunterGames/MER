@@ -40,6 +40,12 @@ class QuestTracker(object):
                 self.remove_quest(person.active_quest)
             person.set_active_quest(quest)
             person.remove_quest(quest)
+            person.die.add_callback(self._die_listener)
+
+    def _die_listener(self, person):
+        if person.active_quest is not None:
+            self.remove_quest(person.active_quest)
+        person.die.remove_callback(self._die_listener)
 
     def is_new(self, quest):
         return quest in self._new_quests
