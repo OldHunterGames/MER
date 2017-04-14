@@ -925,7 +925,7 @@ class FightQuest(Quest):
         self.target = person
         self.add_target(WinFightWithPerson(person))
 
-    def _finish(self):
+    def _finish(self, performer):
         self.target.remove_interaction('quest_duel')
         return True
 

@@ -303,8 +303,9 @@ class SexEffect(object):
     def _change_rating(self, value, new_value):
         if value < 0:
             return value
-        else:
-            return value + new_value
+        if new_value < 0:
+            return new_value
+        return value + new_value
 
     def calc_result(self, actor, taker):
         actor_rating = self._change_rating(self.INITIAL_RATING, self.quality)

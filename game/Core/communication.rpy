@@ -19,7 +19,6 @@ label lbl_captive(target):
     return
 
 label lbl_communicate(target):
-    $ player.drain_energy()
     if target in player.slaves.slaves():
         call lbl_captive(target)
     else:
@@ -28,6 +27,7 @@ label lbl_communicate(target):
     return
 
 label lbl_communicate_act(target):
+    $ player.drain_energy()
     $ visavis = target
     if not player.relations(visavis).first_impression:
         $ player.relations(visavis).first_impression = True
