@@ -1,5 +1,6 @@
 init -10 python:
     sys.path.append(renpy.loader.transfn("Core/SimpleFightEngine"))
+init -1 python:
     from simplefight import SimpleFight, FightQuest
 
 init 1 python:

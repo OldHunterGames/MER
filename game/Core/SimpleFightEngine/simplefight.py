@@ -3,6 +3,7 @@ import random
 from collections import defaultdict
 from scripts.mer_quest import Quest, QuestTarget
 from scripts.mer_utilities import Observable
+from scripts.mer_item import create_item
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -12,8 +13,18 @@ class SimpleFight(object):
 
     def __init__(self, allies_list, enemies_list, friendly_fight=False):
         # if fight is friendly, no one dies and you have no loot/slaves/corpses
-        self.allies = [SimpleCombatant(i, self) for i in allies_list]
-        self.enemies = [SimpleCombatant(i, self) for i in enemies_list]
+        self.allies = []
+        self.enemies = []
+        for i in allies_list:
+            if isinstance(i, str):
+                self.allies.append(CommonCombatant(i, self))
+            else:
+                self.allies.append(SimpleCombatant(i, self))
+        for i in enemies_list:
+            if isinstance(i, str):
+                self.enemies.append(CommonCombatant(i, self))
+            else:
+                self.enemies.append(SimpleCombatant(i, self))
         allies_average_skill = sum(
             [i.combat_level for i in self.allies]) / len(self.allies)
         enemies_average_skill = sum(
@@ -185,7 +196,7 @@ class SimpleFight(object):
                         self.ended = True
 
     def get_enemies(self):
-        return [i.person for i in self.enemies]
+        return [i.person for i in self.enemies if not isinstance(i, CommonCombatant)]
 
     def refresh_enemies(self):
         for i in self.enemies:
@@ -213,6 +224,9 @@ class SimpleFight(object):
                 for item in i.all_items():
                     loot.append(i.remove_item(item, 'all'))
             self.loot = loot
+            for i in self.enemies:
+                if isinstance(i, CommonCombatant):
+                    self.loot.extend(i.get_loot())
         return loot
 
     def get_corpses(self):
@@ -282,16 +296,16 @@ class SimpleCombatant(object):
         return self._target
 
     def combat_style(self):
-        if self.person.main_hand is not None:
-            if (self.person.main_hand.id == 'bare_hands' and
-                    self.person.other_hand.id == 'bare_hands'):
+        if self.main_hand is not None:
+            if (self.main_hand.id == 'bare_hands' and
+                    self.other_hand.id == 'bare_hands'):
                 return 'brawler'
         if self.has_shield():
             return 'shieldbearer'
-        if any([i.size == 'offhand' for i in self.person.weapons()]):
-            return 'cutthroat'
         if any([i.size == 'versatile' for i in self.weapons()]):
             return 'swashbuckler'
+        if any([i.size == 'offhand' for i in self.weapons()]):
+            return 'cutthroat'
         if any([i.size == 'twohand' for i in self.weapons()]):
             return 'wrecker'
         return 'brawler'
@@ -414,25 +428,29 @@ class SimpleCombatant(object):
     @property
     def armor_rate(self):
         try:
-            rate = self.person.armor.armor_rate
+            rate = self.armor.armor_rate
             if rate == 'unarmored':
                 rate = None
         except AttributeError:
             rate = None
         return rate
 
+    @property
+    def armor(self):
+        return self.person.armor
+
     def max_defence(self):
-        armor = self.person.armor
+        armor = self.armor
         try:
             quality = armor.quality
         except AttributeError:
-            return self.person.agility * 5
+            return self.agility * 5
         else:
             if armor.armor_rate == 'light_armor':
-                return (self.person.agility + quality * 2) * 3
+                return (self.agility + quality * 2) * 3
             elif armor.armor_rate == 'heavy_armor':
                 return quality * 10
-        return self.person.agility * 5
+        return self.agility * 5
 
     @property
     def defence(self):
@@ -478,14 +496,19 @@ class SimpleCombatant(object):
             if self.hp <= 0:
                 if source.damage_type() != 'subdual':
                     # player can't die, no one dies if fight is friendly
-                    if not self.person.player_controlled and not self.fight.friendly_fight:
-                        self.person.die()
+                    if self.person is not None:
+                        if not self.person.player_controlled and not self.fight.friendly_fight:
+                            self.person.die()
         else:
             self.defence -= value
 
     @property
     def main_hand(self):
         return self.person.main_hand
+
+    @property
+    def other_hand(self):
+        return self.person.other_hand
 
     def vitality(self):
         return self.defence + self.hp
@@ -499,6 +522,71 @@ class SimpleCombatant(object):
         self.incoming_damage_multipliers = []
         self.protections = []
         self.get_meneuvers()
+
+
+class CommonCombatant(SimpleCombatant):
+
+    def __init__(self, id_, fight):
+        stats = store.common_combatants[id_]
+        self.stats = stats
+        super(CommonCombatant, self).__init__(None, fight)
+
+    def combat_style(self):
+        return self.stats.get('combat_style', 'brawler')
+
+    @property
+    def hp(self):
+        return self._hp
+
+    @hp.setter
+    def hp(self, value):
+        self._hp = value
+
+    @property
+    def physique(self):
+        return self.stats.get('physique', 0)
+
+    @property
+    def agility(self):
+        return self.stats.get('agility', 0)
+
+    @property
+    def name(self):
+        return self.stats.get('name')
+
+    @property
+    def avatar(self):
+        return self.stats.get('avatar')
+
+    @property
+    def armor(self):
+        return self._armor
+
+    @property
+    def combat_level(self):
+        return self.stats.get('combat_level', 1)
+
+    def get_loot(self):
+        loot = []
+        for i in self.stats.get('loot', list()):
+            loot.append(create_item(i[0], i[1]))
+        return loot
+
+    def max_hp(self):
+        return self.stats.get('hp', 1)
+
+    def max_defence(self):
+        return self.stats.get('defence', 1)
+
+    @property
+    def attack(self):
+        return self.stats.get('attack', 1) + self.power_up
+
+    def weight(self):
+        return self.stats.get('weight', 'mobile')
+
+    def weapons(self):
+        return []
 
 
 class Maneuver(object):
