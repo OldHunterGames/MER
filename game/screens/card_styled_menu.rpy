@@ -3,11 +3,13 @@ init python:
     class CardMenu(object):
 
 
-        def __init__(self, cards_list, current=None, cancel=False):
-
+        def __init__(self, cards_list, current=None, cancel=False, one_action=True):
+            if not one_action:
+                cancel = True
             self._cards_list = cards_list
             self.current_card = current
             self.cancel = cancel
+            self.one_action = one_action
 
         @property
         def cards_list(self):
@@ -29,7 +31,11 @@ init python:
         def run(self):
             card = self.current_card
             card.run()
-            renpy.return_statement()
+            if self.one_action:
+                renpy.return_statement()
+            else:
+                self._cards_list.remove(self.current_card)
+                self.current_card = None
             
 
     class SellMenu(CardMenu):
