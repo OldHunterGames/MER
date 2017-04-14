@@ -217,7 +217,7 @@ init -10 python:
         'spc_become_slave': {'name': 'Bond to slavery', 'description': __('Bond to slavery\nThe simplest way to get into Eternal Rome is to sell yourself into slavery. Your new master will take you there.'), 'label': 'lbl_edge_slave_auction', 'image': 'miscards', }, 
         'spc_recruiter_bond': {'name': 'Job options', 'description': __('Work for a Major House\nAsk if you can apply for a job for a Major House.'), 'label': 'lbl_edge_spc_bond_start', 'image': 'miscards', }, 
         'spc_recruiter_citisen': {'name': 'Become a citisen', 'description': __('Major House membersip\nYou must prove yourself worthy.'), 'label': 'lbl_edge_spc_citisen_start', 'image': 'miscards', }, 
-
+        'spc_sellall': {'name': 'Sell junk', 'description': __('Sell junk\nJunker will buy any items for a recycling. In Eternal Rome all materials are preccious.'), 'label': 'lbl_edge_spc_sellall', 'image': 'miscards', }, 
 
         'ho_promenade': {'name': 'Promenade', 'description': __('Promenade\nOpposed Spirit check. Gain communication and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_promenade', 'image': 'miscards', }, 
         'ho_booze': {'name': 'Booze up', 'description': __('Booze up\nCosts 1 bar. Opposed Spirit check. Gain amusement and "Lovers" relationship arcane.'), 'label': 'lbl_edge_ho_booze', 'image': 'miscards', }, 

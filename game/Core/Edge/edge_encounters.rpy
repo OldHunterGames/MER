@@ -32,13 +32,23 @@ label lbl_edge_errant_talk(card):
 label lbl_edge_enc_engage(card):
     $ player.moral_action(target=stranger, activity='ardent') 
     if player.check_your_privilege(stranger):
-        if stranger.armor_heavier_than(player):
+        '[stranger.name] tries to run away.'
+        $ difficulty = stranger.physique
+        $ result = core.skillcheck(player, 'physique', difficulty)         
+        if result > 0:
             call lbl_edge_dominate(stranger)
         else:
             'Wanderer runs away.'
     else:
         call lbl_edge_errant_fight([player], [stranger]) 
         
+    return
+
+label lbl_edge_dominate(target):
+    '[target.name] does not resist and surrenders.'
+    target 'Fucking bastard... I yeld!'
+    call lbl_captive(target)
+
     return
 
 label lbl_edge_enc_decieve(card):

@@ -9,7 +9,8 @@ label lbl_captive(target):
         options = CardsMaker()
         if visavis.has_items():
             options.add_entry('captive_loot', edge_captive_options)     
-        options.add_entry('captive_sell', edge_captive_options)  
+        if 'slaver' in edge.options:
+            options.add_entry('captive_sell', edge_captive_options)  
         options.add_entry('captive_rape', edge_captive_options)          
         options.add_entry('captive_slay', edge_captive_options)          
         options.add_entry('captive_capture', edge_captive_options)     
@@ -43,6 +44,8 @@ label lbl_communicate_act(target):
             options.add_entry('com_obligation', edge_option_cards)
         if target == edge_slaver:
             options.add_entry('spc_become_slave', edge_option_cards)    
+        if target == edge_junker:
+            options.add_entry('spc_sellall', edge_option_cards)    
         if target == edge_recruiter:
             if not fate:
                 options.add_entry('spc_recruiter_bond', edge_option_cards)  
@@ -57,6 +60,10 @@ label lbl_communicate_act(target):
     hide card
     return
 
+
+label lbl_edge_spc_sellall(card):
+    $ SellItems(player, CardMenu).run()
+    return
 
 label lbl_comm_garantor(card):
     visavis 'Ok. I will be your garantor.'
@@ -396,14 +403,13 @@ label lbl_edge_ho_booze(card):
     return
 
 label lbl_makelove(card):
-    $ SimpleSex((player, 'controled'), (visavis, 'wishful'))
+    $ SimpleSex((player, 'controlled'), (visavis, 'wishful'))
     return
 
 label lbl_edge_duel(card):
     python:
-        fight = SimpleFight(allies, enemies)
+        fight = SimpleFight([player], [visavis], friendly_fight=True)
         enemies = fight.get_enemies()
-        loot = fight.get_loot()
 
     return
     
