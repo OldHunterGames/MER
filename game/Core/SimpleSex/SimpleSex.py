@@ -143,7 +143,7 @@ class SimpleSex(object):
             SatisfySex(i, i.calc_rating()).run()
 
     def get_results(self):
-        return [(i.person, i.calc_rating()) for i in self.participants]
+        return dict([(i.person, i.calc_rating()) for i in self.participants])
 
 
 class SexParticipant(object):
