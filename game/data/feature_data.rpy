@@ -479,7 +479,8 @@
         'versatile': {'name': __('weapon'), 'slot': 'wpn_size', 'visible': True},
         'twohand': {'name': __('twohanded weapon'), 'slot': 'wpn_size', 'visible': True},     
         'shield': {'name': __('shield'), 'slot': 'wpn_size', 'visible': True},        
-        
+        'unarmed': {'name': __('unarmed'), 'slot': 'wpn_size', 'visible': True},
+
         'subdual': {'name': __('subdual'), 'slot': 'wpn_dmg', 'visible': True},        
         'slashing': {'name': __('slashing'), 'slot': 'wpn_dmg', 'visible': True},  
         'piercing': {'name': __('piercing'), 'slot': 'wpn_dmg', 'visible': True},  
