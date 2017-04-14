@@ -5,7 +5,7 @@ init python:
             self._item = item
 
         def name(self):
-            return self._item.name()
+            return self._item.colored_name()
 
         def description(self):
             return self._item.description()
@@ -91,7 +91,7 @@ screen sc_simple_equip(person, look_mode=False, storage=None):
                         name = i
                         img = im.Scale(card_back(), 200, 300)
                     else:
-                        name = item.name()
+                        name = item.colored_name()
                         img = im.Scale(item.image(), 200, 300)
                         item = EquipCard(person, person.get_slot(i).get_item(), i)
                     items = [
@@ -115,10 +115,10 @@ screen sc_simple_equip(person, look_mode=False, storage=None):
                         items.append(
                             UnequipCard(person, 'weapon2'))
             if size == 'twohand' and person.main_hand.id != 'bare_hands':
-                name = person.main_hand.name()
+                name = person.main_hand.colored_name()
                 img = im.Scale(im.Grayscale(person.main_hand.image()), 200, 300)
             else:
-                name = person.other_hand.name()
+                name = person.other_hand.colored_name()
                 img = im.Scale(person.other_hand.image(), 200, 300)
             current = EquipCard(person, person.other_hand, 'weapon2')
 

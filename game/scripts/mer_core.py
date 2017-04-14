@@ -42,7 +42,7 @@ class QuestTracker(object):
             person.remove_quest(quest)
             person.die.add_callback(self._die_listener)
 
-    def _die_listener(self, person):
+    def _die_listener(self, person, *args, **kwargs):
         if person.active_quest is not None:
             self.remove_quest(person.active_quest)
         person.die.remove_callback(self._die_listener)
