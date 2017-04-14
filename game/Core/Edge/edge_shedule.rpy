@@ -191,11 +191,13 @@ label edge_jbevent_paysex(actor):
         name = actor.name
         sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
         result = sex.get_results()
-        performance = result[2]
+        performance = result[partner]
         
-    if result[2] >= 0:
+    if result[partner] >= 0:
         $ yeld = yeld_table[performance]
         'You earned [yeld] bars this decade.'
+        $ player.add_money(yeld)
+
     else:
         call edge_jbevent_assault(actor)
 

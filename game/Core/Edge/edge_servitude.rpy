@@ -188,7 +188,7 @@ label lbl_edge_fuck_challenge(skill):
 
     $ sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
     $ result = sex.get_results()
-    if result[2] > 3:
+    if result[partner] > 3:
         'WIN'
     else:
         'LOSE'
