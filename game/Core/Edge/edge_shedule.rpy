@@ -172,26 +172,47 @@ label edge_job_hooker(actor):
         actor.tense_need('comfort', 'tiresome_job')
         actor.tense_need('authority', 'humiliation')    
         actor.tense_need('eros', 'sexplotation')    
+        partner = gen_simple_person(gender='male')
+        partner.set_nickname("the client") 
+        player.relations(partner) 
+        chance = choice([1,2])
 
-    call edge_jbevent_paysex(actor)
+    if chance == 1:
+        call edge_jbevent_paysex(actor)
+    else:
+        call edge_jbevent_assault(actor)
 
     return
 
 label edge_jbevent_paysex(actor):
-    $ partner = gen_simple_person(gender='male')
-    $ partner.set_nickname("the client") 
+    'Working as a hooker [actor.name] meets important client...'
     partner "Let's fuck already!"
-
     python:
         name = actor.name
-        player.relations(partner) 
         sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
         result = sex.get_results()
         performance = result[2]
-    'Performance: [performance]'
-    $ yeld = yeld_table[performance]
+        
+    if result[2] >= 0:
+        $ yeld = yeld_table[performance]
+        'You earned [yeld] bars this decade.'
+    else:
+        call edge_jbevent_assault(actor)
 
-    'You earned [yeld] bars this decade.'
+    return
+
+
+label edge_jbevent_assault(actor):
+    $ stranger = partner
+    $ visavis = stranger
+    'One of the clients assaults you'
+    stranger "Give me all you got, yoy fucking whore!"
+        
+    python:     
+        options = CardsMaker()
+        options.add_entry('errant_engage', edge_errant_options)
+        CardMenu(options.run()).show()
+    hide card    
 
     return
 

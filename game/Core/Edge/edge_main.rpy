@@ -91,7 +91,7 @@ label lbl_edge_main:
         edge_junker = gen_willed_master('human')
         edge_sovereign.add_member(edge_junker)
         edge_junker.set_nickname("The Junker")
-        edge_junker.add_quest(SexualPleasureQuest(edge_junker, one_time=False, **quests_data['edge_junker_sex']))
+        edge_junker.add_quest(SexualPleasureQuest(edge_junker, pleasure=2, one_time=False, **quests_data['edge_junker_sex']))
         armor = create_item('luxury_clothes', 'armor')
         wpn = create_item('smallsword', 'weapon')
         edge_junker.equip_on_slot('garment', armor)
