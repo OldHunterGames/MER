@@ -153,8 +153,8 @@ persons_list = []
 
 def gen_sex_traits(person):
     # TODO: sex traits generation rules instead of random
-    person.sexual_suite = choice(store.sexual_type.values())
-    person.sexual_orientation = choice(store.sexual_orientation.values())
+    person.set_sexual_suite(choice(store.sexual_type.keys()))
+    person.set_sexual_orientation(choice(store.sexual_orientation.keys()))
 
 
 class SlaveStorage(object):
@@ -768,6 +768,22 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.rewards = CardsMaker()
         self._interactions = CardsMaker()
         self._active_quest = None
+        self._sexual_orientation = None
+        self._sexual_suite = None
+
+    @property
+    def sexual_orientation(self):
+        return self._sexual_orientation
+
+    @property
+    def sexual_suite(self):
+        return self._sexual_suite
+
+    def set_sexual_orientation(self, id):
+        self._sexual_orientation = store.sexual_orientation[id]
+
+    def set_sexual_suite(self, id):
+        self._sexual_suite = store.sexual_type[id]
 
     def get_interactions(self):
         self._interactions.set_context(owner=self)
