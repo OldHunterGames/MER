@@ -291,13 +291,11 @@ class SimplyfiedInventory(Inventory):
         elif slot == 'weapon2':
             self.equip_weapon(item, 'other_hand')
 
-    @property
-    def items(self):
-        # return unequiped items only
-        return [i for i in self.storage if not i.equiped]
+    def equiped_items(self):
+        return [i for i in self.storage if i.equiped]
 
-    def all_items(self):
-        return [i for i in self.storage]
+    def unequiped_items(self):
+        return [i for i in self.storage if not i.equiped]
 
 
 class InventoryWielder(object):
@@ -310,9 +308,6 @@ class InventoryWielder(object):
     def any_equiped(self):
         return any(self.equiped_items())
 
-    def all_items(self):
-        return self.inventory.all_items()
-
     @property
     def trade_level(self):
         return self.inventory.trade_level
@@ -320,9 +315,6 @@ class InventoryWielder(object):
     @trade_level.setter
     def trade_level(self, value):
         self.inventory.trade_level = value
-
-    def get_unequiped(self):
-        return [i for i in self.inventory.storage if not i.equiped]
 
     @property
     def money(self):
@@ -384,6 +376,9 @@ class InventoryWielder(object):
     @property
     def items(self):
         return self.inventory.items
+
+    def unequiped_items(self):
+        return self.inventory.unequiped_items()
 
     @property
     def main_hand(self):
@@ -472,4 +467,7 @@ class InventoryWielder(object):
         return self.inventory.get_slot(slot)
 
     def has_items(self):
-        return len(self.inventory.all_items()) > 0
+        return len(self.inventory.items) > 0
+
+    def all_items(self):
+        return self.inventory.items

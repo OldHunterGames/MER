@@ -60,7 +60,7 @@ init python:
         
         def run(self):
             print 'sell called'
-            self.card_menu([SellCard(self.person, i) for i in self.person.items], cancel=True, one_action=False).show()
+            self.card_menu([SellCard(self.person, i) for i in self.person.unequiped_items()], cancel=True, one_action=False).show()
 
 screen sc_simple_equip(person, look_mode=False, storage=None):
     modal True
