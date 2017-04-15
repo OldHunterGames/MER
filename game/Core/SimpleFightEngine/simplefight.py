@@ -221,7 +221,7 @@ class SimpleFight(object):
         except AttributeError:
             loot = []
             for i in self.get_corpses():
-                for item in i.all_items():
+                for item in i.items:
                     loot.append(i.remove_item(item, 'all'))
             self.loot = loot
             for i in self.enemies:
@@ -1004,6 +1004,7 @@ class WinFightWithPerson(QuestTarget):
             self._completed = True
         if self.completed(None):
             SimpleFight.end.remove_callback(self._fight_listener)
+            self.target.remove_interaction('quest_duel')
 
 
 class FightQuest(Quest):
@@ -1014,7 +1015,6 @@ class FightQuest(Quest):
         self.add_target(WinFightWithPerson(person))
 
     def _finish(self, performer):
-        self.target.remove_interaction('quest_duel')
         return True
 
     def _activate(self):

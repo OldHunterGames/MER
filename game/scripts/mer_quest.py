@@ -33,6 +33,8 @@ class Quest(object):
     def activate(self):
         self._active = True
         self._activate()
+        for i in self._targets:
+            i.activate()
 
     def _activate(self):
         return
@@ -99,6 +101,9 @@ class QuestTarget(object):
         # override this in child classes
         return
 
+    def activate(self):
+        # override this in child classes
+        return
 
 class BringPerson(QuestTarget):
 

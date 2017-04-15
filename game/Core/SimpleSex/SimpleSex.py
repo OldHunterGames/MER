@@ -140,7 +140,7 @@ class SimpleSex(object):
 
     def finish(self):
         for i in self.participants:
-            SatisfySex(i, i.calc_rating()).run()
+            SatisfySex(i.person, i.calc_rating()).run()
 
     def get_results(self):
         return dict([(i.person, i.calc_rating()) for i in self.participants])
@@ -329,6 +329,8 @@ class SexualPleasureTarget(QuestTarget):
         self.target = person
         self.pleasure = pleasure
         self._completed = False
+
+    def activate(self):
         SatisfySex.run.add_callback(self._satisfy_listener)
 
     def _satisfy_listener(self, satisfy, *args, **kwargs):
