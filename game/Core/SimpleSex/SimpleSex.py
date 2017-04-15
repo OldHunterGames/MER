@@ -327,7 +327,7 @@ class SexualPleasureTarget(QuestTarget):
     def __init__(self, person, pleasure=5, *args, **kwargs):
         super(SexualPleasureTarget, self).__init__(*args, **kwargs)
         self.target = person
-        self.pleasure = 5
+        self.pleasure = pleasure
         self._completed = False
         SatisfySex.run.add_callback(self._satisfy_listener)
 
