@@ -157,6 +157,8 @@ label lbl_postfight(fight):
         if winner == 'allies' and not fight.friendly_fight:
             python:
                 items = fight.loot
+                for i in items:
+                    player.add_item(i)
                 corpses = fight.corpses
                 text = ''
                 if len(corpses) > 0:
