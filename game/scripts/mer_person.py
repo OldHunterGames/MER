@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from random import *
 import collections
+import copy
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -16,12 +17,169 @@ from genus import available_genuses, Genus
 from modifiers import ModifiersStorage, Modifiable
 from factions import Faction
 from buffs import Buff
-from background import Background
+from background import Background, Family, Homeworld, Education, Occupation
 from inventory import Inventory, InventoryWielder
 from mer_resources import BarterSystem
 import mer_utilities as utilities
 from mer_command import *
 
+
+class PersonCreator(object):
+
+    def __init__(self):
+        # only human genus is functional for now
+        self.genus = 'human'
+        self._genus = Genus('human')
+        self.gender = None
+        self.age = None
+        self.world = None
+        self.family = None
+        self.education = None
+        self.occupation = None
+        self.spirit_feat = None
+        self.sexual_orientation = None
+        self.sexual_type = None
+        self.random = None
+
+    def start(self):
+        self.ask_random()
+        if self.random != 'custom':
+            return self
+        self.gender = self._pick_gender()
+        self.age = self._pick_ages()
+        self.world = self._pick_world()
+        self.family = self._pick_family()
+        self.education = self._pick_education()
+        if self.age != 'junior':
+            self.occupation = self._pick_occupation()
+        else:
+            self.occupation = None
+        self.spirit_feat = self._pick_spirit_feats()
+        self.sexual_orientation = self._pick_orientation()
+        self.sexual_type = self._pick_sexual_type()
+        return self
+
+    def ask_random(self):
+        renpy.say(None, 'Custom or random?')
+        self.random = renpy.display_menu(
+            [
+                ('Random male', 'male'),
+                ("Random female", 'female'),
+                ("Custom", 'custom')
+            ]
+        )
+
+    def make(self):
+        if self.random == 'custom':
+            if self.occupation is not None:
+                occupation = self.occupation.id
+            else:
+                occupation = None
+            person = gen_random_person(
+                self.genus, self.age, self.gender, self.world.id,
+                None, self.family.id, self.education.id,
+                occupation, initial_tonus=0, initial_fatness=0)
+            person.set_sexual_orientation(self.sexual_orientation)
+            person.set_sexual_suite(self.sexual_type)
+            person.add_feature(self.spirit_feat)
+        else:
+            person = gen_random_person(genus=self.genus, gender=self.random)
+        return person
+
+    def _pick_orientation(self):
+        renpy.say(None, 'Pick your sexual orientation')
+        return renpy.display_menu(self.get_orientations())
+
+    def _pick_sexual_type(self):
+        renpy.say(None, 'Pick your sexual type')
+        return renpy.display_menu(self.get_sex_traits())
+
+    def _pick_gender(self):
+        renpy.say(None, 'Pick your gender')
+        return renpy.display_menu(
+            [(store.person_features[i]['name'], i) for i in self.get_genders()])
+
+    def _pick_ages(self):
+        renpy.say(None, 'Pick your age')
+        return renpy.display_menu(
+            [(store.person_features[i]['name'], i) for i in self.get_ages()])
+
+    def _pick_education(self):
+        renpy.say(None, 'Pick your education')
+        return renpy.display_menu(
+            [(i.name, i) for i in self.available_educations()])
+
+    def _pick_occupation(self):
+        renpy.say(None, 'Pick your occupation')
+        return renpy.display_menu(
+            [(i.name, i) for i in self.available_occupations()])
+
+    def _pick_world(self):
+        renpy.say(None, 'Pick your homeworld')
+        return renpy.display_menu(
+            [(i.name, i) for i in self.available_worlds()])
+
+    def _pick_family(self):
+        renpy.say(None, 'Pick your family')
+        return renpy.display_menu(
+            [(i.name, i) for i in self.available_families()])
+
+    def _pick_spirit_feats(self):
+        renpy.say(None, 'Pick your spirit feat')
+        return renpy.display_menu(self.spirit_feats())
+
+    def available_worlds(self):
+        return [Homeworld(i) for i in store.homeworlds_dict]
+
+    def available_families(self):
+        families = [Family(family)
+                    for family in store.families_dict.keys()]
+        available_families = []
+        for family in families:
+            if self.world.is_available_prestige(family) and\
+               family.is_available_tech(self.world):
+                available_families.append(family)
+        return available_families
+
+    def available_educations(self):
+        educations = [Education(education)
+                      for education in store.educations_dict.keys()]
+        available_educations = []
+        for education in educations:
+            if education.is_available_tech(self.world) and self.family.is_available_prestige(education):
+                available_educations.append(education)
+        return available_educations
+
+    def available_occupations(self):
+        available_occupations = []
+        for occupation in store.occupations_dict.keys():
+            current = Occupation(occupation)
+            if (current.is_available_tech(self.world) and
+                self.family.is_available_prestige(current)):
+                available_occupations.append(current)
+        return available_occupations
+
+    def get_ages(self):
+        return self._genus.ages_names()
+
+    def get_genders(self):
+        return ['male', 'female', 'shemale']
+
+    def spirit_feats(self):
+        return [(store.person_features[i]['name'], i) for i in store.person_features if
+                store.person_features[i].get('slot') == 'spirit_feat']
+
+    def get_orientations(self):
+        dict_ = copy.copy(store.sexual_orientation)
+        if self.gender == 'male':
+            del dict_['lesbian']
+        elif self.gender == 'female':
+            del dict_['gay']
+        return [(i[1]['name'], i[0]) for i in dict_.items()]
+    
+    def get_sex_traits(self):
+        dict_ = store.sexual_type
+        return [(i[1]['name'], i[0]) for i in dict_.items()]
 
 def get_avatars(path):
     all_ = renpy.list_files()

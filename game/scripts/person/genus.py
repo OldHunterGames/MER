@@ -60,6 +60,9 @@ class Genus(object):
             gender = choice(self.genders)
         return gender
 
+    def genders_names(self):
+        return [i[0] for i in self.genders]
+
     def get_age(self):
         try:
             age = weighted_random(self.ages)
@@ -74,6 +77,9 @@ class Genus(object):
         except KeyError:
             ages = self._available_ages
         return ages
+
+    def ages_names(self):
+        return [i[0] for i in self.ages]
 
     @property
     def head_type(self):
