@@ -465,6 +465,12 @@ class SimpleCombatant(object):
                 name=self.name.encode('utf-8'), value=value, source=source.name.encode('utf-8')))
         if ignore_armor:
             self.hp -= value
+            if self.hp <= 0:
+                if source.damage_type() != 'subdual':
+                    # player can't die, no one dies if fight is friendly
+                    if self.person is not None:
+                        if not self.person.player_controlled and not self.fight.friendly_fight:
+                            self.person.die()
             return
         if self.defence < value:
             self.defence = 0
