@@ -4,6 +4,7 @@ from collections import defaultdict
 from scripts.mer_quest import Quest, QuestTarget
 from scripts.mer_utilities import Observable
 from scripts.mer_item import create_item
+from mer_person import Person
 
 import renpy.store as store
 import renpy.exports as renpy
@@ -16,15 +17,15 @@ class SimpleFight(object):
         self.allies = []
         self.enemies = []
         for i in allies_list:
-            if isinstance(i, str):
-                self.allies.append(CommonCombatant(i, self))
-            else:
+            if isinstance(i, Person):
                 self.allies.append(SimpleCombatant(i, self))
-        for i in enemies_list:
-            if isinstance(i, str):
-                self.enemies.append(CommonCombatant(i, self))
             else:
+                self.allies.append(CommonCombatant(i, self))
+        for i in enemies_list:
+            if isinstance(i, Person):
                 self.enemies.append(SimpleCombatant(i, self))
+            else:
+                self.enemies.append(CommonCombatant(i, self))
         self.selected_ally = self.allies[0]
         self.escalation = 0
         self.fleed = False
