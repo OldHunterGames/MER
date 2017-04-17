@@ -181,14 +181,14 @@ label lbl_edge_sexy_exam_mind(card):
     return
 
 label lbl_edge_fuck_challenge(skill):
-    $ partner = gen_random_person(genus='human', occupation='stripper', gender='female')
+    $ partner = edge_junker
     #$ partner2 = gen_random_person(genus='human', occupation='stripper', gender='female')
     #$ partner3 = gen_random_person(genus='human', occupation='stripper', gender='female')
     partner "Let's fuck already!"
 
     $ sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
     $ result = sex.get_results()
-    if result[partner] > 3:
+    if result[partner] > 2:
         'WIN'
     else:
         'LOSE'

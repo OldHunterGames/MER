@@ -456,6 +456,7 @@ label lbl_edge_captive_slay(card):
     "slayed"
     python:
         visavis.die()
+        player.add_corpse(visavis)
 
     return
 

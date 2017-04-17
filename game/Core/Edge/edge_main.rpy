@@ -96,8 +96,9 @@ label lbl_edge_main:
         wpn = create_item('smallsword', 'weapon')
         edge_junker.equip_on_slot('garment', armor)
         edge_junker.equip_on_slot('weapon', wpn)
-        edge_junker.sexual_orientation = 'bisexual'
-
+        edge_junker.set_sexual_orientation('bisexual')
+        edge_junker.set_sexual_suite('lewd')
+        
         player.relations(edge_junker) 
 
         npc = ['citisen', edge_junker]
