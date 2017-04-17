@@ -25,11 +25,6 @@ class SimpleFight(object):
                 self.enemies.append(CommonCombatant(i, self))
             else:
                 self.enemies.append(SimpleCombatant(i, self))
-        allies_average_skill = sum(
-            [i.combat_level for i in self.allies]) / len(self.allies)
-        enemies_average_skill = sum(
-            [i.combat_level for i in self.enemies]) / len(self.enemies)
-        difference = allies_average_skill - enemies_average_skill
         self.selected_ally = self.allies[0]
         self.escalation = 0
         self.fleed = False
@@ -38,16 +33,6 @@ class SimpleFight(object):
         self.logged_round = 1
         self.ended = False
         self.friendly_fight = friendly_fight
-        if difference < 0:
-            for i in self.allies:
-                i.skill_difference = difference
-            for i in self.enemies:
-                i.skill_difference = abs(difference)
-        else:
-            for i in self.allies:
-                i.skill_difference = difference
-            for i in self.enemies:
-                i.skill_difference = -difference
 
         for i in self.allies:
             i.type = 'player'
@@ -356,16 +341,11 @@ class SimpleCombatant(object):
             number -= 1
 
     def max_maneuvers(self):
-        value = 3
-        if self.skill_difference < 0:
-            for i in range(0, abs(self.skill_difference)):
-                if i % 2 == 0:
-                    value -= 1
-        elif self.skill_difference > 0:
-            for i in range(0, abs(self.skill_difference)):
-                if i % 2 != 0:
-                    value += 1
-        return value
+        if self.weight() == 'mobile':
+            return 4
+        elif self.weight() == 'heavy':
+            return 2
+        return 3
 
     def knockdown(self):
         self._inactive = True
@@ -404,10 +384,6 @@ class SimpleCombatant(object):
     @property
     def avatar(self):
         return self.person.avatar_path
-
-    @property
-    def combat_level(self):
-        return self.person.skill('physique')
 
     def weapons(self):
         return self.person.weapons()
@@ -561,10 +537,6 @@ class CommonCombatant(SimpleCombatant):
     @property
     def armor(self):
         return self._armor
-
-    @property
-    def combat_level(self):
-        return self.stats.get('combat_level', 1)
 
     def get_loot(self):
         loot = []
