@@ -87,45 +87,36 @@ class PersonCreator(object):
         return person
 
     def _pick_orientation(self):
-        renpy.say(None, 'Pick your sexual orientation')
         return renpy.display_menu(self.get_orientations())
 
     def _pick_sexual_type(self):
-        renpy.say(None, 'Pick your sexual type')
         return renpy.display_menu(self.get_sex_traits())
 
     def _pick_gender(self):
-        renpy.say(None, 'Pick your gender')
         return renpy.display_menu(
             [(store.person_features[i]['name'], i) for i in self.get_genders()])
 
     def _pick_ages(self):
-        renpy.say(None, 'Pick your age')
         return renpy.display_menu(
             [(store.person_features[i]['name'], i) for i in self.get_ages()])
 
     def _pick_education(self):
-        renpy.say(None, 'Pick your education')
         return renpy.display_menu(
             [(i.name, i) for i in self.available_educations()])
 
     def _pick_occupation(self):
-        renpy.say(None, 'Pick your occupation')
         return renpy.display_menu(
             [(i.name, i) for i in self.available_occupations()])
 
     def _pick_world(self):
-        renpy.say(None, 'Pick your homeworld')
         return renpy.display_menu(
             [(i.name, i) for i in self.available_worlds()])
 
     def _pick_family(self):
-        renpy.say(None, 'Pick your family')
         return renpy.display_menu(
             [(i.name, i) for i in self.available_families()])
 
     def _pick_spirit_feats(self):
-        renpy.say(None, 'Pick your spirit feat')
         return renpy.display_menu(self.spirit_feats())
 
     def available_worlds(self):
