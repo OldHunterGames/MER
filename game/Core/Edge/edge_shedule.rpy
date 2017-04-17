@@ -314,7 +314,8 @@ label edge_job_range(actor):
     python:
         name = actor.name
     '[name]patroling the Edge of Mists.'
-    call lbl_edge_randenc_errant
+    call lbl_edge_randenc_bandit
+    # call lbl_edge_randenc_errant
     return
           
         

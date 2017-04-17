@@ -221,18 +221,6 @@ label lbl_all_gangs:
         call screen sc_gang_info(choice)
     call lbl_all_gangs
 
-label lbl_edge_outpost:
-    menu:
-        'Slaver' if 'slaver' in edge.options:
-            call lbl_edge_slavery
-        'Recruiter' if 'recruiter' in edge.options:
-            call lbl_edge_hiring            
-        'Get out':
-            call lbl_edge_manage
-        
-    call lbl_edge_outpost
-    return
-
 label lbl_edge_stashes:
     python:
         stashes = edge.active_stashes()

@@ -262,6 +262,15 @@ init -10 python:
         'seduce_spirit': {'name': 'Passionate seduction', 'description': __('Passionate seduction\nJust show jury your character and seduce them straightforward.'), 'label': 'lbl_edge_sexy_exam_spirit', 'image': 'miscards', }, 
     }
 
+
+    edge_raider_options = {
+   'raider_engage': {'name': 'Engage', 'description': __('Engage\nArdent deed. Combat challenge.'), 'label': 'lbl_edge_raider_fight', 'image': 'miscards', }, 
+   'raider_flee': {'name': 'Flee', 'description': __('Flee\nTimid deed. Stamina challenge (easy). No chance to fight back.'), 'label': 'lbl_edge_raider_flee', 'image': 'miscards', }, 
+   'raider_hide': {'name': 'Hide', 'description': __('Hide\nTimid deed. Grace challenge (easy). No chance to fight back.'), 'label': 'lbl_edge_raider_hide', 'image': 'miscards', },         
+   'raider_talk': {'name': 'Talk', 'description': __('Talk\nSpirit challenge (mennace based). Chance to fight back if failed.'), 'label': 'lbl_edge_raider_talk', 'image': 'miscards', }, 
+   'raider_yeld': {'name': 'Yeld', 'description': __('Yeld\nBecome a slave.'), 'label': 'lbl_edge_raider_yeld', 'image': 'miscards', }, 
+    }
+
     edge_errant_options = {
     'errant_talk': {'name': 'Talk', 'description': __('Talk\nStart a peaceful communication.'), 'label': 'lbl_edge_errant_talk', 'image': 'miscards', }, 
     'errant_stalk': {'name': 'Hide & stalk', 'description': __('Hide & Stalk\n Timid deed. Opposed finesse challenge. Try to stalk the confused wanderer stealthily. Get chance for a sneak attack.'), 'label': 'lbl_edge_errant_stalk', 'image': 'miscards', }, 

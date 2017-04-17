@@ -1671,3 +1671,12 @@ init python:
         else:
             return person         
                 
+    def gen_raider_leader():
+        person = gen_random_person(genus="human", gender='male', age='mautre')
+        armor = create_item('leather_armor', 'armor')
+        wpn = create_item('dagger', 'weapon')
+        edge_guard.equip_on_slot('garment', armor)
+        edge_guard.equip_on_slot('weapon', wpn)
+        return person
+
+

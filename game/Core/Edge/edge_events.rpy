@@ -90,8 +90,24 @@ label evn_edge_outpost(event):
     if not event.skipcheck:
         return False
 
-    $ edge.options.append('guard')
+    edge_guard "Stop right there, criminal scum!"
+    edge_guard "State your buissines."
     $ player.relations(edge_guard)
+    call lbl_communicate(edge_guard)    
+    $ edge.options.append('guard')
+
+    python:  
+        options = CardsMaker()
+        if 'recruiter' not in edge.options:
+            options.add_entry('opp_find_recruiter', edge_option_cards)                        
+        if 'slaver' not in edge.options:
+            options.add_entry('opp_find_slaver', edge_option_cards)
+        if 'junker' not in edge.options:
+            options.add_entry('opp_find_junker', edge_option_cards)                 
+        options.add_entry('nevermind', edge_option_cards)  
+        CardMenu(options.run()).show()                
+    hide card    
+
     'Now you know the guard and can go to the outpost.'
 
     return True
@@ -106,7 +122,10 @@ label evn_edge_junker(event):
 
     $ edge.options.append('junker')
     $ player.relations(edge_junker)
-    'Now you know the junker.'
+    edge_junker "Hey, you! I'll give you some food for your stuff from Outworlds! Interested?"
+    call lbl_communicate(edge_junker)  
+    call lbl_edge_spc_sellall(None)
+    'Now you know the junker who will buy all outworld stuff.'
 
     return True
 

@@ -26,20 +26,7 @@ label lbl_edge_opportunities:
     return
     
 label lbl_edge_find_outpost(card):
-    edge_guard "Stop right there criminal scum!"
-    edge_guard "State your buissines."
     $ call_event('outpost', player, True)
-
-    python:  
-        if 'recruiter' not in edge.options:
-            options.add_entry('opp_find_recruiter', edge_option_cards)                        
-        if 'slaver' not in edge.options:
-            options.add_entry('opp_find_slaver', edge_option_cards)
-        if 'junker' not in edge.options:
-            options.add_entry('opp_find_junker', edge_option_cards)                 
-        options.add_entry('nevermind', edge_option_cards)  
-        CardMenu(options.run()).show()                
-    hide card    
 
     return
 
