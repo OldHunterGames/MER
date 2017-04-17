@@ -353,6 +353,6 @@ class SexualPleasureQuest(Quest):
     def _activate(self):
         self.target.add_interaction('quest_please', store.edge_quest_options)
 
-    def _finish(self):
+    def _finish(self, performer):
         self.target.remove_interaction('quest_please')
         return True
