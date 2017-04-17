@@ -164,8 +164,10 @@ class PersonCreator(object):
         dict_ = copy.copy(store.sexual_orientation)
         if self.gender == 'male':
             del dict_['lesbian']
+            del dict_['straight_female']
         elif self.gender == 'female':
             del dict_['gay']
+            del dict_['straight_male']
         return [(i[1]['name'], i[0]) for i in dict_.items()]
     
     def get_sex_traits(self):
