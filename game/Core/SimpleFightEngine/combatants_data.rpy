@@ -10,7 +10,21 @@ init python:
             'weight': 'mobile',
             'name': 'TEST',
             'avatar': 'images/avatar/none.jpg',
-            'combat_level': 1,
             'loot': [('knife', 'weapon'), ]
-        }
+        },
+
+        'raider_club': {
+            'defence': 20,
+            'hp': 20,
+            'attack': 6,
+            'physique': 4,
+            'agility': 3,
+            'combat_style': 'swashbuckler',
+            'weight': None,
+            'name': 'Raider',
+            'avatar': 'images/avatar/none.jpg',
+            'loot': [('club', 'weapon'),
+                    ('leather_armor', 'armor'), ]
+        },
+
     }

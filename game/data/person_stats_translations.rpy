@@ -87,5 +87,6 @@ init python:
         'bed_of_rocks': 'Bed of rocks', 
         'homeless': 'Homeless', 
         'bad_sleep': 'Bad sleep', 
+        'robbery': 'Robbery', 
 
     }

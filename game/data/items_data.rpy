@@ -2,17 +2,19 @@ init python:
     # sizes ['offhand', 'versatile', 'shield', 'twohand']
     weapon_data = {
         'bare_hands': {'name': __('bare hands'), 'size': 'unarmed', 'damage_type': 'subdual', 'quality': 0, 'price': -1},         
-        'stone_knife':{'name': __('stone knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 1},
-        'stone_spear': {'name': __('stone spear'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 3},
-        'heavy_axe': {'name': __('long axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 3, 'price': 10},
+        'stone_knife':{'name': __('stone knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 2},
+        'stone_spear': {'name': __('stone spear'),'size': 'twohand', 'damage_type': 'piercing', 'quality': 2, 'price': 5},
+        'heavy_axe': {'name': __('long axe'),'size': 'twohand', 'damage_type': 'slashing', 'quality': 3, 'price': 20},
         'dagger':{'name': __('dagger'), 'size': 'offhand', 'damage_type': 'piercing', 'quality': 4, 'price': 5},
-        'smallsword': {'name': __('smallsword'),'size': 'versatile', 'damage_type': 'piercing', 'quality': 3, 'price': 5},
-        'sword': {'name': __('sword'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 10},
-        'sabre': {'name': __('sabre'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 10},
-        'shield':{'name': __('shield'), 'size': 'shield', 'damage_type': 'subdual', 'quality': 3, 'price': 10},    
+        'smallsword': {'name': __('smallsword'),'size': 'versatile', 'damage_type': 'piercing', 'quality': 3, 'price': 10},
+        'sword': {'name': __('sword'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 15},
+        'sabre': {'name': __('sabre'),'size': 'versatile', 'damage_type': 'slashing', 'quality': 4, 'price': 15},
+        'shield':{'name': __('shield'), 'size': 'shield', 'damage_type': 'subdual', 'quality': 3, 'price': 25},    
         'knife':{'name': __('knife'), 'size': 'offhand', 'damage_type': 'piercing', 'mutable_name': False, 'quality': 2, 'price': 3},
+        'club': {'name': __('wooden club'),'size': 'versatile', 'damage_type': 'subdual', 'quality': 1, 'price': 2},
 
-        'quarterstaff': {'name': __('quarterstaff'),'size': 'twohand', 'damage_type': 'subdual', 'quality': 3, 'price': 2},
+
+        'quarterstaff': {'name': __('quarterstaff'),'size': 'twohand', 'damage_type': 'subdual', 'quality': 10, 'price': 5},
 
         }
 
@@ -26,7 +28,9 @@ init python:
         'fine_clothes': {'name': __('fine clothes'), 'armor_rate': 'unarmored', 'quality': 3, 'price': 5},  
         'luxury_clothes': {'name': __('luxury clothes'), 'armor_rate': 'unarmored', 'quality': 4, 'price': 10},          
         'fullplate': {'name': __('fullplate armor'), 'armor_rate': 'heavy_armor', 'quality': 4, 'price': 50},
-        'body_armor': {'name': __('polymer armor'), 'armor_rate': 'light_armor', 'quality': 4, 'price': 20},  
+        'body_armor': {'name': __('polymer armor'), 'armor_rate': 'light_armor', 'quality': 4, 'price': 25},  
+        'leather_armor': {'name': __('leather armor'), 'armor_rate': 'light_armor', 'quality': 2, 'price': 20},   
+
 
         'hard_armor': {'name': __('hard armor'), 'armor_rate': 'heavy_armor', 'quality': 3, 'price': 2},
         'soft_armor': {'name': __('soft armor'), 'armor_rate': 'light_armor', 'quality': 3, 'price': 2},            

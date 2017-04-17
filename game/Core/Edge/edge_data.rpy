@@ -191,12 +191,15 @@ init -10 python:
     edge_option_cards = {'nevermind': {'name': 'Nevermind', 'description': __('Nevermind'), 'label': 'lbl_edge_comm_nevermind', 'image': 'miscards', }, 
         'makelove': {'name': 'Make love', 'description': __('Make love\n'), 'label': 'lbl_makelove', 'image': 'miscards', }, 
         'flee': {'name': 'Flee', 'description': __('Flee\nTimid action. Just get out of here and do not involve.'), 'label': 'lbl_edge_enc_flee', 'image': 'miscards', }, 
+        'assault_yeld': {'name': 'Yeld', 'description': __('Yeld\nTimid action. Lose your savings and equipement but save your life... maybe.'), 'label': 'edge_jbevent_yeld', 'image': 'miscards', }, 
         
         'feed_hungry': {'name': 'Feed the hungry', 'description': __('Good deed. Cost you 5/bars.'), 'label': 'lbl_edge_feed_hungry', 'image': 'miscards', }, 
         'observe': {'name': 'Observe', 'description': __('Maybe you can find a new opportunities'), 'label': 'lbl_edge_observe', 'image': 'miscards', }, 
-        'look_troble': {'name': 'Look for trobles', 'description': __('Ardent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'miscards', }, 
+        'look_troble': {'name': 'Look for trobles', 'description': __('Look for troubles\nArdent deed. You will encouner someone... or something'), 'label': 'lbl_edge_look_troble', 'image': 'miscards', }, 
+        'opp_find_outpost': {'name': 'Check outpost', 'description': __('Outpost\nThe huge wall seems to stretch endlessly in both directions. But the passage inside is visible only in one place - a massive tower with a gate protruding far ahead from the wall. At the foot of the tower, fenced with steel mesh is a small military outpost, something like a checkpoint. There are quite a lot of people and security guards in heavy armor are on duty.'), 'label': 'lbl_edge_find_outpost', 'image': 'miscards', }, 
+        'opp_find_junker': {'name': 'Junk trade', 'description': __('Junker\nThere are rumors that there is someone at the outpost who buys any items from other worlds for nutritional bars. To start such a familiarity would be very interesting.'), 'label': 'lbl_edge_find_junker', 'image': 'miscards', }, 
         'opp_find_recruiter': {'name': 'Meet representative', 'description': __('Meet Major House representative\nIt is your chance to get inside the walls of Eternal Rome.'), 'label': 'lbl_edge_find_recruiter', 'image': 'miscards', }, 
-        'opp_find_slaver': {'name': 'Slave trade', 'description': __('Meer the slavedriver\nMany poor souls ending up on a slave market, sold to Eternal Rome citisens. Not a worst fate here on the Edge of Mists. You should meet person in charge of slave trade at the Outpost.'), 'label': 'lbl_edge_find_slaver', 'image': 'miscards', }, 
+        'opp_find_slaver': {'name': 'Slave trade', 'description': __('Meet the slavedriver\nMany poor souls ending up on a slave market, sold to Eternal Rome citisens. Not a worst fate here on the Edge of Mists. You should meet person in charge of slave trade at the Outpost.'), 'label': 'lbl_edge_find_slaver', 'image': 'miscards', }, 
        
 
         'fi_intimidate': {'name': 'Intimidate', 'description': __('Intimidate\nArdent deed. Opposed willpower check to succed. Get "Charriot" relations arcane.'), 'label': 'lbl_first_impression_intimidate', 'image': 'miscards', }, 

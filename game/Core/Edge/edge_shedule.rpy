@@ -203,7 +203,6 @@ label edge_jbevent_paysex(actor):
 
     return
 
-
 label edge_jbevent_assault(actor):
     $ stranger = partner
     $ visavis = stranger
@@ -213,11 +212,20 @@ label edge_jbevent_assault(actor):
     python:     
         options = CardsMaker()
         options.add_entry('errant_engage', edge_errant_options)
+        options.add_entry('assault_yeld', edge_errant_options)
         CardMenu(options.run()).show()
     hide card    
 
     return
 
+label edge_jbevent_yeld(card):
+    '[stranger.name] takes your bars and equipement.'
+    # stranger "I'll be back for more, you slut!"
+    $ player.money = 0
+    $ actor.tense_need('prosperity', 'robbery') 
+    $ player.transfer_all(stranger)
+
+    return
 
 # label edge_job_manual(actor):
 #     python:

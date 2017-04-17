@@ -1,9 +1,23 @@
 ## Major house servitude quest
 
-label lbl_edge_hiring:
+
+label lbl_edge_outpost:
     edge_recruiter 'You can apply to become a Major House bond servitor in the city, but you have only one try to do so. Choose wisely.'
     $ core.quest_tracker.add_quest(Quest(**quests_data['edge_bond_quest']))
     $ fate = None
+    menu:
+        'Are you interested?'
+        "Tell me more":
+            call lbl_edge_bond_options(None) 
+        'Not today':
+            pass
+        'I want to be a free citisen':
+            call lbl_edge_citisen_briefing
+
+    return
+
+label lbl_edge_hiring:
+    edge_recruiter 'You can apply to become a Major House bond servitor in the city, but you have only one try to do so. Choose wisely.'
     menu:
         'Are you interested?'
         "Tell me more":

@@ -1,16 +1,17 @@
 init python:
     combatant_data = {
-    'weak_bandit':
+    'raider':
         {
         'name': __('weak bandit'),
         'avatar_folder': 'bandits',
         'attributes':
             {
-            'physique': 3,
-            'agility': 2
+            'physique': 4,
+            'agility': 3
             }
         }
     }
+
     equip_sets = {
     'weak_agile':
         {

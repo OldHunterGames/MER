@@ -8,8 +8,10 @@
 label edge_init_events:
     python:
         register_event('evn_edge_uneventful')
-        register_event('evn_edge_slaver')
+        register_event('evn_edge_outpost')
         register_event('evn_edge_recruiter')
+        register_event('evn_edge_slaver')
+        register_event('evn_edge_junker')        
         register_event('evn_edge_bukake')
 #        register_event('evn_edge_echoing_hills')
 #        register_event('evn_edge_dying_grove')
@@ -52,8 +54,12 @@ label evn_edge_slaver(event):
     if not event.skipcheck:
         return False
 
-    $ edge.options.append('slaver')
-    $ player.relations(edge_slaver)
+    python:
+        edge.options.append('slaver')
+        player.relations(edge_slaver)
+        core.quest_tracker.add_quest(Quest(**quests_data['edge_slave_quest'])) 
+
+    call lbl_communicate(edge_slaver)
     call lbl_edge_slavery
     return True
       
@@ -66,12 +72,44 @@ label evn_edge_recruiter(event):
         return False
        
     edge_recruiter 'Hey! Do you wanna be a Noble House servant?!'
-    $ edge.options.append('recruiter')
-    $ player.relations(edge_recruiter)
+    python: 
+        edge.options.append('recruiter')
+        player.relations(edge_recruiter)
+        core.quest_tracker.add_quest(Quest(**quests_data['edge_bond_quest']))
+        fate = None
+
     call lbl_communicate(edge_recruiter)    
     call lbl_edge_hiring
     return True
+
+label evn_edge_outpost(event):
     
+    if not event.skipcheck:
+        if 'guard' not in edge.options:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+
+    $ edge.options.append('guard')
+    $ player.relations(edge_guard)
+    'Now you know the guard and can go to the outpost.'
+
+    return True
+
+label evn_edge_junker(event):
+    
+    if not event.skipcheck:
+        if 'junker' not in edge.options:
+            $ event.skipcheck = True
+    if not event.skipcheck:
+        return False
+
+    $ edge.options.append('junker')
+    $ player.relations(edge_junker)
+    'Now you know the junker.'
+
+    return True
+
 ############## HERO EVENTS ##################
 
 

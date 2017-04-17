@@ -99,8 +99,6 @@ label lbl_edge_main:
         edge_junker.set_sexual_orientation('bisexual')
         edge_junker.set_sexual_suite('lewd')
         
-        player.relations(edge_junker) 
-
         npc = ['citisen', edge_junker]
 
     call lbl_edge_init_questrewards(npc)
@@ -115,8 +113,6 @@ label lbl_edge_main:
         wpn = create_item('sword', 'weapon')
         edge_guard.equip_on_slot('garment', armor)
         edge_guard.equip_on_slot('weapon', wpn)
-
-        player.relations(edge_guard)  
 
         npc = ['citisen', edge_guard]
 

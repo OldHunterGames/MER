@@ -79,6 +79,10 @@ label lbl_edge_errant_fight(allies, enemies):
     python:
         fight = SimpleFight(allies, enemies)
         enemies = fight.get_enemies()
+        winner = fight.get_winner()
+
+    if winner == 'enemies':
+        call edge_jbevent_yeld(None)
 
     return
 
