@@ -11,7 +11,7 @@ style gray_button is button:
 
 
 
-screen sc_character_info_screen(person, return_l=False, communicate=False):
+screen sc_character_info_screen(person, return_l=False, communicate=False, creation=False):
     modal True
     window:
         xfill True
@@ -44,9 +44,16 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         action [SensitiveIf(person.player_controlled or 
                                 person.any_equiped() or person in player.slaves.slaves()),
                                 Show('sc_simple_equip', person=person, look_mode=items_look_mode)]
-                    textbutton 'Done': 
-                        action If(return_l, Return(), false=Hide('sc_character_info_screen'))
-
+                    if person.player_controlled:
+                        python:
+                            quest_text = __('quests')
+                            if core.quest_tracker.new_quests:
+                                quest_text += '{color=#f00}!{/color}'
+                        textbutton quest_text:
+                            action Show('sc_quests')
+                    if core.is_tokens_game_active() and person.player_controlled:
+                        textbutton 'divination':
+                            action Function(core.start_tokens_game, player)
                 vbox:
                     for i in ['physique', 'mind', 'spirit', 'agility']:
                         python:
@@ -62,11 +69,33 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                                 txt = encolor_text(skill, person.skill(i)+2)
                         if skill > 0:
                             text txt
+
+                if person.player_controlled and not creation:
+                    imagebutton:
+                        idle 'interface/contacts.png'
+                        action Function(renpy.call_in_new_context, 'lbl_contacts', player)
         frame:
             xsize 960
             ypos 161
             ysize 550
             text DescriptionMaker(person).description()
+            if not creation:
+                python:
+                    if person.player_controlled:
+                        img = 'interface/hourglass.png'
+                        if core.can_skip_turn():
+                            act = Function(core.current_world.new_turn)
+                        else:
+                            img = im.Grayscale(img)
+                            act = NullAction()
+                    else:
+                        img = 'interface/close.png'
+                        act = Return()
+                imagebutton:
+                    idle img
+                    action act
+                    xalign 0.5
+                    yalign 1.0
 
         frame:
             xpos 961
@@ -102,6 +131,10 @@ screen sc_character_info_screen(person, return_l=False, communicate=False):
                         hovered Show('sc_text_popup', text=__("Not enough energy"))
                         unhovered Hide('sc_text_popup')
                         action NullAction()
+
+        
+
+
 
 init python:
     active_determination = None

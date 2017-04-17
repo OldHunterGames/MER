@@ -419,11 +419,14 @@ init python:
         
 screen sc_generate_player:
     if core.player is not None:
-        use sc_character_info_screen(core.player, True)
-    textbutton 'generate':
+        use sc_character_info_screen(core.player, True, creation=True)
+    vbox:
         xalign 0.6
-        yalign 0.6
-        action Function(gen_player, core)
+        yalign 0.8
+        textbutton 'generate':
+            action Function(gen_player, core)
+        textbutton 'done':
+            action Return()
 
 
 label lbl_skillcheck(skillcheck):
