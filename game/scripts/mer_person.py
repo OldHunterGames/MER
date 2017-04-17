@@ -980,6 +980,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
 
     def set_nickname(self, string):
         self.nickname = string
+        self._renpy_character.name = self.name
 
     def set_phrases(self, dict_):
         self._phrases = dict_
@@ -1091,7 +1092,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
     @firstname.setter
     def firstname(self, name):
         self._firstname = name
-        self._renpy_character.name = name
+        self._renpy_character.name = self.name
 
     def __call__(self, what, interact=True):
         self.game_ref.sayer = self
