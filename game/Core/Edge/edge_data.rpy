@@ -217,6 +217,7 @@ init -10 python:
         'com_quest_completed': {'name': 'Quest completed', 'description': __('Quest\nThis person will owe you now.'), 'label': 'lbl_edge_comm_complete_quest', 'image': 'miscards', }, 
 #        'com_agression': {'name': 'Name', 'description': __('descriptext'), 'label': 'lbl_edge_option_', 'image': 'miscards', },         
 
+        'spc_enslave': {'name': 'Persuade', 'description': __("Persuade to enslavement\nOpposed spirit challenge\nLife on the border is difficult and dangerous. So much so that it's probably better to be a slave in Eternal Rome than fremen on the Edge of Mists. Convince this person that you can help it to get into good hands."), 'label': 'lbl_edge_enslave', 'image': 'miscards', }, 
         'spc_become_slave': {'name': 'Bond to slavery', 'description': __('Bond to slavery\nThe simplest way to get into Eternal Rome is to sell yourself into slavery. Your new master will take you there.'), 'label': 'lbl_edge_slave_auction', 'image': 'miscards', }, 
         'spc_recruiter_bond': {'name': 'Job options', 'description': __('Work for a Major House\nAsk if you can apply for a job for a Major House.'), 'label': 'lbl_edge_spc_bond_start', 'image': 'miscards', }, 
         'spc_recruiter_citisen': {'name': 'Become a citisen', 'description': __('Major House membersip\nYou must prove yourself worthy.'), 'label': 'lbl_edge_spc_citisen_start', 'image': 'miscards', }, 
@@ -236,7 +237,7 @@ init -10 python:
         'bond_clerk': {'name': 'Clerk', 'description': __('Clerk\nOffice work.'), 'label': 'lbl_edge_bond_clerk', 'image': 'miscards', },         
         'bond_builder': {'name': 'Builder', 'description': __('Builder\nConstruction work.'), 'label': 'lbl_edge_bond_builder', 'image': 'miscards', }, 
         'bond_concubine': {'name': 'Concubine', 'description': __('Concubine\nBecome a sex toy for a Major House citisens.'), 'label': 'lbl_edge_sexy_exam', 'image': 'miscards', }, 
-        'bond_servant': {'name': 'Servitor', 'description': __('Servitor\nBecome a servant in a Major House.'), 'label': 'lbl_edge_bond_servant', 'image': 'miscards', }, 
+        'bond_servant': {'name': 'Servitor', 'description': __('Servitor\nBecome a servant in a Major House.'), 'label': 'lbl_edge_bond_servitor', 'image': 'miscards', }, 
         'bond_host': {'name': 'Host', 'description': __('Host\nEntertain customers in drinking establishments of the Majpr House.'), 'label': 'lbl_edge_bond_host', 'image': 'miscards', },         
 
 #    'id': {'name': 'Name', 'description': __('Name\n'), 'label': 'lbl_edge_', 'image': 'miscards', }, 
@@ -281,12 +282,13 @@ init -10 python:
     }
 
     edge_captive_options = {
-    'captive_loot': {'name': 'Loot', 'description': __('Loot\n'), 'label': 'lbl_edge_captive_loot', 'image': 'miscards', }, 
-    'captive_sell': {'name': 'Sell', 'description': __('Sell\n'), 'label': 'lbl_edge_captive_sell', 'image': 'miscards', }, 
-    'captive_rape': {'name': 'Rape', 'description': __('Rape\n'), 'label': 'lbl_edge_captive_rape', 'image': 'miscards', },         
-    'captive_slay': {'name': 'Slay', 'description': __('Slay\n'), 'label': 'lbl_edge_captive_slay', 'image': 'miscards', }, 
-    'captive_capture': {'name': 'Capture', 'description': __('Capture\n'), 'label': 'lbl_edge_captive_capture', 'image': 'miscards', }, 
-    'captive_release': {'name': 'Release', 'description': __('Release\n'), 'label': 'lbl_edge_captive_release', 'image': 'miscards', },         
+    'captive_loot': {'name': 'Loot', 'description': __('Loot\nGet all captive possesions.'), 'label': 'lbl_edge_captive_loot', 'image': 'miscards', }, 
+    'captive_sell': {'name': 'Sell', 'description': __('Sell\nSell a captive to a slavedriver. Price is based on atributes.'), 'label': 'lbl_edge_captive_sell', 'image': 'miscards', }, 
+    'captive_rape': {'name': 'Rape', 'description': __('Rape\nArdent deed.\nGet some fun.'), 'label': 'lbl_edge_captive_rape', 'image': 'miscards', },         
+    'captive_slay': {'name': 'Slay', 'description': __('Slay\nEvil deed.\nIf you need a corpse...'), 'label': 'lbl_edge_captive_slay', 'image': 'miscards', }, 
+    'captive_cannibalise': {'name': 'Slay & Eat', 'description': __('Slay & Eat\nEvil deed.\nOn the Border of the Mists nothing grows. Here there are only two sources of food - nutritional bars that you can bargain at the outpost or meat of other inhabitants of the border. Meat is more delicious.'), 'label': 'lbl_edge_captive_cannibalise', 'image': 'miscards', }, 
+    'captive_capture': {'name': 'Capture', 'description': __('Capture\nLawful deed.\n'), 'label': 'lbl_edge_captive_capture', 'image': 'miscards', }, 
+    'captive_release': {'name': 'Release', 'description': __('Release\nChaotic deed.\n'), 'label': 'lbl_edge_captive_release', 'image': 'miscards', },         
     }
 
     edge_quest_options = {

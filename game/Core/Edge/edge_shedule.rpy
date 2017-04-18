@@ -92,6 +92,7 @@ label edge_ration_cooked_high(actor):
 label edge_ration_canibalism(actor):
     python:
         name = actor.name
+        actor.eat(3, player.get_best_corpse().succulence())
         ration = actor.food_info() 
     '[name]is a canibal. [name]ration is [ration]'    
     return  
@@ -212,7 +213,7 @@ label edge_jbevent_assault(actor):
     python:     
         options = CardsMaker()
         options.add_entry('errant_engage', edge_errant_options)
-        options.add_entry('assault_yeld', edge_errant_options)
+        options.add_entry('raider_yeld', edge_raider_options)
         CardMenu(options.run()).show()
     hide card    
 
@@ -314,8 +315,11 @@ label edge_job_range(actor):
     python:
         name = actor.name
     '[name]patroling the Edge of Mists.'
-    call lbl_edge_randenc_bandit
-    # call lbl_edge_randenc_errant
+    $ roll = choice([1,2])
+    if choice == 1:
+        call lbl_edge_randenc_bandit
+    else:
+        call lbl_edge_randenc_errant
     return
           
         

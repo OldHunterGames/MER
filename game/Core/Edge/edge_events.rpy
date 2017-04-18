@@ -25,24 +25,7 @@ label edge_init_events:
 label evn_edge_blank:
    $pass   
    return True
-  
-label evn_edge_template(event):
-    
-    #Проверка для турн энда
-    if not event.skipcheck:
-        if True:
-            $ event.skipcheck = True
-    # Вообще это должно делаться не так, но в сыче пойдет
-    if event.target != child:
-        $ event.skipcheck = False 
-    
-    # Отсечка
-    if not event.skipcheck:
-        return False
-       
-        
-    #тело эвента
-    return True
+
 
 ############## AQUITANCE EVENTS ##################
 
@@ -145,15 +128,15 @@ label evn_edge_bukake(event):
         return False
     
     'Some bukake slut sucks.'
+    $ obj = ScheduleJob('bukake', edge_jobs_data)
+    $ img = obj.image()
+    show expression img at truecenter
 
     if 'male' in core.orientation[player.gender]:
-        $ obj = ScheduleJob('bukake', edge_jobs_data)
-        $ img = obj.image()
-        show expression img at truecenter
         'You can be a bukake slut now'
         $ player.schedule.unlock('job', ScheduleJob('bukake', edge_jobs_data))
 
-    if True:
+    if player.has_body_part('penis'):
         'You can use bukake-sluts now'
         $ player.schedule.unlock('optional', ScheduleObject('bukake', edge_services_data))
 

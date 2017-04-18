@@ -26,21 +26,25 @@ label lbl_edge_opportunities:
     return
     
 label lbl_edge_find_outpost(card):
+    $ player.drain_energy()
     $ call_event('outpost', player, True)
 
     return
 
 label lbl_edge_find_junker(card):
+    $ player.drain_energy()
     $ call_event('junker', player, True)
     
     return
 
 label lbl_edge_find_recruiter(card):
+    $ player.drain_energy()
     $ call_event('recruiter', player, True)
     
     return
     
 label lbl_edge_find_slaver(card):
+    $ player.drain_energy()
     $ call_event('slaver', player, True)
     
     return
@@ -50,12 +54,17 @@ label lbl_edge_feed_hungry(card):
         'You have no spare food.'
         return 
     else:
-        $ player.money -= 5
-        'You feed the hungry one.'
-        $ player.moral_action(target=None, moral='good') 
+        python:
+            player.drain_energy()
+            player.money -= 5
+            starving = gen_simple_person(gender="female")
+            starving.set_nickname("Starving")
+            player.moral_action(target=None, moral='good') 
+            'You feed the hungry one.'
     return
     
 label lbl_edge_look_troble(card):
+    $ player.drain_energy()
     $ player.moral_action(target=None, activity='ardent') 
     call edge_job_range(player)
     
