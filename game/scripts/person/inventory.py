@@ -360,8 +360,9 @@ class InventoryWielder(object):
 
     def eat_corpse(self, corpse):
         self.satisfy_need('nutrition', corpse.succulence())
-        self.set_feed('canibalism')
-        self.get_schedule_obj('feed').lock()
+        canibalism = self.schedule.get('ration', 'canibalism')
+        canibalism.lock()
+        self.schedule.set('ration', canibalism)
         self.corpse_buffer = corpse
         self.remove_corpse(corpse)
 
