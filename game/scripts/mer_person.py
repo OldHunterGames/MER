@@ -66,6 +66,7 @@ class PersonCreator(object):
         self.orderliness = self._pick_orderliness()
         self.activity = self._pick_activity()
         self.morality = self._pick_morality()
+        renpy.hide('mist')
         return self
 
     def _pick_mind_feats(self):
