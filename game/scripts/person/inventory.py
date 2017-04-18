@@ -269,7 +269,7 @@ class SimplyfiedInventory(Inventory):
 
     def available_for_slot(self, slot, storage=None):
         if storage is None:
-            storage = self.items
+            storage = self.unequiped_items()
         slot = self._slots[slot]
         return [i for i in storage if slot.allowed(i)]
 

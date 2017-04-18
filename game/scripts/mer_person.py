@@ -1226,14 +1226,6 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
                 self.hair_color = hair_color
         self.avatar_path = avatar
 
-    def randomise(self, gender='female', age='adolescent'):
-        self.add_feature(gender)
-        self.add_feature(age)
-        self.random_alignment()
-        self.random_skills()
-        self.random_features()
-        return
-
     def random_alignment(self):
         # roll activity
         roll = randint(1, 100)
