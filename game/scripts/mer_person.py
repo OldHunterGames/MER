@@ -60,12 +60,17 @@ class PersonCreator(object):
         else:
             self.occupation = None
         self.spirit_feat = self._pick_spirit_feats()
+        self.mind_feat = self._pick_mind_feats()
         self.sexual_orientation = self._pick_orientation()
         self.sexual_type = self._pick_sexual_type()
         self.orderliness = self._pick_orderliness()
         self.activity = self._pick_activity()
         self.morality = self._pick_morality()
         return self
+
+    def _pick_mind_feats(self):
+        return [(store.person_features[i]['name'], i) for i in store.person_features if
+                store.person_features[i].get('slot') == 'mind_feat']
 
     def _pick_orderliness(self):
         return renpy.display_menu(
@@ -101,6 +106,7 @@ class PersonCreator(object):
             person.set_sexual_orientation(self.sexual_orientation)
             person.set_sexual_suite(self.sexual_type)
             person.add_feature(self.spirit_feat)
+            person.add_feature(self.mind_feat)
             person.alignment.orderliness = self.orderliness
             person.alignment.activity = self.activity
             person.alignment.morality = self.morality
