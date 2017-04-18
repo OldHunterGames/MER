@@ -225,7 +225,7 @@ screen main_menu():
     # The background of the main menu.
     window:
         style "mm_root"
-
+    image im.Scale('gui/main_menu.png', 1280, 720)    
     # The main menu buttons.
     frame:
         style_group "mm"
@@ -236,8 +236,8 @@ screen main_menu():
 
         textbutton _("Start Game") action Start()
         textbutton _("Load Game") action ShowMenu("load")
-        textbutton _("Preferences") action ShowMenu("preferences")
-        textbutton _("Help") action Help()
+        #textbutton _("Preferences") action ShowMenu("preferences")
+        textbutton _("About") action Help()
         textbutton _("Quit") action Quit(confirm=False)
 
 init -2:
@@ -269,11 +269,11 @@ screen navigation():
         has vbox
 
         textbutton _("Return") action Return()
-        textbutton _("Preferences") action ShowMenu("preferences")
+        # textbutton _("Preferences") action ShowMenu("preferences")
         textbutton _("Save Game") action ShowMenu("save")
         textbutton _("Load Game") action ShowMenu("load")
         textbutton _("Main Menu") action MainMenu()
-        textbutton _("Help") action Help()
+        textbutton _("About") action Help()
         textbutton _("Quit") action Quit()
 
 init -2:

@@ -17,7 +17,12 @@ init -8 python:
             person.schedule.make_default('ration')
 
 label lbl_edge_main:    
-    'The Mist gives you a way...'  
+    show expression "images/bg/mist.png" as bg
+    'The Mist gives you a way...'
+    show expression "images/bg/edge.png" as bg
+    "You see a walls of Eternal Rome."  
+    hide bg
+
     python:
         edge = EdgeEngine()
         core.set_world(edge)

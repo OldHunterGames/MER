@@ -126,8 +126,11 @@ label evn_edge_bukake(event):
             $ event.skipcheck = True
     if not event.skipcheck:
         return False
-    
+
+    show expression "images/bg/edge.png" as bg
     'Some bukake slut sucks.'
+    show expression "interface/bg_base.jpg" as bg
+    
     $ obj = ScheduleJob('bukake', edge_jobs_data)
     $ img = obj.image()
     show expression img at truecenter
