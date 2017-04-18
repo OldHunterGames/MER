@@ -23,12 +23,12 @@ init -1 python hide:
     ## This controls the title of the window, when Ren'Py is
     ## running in a window.
 
-    config.window_title = u"MER Prototype"
+    config.window_title = u"MER 0.1.0 early access"
 
     # These control the name and version of the game, that are reported
     # with tracebacks and other debugging logs.
-    config.name = "MER Prototype"
-    config.version = "0.1"
+    config.name = "MER 0.1.0 early access"
+    config.version = "0.1.0"
     config.rollback_enabled = False
 
     #########################################

@@ -12,7 +12,8 @@ label lbl_captive(target):
         if 'slaver' in edge.options:
             options.add_entry('captive_sell', edge_captive_options)  
         options.add_entry('captive_rape', edge_captive_options)          
-        options.add_entry('captive_slay', edge_captive_options)          
+        options.add_entry('captive_slay', edge_captive_options)  
+        options.add_entry('captive_cannibalise', edge_captive_options)          
         options.add_entry('captive_capture', edge_captive_options)     
         options.add_entry('captive_release', edge_captive_options)  
         CardMenu(options.run()).show()                
@@ -472,7 +473,7 @@ label lbl_edge_captive_slay(card):
 
     return
 
-label lbl_edge_captive_slay(card):
+label lbl_edge_captive_cannibalise(card):
     "[player.name] slays [visavis.name] to roast its meat on a demonblood fire."
     player "Munch-munch... At last I'm full"
     python:
