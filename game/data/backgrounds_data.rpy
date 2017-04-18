@@ -18,25 +18,25 @@ init python:
             'descriptions': [__('prehistoric world 1'), __('prehistoric world 2'), __('prehistoric world 3'), ]
         },
         'lowtec':{
-            'available_technical_levels': [1, 2],
+            'available_technical_levels': [2],
             'available_prestige_levels': [1, 2, 3, 4, 5],
             'name': __('lowtec'),
             'descriptions': [__('lowtec world 1'), __('lowtec world 2'), __('lowtec world 3'), ]
         },
         'fantasy':{
-            'available_technical_levels': [1, 2],
+            'available_technical_levels': [2],
             'available_prestige_levels': [1, 2, 3, 4, 5],
             'name': __('fantasy'),
             'descriptions': [__('fantasy world 1'), __('fantasy world 2'), __('fantasy world 3'), ]
         },
         'imperial':{
-            'available_technical_levels': [1, 3],
+            'available_technical_levels': [3],
             'available_prestige_levels': [1, 2, 3, 4, 5],
             'name': __('imperial'),
             'descriptions': [__('imperial world 1'), __('imperial world 2'), __('imperial world 3'), ]
         },
         'steampunk':{
-            'available_technical_levels': [1, 3],
+            'available_technical_levels': [3],
             'available_prestige_levels': [1, 2, 3, 4, 5],
             'name': __('steampunk'),
             'descriptions': [__('steampunk world 1'), __('steampunk world 2'), __('steampunk world 3'), ]
@@ -55,20 +55,20 @@ init python:
             'descriptions': [__('cyberpunk world 1'), __('cyberpunk world 2'), __('cyberpunk world 3'), ]
         },        
         'utopia':{
-            'available_technical_levels': [1, 2, 3, 4, 5],
-            'available_prestige_levels': [1, 2, 3, 4, 5],
+            'available_technical_levels': [2, 3, 4, 5],
+            'available_prestige_levels': [2, 3, 4, 5],
             'name': __('utopia'),
             'features': ['educated'],                
             'descriptions': [__('utopia world 1'), __('utopia world 2'), __('utopia world 3'), ]
         },
         'dystopia':{
-            'available_technical_levels': [1, 2, 3, 4, 5],
-            'available_prestige_levels': [1, 2, 3, 4, 5],
+            'available_technical_levels': [2, 3, 4, 5],
+            'available_prestige_levels': [2, 3, 4, 5],
             'name': __('dystopia'),
             'descriptions': [__('dystopia world 1'), __('dystopia world 2'), __('dystopia world 3'), ]
         },
         'spaceopera':{
-            'available_technical_levels': [4, 5],
+            'available_technical_levels': [5],
             'available_prestige_levels': [1, 2, 3, 4, 5],
             'name': __('spaceopera'),
             'features': ['educated'],                

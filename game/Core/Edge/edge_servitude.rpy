@@ -203,9 +203,12 @@ label lbl_edge_fuck_challenge(skill):
     $ sex = SimpleSex((player, 'controlled'), (partner, 'wishful'))
     $ result = sex.get_results()
     if result[partner] > 2:
-        'WIN'
+        partner "Oh, baby you soooo hot!"
+        edge_recruiter "You hired, [player.name]. Let's settle the formalities"
+        jump lbl_edge_fate
     else:
-        'LOSE'
+        partner "Meh..."
+        edge_recruiter "Thank you. We will call you back. Next!"
     
     return
 

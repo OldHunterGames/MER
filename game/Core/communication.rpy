@@ -44,12 +44,14 @@ label lbl_communicate_act(target):
             options.add_entry('com_obligation', edge_option_cards)
         if target == edge_slaver:
             options.add_entry('spc_become_slave', edge_option_cards)    
-        if target == edge_junker:
+        elif target == edge_junker:
             options.add_entry('spc_sellall', edge_option_cards)    
-        if target == edge_recruiter:
+        elif target == edge_recruiter:
             if not fate:
                 options.add_entry('spc_recruiter_bond', edge_option_cards)  
-            options.add_entry('spc_recruiter_citisen', edge_option_cards)                   
+            options.add_entry('spc_recruiter_citisen', edge_option_cards)  
+        elif target != edge_guard:
+            options.add_entry('spc_enslave', edge_option_cards)   
         if target.quest_completed(player): 
             options.add_entry('com_quest_completed', edge_option_cards)        
         options.add_entry('nevermind', edge_option_cards)  
@@ -60,6 +62,16 @@ label lbl_communicate_act(target):
     hide card
     return
 
+label lbl_edge_enslave(card):
+    $ dif = visavis.spirit
+    $ result = core.skillcheck(player, 'spirit', dif)
+    if result > 0:
+        visavis "Yeah... I'm tired of this surviving. Maybe you right, bring me to a slaver."
+        $ player.enslave(visavis)
+        "[visavis.name] is your captive now."
+    elif result < 0:
+        visavis "No way! I'll better be free."
+    return
 
 label lbl_edge_spc_sellall(card):
     $ SellItems(player, CardMenu).run()
@@ -457,6 +469,15 @@ label lbl_edge_captive_slay(card):
     python:
         visavis.die()
         player.add_corpse(visavis)
+
+    return
+
+label lbl_edge_captive_slay(card):
+    "[player.name] slays [visavis.name] to roast its meat on a demonblood fire."
+    player "Munch-munch... At last I'm full"
+    python:
+        visavis.die()
+        player.eat_corpse(visavis)
 
     return
 
