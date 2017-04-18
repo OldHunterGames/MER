@@ -10,7 +10,7 @@ init -8 python:
     
     pass
     def canibalism_unlocker(person, *args, **kwargs):
-        person.schedule.set('ration', ScheduleObject('canibalism', edge_feeds_data['canibalism'], True))
+        person.schedule.unlock('ration', ScheduleObject('canibalism', edge_feeds_data, True))
 
     def canibalism_locker(person, *args, **kwargs):
         if len(person.get_corpses()) < 1:
@@ -154,13 +154,13 @@ label lbl_edge_init_questrewards(argument):
     
 label lbl_edge_manage:
     show expression "interface/bg_base.jpg" as bg
-    show screen sc_player_hud
+    call screen sc_character_info_screen(player)
     python:
         target = player
         money = player.money
         bill = player.decade_bill
         enrgy_txt = encolor_text('energy', player.energy)
-           
+    
     menu:
         'Opportunities':
             if player.energy > 0:

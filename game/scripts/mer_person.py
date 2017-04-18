@@ -39,9 +39,14 @@ class PersonCreator(object):
         self.spirit_feat = None
         self.sexual_orientation = None
         self.sexual_type = None
+        self.orderliness = None
+        self.morality = None
+        self.activity = None
         self.random = None
 
     def start(self):
+        # img = renpy.display.im.Image('images/bg/mist.png')
+        # renpy.show('mist', what=img)
         self.ask_random()
         if self.random != 'custom':
             return self
@@ -57,10 +62,24 @@ class PersonCreator(object):
         self.spirit_feat = self._pick_spirit_feats()
         self.sexual_orientation = self._pick_orientation()
         self.sexual_type = self._pick_sexual_type()
+        self.orderliness = self._pick_orderliness()
+        self.activity = self._pick_activity()
+        self.morality = self._pick_morality()
         return self
 
+    def _pick_orderliness(self):
+        return renpy.display_menu(
+            [(value, key) for key, value in store.alignments_translation['orderliness'].items()])
+
+    def _pick_activity(self):
+        return renpy.display_menu(
+            [(value, key) for key, value in store.alignments_translation['activity'].items()])
+
+    def _pick_morality(self):
+        return renpy.display_menu(
+            [(value, key) for key, value in store.alignments_translation['morality'].items()])
+
     def ask_random(self):
-        renpy.say(None, 'Custom or random?')
         self.random = renpy.display_menu(
             [
                 ('Random male', 'male'),
@@ -82,6 +101,9 @@ class PersonCreator(object):
             person.set_sexual_orientation(self.sexual_orientation)
             person.set_sexual_suite(self.sexual_type)
             person.add_feature(self.spirit_feat)
+            person.alignment.orderliness = self.orderliness
+            person.alignment.activity = self.activity
+            person.alignment.morality = self.morality
         else:
             person = gen_random_person(genus=self.genus, gender=self.random)
         return person
