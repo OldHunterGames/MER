@@ -225,7 +225,22 @@ screen main_menu():
     # The background of the main menu.
     window:
         style "mm_root"
-    image im.Scale('gui/main_menu.png', 1280, 720)    
+    image im.Scale('gui/main_menu.png', 1280, 720)
+    hbox:
+        yalign 1.0
+        spacing 10
+        imagebutton:
+            idle 'interface/link_golos.png'
+            action OpenURL('https://golos.io/@oldhuntsman')
+        imagebutton:
+            idle 'interface/link_patreon.png'
+            action OpenURL('https://www.patreon.com/oldhuntsman')
+        imagebutton:
+            idle 'interface/link_twitter.png'
+            action OpenURL('https://twitter.com/OldHuntsman')
+        imagebutton:
+            idle 'interface/link_steem.png'
+            action OpenURL('https://steemit.com/@oldhuntsman')
     # The main menu buttons.
     frame:
         style_group "mm"

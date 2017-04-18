@@ -45,8 +45,8 @@ class PersonCreator(object):
         self.random = None
 
     def start(self):
-        # img = renpy.display.im.Image('images/bg/mist.png')
-        # renpy.show('mist', what=img)
+        img = renpy.display.im.Image('images/bg/mist.png')
+        renpy.show('mist', what=img)
         self.ask_random()
         if self.random != 'custom':
             return self
