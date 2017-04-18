@@ -468,7 +468,7 @@ class Attributed(Modifiable):
     def _get_modified_attribute(self, attr):
         value = self.attributes[attr]
         value += self.count_modifiers(attr)
-        return max(0, min(5, value))
+        return max(1, min(5, value))
 
     @property
     def physique(self):
