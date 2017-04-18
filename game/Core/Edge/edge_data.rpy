@@ -206,7 +206,7 @@ init -10 python:
         'fi_getknow': {'name': 'Get to know', 'description': __('Get to know\nLawful deed. Opposed wisdom check to succed. Get "Justuce" relations arcane.'), 'label': 'lbl_first_impression_getknow', 'image': 'miscards', }, 
         'fi_flatter': {'name': 'Flatter', 'description': __('Flatter\nGood deed. Opposed finesse check to succed. Get "Lovers" relations arcane.'), 'label': 'lbl_first_impression_flatter', 'image': 'miscards', }, 
         'fi_joke': {'name': 'Sudden jock', 'description': __('Sudden jock\nChaotic deed. Unpredictible outcome.'), 'label': 'lbl_first_impression_joke', 'image': 'miscards', }, 
-        'fi_mock': {'name': 'Mock', 'description': __('Mock/nEvil deed. Gain "Moon" relations arcane and self-affirm your authority.'), 'label': 'lbl_first_impression_mock', 'image': 'miscards', }, 
+        'fi_mock': {'name': 'Mock', 'description': __('Mock\nEvil deed.\nGain "Moon" relations arcane and self-affirm your authority.'), 'label': 'lbl_first_impression_mock', 'image': 'miscards', }, 
         'fi_reticence': {'name': 'Reticence', 'description': __('Reticence\nTimid deed. Be patient and quiet. No risk. No reward.'), 'label': 'lbl_first_impression_reticence', 'image': 'miscards', }, 
 
         'com_obligation': {'name': 'Get favor', 'description': __('Get favor\nThis person is obliged to you, so you may ask for a reward or promote relationship.'), 'label': 'lbl_edge_comm_obligation', 'image': 'miscards', }, 
