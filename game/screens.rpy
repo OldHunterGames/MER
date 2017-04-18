@@ -227,8 +227,9 @@ screen main_menu():
         style "mm_root"
     image im.Scale('gui/main_menu.png', 1280, 720)
     hbox:
-        yalign 1.0
-        spacing 10
+        yalign 0.98
+        xalign 0.02
+        spacing 20
         imagebutton:
             idle 'interface/link_golos.png'
             action OpenURL('https://golos.io/@oldhuntsman')
