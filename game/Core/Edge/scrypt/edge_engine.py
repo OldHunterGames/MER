@@ -141,7 +141,7 @@ class EdgeEngine(object):
     def _init_player_schedule(self, person, data_dict, type_,
                               default_obj_id, cls):
         for i in data_dict:
-            obj = cls(i, data_dict[i])
+            obj = cls(i, data_dict)
             if not obj.hidden:
                 person.schedule.unlock(type_, obj)
             if i == default_obj_id:
@@ -164,7 +164,7 @@ class EdgeEngine(object):
 
     def _init_overtimes(self, person, dict):
         for i in dict:
-            obj = ScheduleObject(i, dict[i])
+            obj = ScheduleObject(i, dict)
             if not obj.hidden:
                 person.schedule.unlock('optional', obj)
 

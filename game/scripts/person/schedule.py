@@ -12,7 +12,7 @@ import renpy.store as store
 class ScheduleObject(MenuCard):
 
     def __init__(self, id, data_dict, locked=False):
-        self._data = data_dict
+        self._data = data_dict[id]
         self.id = id
         self.locked = locked
         self._additional_data = dict()
@@ -214,6 +214,9 @@ class Schedule(object):
             self.set_job(obj, single, **kwargs)
         else:
             setattr(self, '_' + attr_name, obj)
+
+    def get(self, attr_name, id):
+        return getattr(self, '_available_' + attr_name + 's')[id]
 
     def unlock(self, attr_name, value):
         getattr(self, '_available_' + attr_name + 's')[value.id] = value
