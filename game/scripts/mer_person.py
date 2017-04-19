@@ -49,6 +49,7 @@ class PersonCreator(object):
         renpy.show('mist', what=img)
         self.ask_random()
         if self.random != 'custom':
+            renpy.hide('mist')
             return self
         self.gender = self._pick_gender()
         self.age = self._pick_ages()
@@ -70,8 +71,8 @@ class PersonCreator(object):
         return self
 
     def _pick_mind_feats(self):
-        return [(store.person_features[i]['name'], i) for i in store.person_features if
-                store.person_features[i].get('slot') == 'mind_feat']
+        return renpy.display_menu([(store.person_features[i]['name'], i) for i in store.person_features if
+                store.person_features[i].get('slot') == 'mind_feat'])
 
     def _pick_orderliness(self):
         return renpy.display_menu(
