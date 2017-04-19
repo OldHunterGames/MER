@@ -19,7 +19,7 @@ screen sc_quests:
                             if i.employer is not None:
                                 imagebutton:
                                     idle im.Scale(i.employer.avatar_path, 50, 50)
-                                    action Show('sc_character_info_screen', person=i.employer, communicate=True)
+                                    action Function(renpy.call_in_new_context, '_contacts_glue', person=i.employer, communicate=True), Hide('sc_quests')
                                     hovered Show('sc_info_popup', person=i.employer)
                                     unhovered Hide('sc_info_popup')
                     elif i.completed(player):
@@ -35,7 +35,7 @@ screen sc_quests:
                             if i.employer is not None:
                                 imagebutton:
                                     idle im.Scale(i.employer.avatar_path, 50, 50)
-                                    action Show('sc_character_info_screen', person=i.employer, communicate=True)
+                                    action Function(renpy.call_in_new_context, '_contacts_glue', person=i.employer, communicate=True), Hide('sc_quests')
                                     hovered Show('sc_info_popup', person=i.employer)
                                     unhovered Hide('sc_info_popup')
                     else:
@@ -52,7 +52,7 @@ screen sc_quests:
                             if i.employer is not None:
                                 imagebutton:
                                     idle im.Scale(i.employer.avatar_path, 50, 50)
-                                    action Show('sc_character_info_screen', person=i.employer, communicate=True)
+                                    action Function(renpy.call_in_new_context, '_contacts_glue', person=i.employer, communicate=True), Hide('sc_quests')
                                     hovered Show('sc_info_popup', person=i.employer)
                                     unhovered Hide('sc_info_popup')
 

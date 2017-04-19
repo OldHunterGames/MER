@@ -35,7 +35,7 @@ label lbl_contacts(player):
     $ CardMenu(char_cards, cancel=True).show(True, 150, 150, 10)
     return
 
-label _contacts_glue(person, _return, communicate):
+label _contacts_glue(person, _return=True, communicate=True):
     call screen sc_character_info_screen(person, _return, communicate)
     return
 

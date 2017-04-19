@@ -951,7 +951,7 @@ class Person(Skilled, InventoryWielder, Attributed, PsyModel):
         self.quests_to_give = []
         self._phrases = dict()
         self.obligation = False
-        self.rewards = CardsMaker()
+        self.rewards = CardsMaker(store.edge_quest_rewards)
         self._interactions = CardsMaker()
         self._active_quest = None
         self._sexual_orientation = None

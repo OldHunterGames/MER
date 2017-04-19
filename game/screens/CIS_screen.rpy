@@ -90,7 +90,10 @@ screen sc_character_info_screen(person, return_l=False, communicate=False, creat
                             act = NullAction()
                     else:
                         img = 'interface/close.png'
-                        act = Return()
+                        if return_l:
+                            act = Return()
+                        else:
+                            act = Hide('sc_character_info_screen')
                 imagebutton:
                     idle img
                     action act

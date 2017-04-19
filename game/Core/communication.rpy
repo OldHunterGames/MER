@@ -90,7 +90,7 @@ label lbl_edge_comm_call_quest(card):
     return
 
 label lbl_edge_comm_obligation(card):
-    $ CardMenu(visavis.reward.run()).show()
+    $ CardMenu(visavis.rewards.run()).show()
     hide card
     return
     
