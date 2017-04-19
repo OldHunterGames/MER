@@ -176,25 +176,57 @@ label evn_edge_connections(event):
         return False
     if not any(event.target.known_characters):
         return False
+
     python:
         person = event.target
         visavis = max([i for i in person.known_characters], key=lambda x: person.relations(x).stance)
         relations = person.relations(visavis)
+
     if relations.stance == -1:
         python:
+            modus = 'stealmoney'
             items = person.unequiped_items()
             if person.has_money():
                 person.remove_money(person.money)
             elif any(items):
-                person.remove_item(choice(items))
+                modus = 'stealitem'
+                stolenitem = person.remove_item(choice(items))
+                itemname = stolenitem.name
             else:
-                # send assassin here
-                pass
-    elif relations.stance == 0:
-        call lbl_communicate(visavis)
+                modus = 'assasination'
+                
+        if modus == 'stealmoney':
+            "Someone stole all your nutrition bars while you was asleep!"
+        elif modus = 'stealitem':
+            "Someone stole your [itemname] while you was asleep!"
 
+        if modus != "assasination":
+            player "I know that was you, fucker!"
+            visavis "Fuck off, I don't know noting about it."
+        else:
+            $ assasin = gen_mighty_master("human")
+            $ assasin.set_nickname("Headhunter") 
+            assasin "[visavis.name] announced a reward for your head. I'll kill you!"
+            python:
+                allies = [player]
+                enemies = [assasin]
+                fight = SimpleFight(allies, enemies)
+                enemies = fight.get_enemies()
+                winner = fight.get_winner()
+
+            if winner == 'enemies':
+                'Assasin slays you and sells your dead body to butcher...'
+                $ player.die()
+
+
+    elif relations.stance == 0:
+        "You casualy encounter [visavis.name]."
+        call lbl_communicate(visavis)
     else:
+        "Hunging out with your friend, [visavis.name]"
+        visavis "My buissiness is going well lately. So I have a spare box of nutrition bars for you. We must keep touhether."
         $ person.add_money(10)
+        "You got 10 bars"
 
     return True
 
