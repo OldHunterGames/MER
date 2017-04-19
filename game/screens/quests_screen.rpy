@@ -59,4 +59,4 @@ screen sc_quests:
                 textbutton 'Leave':
                     action Hide('sc_quests')
     on 'hide':
-        action Hide('sc_text_popup'), Function(core.quest_tracker.check)
+        action Hide('sc_text_popup'), Function(core.quest_tracker.check), Hide('sc_info_popup')
