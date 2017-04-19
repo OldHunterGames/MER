@@ -131,7 +131,7 @@ label lbl_edge_libertine_exam(card):
             edge_recruiter "Then I will bring you to Eternal Rome."                
 
         'Newermind':
-            jump lbl_edge_main
+            return
     
     call lbl_edge_libertine_exam(None)
     return
