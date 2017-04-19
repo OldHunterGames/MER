@@ -334,8 +334,10 @@ persons_list = []
 
 def gen_sex_traits(person):
     # TODO: sex traits generation rules instead of random
-    person.set_sexual_suite(choice(store.sexual_type.keys()))
-    person.set_sexual_orientation(choice(store.sexual_orientation.keys()))
+    creator = PersonCreator()
+    creator.gender = person.gender
+    person.set_sexual_suite(choice(creator.get_sex_traits())[1])
+    person.set_sexual_orientation(choice(creator.get_orientations())[1])
 
 
 class SlaveStorage(object):
