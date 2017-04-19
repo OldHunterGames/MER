@@ -17,12 +17,6 @@ init -8 python:
             person.schedule.make_default('ration')
 
 label lbl_edge_main:    
-    show expression "images/bg/mist.png" as bg
-    'The Mist gives you a way...'
-    show expression "images/bg/edge.png" as bg
-    "You see a walls of Eternal Rome."  
-    hide bg
-
     python:
         edge = EdgeEngine()
         core.set_world(edge)
@@ -134,7 +128,27 @@ label lbl_edge_main:
     #$ player.relations(slums_medic)    
 
     call edge_init_events
+    call edge_fist_glance
     call lbl_edge_manage
+    return
+
+label edge_fist_glance:
+    scene
+    show expression "images/bg/mist.png" as bg
+    "The Mist are all around you…"
+    "It's not just a drop of water condensed in the air, this mystical Fog has a different nature. Dulling the mind, it penetrates into your brain, deprives the world of colors and life. "
+    "You do not feel the passage of time - minutes, hours, days perhaps... in this living fog every second lasts forever."
+    "As if mirages pass by fragments of alien worlds. Dead forests and abandoned cities, lying in ruins. Everything that is on your way, is empty, gray and lifeless."
+    "But in the Mists, someone is scouring. Either the ghosts of lost travelers like you, or eerie monsters with tentacles as if descended from the pages of a Gothic novel."
+    'Suddenly the Mist gives you a way...'
+    show expression "images/bg/edge.png" as bg
+    "The landscape around is still lifeless, but now you see it clearly. The gray plain, without a single blade of grass, extends to the left and to the right as far as the eye can see. Behind your back lies a veil of insidious Mist, and in front, less than a mile from here you can see the high concrete wall behind which the magnificent towers sizzle."
+    "You see the walls of Eternal Rome."  
+    "There are slums nearby."
+    "Pitiful houses built of a variety of materials - rotten boards, rusty tin and unbaked clay bricks. One way or another, but there live people."
+    "Poverty reigning around horrifies. In the eyes of local inhabitants only two emotions are read - hunger and suspicion. Hardly anyone wants to live here on their own. You are wondering whether you will be able to get into the city behind the wall."
+    hide bg
+
     return
 
 label lbl_edge_init_questrewards(argument):
