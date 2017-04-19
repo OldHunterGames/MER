@@ -421,8 +421,10 @@ class DescriptionMaker(object):
             '{cap_possesive} voice is {voice}. '\
             '{person.name} has a {hair} and {skin}. '
         string += '\n'
-        for i in person.anatomy.all_parts():
-            string += '{cap_pronoun} has %s. '%i.description()
+        for i in ['vagina', 'boobs', 'ass', 'penis']:
+            organ = person.anatomy.get_part(i)
+            if organ is not None:
+                string += '{cap_pronoun} has %s. '%organ.description()
         string += '\n'
         start = True
         for i in person.features:
