@@ -89,6 +89,9 @@ class Anatomy(object):
     def __init__(self):
         self.parts = dict()
 
+    def all_parts(self):
+        return self.parts.values()
+
     def get_part(self, name):
         return self.parts.get(name)
 
