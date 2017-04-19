@@ -13,6 +13,7 @@ label edge_init_events:
         register_event('evn_edge_slaver')
         register_event('evn_edge_junker')        
         register_event('evn_edge_bukake')
+        register_event('evn_edge_connections')
 #        register_event('evn_edge_echoing_hills')
 #        register_event('evn_edge_dying_grove')
 #        register_event('evn_edge_hazy_marshes')        
@@ -165,6 +166,38 @@ label evn_edge_bukake(event):
 label evn_edge_uneventful(event):    
     'Unevetful decade...'    
     return True
+
+label evn_edge_connections(event):
+    if not event.skipcheck:
+        python:
+            if event.target.player_controlled:
+                event.skipcheck = True
+    if not event.skipcheck:
+        return False
+    if not any(event.target.known_characters):
+        return False
+    python:
+        person = event.target
+        visavis = max([i for i in person.known_characters], key=lambda x: person.relations(x).stance)
+        relations = person.relations(visavis)
+    if relations.stance == -1:
+        python:
+            items = person.unequiped_items()
+            if person.has_money():
+                person.remove_money(person.money)
+            elif any(items):
+                person.remove_item(choice(items))
+            else:
+                # send assassin here
+                pass
+    elif relations.stance == 0:
+        call lbl_communicate(visavis)
+
+    else:
+        $ person.add_money(10)
+
+    return True
+
 
 
 

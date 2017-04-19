@@ -421,6 +421,9 @@ class DescriptionMaker(object):
             '{cap_possesive} voice is {voice}. '\
             '{person.name} has a {hair} and {skin}. '
         string += '\n'
+        for i in person.anatomy.all_parts():
+            string += '{cap_pronoun} has %s. '%i.description()
+        string += '\n'
         start = True
         for i in person.features:
             if i.slot not in slots:
