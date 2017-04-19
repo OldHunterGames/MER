@@ -12,6 +12,10 @@ The gameplay is complex enough and can present a problem until we complete the t
 
 I can not forbid you from spreading this game, but please do not do it. If you want to draw someone's attention to the project, just share a link to the Patreon.
 
+----Bugtracking----
+
+Not yet implemented. If you find a bug, just don't bother, existing code will be refactored immensly anyways )
+
 -----Links-----
 
 Twitter: https://twitter.com/OldHuntsman

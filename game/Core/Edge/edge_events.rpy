@@ -128,20 +128,33 @@ label evn_edge_bukake(event):
     if not event.skipcheck:
         return False
 
+    $ fucker = gen_raider_leader()
+    $ slut = gen_simple_person(gender="female")
+
     show expression "images/bg/edge.png" as bg
-    'Some bukake slut sucks.'
+    'Walking along the street you notice a group of people who have been bored in one place. They are clearly more than interested. Coming closer you see that all this men who surrounded the woman kneeling on the griund. Her breasts are bare.'
+    "One of the mans forsefully showes his dick in a poor womans troat. Looks like he is above to come. But the most amazing thing is that a woman looks like she wants it herself. With a mouthful of squelching sounds, she strokes the cocks of people around her. Soon a man cums right in her throat."
+    slut "Ummm... (swallows) Ahhh..."
+    fucker "Yeah, this is for you bitch. Yummy?"
+    slut "Thank you sir. Who's next? I'm sooo hungry. Please feed me with your delicious cum!"
+    "In a metter of second the slut is sucks on a next prick... wow she IS hungry for semen!"
+    fucker "Hey you! Do you like to watch? Hehe..."
+    player "Why is she doing that?"
+    fucker "It's a bukakke-slut. The poor thing is not good enough to make living as a prostitute, so she feeds on cum of those who are too greedy or broke to spend bars on whores."
+    player "How could a persone live like this?"
+    fucker "Do not pity on her, pal. She eats better than us!"
+    "The guy is wandering away, statisfied. While a slut struggles to earn her breakfast from other dudes."
     show expression "interface/bg_base.jpg" as bg
-    
     $ obj = ScheduleJob('bukake', edge_jobs_data)
     $ img = obj.image()
     show expression img at truecenter
 
     if 'male' in core.orientation[player.gender]:
-        'You can be a bukake slut now'
+        'You can be a bukake slut now.'
         $ player.schedule.unlock('job', ScheduleJob('bukake', edge_jobs_data))
 
     if player.has_body_part('penis'):
-        'You can use bukake-sluts now'
+        'You can use bukake-sluts now as a recreation option in a shedule.'
         $ player.schedule.unlock('optional', ScheduleObject('bukake', edge_services_data))
 
     $ edge.options.append('bukake')
