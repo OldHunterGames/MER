@@ -4,7 +4,7 @@
 # Random encounters on the edge
 
 label lbl_edge_randenc_errant:
-    $ stranger = gen_random_person('human')    
+    $ stranger = gen_simple_person('human')    
     $ stranger.set_nickname("Errant") 
     '[player.name] meets a confused Mist wanderer.'
     stranger "Where am I? What is this place? Can you help me, please?!"

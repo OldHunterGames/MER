@@ -478,6 +478,7 @@ label lbl_edge_captive_cannibalise(card):
     player "Munch-munch... At last I'm full"
     python:
         visavis.die()
+        player.add_corpse(visavis)
         player.eat_corpse(visavis)
 
     return

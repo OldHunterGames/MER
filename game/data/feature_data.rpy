@@ -166,8 +166,8 @@
         'lord': {'name': __('lord'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
         'talanted_lord': {'name': __('grand lord'), 'slot': 'profession', 'modifiers': {'spirit_skill': +2}, 'visible': True}, 
 
-        'daytaller': {'name': __('daytaller'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
-        'talanted_daytaller': {'name': __('stout daytaller'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},              
+        'daytaler': {'name': __('daytaller'), 'slot': 'profession', 'modifiers': {}, 'visible': True},  
+        'talanted_daytaler': {'name': __('stout daytaller'), 'slot': 'profession', 'modifiers': {'might_skill': +1}, 'visible': True},              
         'dancer': {'name': __('dancer'), 'slot': 'profession', 'modifiers': {'finesse_skill': +1}, 'visible': True},  
         'talanted_dancer': {'name': __('talanted dancer'), 'slot': 'profession', 'modifiers': {'finesse_skill': +2}, 'visible': True},               
         'officer': {'name': __('officer'), 'slot': 'profession', 'modifiers': {'spirit_skill': +1}, 'visible': True},  
